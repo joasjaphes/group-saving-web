@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "dist/kikoba-web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
