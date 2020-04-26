@@ -6,7 +6,7 @@
     "kikoba-web": {
       "projectType": "application",
       "schematics": {
-        "@schematics/angular:component": {
+        "@ngrx/schematics:component": {
           "style": "scss"
         }
       },
@@ -131,6 +131,7 @@
   },
   "defaultProject": "kikoba-web",
   "cli": {
-    "analytics": "b70f5cb9-1e05-411a-b9f8-8c869684111a"
+    "analytics": "b70f5cb9-1e05-411a-b9f8-8c869684111a",
+    "defaultCollection": "@ngrx/schematics"
   }
 }
