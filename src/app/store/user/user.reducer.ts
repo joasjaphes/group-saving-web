@@ -6,18 +6,40 @@ import * as UserActions from './user.actions';
 export const usersFeatureKey = 'users';
 
 export interface State extends EntityState<User> {
-  // additional entities state properties
+  selected: string;
+  loading: boolean;
+  loaded: boolean;
+  error: any;
 }
 
 export const adapter: EntityAdapter<User> = createEntityAdapter<User>();
 
 export const initialState: State = adapter.getInitialState({
-  // additional entity state properties
+  selected: null,
+  loading: false,
+  loaded: false,
+  error: null,
 });
 
 
 export const reducer = createReducer(
   initialState,
+  on(UserActions.getUsers, ((state, action) => {
+      return {...state, loading: true, error: null};
+    })
+  ),
+  on(UserActions.doneLoadingUsers, ((state, action) => {
+      return {...state, loading: false, error: null};
+    })
+  ),
+  on(UserActions.failLoadingUsers, ((state, action) => {
+      return {...state, loading: false, error: action.error};
+    })
+  ),
+  on(UserActions.setSelectedUser, ((state, action) => {
+      return {...state, selected: action.userId};
+    })
+  ),
   on(UserActions.addUser,
     (state, action) => adapter.addOne(action.user, state)
   ),
@@ -57,3 +79,7 @@ export const {
   selectAll,
   selectTotal,
 } = adapter.getSelectors();
+export const getSelectedId = (state: State) => state.selected;
+export const getLoading = (state: State) => state.loading;
+export const getLoaded = (state: State) => state.loaded;
+export const getError = (state: State) => state.error;

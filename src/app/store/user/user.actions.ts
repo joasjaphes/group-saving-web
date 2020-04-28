@@ -3,8 +3,26 @@ import { Update } from '@ngrx/entity';
 
 import { User } from './user.model';
 
+export const getUsers = createAction(
+  '[User/API] Get Users'
+);
+
+export const doneLoadingUsers = createAction(
+  '[User/API] Done Loading Users'
+);
+
+export const failLoadingUsers = createAction(
+  '[User/API] Error Loading Users',
+  props<{ error: any }>()
+);
+
+export const setSelectedUser = createAction(
+  '[User/API] Set Selected Users',
+  props<{ userId: string }>()
+);
+
 export const loadUsers = createAction(
-  '[User/API] Load Users', 
+  '[User/API] Load Users',
   props<{ users: User[] }>()
 );
 

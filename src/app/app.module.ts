@@ -9,8 +9,11 @@ import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from './store/app.effects';
-import { UserEffects } from './store/user/user.effects';
+import {effects} from './store/app.effects';
+import {DefaultRouterStateSerializer, RouterStateSerializer, StoreRouterConnectingModule} from '@ngrx/router-store';
+import {CustomSerializer} from './store/router/router.reducer';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {SharedModule} from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -28,9 +31,13 @@ import { UserEffects } from './store/user/user.effects';
       }
     }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([AppEffects]),
+    EffectsModule.forRoot(effects),
+    StoreRouterConnectingModule.forRoot(
+      {serializer: DefaultRouterStateSerializer}
+    ),
+    SharedModule,
   ],
-  providers: [],
+  providers: [{ provide: RouterStateSerializer, useClass: CustomSerializer }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
