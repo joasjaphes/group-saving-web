@@ -14,10 +14,20 @@ import {DefaultRouterStateSerializer, RouterStateSerializer, StoreRouterConnecti
 import {CustomSerializer} from './store/router/router.reducer';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {SharedModule} from './shared/shared.module';
+import { HomeComponent } from './home/home.component';
+import { StartComponent } from './registration/start/start.component';
+import { LanguageSelectionComponent } from './registration/language-selection/language-selection.component';
+import { RegistrationTemplateComponent } from './registration/registration-template/registration-template.component';
+import { PhoneNumberComponent } from './registration/phone-number/phone-number.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    StartComponent,
+    LanguageSelectionComponent,
+    RegistrationTemplateComponent,
+    PhoneNumberComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +46,7 @@ import {SharedModule} from './shared/shared.module';
       {serializer: DefaultRouterStateSerializer}
     ),
     SharedModule,
+    BrowserAnimationsModule,
   ],
   providers: [{ provide: RouterStateSerializer, useClass: CustomSerializer }],
   bootstrap: [AppComponent]

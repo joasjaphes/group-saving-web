@@ -1,4 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import '../node_modules/bootstrap/scss/bootstrap-reboot';
+@import '../node_modules/bootstrap/scss/bootstrap-grid';
+@import '../node_modules/bootstrap/scss/bootstrap';
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body * {
+  font-family: Scorecard-Averta, sans-serif, appleLogo;
+}
+
+.loginArea {
+  height: 100%;
+  .mat-drawer-container {
+    background-color: rgba(0, 0, 0, 0.74) !important;
+  }
+  .mat-drawer-content {
+    overflow: hidden;
+  }
+  .mat-progress-spinner circle, .mat-spinner circle {
+    stroke: #ffed00;
+  }
+
+}
+
+.mat-form-field {
+  width: 100% !important;
+}
+
+
+.registration-button {
+  margin-top: 10px!important;
+  border-radius: 40px!important;
+  border: 1px solid #ffed00!important;
+  font-size: 13px;
+  //background-color: #1B75BC;
+  color: #ffed00;
+  letter-spacing: 2px;
+}

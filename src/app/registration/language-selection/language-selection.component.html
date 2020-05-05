@@ -1,0 +1,35 @@
+<app-registration-template
+  backTitle="Back Home"
+  progressTitle="Select Country"
+  [progressValue]="12"
+>
+  <h3 [ngClass]="routeAnimationsElements" style="text-align: center">
+    <img
+      style="height: 15px; width: 25px"
+      *ngIf="selectedCountry"
+      src="assets/flags/{{selectedCountry.isoCode.toLowerCase()}}.png">&nbsp;
+    Pick Your Country
+  </h3>
+  <div [ngClass]="routeAnimationsElements" style="text-align: center">
+    <div class="time-picker-component" style="width: 300px">
+      <mat-form-field appearance="fill">
+        <img
+          matPrefix
+          style="height: 15px; width: 25px; margin-right: 10px"
+          *ngIf="selectedCountry"
+          src="assets/flags/{{selectedCountry.isoCode.toLowerCase()}}.png">
+        <mat-select (selectionChange)="countrySelected($event.value)" [(ngModel)]="selectedCountryId" name="ampm" class="ampm">
+          <mat-option *ngFor="let country of countries" [value]="country.phoneCode">
+            <img style="height: 15px; width: 25px" src="assets/flags/{{country.isoCode.toLowerCase()}}.png">
+            &nbsp; {{country.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div @fadeIn *ngIf="selectedCountry" [ngClass]="routeAnimationsElements" style="text-align: center">
+    <button class="registration-button" mat-raised-button [routerLink]="['', 'phone-number']">
+      Phone Number <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </div>
+</app-registration-template>

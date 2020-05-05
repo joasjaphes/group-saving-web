@@ -1,0 +1,28 @@
+<div class="outer bgimage">
+  <div class="outer bgcolor">
+
+  </div>
+</div>
+
+<div class="loginArea">
+  <mat-drawer-container class="example-container">
+    <mat-drawer-content>
+        <div class="content"
+             [@routeAnimations]="o.isActivated ? o.activatedRoute : ''">
+          <router-outlet #o="outlet"></router-outlet>
+        </div>
+      <div class="company-image">
+        <img src="assets/images/company.png">
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+
+<!--  <mat-drawer-container class="example-container">-->
+<!--    <mat-drawer-content>-->
+<!--      <h1>New Contents</h1>-->
+<!--    </mat-drawer-content>-->
+<!--  </mat-drawer-container>-->
+
+</div>
+
+

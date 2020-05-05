@@ -1,0 +1,41 @@
+.outer {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+
+.bgimage {
+  background: url(../../assets/images/moneybg.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  filter: blur(7px);
+  -webkit-filter: blur(7px);
+}
+
+.bgcolor {
+  background-color: rgba(9, 26, 35, 0.4);
+}
+
+.example-container {
+  height: 100%;
+}
+
+.company-image {
+  position: absolute;
+  width: 100%;
+  display: grid;
+  align-content: center;
+  justify-content: center;
+  bottom: 10px;
+  img {
+    height: 25px;
+  }
+}
+
+.content {
+  height: 100%;
+}

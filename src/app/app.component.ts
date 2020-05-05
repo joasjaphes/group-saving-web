@@ -1,10 +1,19 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
+import {SwUpdate} from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'kikoba-web';
+export class AppComponent{
+
+  constructor(
+    updates: SwUpdate,
+  ) {
+    updates.available.subscribe(event => {
+      // TODO: make sure you prompt user to agree to fetch updates
+      updates.activateUpdate().then(() => document.location.reload());
+    });
+  }
 }
