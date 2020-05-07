@@ -19,6 +19,8 @@ import { StartComponent } from './registration/start/start.component';
 import { LanguageSelectionComponent } from './registration/language-selection/language-selection.component';
 import { RegistrationTemplateComponent } from './registration/registration-template/registration-template.component';
 import { PhoneNumberComponent } from './registration/phone-number/phone-number.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { CountrySelectionComponent } from './registration/country-selection/country-selection.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { PhoneNumberComponent } from './registration/phone-number/phone-number.c
     StartComponent,
     LanguageSelectionComponent,
     RegistrationTemplateComponent,
-    PhoneNumberComponent
+    PhoneNumberComponent,
+    RegistrationComponent,
+    CountrySelectionComponent
   ],
   imports: [
     BrowserModule,

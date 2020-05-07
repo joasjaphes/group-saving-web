@@ -4,6 +4,7 @@ import {HomeComponent} from './home/home.component';
 import {StartComponent} from './registration/start/start.component';
 import {LanguageSelectionComponent} from './registration/language-selection/language-selection.component';
 import {PhoneNumberComponent} from './registration/phone-number/phone-number.component';
+import {RegistrationComponent} from './registration/registration.component';
 
 
 const routes: Routes = [
@@ -23,6 +24,13 @@ const routes: Routes = [
         component: LanguageSelectionComponent,
         data: {
           title: 'Select Language'
+        }
+      },
+      {
+        path: 'registration',
+        component: RegistrationComponent,
+        data: {
+          title: 'Registration'
         }
       },
       {

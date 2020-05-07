@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
-import {countries} from '../../store/countries';
+import {countries, Country} from '../../store/countries';
 
 @Component({
   selector: 'app-phone-number',
@@ -11,6 +11,9 @@ export class PhoneNumberComponent implements OnInit {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   countries = countries;
   selectedCountry: string;
+  @Input() country: Country;
+  @Output() nextStep = new EventEmitter();
+  @Output() setPhoneNumber = new EventEmitter<string>();
   constructor() { }
 
   ngOnInit(): void {

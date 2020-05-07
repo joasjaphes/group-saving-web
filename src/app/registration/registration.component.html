@@ -1,0 +1,39 @@
+<div class="nav-bars">
+  <div class="left-title" [ngClass]="routeAnimationsElements">
+    <button (click)="goBack()" mat-flat-button>
+      <mat-icon>arrow_back</mat-icon>&nbsp;
+      <span  *ngIf="!(isHandset$ | async)">{{previousStep$ | async}}</span>
+    </button>
+  </div>
+
+  <div class="gauge" [ngClass]="{'push-left': !(isHandset$ | async)}">
+    <div class="progress1" [ngClass]="routeAnimationsElements">
+      <mat-progress-spinner mode="determinate" [value]="progressValue$ | async"></mat-progress-spinner>
+      <span>{{progressValue$ | async}}%</span>
+    </div>
+    <div class="text-progress" *ngIf="!(isHandset$ | async)" [ngClass]="routeAnimationsElements">
+      {{currentStep$ | async}}
+    </div>
+  </div>
+
+  <div class="logo" [ngClass]="routeAnimationsElements">
+    <img src="assets/icons/icon-512x512.png" style="height: 40px">
+  </div>
+</div>
+<div class="grid-area">
+<!--  Country Selection-->
+  <app-country-selection
+    *ngIf="(currentStep$ | async) == 'Country Selection'"
+    [selectedCountry]="country$ | async"
+    (setSelectedCountry)="setCountry($event)"
+    (nextStep)="goNextStep()"
+  ></app-country-selection>
+
+<!--  Phone Number -->
+  <app-phone-number
+    *ngIf="(currentStep$ | async) == 'Phone Number'"
+    [country]="country$ | async"
+    (setPhoneNumber)="setPhoneNumber($event)"
+    (nextStep)="goNextStep()"
+  ></app-phone-number>
+</div>

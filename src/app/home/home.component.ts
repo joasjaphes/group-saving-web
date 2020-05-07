@@ -1,7 +1,6 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {ROUTE_ANIMATIONS_ELEMENTS, routeAnimations} from '../shared/animations/router-animation';
-import {filter, map, mergeMap} from 'rxjs/operators';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {routeAnimations} from '../shared/animations/router-animation';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 
 @Component({
@@ -10,7 +9,7 @@ import {Title} from '@angular/platform-browser';
   styleUrls: ['./home.component.scss'],
   animations: [routeAnimations]
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -19,20 +18,4 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {}
 
-  ngAfterViewInit() {
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        map(() => this.activatedRoute),
-        map((route: any) => {
-          while (route.firstChild) {
-            route = route.firstChild;
-          }
-          return route;
-        }),
-        filter(route => route.outlet === 'primary'),
-        mergeMap(route => route.data)
-      )
-      .subscribe(event => this.titleService.setTitle(event['title']));
-  }
 }

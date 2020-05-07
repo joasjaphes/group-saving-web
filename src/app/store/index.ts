@@ -33,6 +33,7 @@ import * as fromPayment from './payment/payment.reducer';
 import * as fromPaymentItem from './payment-item/payment-item.reducer';
 import * as fromShareDividend from './share-dividend/share-dividend.reducer';
 import * as fromShareDividendMember from './share-dividend-member/share-dividend-member.reducer';
+import * as fromLoginSteps from './login-steps/login-steps.reducer';
 import * as fromRouter from '@ngrx/router-store';
 import {RouterStateUrl} from './router/router.reducer';
 
@@ -69,6 +70,7 @@ export interface ApplicationState {
   [fromPaymentItem.paymentItemsFeatureKey]: fromPaymentItem.State;
   [fromShareDividend.shareDividendsFeatureKey]: fromShareDividend.State;
   [fromShareDividendMember.shareDividendMembersFeatureKey]: fromShareDividendMember.State;
+  [fromLoginSteps.loginStepsFeatureKey]: fromLoginSteps.State;
 }
 
 export const reducers: ActionReducerMap<ApplicationState> = {
@@ -103,6 +105,7 @@ export const reducers: ActionReducerMap<ApplicationState> = {
   [fromPaymentItem.paymentItemsFeatureKey]: fromPaymentItem.reducer,
   [fromShareDividend.shareDividendsFeatureKey]: fromShareDividend.reducer,
   [fromShareDividendMember.shareDividendMembersFeatureKey]: fromShareDividendMember.reducer,
+  [fromLoginSteps.loginStepsFeatureKey]: fromLoginSteps.reducer,
 };
 
 

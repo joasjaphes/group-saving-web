@@ -1,0 +1,51 @@
+.grid-area {
+  height: 80%;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+
+.nav-bars {
+  color: #ffed00;
+  height: 12%;
+  margin: 1%;
+  display: grid;
+  grid-template-columns: 3fr 2fr 3fr;
+  .left-title {
+    button {
+      background-color: transparent;
+      color: #ffed00;
+    }
+  }
+  .push-left {
+    margin-left: 10%;
+  }
+  .gauge {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+
+
+    .progress1 {
+
+      span {
+        position: relative;
+        top: -59px;
+        display: block;
+        left: 38px;
+      }
+    }
+    .text-progress {
+      text-align: left;
+      margin-top: 9px
+    }
+    mat-progress-spinner {
+      margin-top: -30px;
+      transform: scale(0.5);
+    }
+  }
+
+  .logo {
+    text-align: right;
+    margin-right: 10px;
+  }
+}

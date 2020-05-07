@@ -1,9 +1,4 @@
-<app-registration-template
-  backTitle="Back Home"
-  progressTitle="Language Selection"
-  [progressValue]="12"
->
-  <h3 [ngClass]="routeAnimationsElements" style="text-align: center">
+ <h3 [ngClass]="routeAnimationsElements" style="text-align: center">
     <mat-icon>phone</mat-icon> Phone Number
   </h3>
   <div [ngClass]="routeAnimationsElements" style="text-align: center">
@@ -22,7 +17,7 @@
         <div class="col-sm-8 p-0">
           <mat-form-field appearance="fill">
             <mat-label>Phone Number</mat-label>
-            <input matInput type="text" placeholder="OXXXXXXXXX">
+            <input (input)="setPhoneNumber.emit($event.target.value)" matInput type="text" placeholder="OXXXXXXXXX">
             <mat-icon matSuffix>phone</mat-icon>
           </mat-form-field>
         </div>
@@ -30,8 +25,7 @@
     </div>
   </div>
   <div [ngClass]="routeAnimationsElements" style="text-align: center">
-    <button mat-raised-button [routerLink]="['', 'language-selection']">
+    <button mat-raised-button (click)="nextStep.emit()">
       Start Here
     </button>
   </div>
-</app-registration-template>
