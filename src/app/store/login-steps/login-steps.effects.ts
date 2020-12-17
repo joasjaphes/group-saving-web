@@ -9,7 +9,7 @@ import {tap} from 'rxjs/operators';
 export class LoginStepsEffects {
 
   loadData$ = createEffect(() => this.actions$.pipe(
-    ofType(fromActions.getPayments),
+    ofType(fromActions.getLoginSteps),
     tap(() => {
       // codes to get data here
     })
