@@ -1,15 +1,29 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import * as moment from 'moment';
+import {timer as observableTimer, Observable, of, BehaviorSubject} from 'rxjs';
+import {switchMap, tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
+  private onlineStatus$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(
     public snackBar: MatSnackBar,
-  ) { }
+  ) {
+  }
+
+  checkOnlineStatus() {
+    return observableTimer(1000, 10000)
+      .pipe(
+        switchMap(() => of(navigator.onLine)),
+        tap((onlineStatus) => {
+          this.onlineStatus$.next(onlineStatus);
+        })
+      );
+  }
 
   makeid(): string {
     let text = '';
