@@ -1,31 +1,41 @@
- <h3 [ngClass]="routeAnimationsElements" style="text-align: center">
+ <h3 [ngClass]="routeAnimationsElements" style="text-align: center" @fadeIn>
     <mat-icon>phone</mat-icon> Phone Number
   </h3>
   <div [ngClass]="routeAnimationsElements" style="text-align: center">
     <div class="time-picker-component" style="width: 350px">
       <div class="row">
-        <div class="col-sm-4 p-0">
+        <div class="col-sm-4 p-0" @fadeIn>
           <mat-form-field appearance="fill">
-            <mat-select  [(ngModel)]="selectedCountry">
-              <mat-option *ngFor="let country of countries" [value]="country.phoneCode">
-                <img style="height: 15px; width: 25px" src="assets/flags/{{country.isoCode.toLowerCase()}}.png">
-                &nbsp; +{{country.phoneCode}}
+            <img
+              matPrefix
+              style="height: 15px; width: 25px; margin-right: 10px"
+              *ngIf="country"
+              src="assets/flags/{{country.isoCode.toLowerCase()}}.png">
+            <mat-select (selectionChange)="setPhoneCountry($event)" [(ngModel)]="selectedCountry">
+              <mat-option *ngFor="let count of countries" [value]="count.phoneCode">
+                <img style="height: 15px; width: 25px" src="assets/flags/{{count.isoCode.toLowerCase()}}.png">
+                &nbsp; +{{count.phoneCode}}
               </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-sm-8 p-0">
+        <div class="col-sm-8 p-0" @fadeIn>
           <mat-form-field appearance="fill">
             <mat-label>Phone Number</mat-label>
-            <input (input)="setPhoneNumber.emit($event.target.value)" matInput type="text" placeholder="OXXXXXXXXX">
+            <input [(ngModel)]="phoneNumber" (input)="setPhoneNumber.emit($event.target.value)" matInput type="text" placeholder="OXXXXXXXXX">
             <mat-icon matSuffix>phone</mat-icon>
           </mat-form-field>
+        </div>
+        <div class="col-sm-12 p-0" *ngIf="fetchingPhoneUpdates" @fadeIn>
+          <mat-progress-bar style="color: #ffed00" mode="indeterminate" ></mat-progress-bar>
+          <p>Checking Phone Number...</p>
         </div>
       </div>
     </div>
   </div>
-  <div [ngClass]="routeAnimationsElements" style="text-align: center">
-    <button mat-raised-button (click)="nextStep.emit()">
-      Start Here
+  <div *ngIf="phoneNumberValid" [ngClass]="routeAnimationsElements" style="text-align: center" @fadeIn>
+    <button class="registration-button" mat-raised-button (click)="verifyPhoneNumber()">
+      Verify Phone Number
+      <mat-icon>arrow_forward</mat-icon>
     </button>
   </div>

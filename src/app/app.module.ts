@@ -21,6 +21,13 @@ import { RegistrationTemplateComponent } from './registration/registration-templ
 import { PhoneNumberComponent } from './registration/phone-number/phone-number.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { CountrySelectionComponent } from './registration/country-selection/country-selection.component';
+import { EnterPasswordComponent } from './registration/enter-password/enter-password.component';
+import { MemberGroupsComponent } from './registration/member-groups/member-groups.component';
+import { MemberNameComponent } from './registration/member-name/member-name.component';
+import { GroupNameComponent } from './registration/group-name/group-name.component';
+import { SetPasswordComponent } from './registration/set-password/set-password.component';
+import { ConfirmPasswordComponent } from './registration/confirm-password/confirm-password.component';
+import { NumberOfMembersComponent } from './registration/number-of-members/number-of-members.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +38,14 @@ import { CountrySelectionComponent } from './registration/country-selection/coun
     RegistrationTemplateComponent,
     PhoneNumberComponent,
     RegistrationComponent,
-    CountrySelectionComponent
+    CountrySelectionComponent,
+    EnterPasswordComponent,
+    MemberGroupsComponent,
+    MemberNameComponent,
+    GroupNameComponent,
+    SetPasswordComponent,
+    ConfirmPasswordComponent,
+    NumberOfMembersComponent
   ],
   imports: [
     BrowserModule,

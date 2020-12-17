@@ -23,17 +23,49 @@
 <div class="grid-area">
 <!--  Country Selection-->
   <app-country-selection
-    *ngIf="(currentStep$ | async) == 'Country Selection'"
+    *ngIf="(currentStep$ | async) == registrationSteps.CountrySelection"
     [selectedCountry]="country$ | async"
     (setSelectedCountry)="setCountry($event)"
-    (nextStep)="goNextStep()"
+    (nextStep)="goNextStep($event)"
   ></app-country-selection>
 
 <!--  Phone Number -->
   <app-phone-number
-    *ngIf="(currentStep$ | async) == 'Phone Number'"
-    [country]="country$ | async"
+    *ngIf="(currentStep$ | async) == registrationSteps.PhoneNumber"
+    [country]="phoneCountry$ | async"
+    [currentPhoneNumber]="phoneNumber$ | async"
+    [phoneNumberValid]="phoneNumberValid$ | async"
     (setPhoneNumber)="setPhoneNumber($event)"
-    (nextStep)="goNextStep()"
+    (nextStep)="goNextStep($event)"
   ></app-phone-number>
+
+<!--  Password Registration-->
+  <app-enter-password
+    *ngIf="(currentStep$ | async) == registrationSteps.EnterPassword"
+    [email]="email$ | async"
+    [memberName]="memberName$ | async"
+    (nextStep)="goNextStep($event)"
+  ></app-enter-password>
+
+<!--  Member Name-->
+  <app-member-name
+    *ngIf="(currentStep$ | async) == registrationSteps.MemberName"
+    [memberName]="memberName$ | async"
+    [memberGroups]="memberGroups$ | async"
+    (nextStep)="goNextStep($event)"
+  ></app-member-name>
+
+<!--  Group Name-->
+  <app-group-name
+    *ngIf="(currentStep$ | async) == registrationSteps.GroupName"
+    [groupName]="groupName$ | async"
+    (nextStep)="goNextStep($event)"
+  ></app-group-name>
+
+<!--  Number of Members-->
+  <app-number-of-members
+    *ngIf="(currentStep$ | async) == registrationSteps.GroupSize"
+    [numberOfMembers]="groupSize$ | async"
+    (nextStep)="goNextStep($event)"
+  ></app-number-of-members>
 </div>

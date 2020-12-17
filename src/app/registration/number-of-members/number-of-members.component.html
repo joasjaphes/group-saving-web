@@ -1,0 +1,26 @@
+<h3 class="registration-title" [ngClass]="routeAnimationsElements" style="text-align: center" @fadeIn>
+  Number Of Members
+</h3>
+<div [ngClass]="routeAnimationsElements" style="text-align: center" @fadeIn>
+  <div class="time-picker-component" style="width: 300px">
+    <mat-form-field appearance="fill">
+      <mat-label>Number of Members</mat-label>
+      <mat-icon matPrefix>perm_contact_calendar</mat-icon>
+      <mat-select
+        [(ngModel)]="membersNumber"
+        (selectionChange)="setNumberOfMembers($event)"
+        placeholder="Number of Members">
+        <app-mat-select-search [(ngModel)]="numberSearch"></app-mat-select-search>
+        <mat-option *ngFor="let number of numberList | search:'value': numberSearch" [value]="number.id">
+          {{number.value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<div *ngIf="membersNumber" @fadeIn [ngClass]="routeAnimationsElements" style="text-align: center">
+  <button class="registration-button" mat-raised-button (click)="goNextStep()">
+    Number of Members
+    <mat-icon>arrow_forward</mat-icon>
+  </button>
+</div>

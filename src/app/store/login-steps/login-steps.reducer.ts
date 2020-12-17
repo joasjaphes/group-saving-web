@@ -13,12 +13,14 @@ export interface State extends EntityState<LoginStep> {
   loaded: boolean;
   error: any;
   country: Country;
+  phoneCountry: Country;
   currentStep: string;
   previousStep: string;
   language: string;
   phoneNumber: string;
   memberName: string;
   groupName: string;
+  memberGroups: any[];
   email: string;
   groupSize: number;
   progressValue: number;
@@ -36,12 +38,14 @@ export const initialState: State = adapter.getInitialState({
   loaded: false,
   error: null,
   country: null,
+  phoneCountry: null,
   currentStep: 'Country Selection',
   previousStep: '',
   language: '',
   phoneNumber: '',
   memberName: '',
   groupName: '',
+  memberGroups: [],
   email: '',
   groupSize: null,
   progressValue: 12,
@@ -55,12 +59,37 @@ export const initialState: State = adapter.getInitialState({
 export const reducer = createReducer(
   initialState,
   on(LoginStepActions.goNextStep, ((state, action) => {
-      return {...state, currentStep: 'Phone Number'};
+    let currentStep = '';
+    if (state.currentStep === 'Country Selection') {
+      currentStep = 'Phone Number';
+    }
+    return {...state,  currentStep, previousStep: state.currentStep};
+    })
+  ),
+
+  on(LoginStepActions.goPreviousStep, ((state, action) => {
+    return {...state, currentStep: state.previousStep};
+    })
+  ),
+
+  on(LoginStepActions.setNextStep, ((state, {currentStep, previousStep}) => {
+    return {...state, currentStep, previousStep};
     })
   ),
 
   on(LoginStepActions.setCountry, ((state, action) => {
-      return {...state, ...action};
+      return {...state, country: action.country, phoneCountry: action.country};
+    })
+  ),
+
+  on(LoginStepActions.setPhoneCountry, ((state, action) => {
+      return {...state, phoneCountry: action.country};
+    })
+  ),
+
+  on(LoginStepActions.setMemberGroups, ((state, {memberGroups}) => {
+    const memberName = memberGroups.length > 0 ? memberGroups[0].member_name : '';
+    return {...state, memberGroups, memberName};
     })
   ),
 

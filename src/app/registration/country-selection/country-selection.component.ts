@@ -16,11 +16,14 @@ export class CountrySelectionComponent implements OnInit {
   selectedCountryId: string;
   @Input() selectedCountry: Country;
   @Output() setSelectedCountry = new EventEmitter<Country>();
-  @Output() nextStep = new EventEmitter();
+  @Output() nextStep = new EventEmitter<{currentStep: string, previousStep: string}>();
   constructor(
   ) { }
 
   ngOnInit(): void {
+    if (this.selectedCountry) {
+      this.selectedCountryId = this.selectedCountry.phoneCode;
+    }
   }
 
   countrySelected($event) {
@@ -29,7 +32,7 @@ export class CountrySelectionComponent implements OnInit {
   }
 
   goNextStep() {
-    this.nextStep.emit();
+    this.nextStep.emit({currentStep: 'Phone Number', previousStep: 'Country Selection'});
   }
 
 }

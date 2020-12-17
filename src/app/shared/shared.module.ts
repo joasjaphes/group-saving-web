@@ -5,9 +5,14 @@ import {MaterialModule} from './material-module/material.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
+import {MatSelectSearchComponent} from './components/mat-select-search/mat-select-search.component';
+import {SearchPipe} from './pipes/search.pipe';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    MatSelectSearchComponent,
+    SearchPipe
+  ],
   imports: [
     CommonModule,
     BrowserAnimationsModule,
@@ -24,7 +29,9 @@ import {RouterModule} from '@angular/router';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    MatSelectSearchComponent,
+    SearchPipe
   ]
 })
 export class SharedModule { }

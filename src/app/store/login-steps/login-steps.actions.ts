@@ -12,8 +12,22 @@ export const setCountry = createAction(
   props<{ country: Country }>()
 );
 
+export const setPhoneCountry = createAction(
+  '[LoginStep/API] Set Phone Country',
+  props<{ country: Country }>()
+);
+
 export const goNextStep = createAction(
   '[LoginStep/API] Go Next Step',
+);
+
+export const setNextStep = createAction(
+  '[LoginStep/API] Go Next Step',
+  props<{currentStep: string, previousStep: string}>()
+);
+
+export const goPreviousStep = createAction(
+  '[LoginStep/API] Go Previous Step',
 );
 
 export const setCurrentStep = createAction(
@@ -44,6 +58,11 @@ export const setMemberName = createAction(
 export const setGroupName = createAction(
   '[LoginStep/API] Set Group Name',
   props<{ groupName: string }>()
+);
+
+export const setMemberGroups = createAction(
+  '[LoginStep/API] Set Member Groups',
+  props<{ memberGroups: any[] }>()
 );
 
 export const setGroupSize = createAction(

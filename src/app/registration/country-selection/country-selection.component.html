@@ -20,7 +20,7 @@
   </div>
 </div>
 <div @fadeIn *ngIf="selectedCountry" [ngClass]="routeAnimationsElements" style="text-align: center">
-  <button class="registration-button" mat-raised-button (click)="nextStep.emit()">
+  <button class="registration-button" mat-raised-button (click)="goNextStep()">
     Phone Number
     <mat-icon>arrow_forward</mat-icon>
   </button>

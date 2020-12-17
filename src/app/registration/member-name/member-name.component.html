@@ -1,0 +1,27 @@
+<h3 class="registration-title" [ngClass]="routeAnimationsElements" style="text-align: center" @fadeIn>
+  Your Name
+</h3>
+<div [ngClass]="routeAnimationsElements" style="text-align: center" @fadeIn>
+  <div class="time-picker-component" style="width: 300px">
+    <mat-form-field appearance="fill">
+      <mat-label>Your Name</mat-label>
+      <mat-icon matPrefix>person</mat-icon>
+      <input
+        (input)="setName($event)"
+        [(ngModel)]="name"
+        matInput
+        type="text"
+        placeholder="Your Name">
+    </mat-form-field>
+  </div>
+</div>
+<div *ngIf="name" @fadeIn [ngClass]="routeAnimationsElements" style="text-align: center">
+  <button *ngIf="memberGroups.length == 0" class="registration-button" mat-raised-button (click)="goNextStep('groupName')">
+    Group Name
+    <mat-icon>arrow_forward</mat-icon>
+  </button>
+  <button *ngIf="memberGroups.length != 0" class="registration-button" mat-raised-button (click)="goNextStep('setPassword')">
+    Set Password
+    <mat-icon>arrow_forward</mat-icon>
+  </button>
+</div>

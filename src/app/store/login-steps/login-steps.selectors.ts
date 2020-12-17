@@ -11,6 +11,7 @@ export const selectLoading = createSelector(selectCurrentState, fromReducer.getL
 export const selectCurrentId = createSelector(selectCurrentState, fromReducer.getSelectedId);
 export const selectError = createSelector(selectCurrentState, fromReducer.getError);
 
+export const selectPhoneCountry  = createSelector(selectCurrentState, (state) => state.phoneCountry);
 export const selectCountry  = createSelector(selectCurrentState, (state) => state.country);
 export const selectCurrentStep  = createSelector(selectCurrentState, (state) => state.currentStep);
 export const selectPreviousStep  = createSelector(selectCurrentState, (state) => state.previousStep);
@@ -21,6 +22,7 @@ export const selectGroupName  = createSelector(selectCurrentState, (state) => st
 export const selectEmail  = createSelector(selectCurrentState, (state) => state.email);
 export const selectFirstPassword  = createSelector(selectCurrentState, (state) => state.firstPassword);
 export const selectSecondPassword  = createSelector(selectCurrentState, (state) => state.secondPassword);
+export const selectMemberGroups  = createSelector(selectCurrentState, (state) => state.memberGroups);
 export const selectGroups  = createSelector(selectCurrentState, (state) => state.groups);
 export const selectGroupSize  = createSelector(selectCurrentState, (state) => state.groupSize);
 export const selectProgressValue  = createSelector(selectCurrentState, (state) => state.progressValue);
@@ -33,3 +35,26 @@ export const selectById = (id: string) => createSelector(
 export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
+
+export const phoneNumberToUse = createSelector(
+  selectPhoneNumber,
+  selectPhoneCountry,
+  (phoneNumber, phoneCountry) => `+${phoneCountry.phoneCode}${trimPhoneNumber(phoneNumber)}`
+);
+
+
+export const phoneNumberValid = createSelector(
+  selectPhoneNumber,
+  selectPhoneCountry,
+  (phoneNumber, phoneCountry) => {
+    const phone = `+${phoneCountry.phoneCode}${trimPhoneNumber(phoneNumber)}`;
+    const testRegex = /^\+\d\d\d\d\d\d\d\d\d\d\d\d$/;
+    return testRegex.test(phone);
+  }
+);
+
+export function trimPhoneNumber(value: string) {
+  return value && value.length > 1 && value.trim().substr(0, 1) === '0'
+    ? value.trim().substr(1)
+    : value;
+}
