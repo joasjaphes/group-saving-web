@@ -3,6 +3,31 @@
 @import '../node_modules/bootstrap/scss/bootstrap-reboot';
 @import '../node_modules/bootstrap/scss/bootstrap-grid';
 @import '../node_modules/bootstrap/scss/bootstrap';
+@import "~@angular/material/theming";
+@include mat-core();
+$angular-primary: mat-palette($mat-teal, 500, 100, 900);
+$angular-accent: mat-palette($mat-pink, A200, A100, A400);
+$angular-warn: mat-palette($mat-red);
+$angular-default-theme: mat-light-theme(
+    (
+      color: (
+        primary: $angular-primary,
+        accent: $angular-accent,
+        warn: $angular-warn,
+      ),
+    )
+);
+$angular-dark-theme: mat-dark-theme(
+    (
+      color: (
+        primary: $angular-primary,
+        accent: $angular-accent,
+        warn: $angular-warn,
+      ),
+    )
+);
+@include angular-material-theme($angular-dark-theme);
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 body * {
@@ -18,7 +43,7 @@ body * {
     overflow: hidden;
   }
   .mat-progress-spinner circle, .mat-spinner circle {
-    stroke: #ffed00;
+    stroke: #fcfbf8;
   }
 
 }
@@ -31,13 +56,12 @@ body * {
 .registration-button {
   margin-top: 10px!important;
   border-radius: 40px!important;
-  border: 1px solid #ffed00!important;
+  border: 1px solid #fdfdfc !important;
   font-size: 13px;
   //background-color: #1B75BC;
-  color: #ffed00;
   letter-spacing: 2px;
 }
 
 .registration-title {
-  color: #ffed00;
+  font-family: CMSansSerif !important;
 }

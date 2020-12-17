@@ -7,17 +7,17 @@
 }
 
 .bgimage {
-  background: url(../../assets/images/moneybg.jpg) no-repeat center center fixed;
+  background: url(../../assets/images/member.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  filter: blur(7px);
+  filter: blur(10px);
   -webkit-filter: blur(7px);
 }
 
 .bgcolor {
-  background-color: rgba(9, 26, 35, 0.4);
+  background-color: rgba(9, 26, 35, 0.7);
 }
 
 .example-container {

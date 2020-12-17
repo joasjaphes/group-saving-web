@@ -11,7 +11,7 @@
       <mat-progress-spinner mode="determinate" [value]="progressValue$ | async"></mat-progress-spinner>
       <span>{{progressValue$ | async}}%</span>
     </div>
-    <div class="text-progress" *ngIf="!(isHandset$ | async)" [ngClass]="routeAnimationsElements">
+    <div style="margin-top: 20px; font-size: 17px" class="text-progress registration-title" *ngIf="!(isHandset$ | async)" [ngClass]="routeAnimationsElements">
       {{currentStep$ | async}}
     </div>
   </div>

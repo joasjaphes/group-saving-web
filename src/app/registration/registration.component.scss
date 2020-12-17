@@ -6,7 +6,6 @@
 }
 
 .nav-bars {
-  color: #ffed00;
   height: 12%;
   margin: 1%;
   display: grid;
@@ -14,7 +13,6 @@
   .left-title {
     button {
       background-color: transparent;
-      color: #ffed00;
     }
   }
   .push-left {
@@ -26,6 +24,7 @@
 
 
     .progress1 {
+      padding-top: 20px;
 
       span {
         position: relative;
@@ -47,5 +46,6 @@
   .logo {
     text-align: right;
     margin-right: 10px;
+    margin-top: 10px;
   }
 }

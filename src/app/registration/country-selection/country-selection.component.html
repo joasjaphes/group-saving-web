@@ -1,5 +1,5 @@
 <h3 class="registration-title" [ngClass]="routeAnimationsElements" style="text-align: center">
-  Pick Your Country
+  Pick your country
 </h3>
 <div [ngClass]="routeAnimationsElements" style="text-align: center">
   <div class="time-picker-component" style="width: 300px">
@@ -9,8 +9,12 @@
         style="height: 15px; width: 25px; margin-right: 10px"
         *ngIf="selectedCountry"
         src="assets/flags/{{selectedCountry.isoCode.toLowerCase()}}.png">
-      <mat-select (selectionChange)="countrySelected($event.value)" [(ngModel)]="selectedCountryId" name="ampm"
-                  class="ampm">
+      <mat-select
+        (selectionChange)="countrySelected($event.value)"
+        [(ngModel)]="selectedCountryId"
+        placeholder="Select country"
+        name="ampm"
+        class="ampm">
         <mat-option *ngFor="let country of countries" [value]="country.phoneCode">
           <img style="height: 15px; width: 25px" src="assets/flags/{{country.isoCode.toLowerCase()}}.png">
           &nbsp; {{country.name}}
