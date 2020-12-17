@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {SwUpdate} from '@angular/service-worker';
 import {filter, map, mergeMap} from 'rxjs/operators';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
@@ -8,7 +8,7 @@ import {Store} from '@ngrx/store';
 import {ApplicationState} from './store';
 import {Go} from './store/router/router.action';
 import {LastUpdatedAt} from './store/last-updated-at/last-updated-at.model';
-import {DataKeys} from './store/data-keys';
+import {DataKeys, GET_METHODS} from './store/data-keys';
 import {getGroups} from './store/group/group.actions';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {OfflineManagerService} from './services/offline-manager.service';
@@ -20,7 +20,7 @@ import {addCurrentUser} from './store/user/user.actions';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewInit{
+export class AppComponent implements OnInit, AfterViewInit{
 
   constructor(
     updates: SwUpdate,
@@ -67,6 +67,8 @@ export class AppComponent implements AfterViewInit{
     });
   }
 
+  ngOnInit() {}
+
   // this was added to make sure that page titles will be different for every route
   ngAfterViewInit() {
     this.router.events
@@ -91,8 +93,21 @@ export class AppComponent implements AfterViewInit{
       .collection('last_updated').doc('times')
       .valueChanges()
       .subscribe(async (updateTimes: any) => {
+        console.log({updateTimes});
         // Get Last Updated Times from the local database
         const localTimes: LastUpdatedAt = await this.offlineService.getLastUpdatedTimes();
+        Object.keys(DataKeys)
+          .map(i => DataKeys[i])
+          .filter(i => i !== 'updated')
+          .filter(i => i !== 'user')
+          .forEach(storeKey => this.firestoreService.getUpdatedData(
+            localTimes,
+            updateTimes,
+            storeKey,
+            this.firestoreService.getData,
+            GET_METHODS[storeKey]
+          ))
+        ;
         this.firestoreService.getUpdatedData(localTimes, updateTimes, DataKeys.Group, this.firestoreService.getData, getGroups());
         this.offlineService.saveLastUpdatedTimes({
           ...updateTimes,
