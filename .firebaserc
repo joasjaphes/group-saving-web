@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "group-saving"
+  },
+  "targets": {
+    "group-saving": {
+      "hosting": {
+        "kikoba-web": [
+          "group-saving"
+        ]
+      }
+    }
   }
 }

@@ -40,8 +40,15 @@ const routes: Routes = [
           title: 'Phone Number'
         }
       },
-    ]
-  }
+      {
+        path: 'dashboard',
+        component: PhoneNumberComponent,
+        data: {
+          title: 'Phone Number'
+        }
+      },
+    ],
+  },
 ];
 
 @NgModule({

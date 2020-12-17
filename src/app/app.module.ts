@@ -28,6 +28,21 @@ import { GroupNameComponent } from './registration/group-name/group-name.compone
 import { SetPasswordComponent } from './registration/set-password/set-password.component';
 import { ConfirmPasswordComponent } from './registration/confirm-password/confirm-password.component';
 import { NumberOfMembersComponent } from './registration/number-of-members/number-of-members.component';
+import {AngularFireModule} from '@angular/fire';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
+import {AngularFireStorageModule} from '@angular/fire/storage';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
+  authDomain: 'group-saving.firebaseapp.com',
+  databaseURL: 'https://group-saving.firebaseio.com',
+  projectId: 'group-saving',
+  storageBucket: 'group-saving.appspot.com',
+  messagingSenderId: '444964071176',
+  appId: '1:444964071176:web:732f9c6071c5a461b5eebd',
+  measurementId: 'G-JC2DKTVF1V'
+};
 
 @NgModule({
   declarations: [
@@ -50,6 +65,10 @@ import { NumberOfMembersComponent } from './registration/number-of-members/numbe
   imports: [
     BrowserModule,
     AppRoutingModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFirestoreModule, // firestore
+    AngularFireAuthModule, // auth
+    AngularFireStorageModule, // storage
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     StoreModule.forRoot(reducers, {
       metaReducers,
