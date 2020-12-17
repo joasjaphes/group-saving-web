@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ROUTE_ANIMATIONS_ELEMENTS} from '../shared/animations/router-animation';
+import {fadeIn, ROUTE_ANIMATIONS_ELEMENTS} from '../shared/animations/router-animation';
 import {Observable} from 'rxjs';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {map} from 'rxjs/operators';
@@ -16,7 +16,8 @@ import {MemberGroup} from '../store/member-group/member-group.model';
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.scss']
+  styleUrls: ['./registration.component.scss'],
+  animations: [fadeIn]
 })
 export class RegistrationComponent implements OnInit {
   @Input() progressValue: number;
@@ -45,6 +46,11 @@ export class RegistrationComponent implements OnInit {
   memberGroups$: Observable<MemberGroup[]>;
   groups$: Observable<Group[]>;
   savingData$: Observable<boolean>;
+
+  showFirst = false;
+  showSecond = false;
+  showThird = false;
+  showForth = false;
   constructor(
     private breakpointObserver: BreakpointObserver,
     private store: Store<ApplicationState>
@@ -69,6 +75,10 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    setTimeout(() => this.showFirst = true, 100);
+    setTimeout(() => this.showSecond = true, 2000);
+    setTimeout(() => this.showThird = true, 4000);
+    setTimeout(() => this.showForth = true, 6000);
   }
 
   goBack() {

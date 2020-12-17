@@ -21,8 +21,13 @@
         </div>
         <div class="col-sm-8 p-0" @fadeIn>
           <mat-form-field appearance="fill">
-            <mat-label>Phone Number</mat-label>
-            <input [(ngModel)]="phoneNumber" (input)="setPhoneNumber.emit($event.target.value)" matInput type="text" placeholder="OXXXXXXXXX">
+            <mat-label>Phone number</mat-label>
+            <input
+              [(ngModel)]="phoneNumber"
+              (input)="setPhoneNumber.emit($event.target.value)"
+              matInput type="text" placeholder="OXXXXXXXXX"
+              #myInput
+            >
             <mat-icon matSuffix>phone</mat-icon>
           </mat-form-field>
         </div>
@@ -33,7 +38,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="phoneNumberValid" [ngClass]="routeAnimationsElements" style="text-align: center" @fadeIn>
+  <div *ngIf="phoneNumberValid && !fetchingPhoneUpdates" [ngClass]="routeAnimationsElements" style="text-align: center" @fadeIn @fadeOut>
     <button class="registration-button" mat-raised-button (click)="verifyPhoneNumber()">
       Verify Phone Number
       <mat-icon>arrow_forward</mat-icon>

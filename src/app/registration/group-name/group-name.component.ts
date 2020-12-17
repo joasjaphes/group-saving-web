@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {fadeIn, ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
 import {Store} from '@ngrx/store';
 import {ApplicationState} from '../../store';
@@ -11,12 +11,13 @@ import {RegistrationSteps} from '../registration-steps';
   styleUrls: ['./group-name.component.scss'],
   animations: [fadeIn]
 })
-export class GroupNameComponent implements OnInit {
+export class GroupNameComponent implements OnInit, AfterViewInit {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
 
   @Input() groupName: string;
   @Output() nextStep = new EventEmitter< {currentStep: string, previousStep: string}>();
   name: string;
+  @ViewChild('myInput') myInputField: ElementRef;
   constructor(
     private store: Store<ApplicationState>
   ) { }
@@ -25,11 +26,19 @@ export class GroupNameComponent implements OnInit {
     this.name = this.groupName;
   }
 
+  ngAfterViewInit() {
+    // Set timeout is here to avoid expression has changed before checked error
+    setTimeout(() => this.myInputField.nativeElement.focus());
+  }
+
   setGroupName($event: any) {
     this.store.dispatch(setGroupName({groupName: $event.target.value}));
   }
 
   goNextStep() {
-    this.nextStep.emit({currentStep: RegistrationSteps.GroupSize, previousStep: RegistrationSteps.GroupName});
+    this.nextStep.emit({
+      currentStep: RegistrationSteps.SetPassword,
+      previousStep: RegistrationSteps.GroupName
+    });
   }
 }

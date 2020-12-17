@@ -21,6 +21,7 @@
   </div>
 </div>
 <div class="grid-area">
+
 <!--  Country Selection-->
   <app-country-selection
     *ngIf="(currentStep$ | async) == registrationSteps.CountrySelection"
@@ -62,10 +63,22 @@
     (nextStep)="goNextStep($event)"
   ></app-group-name>
 
-<!--  Number of Members-->
-  <app-number-of-members
-    *ngIf="(currentStep$ | async) == registrationSteps.GroupSize"
-    [numberOfMembers]="groupSize$ | async"
+  <!--  Password Registration-->
+  <app-set-password
+    *ngIf="(currentStep$ | async) == registrationSteps.SetPassword"
+    [memberName]="memberName$ | async"
     (nextStep)="goNextStep($event)"
-  ></app-number-of-members>
+  ></app-set-password>
+
+  <!--  Password Registration-->
+  <app-confirm-password
+    *ngIf="(currentStep$ | async) == registrationSteps.ConfirmPassword"
+    [memberName]="memberName$ | async"
+    (nextStep)="goNextStep($event)"
+  ></app-confirm-password>
+
+  <app-creating-group
+    *ngIf="(currentStep$ | async) == registrationSteps.CreatingGroup"
+  ></app-creating-group>
+
 </div>

@@ -4,6 +4,7 @@ import { LoginStep } from './login-steps.model';
 import * as LoginStepActions from './login-steps.actions';
 import {Country} from '../countries';
 import {Group} from '../group/group.model';
+import {RegistrationSteps} from '../../registration/registration-steps';
 
 export const loginStepsFeatureKey = 'loginSteps';
 
@@ -39,7 +40,7 @@ export const initialState: State = adapter.getInitialState({
   error: null,
   country: null,
   phoneCountry: null,
-  currentStep: 'Country Selection',
+  currentStep: RegistrationSteps.CountrySelection,
   previousStep: '',
   language: '',
   phoneNumber: '',
@@ -60,8 +61,8 @@ export const reducer = createReducer(
   initialState,
   on(LoginStepActions.goNextStep, ((state, action) => {
     let currentStep = '';
-    if (state.currentStep === 'Country Selection') {
-      currentStep = 'Phone Number';
+    if (state.currentStep === RegistrationSteps.CountrySelection) {
+      currentStep = RegistrationSteps.PhoneNumber;
     }
     return {...state,  currentStep, previousStep: state.currentStep};
     })

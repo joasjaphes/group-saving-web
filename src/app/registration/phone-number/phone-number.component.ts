@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {fadeIn, ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {fadeIn, fadeOut, ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
 import {countries, Country} from '../../store/countries';
 import {FunctionsService} from '../../services/functions.service';
 import {Store} from '@ngrx/store';
@@ -14,23 +14,26 @@ import {RegistrationSteps} from '../registration-steps';
   selector: 'app-phone-number',
   templateUrl: './phone-number.component.html',
   styleUrls: ['./phone-number.component.scss'],
-  animations: [fadeIn]
+  animations: [fadeIn, fadeOut]
 })
-export class PhoneNumberComponent implements OnInit {
+export class PhoneNumberComponent implements OnInit, AfterViewInit {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   countries = countries;
   selectedCountry: string;
   @Input() country: Country;
   @Input() currentPhoneNumber: string;
   @Input() phoneNumberValid: boolean;
-  @Output() nextStep = new EventEmitter< {currentStep: string, previousStep: string}>();
+  @Output() nextStep = new EventEmitter<{ currentStep: string, previousStep: string }>();
   @Output() setPhoneNumber = new EventEmitter<string>();
   fetchingPhoneUpdates = false;
   phoneNumber: string;
+  @ViewChild('myInput') myInputField: ElementRef;
+
   constructor(
     private functionsService: FunctionsService,
     private store: Store<ApplicationState>
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     if (this.country) {
@@ -39,6 +42,10 @@ export class PhoneNumberComponent implements OnInit {
     if (this.currentPhoneNumber) {
       this.phoneNumber = this.currentPhoneNumber;
     }
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => this.myInputField.nativeElement.focus());
   }
 
   async verifyPhoneNumber() {
@@ -52,11 +59,17 @@ export class PhoneNumberComponent implements OnInit {
         this.store.dispatch(setMemberGroups({memberGroups: []}));
         this.store.dispatch(setMemberName({memberName: response.userRecord.displayName}));
         this.store.dispatch(setEmail({email: response.userRecord.email}));
-        this.goNextStep({currentStep: RegistrationSteps.EnterPassword, previousStep: RegistrationSteps.PhoneNumber});
-      } else if (response.userData !== null)  {
-        if (response.userData.length === 0)  {
+        this.goNextStep({
+          currentStep: RegistrationSteps.EnterPassword,
+          previousStep: RegistrationSteps.PhoneNumber
+        });
+      } else if (response.userData !== null) {
+        if (response.userData.length === 0) {
           this.store.dispatch(setMemberGroups({memberGroups: []}));
-          this.goNextStep({currentStep: RegistrationSteps.MemberName, previousStep: RegistrationSteps.PhoneNumber});
+          this.goNextStep({
+            currentStep: RegistrationSteps.MemberName,
+            previousStep: RegistrationSteps.PhoneNumber
+          });
         } else {
           this.store.dispatch(setMemberGroups({memberGroups: response.userData}));
         }

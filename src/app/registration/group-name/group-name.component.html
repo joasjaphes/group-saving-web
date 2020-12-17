@@ -11,13 +11,15 @@
         [(ngModel)]="name"
         matInput
         type="text"
-        placeholder="Group Name">
+        placeholder="Group Name"
+        #myInput
+      >
     </mat-form-field>
   </div>
 </div>
 <div *ngIf="name" @fadeIn [ngClass]="routeAnimationsElements" style="text-align: center">
   <button class="registration-button" mat-raised-button (click)="goNextStep()">
-    Number of Members
+    Continue
     <mat-icon>arrow_forward</mat-icon>
   </button>
 </div>

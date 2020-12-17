@@ -1,0 +1,37 @@
+
+<div class="welcome-grid" *ngIf="showFirst" @fadeIn>
+  <div>
+    <img alt="Manage Members" src="assets/images/members.jpg" style="height: 80px; border-radius: 10px">
+  </div>
+  <div>
+    <h2 class="mb-0 registration-title" >Manage Members</h2>
+    <p>Manage members information</p>
+  </div>
+</div>
+<div class="welcome-grid" *ngIf="showSecond" @fadeIn>
+  <div>
+    <img alt="Contribution & Loans" src="assets/images/investments.jpg">
+  </div>
+  <div>
+    <h2 class="mb-0 registration-title" >Contribution & Loans</h2>
+    <p>Manage contributions and loans information</p>
+  </div>
+</div>
+<div class="welcome-grid" *ngIf="showThird" @fadeIn>
+  <div>
+    <img alt="Meetings" src="assets/images/meeting.jpg">
+  </div>
+  <div>
+    <h2 class="mb-0 registration-title" >Meetings</h2>
+    <p>Plan meetings and manage members attendance</p>
+  </div>
+</div>
+<div class="welcome-grid" *ngIf="showForth" @fadeIn>
+  <div>
+    <img alt="Investments" src="assets/images/investment.png">
+  </div>
+  <div>
+    <h2 class="mb-0 registration-title" >Investments</h2>
+    <p>Manage group investments</p>
+  </div>
+</div>

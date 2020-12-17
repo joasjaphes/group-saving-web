@@ -1,0 +1,14 @@
+.welcome-grid {
+  background-color: transparent;
+  height: 80px;
+  margin-bottom: 40px;
+  grid-gap: 5px;
+  display: grid;
+  grid-template-columns: 100px auto;
+
+  img {
+    height: 80px;
+    width: 90px;
+    border-radius: 14px;
+  }
+}

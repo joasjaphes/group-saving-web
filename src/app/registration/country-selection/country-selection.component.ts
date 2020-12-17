@@ -3,6 +3,7 @@ import {fadeIn, ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-
 import {countries, Country} from '../../store/countries';
 import {Store} from '@ngrx/store';
 import {ApplicationState} from '../../store';
+import {RegistrationSteps} from '../registration-steps';
 
 @Component({
   selector: 'app-country-selection',
@@ -32,7 +33,7 @@ export class CountrySelectionComponent implements OnInit {
   }
 
   goNextStep() {
-    this.nextStep.emit({currentStep: 'Phone Number', previousStep: 'Country Selection'});
+    this.nextStep.emit({currentStep: RegistrationSteps.PhoneNumber, previousStep: RegistrationSteps.CountrySelection});
   }
 
 }
