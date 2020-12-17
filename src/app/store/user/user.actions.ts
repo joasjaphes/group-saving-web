@@ -7,6 +7,11 @@ export const getUsers = createAction(
   '[User/API] Get Users'
 );
 
+export const addCurrentUser = createAction(
+  '[User] Add Current User',
+  props<{ currentUser: User }>()
+);
+
 export const doneLoadingUsers = createAction(
   '[User/API] Done Loading Users'
 );

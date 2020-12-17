@@ -1,20 +1,25 @@
 import { Injectable } from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import * as fromActions from './loan-type.actions';
-import {tap} from 'rxjs/operators';
-
-
+import {switchMap, tap} from 'rxjs/operators';
+import {OfflineManagerService} from '../../services/offline-manager.service';
+import {DataKeys} from '../data-keys';
 
 @Injectable()
 export class LoanTypeEffects {
 
   loadData$ = createEffect(() => this.actions$.pipe(
     ofType(fromActions.getLoanTypes),
-    tap(() => {
-      // codes to get data here
-    })
+    switchMap((action) => this.offlineService.getItems(DataKeys.LoanType)),
+    switchMap(loanTypes => [
+      fromActions.loadLoanTypes({loanTypes}),
+      fromActions.doneLoadingLoanTypes()
+    ])
   ), { dispatch: false });
 
-  constructor(private actions$: Actions) {}
+  constructor(
+    private actions$: Actions,
+    private offlineService: OfflineManagerService,
+  ) {}
 
 }

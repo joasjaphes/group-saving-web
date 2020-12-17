@@ -1,20 +1,25 @@
 import { Injectable } from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import * as fromActions from './long-term-investment-item.actions';
-import {tap} from 'rxjs/operators';
-
-
+import {switchMap, tap} from 'rxjs/operators';
+import {OfflineManagerService} from '../../services/offline-manager.service';
+import {DataKeys} from '../data-keys';
 
 @Injectable()
 export class LongTermInvestmentItemEffects {
 
   loadData$ = createEffect(() => this.actions$.pipe(
     ofType(fromActions.getLongTermInvestmentItems),
-    tap(() => {
-      // codes to get data here
-    })
+    switchMap((action) => this.offlineService.getItems(DataKeys.LongTermInvestmentItem)),
+    switchMap(longTermInvestmentItems => [
+      fromActions.loadLongTermInvestmentItems({longTermInvestmentItems}),
+      fromActions.doneLoadingLongTermInvestmentItems()
+    ])
   ), { dispatch: false });
 
-  constructor(private actions$: Actions) {}
+  constructor(
+    private actions$: Actions,
+    private offlineService: OfflineManagerService,
+  ) {}
 
 }

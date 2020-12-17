@@ -1,20 +1,25 @@
 import { Injectable } from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import * as fromActions from './login-steps.actions';
-import {tap} from 'rxjs/operators';
-
-
+import {switchMap, tap} from 'rxjs/operators';
+import {OfflineManagerService} from '../../services/offline-manager.service';
+import {DataKeys} from '../data-keys';
 
 @Injectable()
 export class LoginStepsEffects {
 
   loadData$ = createEffect(() => this.actions$.pipe(
     ofType(fromActions.getLoginSteps),
-    tap(() => {
-      // codes to get data here
-    })
+    switchMap((action) => this.offlineService.getItems('login_steps')),
+    switchMap(loginSteps => [
+      fromActions.loadLoginSteps({loginSteps}),
+      fromActions.doneLoadingLoginSteps()
+    ])
   ), { dispatch: false });
 
-  constructor(private actions$: Actions) {}
+  constructor(
+    private actions$: Actions,
+    private offlineService: OfflineManagerService,
+  ) {}
 
 }
