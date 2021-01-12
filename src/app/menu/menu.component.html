@@ -134,7 +134,7 @@
 
     <button mat-button [matMenuTriggerFor]="appMenu" class="cursor">
       <mat-icon>account_circle</mat-icon> &nbsp;
-      <span>{{ (user$ | async)?.displayName }}</span> &nbsp;
+      <span>{{ (user$ | async)?.displayName | firstUpperCase}}</span> &nbsp;
       <mat-icon style="color: white;">arrow_drop_down</mat-icon>
     </button>
   </mat-toolbar>

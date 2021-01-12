@@ -10,6 +10,8 @@ import {SearchPipe} from './pipes/search.pipe';
 import {SharedLayoutComponent} from './components/shared-layout/shared-layout.component';
 import {TopBannerComponent} from './components/topbanner/top-banner.component';
 import {ViewHelpComponent} from './components/view-help/view-help.component';
+import { FirstUpperCasePipe } from './pipes/first-upper-case.pipe';
+import {ToUpperPipe} from './pipes/to-upper.pipe';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import {ViewHelpComponent} from './components/view-help/view-help.component';
     SharedLayoutComponent,
     TopBannerComponent,
     ViewHelpComponent,
-    SearchPipe
+    SearchPipe,
+    FirstUpperCasePipe,
+    ToUpperPipe,
   ],
   imports: [
     CommonModule,
@@ -40,7 +44,9 @@ import {ViewHelpComponent} from './components/view-help/view-help.component';
     SharedLayoutComponent,
     TopBannerComponent,
     ViewHelpComponent,
-    SearchPipe
+    SearchPipe,
+    FirstUpperCasePipe,
+    ToUpperPipe,
   ]
 })
 export class SharedModule { }
