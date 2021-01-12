@@ -15,11 +15,13 @@ import {OfflineManagerService} from '../services/offline-manager.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {CommonService} from '../services/common.service';
 import {FirestoreService} from '../services/firestore.service';
+import {fadeIn, routeAnimations} from '../shared/animations/router-animation';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+  styleUrls: ['./menu.component.scss'],
+  animations: [fadeIn, routeAnimations]
 })
 export class MenuComponent implements OnInit, AfterViewInit {
   isHandset$: Observable<boolean> = this.breakpointObserver
@@ -31,38 +33,38 @@ export class MenuComponent implements OnInit, AfterViewInit {
   titleSubscription: Subscription;
   menus: Menu[] = [
     {
-      name: 'Dashboard',
-      route: '/dashboard',
-      icon: 'dashboard.png',
+      name: 'Home',
+      route: '/home',
+      icon: 'home',
     },
     {
-      name: 'Products',
+      name: 'Members',
       route: '/products',
-      icon: 'products.png',
+      icon: 'people_outline',
     },
     {
-      name: 'Product Category',
+      name: 'My Account',
       route: '/product-category',
-      icon: 'productcategory.png',
+      icon: 'account_circle',
     },
     {
-      name: 'Supplier',
+      name: 'Meetings',
       route: '/suppliers',
-      icon: 'supplier.png',
+      icon: 'group_work',
     },
     {
-      name: 'Storage Rooms',
+      name: 'More',
       route: '/storage-room',
-      icon: 'warehouse.png',
+      icon: 'more_vert',
     },
     {
-      name: 'Other Sellers',
+      name: 'Settings',
       route: '/other-seller',
-      icon: 'seller.png',
+      icon: 'settings',
     },
   ];
 
-  isOpen = true;
+  isOpen = false;
   constructor(
     private breakpointObserver: BreakpointObserver,
     private store: Store<ApplicationState>,

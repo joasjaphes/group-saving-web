@@ -10,10 +10,10 @@
 .main-nav {
   position: fixed;
   top: 0;
-  left: 0px;
+  left: 240px;
   right: 0;
   z-index: 2;
-  background-color: white;
+  //background-color: white;
 }
 
 .main-nav1 {
@@ -21,7 +21,7 @@
   top: 0;
   left: 0;
   right: 0;
-  background-color: white;
+  //background-color: white;
   z-index: 2;
 }
 
@@ -39,9 +39,11 @@ mat-nav-list {
 .active-menu {
   border-radius: 0px!important;
   background-color: rgba(0,0,0,0.08)!important;
-  color: black!important;
-  border-right: 2px solid #0277bd!important;
-  font-width: 500;
+  border-right: 6px solid #FF7043!important;
+  font-weight: 600;
+  color: #ff7143;
+  font-size: 17px;
+
 
   img {
     height: 40px;
@@ -72,19 +74,19 @@ mat-nav-list {
 
 .mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
   display: block;
-  height: 80px!important;
+  height: 65px!important;
   width: 100%;
   padding: 0;
-  font-size: 18px;
+  font-size: 14.5px;
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
 }
 
 .mat-list-base .mat-list-item:hover, .mat-list-base .mat-list-option:hover {
   transform: scale(1.03);
-  font-size: 20px!important;
+  font-size: 17px!important;
   font-weight: 500!important;
-  color: black!important;
-  border-right: 4px solid #0277bd!important;
+  color: white!important;
+  border-right: 8px solid #FF7043!important;
 }
 
 .mat-toolbar-row, .mat-toolbar-single-row {
@@ -105,7 +107,7 @@ mat-nav-list {
 }
 .mat-toolbar{
   //background-image:
-  //  linear-gradient(to right, rgb(92, 162, 243, 0.3), rgba(3, 6, 24, 0.2));
+  //  linear-gradient(to bottom, rgb(92, 162, 243, 0.3), rgba(3, 6, 24, 0.2));
   background-color: transparent;
   border-bottom: 1px solid rgba(0,0,0,0.05);
   //padding-bottom: 20px;
@@ -134,16 +136,24 @@ mat-nav-list {
 }
 
 .sidenav {
-  width: 300px;
+  width: 240px;
   box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.14);
   height: 100%!important;
+  background-color: #303030;
 }
 
 .userName {
   font-size: 17px;
   letter-spacing: 1.5px;
   font-weight: 600;
-  color: rgba(0,0,0,0.6);
+  color: rgba(255,255,255,0.8);
+}
+
+.userPhone {
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.6);
 }
 
 .orgunitName {
@@ -160,4 +170,17 @@ mat-nav-list {
   font-size: 10px;
   letter-spacing: 3px;
   z-index: -1;
+}
+
+.titleArea {
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
+  display: grid;
+  width: 100%;
+  grid-template-columns: auto auto auto;
+  grid-gap: 5px;
+  justify-content: center;
+}
+
+.titleArea:hover {
+  font-weight: bold;
 }

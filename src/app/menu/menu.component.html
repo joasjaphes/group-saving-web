@@ -13,10 +13,11 @@
       class="cursor"
       (click)="drawer.toggle()"
       style="color: black;"
-      *ngIf="isHandset$ | async"
+      *ngIf="(isHandset$ | async) && !isOpen"
     >
-      <mat-icon aria-label="Side nav toggle icon" style="color: black;"
-      >format_align_left</mat-icon
+      <mat-icon aria-label="Side nav toggle icon" style="color: white"
+      >format_align_left
+      </mat-icon
       >
     </button>
 
@@ -25,13 +26,14 @@
       aria-label="Toggle sidenav"
       mat-icon-button
       class="cursor"
-      (click)="isOpen = !isOpen"
+      (click)="drawer.toggle()"
       title="Toggle Menu"
       style="color: black;"
       *ngIf="!(isHandset$ | async)"
     >
-      <mat-icon aria-label="Side nav toggle icon" style="color: black;"
-      >format_align_left</mat-icon
+      <mat-icon aria-label="Side nav toggle icon" style="color: white"
+      >format_align_left
+      </mat-icon
       >
     </button>
     <span
@@ -45,7 +47,7 @@
       "
     >
       <span *ngIf="!(isHandset$ | async)">
-        RUDO TECHNOLOGIES STOCK MANAGEMENT SYSTEM
+
       </span>
       <span *ngIf="isHandset$ | async"></span>
     </span>
@@ -89,6 +91,14 @@
         >Logout</span
         >
       </a>
+      <mat-divider></mat-divider>
+      <a (click)="logout()" mat-menu-item>
+        <div class="col-sm-12 mt-2" *ngIf="(user$ | async)" @fadeIn>
+          <p class="userPhone m-0 text-center">
+            <span>{{ (user$ | async)?.phoneNumber }}</span>
+          </p>
+        </div>
+      </a>
     </mat-menu>
 
     <div
@@ -101,36 +111,40 @@
     ></div>
 
     <button mat-button [matMenuTriggerFor]="appMenu" class="cursor">
-      <span class="secondary-color" style="letter-spacing: 2px;">
-        <mat-icon>person</mat-icon>
-      </span>
-      <img src="assets/images/icons/profile.png" style="height: 35px">
-      <mat-icon style="color: black;">arrow_drop_down</mat-icon>
+      <mat-icon>account_circle</mat-icon> &nbsp;
+      <span>{{ (user$ | async)?.displayName }}</span> &nbsp;
+      <mat-icon style="color: white;">arrow_drop_down</mat-icon>
     </button>
   </mat-toolbar>
 </nav>
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav
     #drawer
+    (opened)="isOpen = true"
+    (closed)="isOpen = false"
     class="sidenav no-print"
     fixedInViewport="false"
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [opened]="!(isHandset$ | async) && isOpen"
+    [opened]="!(isHandset$ | async)"
   >
 
-    <div class="row pt-3" style="height: 60px">
-      <div class="col-sm-3">
+    <div class="row pt-3 pb-3 m-0">
 
-      </div>
-      <div class="col-sm-9">
-        <p class="userName m-0">
-          <!--          <span>{{ (user$ | async) | json }}</span>-->
-        </p>
+      <div style="cursor: pointer" title="Switch Group" class="col-sm-12 titleArea" *ngIf="(user$ | async)" @fadeIn>
+        <div>
+          <img alt="logo" style="height: 30px; border-radius: 50%" src="assets/icons/icon-72x72.png">
+        </div>
+        <div style="padding-top: 5px;">
+          <span style="font-size: 1vw">Together we Belong</span>
+        </div>
+        <div style="padding-top: 5px;">
+          <mat-icon style="color: white;">keyboard_arrow_down</mat-icon>
+        </div>
       </div>
     </div>
     <!--    </mat-toolbar>-->
-    <mat-divider></mat-divider>
+
     <mat-nav-list>
       <ng-container *ngFor="let menu of menus">
         <ng-container *ngIf="!menu.children">
@@ -140,8 +154,8 @@
             [routerLink]="menu?.route"
             routerLinkActive="active-menu"
           >
-            <mat-icon>{{menu.icon}}</mat-icon>
-            <span>{{ menu?.name }}</span>
+            <mat-icon>{{menu.icon}}</mat-icon> &nbsp;
+            <span style="margin-left: 5px">{{ menu?.name }}</span>
           </a>
           <!--            <mat-divider></mat-divider>-->
         </ng-container>
@@ -153,7 +167,7 @@
     <!-- Add Content Here -->
     <div
       class="content"
-      style="margin-top: 60px;"
+      style="margin-top: 60px; padding: 25px"
       [@routeAnimations]="o.isActivated ? o.activatedRoute : ''"
     >
       <router-outlet #o="outlet"></router-outlet>

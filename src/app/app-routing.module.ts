@@ -14,9 +14,17 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        redirectTo: 'home',
+        pathMatch: 'full',
+        data: {
+          title: 'Home'
+        }
+      },
+      {
+        path: 'home',
         component: DashboardComponent,
         data: {
-          title: 'Phone Number'
+          title: 'Home'
         }
       },
     ],

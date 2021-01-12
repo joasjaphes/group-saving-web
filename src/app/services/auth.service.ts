@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import firebase from 'firebase';
 import User = firebase.User;
 
@@ -15,9 +15,9 @@ export class AuthService {
     this.afAuth.authState.subscribe(user => {
       if (user){
         this.user = user;
-        localStorage.setItem('user', JSON.stringify(this.user));
+        localStorage.setItem('group-saving-user', JSON.stringify(this.user));
       } else {
-        localStorage.setItem('user', null);
+        localStorage.setItem('group-saving-user', null);
       }
     });
   }
@@ -28,10 +28,12 @@ export class AuthService {
 
   async logout() {
     const result = await this.afAuth.signOut();
+    localStorage.removeItem('group-saving-user');
   }
 
   getLoginUser(): Observable<User> {
-    return this.afAuth.authState;
+    const userData = localStorage.getItem('group-saving-user');
+    return userData ? of(JSON.parse(userData)) : this.afAuth.authState;
   }
 
 }
