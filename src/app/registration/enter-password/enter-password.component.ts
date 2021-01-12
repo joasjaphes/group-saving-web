@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {fadeIn, ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-enter-password',
@@ -13,10 +14,12 @@ export class EnterPasswordComponent implements OnInit, AfterViewInit {
   @Input() memberName: string;
   @Output() nextStep = new EventEmitter< {currentStep: string, previousStep: string}>();
   password: string;
-
+  hide = true;
   @ViewChild('myInput') myInputField: ElementRef;
 
-  constructor() { }
+  constructor(
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -25,7 +28,7 @@ export class EnterPasswordComponent implements OnInit, AfterViewInit {
     setTimeout(() => this.myInputField.nativeElement.focus());
   }
 
-  login() {
-    console.log('Logging IN');
+  async login() {
+    await this.authService.login(this.email, this.password);
   }
 }

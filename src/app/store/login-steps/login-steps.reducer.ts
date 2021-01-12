@@ -89,7 +89,8 @@ export const reducer = createReducer(
   ),
 
   on(LoginStepActions.setMemberGroups, ((state, {memberGroups}) => {
-    const memberName = memberGroups.length > 0 ? memberGroups[0].member_name : '';
+    const memberName = memberGroups.length > 0 ? memberGroups[0].memberName : '';
+    console.log(memberName);
     return {...state, memberGroups, memberName};
     })
   ),

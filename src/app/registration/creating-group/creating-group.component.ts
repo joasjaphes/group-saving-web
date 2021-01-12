@@ -17,9 +17,9 @@ export class CreatingGroupComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => this.showFirst = true, 100);
-    setTimeout(() => this.showSecond = true, 2000);
-    setTimeout(() => this.showThird = true, 4000);
-    setTimeout(() => this.showForth = true, 6000);
+    setTimeout(() => this.showSecond = true, 1000);
+    setTimeout(() => this.showThird = true, 2000);
+    setTimeout(() => this.showForth = true, 3000);
   }
 
 }

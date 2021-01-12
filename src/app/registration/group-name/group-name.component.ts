@@ -38,7 +38,7 @@ export class GroupNameComponent implements OnInit, AfterViewInit {
   goNextStep() {
     this.nextStep.emit({
       currentStep: RegistrationSteps.SetPassword,
-      previousStep: RegistrationSteps.GroupName
+      previousStep: RegistrationSteps.MemberName
     });
   }
 }

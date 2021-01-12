@@ -7,4 +7,5 @@ export interface MemberGroup {
   memberName: string;
   groupName: string;
   lastUpdate: number;
+  createdBy: string;
 }

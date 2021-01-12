@@ -1,0 +1,163 @@
+
+.sidenav-container {
+  height: 100%;
+}
+
+.main-navv {
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
+}
+
+.main-nav {
+  position: fixed;
+  top: 0;
+  left: 0px;
+  right: 0;
+  z-index: 2;
+  background-color: white;
+}
+
+.main-nav1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  z-index: 2;
+}
+
+
+mat-nav-list img {
+  height: 35px;
+  margin-right: 25px;
+  margin-bottom: 8px;
+}
+
+mat-nav-list {
+  padding-top: 1px;
+}
+
+.active-menu {
+  border-radius: 0px!important;
+  background-color: rgba(0,0,0,0.08)!important;
+  color: black!important;
+  border-right: 2px solid #0277bd!important;
+  font-width: 500;
+
+  img {
+    height: 40px;
+  }
+}
+
+.sidenav .mat-toolbar {
+  //background: #0277bd;
+  border-bottom: 0 solid black;
+}
+
+.mat-toolbar .mat-primary {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+.example-fill-remaining-space {
+  /* This fills the remaining space, by using flexbox.
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
+.mat-drawer-side {
+  border: 0px !important;
+}
+
+
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+  display: block;
+  height: 80px!important;
+  width: 100%;
+  padding: 0;
+  font-size: 18px;
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
+}
+
+.mat-list-base .mat-list-item:hover, .mat-list-base .mat-list-option:hover {
+  transform: scale(1.03);
+  font-size: 20px!important;
+  font-weight: 500!important;
+  color: black!important;
+  border-right: 4px solid #0277bd!important;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+  height: 80px!important;
+}
+
+.smt {
+  font-size: 20px!important;
+}
+
+
+
+//bg style begins here
+.mat-toolbar .mat-primary {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+.mat-toolbar{
+  //background-image:
+  //  linear-gradient(to right, rgb(92, 162, 243, 0.3), rgba(3, 6, 24, 0.2));
+  background-color: transparent;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  //padding-bottom: 20px;
+  //  url('../../assets/images/flag.png');
+  //background-position: center center;
+  //background-repeat: no-repeat;
+  //background-size: cover;
+}
+
+.example-fill-remaining-space {
+  /* This fills the remaining space, by using flexbox.
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
+.mat-drawer-side {
+  border: 0px !important;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+  height: 60px!important;
+}
+
+.smt {
+  font-size: 20px!important;
+}
+
+.sidenav {
+  width: 300px;
+  box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.14);
+  height: 100%!important;
+}
+
+.userName {
+  font-size: 17px;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.6);
+}
+
+.orgunitName {
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  font-weight: 400;
+  color: rgba(0,0,0,0.5);
+}
+.version {
+  bottom: 0px;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  font-size: 10px;
+  letter-spacing: 3px;
+  z-index: -1;
+}

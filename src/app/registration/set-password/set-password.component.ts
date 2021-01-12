@@ -1,6 +1,9 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {fadeIn, fadeOut, ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
 import {RegistrationSteps} from '../registration-steps';
+import {setFirstPassword, setMemberName} from '../../store/login-steps/login-steps.actions';
+import {Store} from '@ngrx/store';
+import {ApplicationState} from '../../store';
 
 @Component({
   selector: 'app-set-password',
@@ -15,14 +18,22 @@ export class SetPasswordComponent implements OnInit, AfterViewInit {
   @Input() memberName: string;
   @Output() nextStep = new EventEmitter< {currentStep: string, previousStep: string}>();
   password: string;
+  hide = true;
   @ViewChild('myInput') myInputField: ElementRef;
-  constructor() { }
+  constructor(
+    private store: Store<ApplicationState>
+  ) { }
 
   ngOnInit(): void {
   }
 
   ngAfterViewInit() {
     setTimeout(() => this.myInputField.nativeElement.focus());
+  }
+
+
+  setPassword($event: any) {
+    this.store.dispatch(setFirstPassword({firstPassword: $event.target.value}));
   }
 
   goNextStep() {

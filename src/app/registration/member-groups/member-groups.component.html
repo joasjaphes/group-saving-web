@@ -1,1 +1,17 @@
-<p>member-groups works!</p>
+<h3>Your already a member of</h3>
+<div class="welcome-grid" *ngFor="let group of memberGroups">
+  <div>
+    <img
+      alt="Manage Members"
+      src="assets/images/members.jpg"
+    >
+  </div>
+  <div>
+    <h1 class="mb-0 registration-title" >{{group.groupName}}</h1>
+    <p style="margin-top: 8px; font-size: 16px">Added By: {{group.createdBy}}</p>
+  </div>
+</div>
+<button class="registration-button" mat-raised-button (click)="goNextStep()">
+  Continue
+  <mat-icon>arrow_forward</mat-icon>
+</button>

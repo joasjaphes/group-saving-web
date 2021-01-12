@@ -53,6 +53,7 @@ export class PhoneNumberComponent implements OnInit, AfterViewInit {
     try {
       const phoneNumber = `+${this.selectedCountry}${trimPhoneNumber(this.phoneNumber)}`;
       const response: any = await this.functionsService.saveData('getUserByPhoneNumber', {phoneNumber});
+      console.log(JSON.stringify(response));
       this.fetchingPhoneUpdates = false;
       // User has already registered promt user to enter password
       if (response.userRecord !== null) {
@@ -71,7 +72,24 @@ export class PhoneNumberComponent implements OnInit, AfterViewInit {
             previousStep: RegistrationSteps.PhoneNumber
           });
         } else {
-          this.store.dispatch(setMemberGroups({memberGroups: response.userData}));
+          this.store.dispatch(setMemberGroups({
+              memberGroups: response.userData.map(user => ({
+                id: user.id,
+                phoneNumber: user.phone_number,
+                memberId: user.member_id,
+                groupName: user.group_name,
+                userId: user.user_id,
+                createdBy: user.created_by,
+                lastUpdate: user.last_update,
+                groupId: user.group_id,
+                memberName: user.member_name
+              }))
+            }
+          ));
+          this.goNextStep({
+            currentStep: RegistrationSteps.MemberGroup,
+            previousStep: RegistrationSteps.PhoneNumber
+          });
         }
       }
       console.log(JSON.stringify(response));

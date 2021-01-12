@@ -2,14 +2,27 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {HomeComponent} from './home/home.component';
 import {StartComponent} from './registration/start/start.component';
-import {LanguageSelectionComponent} from './registration/language-selection/language-selection.component';
-import {PhoneNumberComponent} from './registration/phone-number/phone-number.component';
 import {RegistrationComponent} from './registration/registration.component';
+import {DashboardComponent} from './modules/dashboard/dashboard.component';
+import {MenuComponent} from './menu/menu.component';
 
 
 const routes: Routes = [
   {
     path: '',
+    component: MenuComponent,
+    children: [
+      {
+        path: '',
+        component: DashboardComponent,
+        data: {
+          title: 'Phone Number'
+        }
+      },
+    ],
+  },
+  {
+    path: 'welcome',
     component: HomeComponent,
     children: [
       {
@@ -20,13 +33,6 @@ const routes: Routes = [
         }
       },
       {
-        path: 'language-selection',
-        component: LanguageSelectionComponent,
-        data: {
-          title: 'Select Language'
-        }
-      },
-      {
         path: 'registration',
         component: RegistrationComponent,
         data: {
@@ -34,15 +40,8 @@ const routes: Routes = [
         }
       },
       {
-        path: 'phone-number',
-        component: PhoneNumberComponent,
-        data: {
-          title: 'Phone Number'
-        }
-      },
-      {
         path: 'dashboard',
-        component: PhoneNumberComponent,
+        component: DashboardComponent,
         data: {
           title: 'Phone Number'
         }

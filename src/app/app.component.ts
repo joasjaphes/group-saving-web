@@ -47,16 +47,16 @@ export class AppComponent implements OnInit, AfterViewInit{
           })
         );
         this.initiateLastUpdatedTimes().then();
-        if (this.router.url === '/registration' || this.router.url === '/') {
-          this.store.dispatch(new Go({path: ['dashboard']}));
+        if (this.router.url === '/welcome/registration' || this.router.url === '/') {
+          this.store.dispatch(new Go({path: ['']}));
         } else {
           this.store.dispatch(new Go({path: [this.router.url]}));
         }
       } else {
-        if (this.router.url === '/registration') {
-          this.store.dispatch(new Go({path: ['registration']}));
+        if (this.router.url === '/welcome/registration') {
+          this.store.dispatch(new Go({path: ['welcome', 'registration']}));
         } else {
-          this.store.dispatch(new Go({path: ['']}));
+          this.store.dispatch(new Go({path: ['welcome']}));
         }
       }
     });

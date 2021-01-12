@@ -33,6 +33,8 @@ import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import { CreatingGroupComponent } from './registration/creating-group/creating-group.component';
+import { DashboardComponent } from './modules/dashboard/dashboard.component';
+import { MenuComponent } from './menu/menu.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -62,7 +64,9 @@ const firebaseConfig = {
     SetPasswordComponent,
     ConfirmPasswordComponent,
     NumberOfMembersComponent,
-    CreatingGroupComponent
+    CreatingGroupComponent,
+    DashboardComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
