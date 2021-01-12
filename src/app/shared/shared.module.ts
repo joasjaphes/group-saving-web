@@ -7,10 +7,16 @@ import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 import {MatSelectSearchComponent} from './components/mat-select-search/mat-select-search.component';
 import {SearchPipe} from './pipes/search.pipe';
+import {SharedLayoutComponent} from './components/shared-layout/shared-layout.component';
+import {TopBannerComponent} from './components/topbanner/top-banner.component';
+import {ViewHelpComponent} from './components/view-help/view-help.component';
 
 @NgModule({
   declarations: [
     MatSelectSearchComponent,
+    SharedLayoutComponent,
+    TopBannerComponent,
+    ViewHelpComponent,
     SearchPipe
   ],
   imports: [
@@ -31,6 +37,9 @@ import {SearchPipe} from './pipes/search.pipe';
     HttpClientModule,
     RouterModule,
     MatSelectSearchComponent,
+    SharedLayoutComponent,
+    TopBannerComponent,
+    ViewHelpComponent,
     SearchPipe
   ]
 })

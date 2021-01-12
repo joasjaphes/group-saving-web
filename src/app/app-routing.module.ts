@@ -5,6 +5,13 @@ import {StartComponent} from './registration/start/start.component';
 import {RegistrationComponent} from './registration/registration.component';
 import {DashboardComponent} from './modules/dashboard/dashboard.component';
 import {MenuComponent} from './menu/menu.component';
+import {ProfileComponent} from './modules/my-account/profile/profile.component';
+import {ChangePasswordComponent} from './modules/my-account/change-password/change-password.component';
+import {SettingsComponent} from './modules/settings/settings.component';
+import {MoreInfomationComponent} from './modules/more-infomation/more-infomation.component';
+import {MeetingComponent} from './modules/meeting/meeting.component';
+import {MyAccountComponent} from './modules/my-account/my-account.component';
+import {MembersComponent} from './modules/members/members.component';
 
 
 const routes: Routes = [
@@ -23,9 +30,42 @@ const routes: Routes = [
       {
         path: 'home',
         component: DashboardComponent,
-        data: {
-          title: 'Home'
-        }
+        data: { title: 'Home' }
+      },
+      {
+        path: 'members',
+        component: MembersComponent,
+        data: { title: 'Members' }
+      },
+      {
+        path: 'my-account',
+        component: MyAccountComponent,
+        data: { title: 'My Account' }
+      },
+      {
+        path: 'meeting',
+        component: MeetingComponent,
+        data: { title: 'Meeting' }
+      },
+      {
+        path: 'more-information',
+        component: MoreInfomationComponent,
+        data: { title: 'More Information' }
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
+        data: { title: 'Settings' }
+      },
+      {
+        path: 'change-password',
+        component: ChangePasswordComponent,
+        data: { title: 'Change Password' }
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        data: { title: 'My Profile' }
       },
     ],
   },

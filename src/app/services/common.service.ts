@@ -3,16 +3,30 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import * as moment from 'moment';
 import {timer as observableTimer, Observable, of, BehaviorSubject} from 'rxjs';
 import {switchMap, tap} from 'rxjs/operators';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
+
+  showHElp1 = new BehaviorSubject(false);
+  helpText = new BehaviorSubject('');
   private onlineStatus$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(
     public snackBar: MatSnackBar,
   ) {
+  }
+
+
+  showHelp(helpText) {
+    this.helpText.next(helpText);
+    this.showHElp1.next(true);
+  }
+
+  closeHelp() {
+    this.showHElp1.next(false);
   }
 
   checkOnlineStatus() {
@@ -50,6 +64,29 @@ export class CommonService {
   showWarning(message: string = 'Something went wrong', duration: number = 2500) {
     this.snackBar.open(message, 'Ok', {duration, panelClass: 'warning'});
   }
+
+
+  validateAllFormFields(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach((field) => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
+      }
+    });
+  }
+
+  capital_letter(str) {
+    str = str.split(' ');
+
+    for (let i = 0, x = str.length; i < x; i++) {
+      str[i] = str[i][0].toUpperCase() + str[i].substr(1);
+    }
+
+    return str.join(' ');
+  }
+
 
   getAmountInWords(totalAmount) {
     const amountToFloat = parseFloat(totalAmount).toFixed(2);

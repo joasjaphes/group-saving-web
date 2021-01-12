@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Observable, Subscription} from 'rxjs';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
-import {filter, map, mergeMap} from 'rxjs/operators';
+import {filter, first, map, mergeMap} from 'rxjs/operators';
 import firebase from 'firebase';
 import User = firebase.User;
 import {Menu} from './menu.model';
@@ -16,6 +16,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {CommonService} from '../services/common.service';
 import {FirestoreService} from '../services/firestore.service';
 import {fadeIn, routeAnimations} from '../shared/animations/router-animation';
+import {MatSidenav} from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-menu',
@@ -39,32 +40,35 @@ export class MenuComponent implements OnInit, AfterViewInit {
     },
     {
       name: 'Members',
-      route: '/products',
+      route: '/members',
       icon: 'people_outline',
     },
     {
       name: 'My Account',
-      route: '/product-category',
+      route: '/my-account',
       icon: 'account_circle',
     },
     {
       name: 'Meetings',
-      route: '/suppliers',
+      route: '/meeting',
       icon: 'group_work',
     },
     {
       name: 'More',
-      route: '/storage-room',
+      route: '/more-information',
       icon: 'more_vert',
     },
     {
       name: 'Settings',
-      route: '/other-seller',
+      route: '/settings',
       icon: 'settings',
     },
   ];
 
   isOpen = false;
+  totalNotifications = 0;
+  helpOpened$: Observable<boolean>;
+  helpText$: Observable<string>;
   constructor(
     private breakpointObserver: BreakpointObserver,
     private store: Store<ApplicationState>,
@@ -79,6 +83,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
     private fireStoreService: FirestoreService
   ) {
     this.user$ = this.userService.getLoginUser();
+    this.helpOpened$ = this.commonService.showHElp1;
   }
 
   ngOnInit(): void {
@@ -129,4 +134,17 @@ export class MenuComponent implements OnInit, AfterViewInit {
 
   viewProfile() {}
 
+  check($event: boolean) { }
+
+
+  closeHelp() {
+    this.commonService.closeHelp();
+  }
+
+  async closeMenu(drawer: MatSidenav) {
+    const isHandset = await this.isHandset$.pipe(first()).toPromise();
+    if (isHandset) {
+      await drawer.toggle();
+    }
+  }
 }

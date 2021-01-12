@@ -35,6 +35,13 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import { CreatingGroupComponent } from './registration/creating-group/creating-group.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { MenuComponent } from './menu/menu.component';
+import { MembersComponent } from './modules/members/members.component';
+import { MeetingComponent } from './modules/meeting/meeting.component';
+import { MyAccountComponent } from './modules/my-account/my-account.component';
+import { SettingsComponent } from './modules/settings/settings.component';
+import { MoreInfomationComponent } from './modules/more-infomation/more-infomation.component';
+import { ProfileComponent } from './modules/my-account/profile/profile.component';
+import { ChangePasswordComponent } from './modules/my-account/change-password/change-password.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -66,7 +73,14 @@ const firebaseConfig = {
     NumberOfMembersComponent,
     CreatingGroupComponent,
     DashboardComponent,
-    MenuComponent
+    MenuComponent,
+    MembersComponent,
+    MeetingComponent,
+    MyAccountComponent,
+    SettingsComponent,
+    MoreInfomationComponent,
+    ProfileComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,
