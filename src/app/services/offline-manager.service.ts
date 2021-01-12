@@ -22,6 +22,7 @@ export class OfflineManagerService {
   }
 
   getItems(dataKey: string): Observable<any> {
+    if (dataKey === 'groups') { console.log(`ni kama naiita ${dataKey}`); }
     return new Observable( (observer) => {
       this.localDbService.getAll(dataKey)
         .then(
@@ -35,7 +36,7 @@ export class OfflineManagerService {
   }
 
   getLastUpdatedTimes(): Promise<LastUpdatedAt> {
-    return this.localDbService.getByKey(DataKeys.LastUpdatedTable, 'others');
+    return this.localDbService.getByKey(DataKeys.LastUpdatedTable, 'times');
   }
 
   saveLastUpdatedTimes(lastUpdated: LastUpdatedAt) {

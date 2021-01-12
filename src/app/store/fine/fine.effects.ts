@@ -12,10 +12,10 @@ export class FineEffects {
     ofType(fromActions.getFines),
     switchMap((action) => this.offlineService.getItems(DataKeys.Fine)),
     switchMap(fines => [
-      fromActions.loadFines({fines}),
+      fromActions.upsertFines({fines}),
       fromActions.doneLoadingFines()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

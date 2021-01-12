@@ -12,10 +12,10 @@ export class ExpenseTypeEffects {
     ofType(fromActions.getExpenseTypes),
     switchMap((action) => this.offlineService.getItems(DataKeys.ExpenseType)),
     switchMap(expenseTypes => [
-      fromActions.loadExpenseTypes({expenseTypes}),
+      fromActions.upsertExpenseTypes({expenseTypes}),
       fromActions.doneLoadingExpenseTypes()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

@@ -12,10 +12,10 @@ export class AdjustmentEffects {
     ofType(fromActions.getAdjustments),
     switchMap((action) => this.offlineService.getItems(DataKeys.Adjustments)),
     switchMap(adjustments => [
-      fromActions.loadAdjustments({adjustments}),
+      fromActions.upsertAdjustments({adjustments}),
       fromActions.doneLoadingAdjustments()
     ])
-  ), {dispatch: false});
+  ));
 
   constructor(
     private actions$: Actions,

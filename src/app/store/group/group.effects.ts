@@ -10,12 +10,13 @@ export class GroupEffects {
 
   loadData$ = createEffect(() => this.actions$.pipe(
     ofType(fromActions.getGroups),
+    tap((action) => console.log('group inaitwa')),
     switchMap((action) => this.offlineService.getItems(DataKeys.Group)),
     switchMap(groups => [
-      fromActions.loadGroups({groups}),
+      fromActions.upsertGroups({groups}),
       fromActions.doneLoadingGroups()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

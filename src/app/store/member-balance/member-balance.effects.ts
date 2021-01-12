@@ -12,10 +12,10 @@ export class MemberBalanceEffects {
     ofType(fromActions.getMemberBalances),
     switchMap((action) => this.offlineService.getItems(DataKeys.MemberBalance)),
     switchMap(memberBalances => [
-      fromActions.loadMemberBalances({memberBalances}),
+      fromActions.upsertMemberBalances({memberBalances}),
       fromActions.doneLoadingMemberBalances()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

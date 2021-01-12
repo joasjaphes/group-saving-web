@@ -12,10 +12,10 @@ export class ShareDividendEffects {
     ofType(fromActions.getShareDividends),
     switchMap((action) => this.offlineService.getItems(DataKeys.ShareDividend)),
     switchMap(shareDividends => [
-      fromActions.loadShareDividends({shareDividends}),
+      fromActions.upsertShareDividends({shareDividends}),
       fromActions.doneLoadingShareDividends()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

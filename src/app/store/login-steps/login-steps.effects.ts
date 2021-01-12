@@ -12,10 +12,10 @@ export class LoginStepsEffects {
     ofType(fromActions.getLoginSteps),
     switchMap((action) => this.offlineService.getItems('login_steps')),
     switchMap(loginSteps => [
-      fromActions.loadLoginSteps({loginSteps}),
+      fromActions.upsertLoginSteps({loginSteps}),
       fromActions.doneLoadingLoginSteps()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

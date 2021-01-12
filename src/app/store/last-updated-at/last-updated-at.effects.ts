@@ -12,10 +12,10 @@ export class LastUpdatedAtEffects {
     ofType(fromActions.getLastUpdatedAts),
     switchMap((action) => this.offlineService.getItems(DataKeys.LastUpdatedTable)),
     switchMap(lastUpdatedAts => [
-      fromActions.loadLastUpdatedAts({lastUpdatedAts}),
+      fromActions.upsertLastUpdatedAts({lastUpdatedAts}),
       fromActions.doneLoadingLastUpdatedAts()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

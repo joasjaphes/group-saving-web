@@ -12,10 +12,10 @@ export class CashTransferEffects {
     ofType(fromActions.getCashTransfers),
     switchMap((action) => this.offlineService.getItems(DataKeys.CashTransfer)),
     switchMap(cashTransfers => [
-      fromActions.loadCashTransfers({cashTransfers}),
+      fromActions.upsertCashTransfers({cashTransfers}),
       fromActions.doneLoadingCashTransfers()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

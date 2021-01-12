@@ -3,6 +3,7 @@
   icon="home"
 >
   <ng-container ngProjectAs="table">
-    <h1>Dashboard data will stay here</h1>
+    <h1>{{(group$  | async )?.group_name}} Dashboard data will stay here</h1>
+    <p>{{group$ | async | json}}</p>
   </ng-container>
 </app-shared-layout>

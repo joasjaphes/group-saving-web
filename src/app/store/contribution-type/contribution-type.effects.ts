@@ -12,10 +12,10 @@ export class ContributionTypeEffects {
     ofType(fromActions.getContributionTypes),
     switchMap((action) => this.offlineService.getItems(DataKeys.ContributionType)),
     switchMap(contributionTypes => [
-      fromActions.loadContributionTypes({contributionTypes}),
+      fromActions.upsertContributionTypes({contributionTypes}),
       fromActions.doneLoadingContributionTypes()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

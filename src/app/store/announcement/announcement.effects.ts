@@ -12,10 +12,10 @@ export class AnnouncementEffects {
     ofType(fromActions.getAnnouncements),
     switchMap((action) => this.offlineService.getItems(DataKeys.Announcement)),
     switchMap(announcements => [
-      fromActions.loadAnnouncements({announcements}),
+      fromActions.upsertAnnouncements({announcements}),
       fromActions.doneLoadingAnnouncements()
     ])
-  ), { dispatch: false });
+  ));
 
 
   constructor(

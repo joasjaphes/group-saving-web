@@ -12,10 +12,10 @@ export class LongTermInvestmentItemEffects {
     ofType(fromActions.getLongTermInvestmentItems),
     switchMap((action) => this.offlineService.getItems(DataKeys.LongTermInvestmentItem)),
     switchMap(longTermInvestmentItems => [
-      fromActions.loadLongTermInvestmentItems({longTermInvestmentItems}),
+      fromActions.upsertLongTermInvestmentItems({longTermInvestmentItems}),
       fromActions.doneLoadingLongTermInvestmentItems()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

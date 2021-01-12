@@ -12,10 +12,10 @@ export class LoanTypeEffects {
     ofType(fromActions.getLoanTypes),
     switchMap((action) => this.offlineService.getItems(DataKeys.LoanType)),
     switchMap(loanTypes => [
-      fromActions.loadLoanTypes({loanTypes}),
+      fromActions.upsertLoanTypes({loanTypes}),
       fromActions.doneLoadingLoanTypes()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

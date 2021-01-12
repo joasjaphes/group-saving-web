@@ -12,10 +12,10 @@ export class PaymentEffects {
     ofType(fromActions.getPayments),
     switchMap((action) => this.offlineService.getItems(DataKeys.Payments)),
     switchMap(payments => [
-      fromActions.loadPayments({payments}),
+      fromActions.upsertPayments({payments}),
       fromActions.doneLoadingPayments()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

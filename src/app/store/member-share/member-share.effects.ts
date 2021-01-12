@@ -12,10 +12,10 @@ export class MemberShareEffects {
     ofType(fromActions.getMemberShares),
     switchMap((action) => this.offlineService.getItems(DataKeys.MemberShare)),
     switchMap(memberShares => [
-      fromActions.loadMemberShares({memberShares}),
+      fromActions.upsertMemberShares({memberShares}),
       fromActions.doneLoadingMemberShares()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

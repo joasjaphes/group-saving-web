@@ -12,10 +12,10 @@ export class FineTypeEffects {
     ofType(fromActions.getFineTypes),
     switchMap((action) => this.offlineService.getItems(DataKeys.FineType)),
     switchMap(fineTypes => [
-      fromActions.loadFineTypes({fineTypes}),
+      fromActions.upsertFineTypes({fineTypes}),
       fromActions.doneLoadingFineTypes()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {SwUpdate} from '@angular/service-worker';
-import {filter, map, mergeMap} from 'rxjs/operators';
+import {filter, first, map, mergeMap} from 'rxjs/operators';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import {AngularFireAuth} from '@angular/fire/auth';
@@ -20,7 +20,9 @@ import {addCurrentUser} from './store/user/user.actions';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, AfterViewInit{
+export class AppComponent implements OnInit, AfterViewInit {
+
+  fetchData = true;
 
   constructor(
     updates: SwUpdate,
@@ -36,17 +38,6 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.afAuth.authState.subscribe(user => {
       // verify if user is authenticated and redirect
       if (user) {
-        this.store.dispatch(addCurrentUser({
-            currentUser: {
-              id: user.uid,
-              name: user.displayName,
-              phoneNumber: user.phoneNumber,
-              photoUrl: user.photoURL,
-              email: user.email
-            }
-          })
-        );
-        this.initiateLastUpdatedTimes().then();
         if (this.router.url === '/welcome/registration' || this.router.url === '/') {
           this.store.dispatch(new Go({path: ['']}));
         } else {
@@ -59,6 +50,8 @@ export class AppComponent implements OnInit, AfterViewInit{
           this.store.dispatch(new Go({path: ['welcome']}));
         }
       }
+    }, (error) => {
+      console.log(error);
     });
     // this will automatic fetch new update whenever available
     updates.available.subscribe(event => {
@@ -67,7 +60,8 @@ export class AppComponent implements OnInit, AfterViewInit{
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   // this was added to make sure that page titles will be different for every route
   ngAfterViewInit() {
@@ -87,32 +81,4 @@ export class AppComponent implements OnInit, AfterViewInit{
       .subscribe(event => this.titleService.setTitle(event['title']));
   }
 
-  // This method is used to initialize data from store if the user is logged in
-  async initiateLastUpdatedTimes() {
-    this.afs
-      .collection('last_updated').doc('times')
-      .valueChanges()
-      .subscribe(async (updateTimes: any) => {
-        console.log({updateTimes});
-        // Get Last Updated Times from the local database
-        const localTimes: LastUpdatedAt = await this.offlineService.getLastUpdatedTimes();
-        Object.keys(DataKeys)
-          .map(i => DataKeys[i])
-          .filter(i => i !== 'updated')
-          .filter(i => i !== 'user')
-          .forEach(storeKey => this.firestoreService.getUpdatedData(
-            localTimes,
-            updateTimes,
-            storeKey,
-            this.firestoreService.getData,
-            GET_METHODS[storeKey]
-          ))
-        ;
-        this.firestoreService.getUpdatedData(localTimes, updateTimes, DataKeys.Group, this.firestoreService.getData, getGroups());
-        this.offlineService.saveLastUpdatedTimes({
-          ...updateTimes,
-          id: 'times'
-        }).then();
-      });
-  }
 }

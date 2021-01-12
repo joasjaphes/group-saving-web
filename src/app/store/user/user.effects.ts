@@ -13,7 +13,7 @@ export class UserEffects {
     tap(() => {
       // codes to get data here
     })
-  ), { dispatch: false });
+  ));
 
   constructor(private actions$: Actions) {}
 

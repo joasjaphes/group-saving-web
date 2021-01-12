@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Observable, Subscription} from 'rxjs';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
@@ -17,6 +17,12 @@ import {CommonService} from '../services/common.service';
 import {FirestoreService} from '../services/firestore.service';
 import {fadeIn, routeAnimations} from '../shared/animations/router-animation';
 import {MatSidenav} from '@angular/material/sidenav';
+import {DataKeys, GET_METHODS, UpdatedDataKeys} from '../store/data-keys';
+import {LastUpdatedAt} from '../store/last-updated-at/last-updated-at.model';
+import {getGroups, setSelectedGroup} from '../store/group/group.actions';
+import {addCurrentUser} from '../store/user/user.actions';
+import {setAnalyticsConfig} from '@angular/cli/models/analytics';
+import {group} from '@angular/animations';
 
 @Component({
   selector: 'app-menu',
@@ -24,7 +30,7 @@ import {MatSidenav} from '@angular/material/sidenav';
   styleUrls: ['./menu.component.scss'],
   animations: [fadeIn, routeAnimations]
 })
-export class MenuComponent implements OnInit, AfterViewInit {
+export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(map((result) => result.matches));
@@ -69,6 +75,12 @@ export class MenuComponent implements OnInit, AfterViewInit {
   totalNotifications = 0;
   helpOpened$: Observable<boolean>;
   helpText$: Observable<string>;
+  fetchData = true;
+  userSubscription: Subscription;
+  lastUpdatedSubscription: Subscription;
+  memberGroupSubscription: Subscription;
+  memberGroupSub: Subscription;
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     private store: Store<ApplicationState>,
@@ -80,13 +92,29 @@ export class MenuComponent implements OnInit, AfterViewInit {
     private location: Location,
     private afs: AngularFirestore,
     private offlineService: OfflineManagerService,
-    private fireStoreService: FirestoreService
+    private firestoreService: FirestoreService
   ) {
     this.user$ = this.userService.getLoginUser();
     this.helpOpened$ = this.commonService.showHElp1;
   }
 
   ngOnInit(): void {
+    this.userSubscription = this.user$.subscribe((user) => {
+      console.log({user});
+      if (user) {
+        this.store.dispatch(addCurrentUser({
+            currentUser: {
+              id: user.uid,
+              name: user.displayName,
+              phoneNumber: user.phoneNumber,
+              photoUrl: user.photoURL,
+              email: user.email
+            }
+          })
+        );
+        this.getMemberGroups(user.uid).then();
+      }
+    });
   }
 
 
@@ -108,33 +136,14 @@ export class MenuComponent implements OnInit, AfterViewInit {
         this.loading = false;
       }
     });
-
-    // This code is used to set title of the route as it appears in a route file
-    this.titleSubscription = this.router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        map(() => this.activatedRoute),
-        map((route: any) => {
-          while (route.firstChild) {
-            route = route.firstChild;
-          }
-          return route;
-        }),
-        filter((route) => route.outlet === 'primary'),
-        mergeMap((route) => route.data)
-      )
-      .subscribe((event: any) => this.titleService.setTitle(event.title));
   }
 
   logout() {
     this.userService.logout().then();
   }
 
-  changePassword() {}
-
-  viewProfile() {}
-
-  check($event: boolean) { }
+  check($event: boolean) {
+  }
 
 
   closeHelp() {
@@ -145,6 +154,144 @@ export class MenuComponent implements OnInit, AfterViewInit {
     const isHandset = await this.isHandset$.pipe(first()).toPromise();
     if (isHandset) {
       await drawer.toggle();
+    }
+  }
+
+  async getMemberGroups(userId: string) {
+    this.getInitialDataFromLocal();
+    const local_member_groups = await this.offlineService.getItems(DataKeys.MemberGroup).pipe(first()).toPromise();
+    console.log({local_member_groups});
+    if (local_member_groups && local_member_groups.length === 0) {
+      this.memberGroupSub = this.afs
+        .collection(DataKeys.MemberGroup, ref => ref.where('user_id', '==', userId))
+        .valueChanges()
+        .subscribe((member_groups: any) => {
+          if (this.fetchData) {
+            this.fetchData = false;
+            this.initiateLastUpdatedTimes(member_groups);
+            for (const mem of member_groups) {
+              const activeGroup = localStorage.getItem('group_savings_active_group');
+              if (activeGroup) {
+                this.store.dispatch(setSelectedGroup({groupId: activeGroup}));
+              } else {
+                localStorage.setItem('group_savings_active_group', mem.group_id);
+                this.store.dispatch(setSelectedGroup({groupId: mem.group_id}));
+              }
+              this.offlineService.saveItem({
+                ...mem,
+              }, DataKeys.MemberGroup).then();
+            }
+          }
+        });
+    } else {
+      this.initiateLastUpdatedTimes(local_member_groups).then();
+      const activeGroup = localStorage.getItem('group_savings_active_group');
+      if (activeGroup) {
+        this.store.dispatch(setSelectedGroup({groupId: activeGroup}));
+      } else {
+        const mem = local_member_groups[0];
+        if (mem) {
+          localStorage.setItem('group_savings_active_group', mem.group_id);
+          this.store.dispatch(setSelectedGroup({groupId: mem.group_id}));
+        }
+      }
+      console.log('Sasa hivi tunapita huku');
+    }
+
+  }
+
+  // This method is used to initialize data from store if the user is logged in
+  async initiateLastUpdatedTimes(member_groups: any) {
+    const groups = member_groups ? member_groups : [];
+    for (const group1 of groups) {
+      console.log(group1);
+      this.lastUpdatedSubscription = this.afs
+        .collection('groups')
+        .doc(group1.group_id)
+        .collection('updated')
+        .doc('others')
+        .valueChanges()
+        .subscribe(async (updateTimes: any) => {
+          try {
+            console.log({updateTimes}, '*******');
+            // Get Last Updated Times from the local database
+            const localTimes: LastUpdatedAt = await this.offlineService.getLastUpdatedTimes();
+            console.log({localTimes});
+            // get group Information
+            console.log('calling the method....');
+            await this.firestoreService.getUpdatedData(
+              localTimes,
+              updateTimes,
+              DataKeys.Group,
+              this.firestoreService.getGroupData,
+              getGroups(),
+              group1.group_id,
+              UpdatedDataKeys[DataKeys.Group]
+              );
+            // get Other Information
+            const keysToWorkWith = Object.keys(DataKeys)
+              .map(i => DataKeys[i])
+              .filter(i => i !== 'updated')
+              .filter(i => i !== 'user')
+              .filter(i => i !== DataKeys.MemberGroup)
+              .filter(i => i !== 'groups');
+            for (const storeKey of keysToWorkWith) {
+              await this.firestoreService.getUpdatedData(
+                localTimes,
+                updateTimes,
+                storeKey,
+                this.firestoreService.getData,
+                GET_METHODS[storeKey],
+                group1.group_id,
+                UpdatedDataKeys[storeKey]
+              );
+            }
+            this.offlineService.saveLastUpdatedTimes({
+              ...updateTimes,
+              id: 'times'
+            }).then();
+          } catch (e) {
+            console.error(e);
+          }
+        });
+    }
+  }
+
+  getInitialDataFromLocal() {
+    Object.keys(DataKeys)
+      .map(i => DataKeys[i])
+      .filter(i => i !== 'updated')
+      .filter(i => i !== 'user')
+      .forEach(
+        storeKey => this.store.dispatch(GET_METHODS[storeKey])
+      );
+  }
+
+  keepMembersGroupInSync(userId) {
+    this.memberGroupSubscription = this.afs
+      .collection(DataKeys.MemberGroup, ref => ref.where('user_id', '==', userId))
+      .valueChanges()
+      .subscribe((member_groups: any) => {
+        for (const mem of member_groups) {
+          this.offlineService.saveItem({
+            ...mem,
+          }, DataKeys.MemberGroup).then();
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.memberGroupSubscription) {
+      this.memberGroupSubscription.unsubscribe();
+    }
+    if (this.lastUpdatedSubscription) {
+      this.lastUpdatedSubscription.unsubscribe();
+    }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+    if (this.memberGroupSub) {
+      this.memberGroupSub.unsubscribe();
     }
   }
 }

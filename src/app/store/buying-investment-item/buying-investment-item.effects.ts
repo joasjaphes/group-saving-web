@@ -12,10 +12,10 @@ export class BuyingInvestmentItemEffects {
     ofType(fromActions.getBuyingInvestmentItems),
     switchMap((action) => this.offlineService.getItems(DataKeys.BuyingInvestmentItem)),
     switchMap(buyingInvestmentItems => [
-      fromActions.loadBuyingInvestmentItems({buyingInvestmentItems}),
+      fromActions.upsertBuyingInvestmentItems({buyingInvestmentItems}),
       fromActions.doneLoadingBuyingInvestmentItems()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

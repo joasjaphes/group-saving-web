@@ -12,10 +12,10 @@ export class ContributionTypeBalanceEffects {
     ofType(fromActions.getContributionTypeBalances),
     switchMap((action) => this.offlineService.getItems(DataKeys.ContributionTypeBalance)),
     switchMap(contributionTypeBalances => [
-      fromActions.loadContributionTypeBalances({contributionTypeBalances}),
+      fromActions.upsertContributionTypeBalances({contributionTypeBalances}),
       fromActions.doneLoadingContributionTypeBalances()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

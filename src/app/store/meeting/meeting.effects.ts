@@ -12,10 +12,10 @@ export class MeetingEffects {
     ofType(fromActions.getMeetings),
     switchMap((action) => this.offlineService.getItems(DataKeys.Meeting)),
     switchMap(meetings => [
-      fromActions.loadMeetings({meetings}),
+      fromActions.upsertMeetings({meetings}),
       fromActions.doneLoadingMeetings()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,

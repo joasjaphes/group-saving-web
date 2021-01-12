@@ -12,10 +12,10 @@ export class MemberEffects {
     ofType(fromActions.getMembers),
     switchMap((action) => this.offlineService.getItems(DataKeys.Member)),
     switchMap(members => [
-      fromActions.loadMembers({members}),
+      fromActions.upsertMembers({members}),
       fromActions.doneLoadingMembers()
     ])
-  ), { dispatch: false });
+  ));
 
   constructor(
     private actions$: Actions,
