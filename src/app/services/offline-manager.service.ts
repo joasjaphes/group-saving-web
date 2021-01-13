@@ -22,7 +22,6 @@ export class OfflineManagerService {
   }
 
   getItems(dataKey: string): Observable<any> {
-    if (dataKey === 'groups') { console.log(`ni kama naiita ${dataKey}`); }
     return new Observable( (observer) => {
       this.localDbService.getAll(dataKey)
         .then(

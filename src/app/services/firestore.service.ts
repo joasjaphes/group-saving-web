@@ -38,7 +38,6 @@ export class FirestoreService {
   }
 
   async getGroupData(last_update_time, currentClass: FirestoreService, dataKey: string, groupId: string) {
-    console.log('nafika kwenye group');
     const collection: any = await currentClass
       .afs
       .collection('groups', ref => ref.where('last_update', '>', last_update_time))
@@ -46,7 +45,6 @@ export class FirestoreService {
       .get()
       .pipe(map(i => i.data()))
       .toPromise();
-    console.log({last_update_time});
     if (collection.deleted) {
       await currentClass.offlineService.removeItem(dataKey, collection.id);
     } else {
@@ -63,12 +61,9 @@ export class FirestoreService {
     group_id: string,
     updatedKey: string,
   ) {
-    if (dbKey === 'groups')  { console.log('huku pia nako....'); }
     if (localTimes) {
-      if (dbKey === 'groups')  { console.log('local time imepatikana....', updatedKey); }
       const local_time = localTimes[updatedKey] || 0;
       const online_time = onlineTimes[updatedKey] || 0;
-      if (dbKey === 'groups')  { console.log(`${local_time} !== ${online_time}`); }
       if (local_time !== online_time) {
         await dataGetter(local_time, this, dbKey, group_id);
         this.store.dispatch(dispatcher);

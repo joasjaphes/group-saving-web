@@ -7,7 +7,7 @@ import firebase from 'firebase';
 import User = firebase.User;
 import {Menu} from './menu.model';
 import {ApplicationState} from '../store';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {AuthService} from '../services/auth.service';
 import {ActivatedRoute, NavigationCancel, NavigationEnd, NavigationStart, RouteConfigLoadEnd, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
@@ -23,6 +23,8 @@ import {getGroups, setSelectedGroup} from '../store/group/group.actions';
 import {addCurrentUser} from '../store/user/user.actions';
 import {setAnalyticsConfig} from '@angular/cli/models/analytics';
 import {group} from '@angular/animations';
+import {Group} from '../store/group/group.model';
+import * as groupSelector from '../store/group/group.selectors';
 
 @Component({
   selector: 'app-menu',
@@ -80,7 +82,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   lastUpdatedSubscription: Subscription;
   memberGroupSubscription: Subscription;
   memberGroupSub: Subscription;
-
+  group$: Observable<Group>;
   constructor(
     private breakpointObserver: BreakpointObserver,
     private store: Store<ApplicationState>,
@@ -96,11 +98,11 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {
     this.user$ = this.userService.getLoginUser();
     this.helpOpened$ = this.commonService.showHElp1;
+    this.group$ = this.store.pipe(select(groupSelector.selected));
   }
 
   ngOnInit(): void {
     this.userSubscription = this.user$.subscribe((user) => {
-      console.log({user});
       if (user) {
         this.store.dispatch(addCurrentUser({
             currentUser: {
@@ -160,7 +162,6 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   async getMemberGroups(userId: string) {
     this.getInitialDataFromLocal();
     const local_member_groups = await this.offlineService.getItems(DataKeys.MemberGroup).pipe(first()).toPromise();
-    console.log({local_member_groups});
     if (local_member_groups && local_member_groups.length === 0) {
       this.memberGroupSub = this.afs
         .collection(DataKeys.MemberGroup, ref => ref.where('user_id', '==', userId))
@@ -195,7 +196,6 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
           this.store.dispatch(setSelectedGroup({groupId: mem.group_id}));
         }
       }
-      console.log('Sasa hivi tunapita huku');
     }
 
   }
@@ -204,7 +204,6 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   async initiateLastUpdatedTimes(member_groups: any) {
     const groups = member_groups ? member_groups : [];
     for (const group1 of groups) {
-      console.log(group1);
       this.lastUpdatedSubscription = this.afs
         .collection('groups')
         .doc(group1.group_id)
@@ -213,12 +212,9 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         .valueChanges()
         .subscribe(async (updateTimes: any) => {
           try {
-            console.log({updateTimes}, '*******');
             // Get Last Updated Times from the local database
             const localTimes: LastUpdatedAt = await this.offlineService.getLastUpdatedTimes();
-            console.log({localTimes});
             // get group Information
-            console.log('calling the method....');
             await this.firestoreService.getUpdatedData(
               localTimes,
               updateTimes,

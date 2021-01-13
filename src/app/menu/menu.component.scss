@@ -179,7 +179,7 @@ mat-nav-list {
   width: 100%;
   grid-template-columns: auto auto auto;
   grid-gap: 5px;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .titleArea:hover {

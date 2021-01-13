@@ -63,7 +63,11 @@ body * {
 }
 
 .registration-title {
-  font-family: CMSansSerif !important;
+  font-family: CMSansSerif, serif !important;
+}
+
+.content-area {
+  background-color: #262626;
 }
 
 button:focus {

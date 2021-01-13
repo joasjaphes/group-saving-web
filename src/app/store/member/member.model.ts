@@ -1,15 +1,15 @@
 export interface Member {
   id: string;
-  groupId: string;
-  isActive: boolean;
-  lastUpdate: number;
+  group_id: string;
+  is_active: boolean;
+  last_update: number;
   name: string;
   email: string;
-  phoneNumber: string;
-  profilePicture: string;
+  phone_number: string;
+  profile_picture: string;
   gender: string;
-  dateJoined: string;
-  canEdit: boolean;
+  date_joined: string;
+  can_edit: boolean;
   permissions: any;
-  additionalConfig: any;
+  additional_config: any;
 }

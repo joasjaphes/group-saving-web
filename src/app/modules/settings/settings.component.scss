@@ -1,0 +1,39 @@
+.main-menu-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(430px, 1fr));
+  grid-gap: 20px;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: 120px auto;
+  padding: 20px;
+  border-radius: 20px;
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
+  cursor: pointer;
+
+  p {
+    font-size: 15px;
+    color: #8e8e8e;
+  }
+
+  .img-div {
+    background-color: #ffffff96;
+    width: 85px;
+    height: 85px;
+    padding: 17px;
+    text-align: center;
+    border-radius: 42px;
+    vertical-align: middle;
+
+    img {
+      height: 50px;
+      width: 50px;
+    }
+  }
+}
+
+.menu-grid:hover {
+  background-color: #1a1a1a;
+  transform: scale(1.03);
+}

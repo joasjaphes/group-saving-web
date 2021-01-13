@@ -3,6 +3,17 @@
   icon="settings"
 >
   <ng-container ngProjectAs="table">
-    <h1>Account Information will be here</h1>
+    <div class="main-menu-container">
+      <div class="menu-grid content-area" *ngFor="let menu of menus">
+        <div class="img-div">
+          <img alt="test" src="assets/images/icons/adjustment.png">
+        </div>
+        <div>
+          <h2 class="registration-title mb-1">{{menu.name}}</h2>
+          <p class="lead">{{menu.description}}</p>
+        </div>
+      </div>
+    </div>
+
   </ng-container>
 </app-shared-layout>

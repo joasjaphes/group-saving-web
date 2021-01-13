@@ -12,6 +12,7 @@ import {TopBannerComponent} from './components/topbanner/top-banner.component';
 import {ViewHelpComponent} from './components/view-help/view-help.component';
 import { FirstUpperCasePipe } from './pipes/first-upper-case.pipe';
 import {ToUpperPipe} from './pipes/to-upper.pipe';
+import { CircularProgressComponent } from './components/circular-progress/circular-progress.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import {ToUpperPipe} from './pipes/to-upper.pipe';
     SearchPipe,
     FirstUpperCasePipe,
     ToUpperPipe,
+    CircularProgressComponent,
   ],
   imports: [
     CommonModule,
@@ -44,6 +46,7 @@ import {ToUpperPipe} from './pipes/to-upper.pipe';
     SharedLayoutComponent,
     TopBannerComponent,
     ViewHelpComponent,
+    CircularProgressComponent,
     SearchPipe,
     FirstUpperCasePipe,
     ToUpperPipe,
