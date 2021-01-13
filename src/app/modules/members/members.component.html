@@ -7,7 +7,7 @@
 >
   <ng-container ngProjectAs="table">
 <!--    In case there is only one member-->
-    <div *ngIf="(members$ | async).length != 1" class="progress-container content-area mb-5">
+    <div *ngIf="(members$ | async).length == 1" class="progress-container content-area mb-5">
       <div class="progressArea">
         <img src="assets/images/member.jpg">
       </div>
