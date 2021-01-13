@@ -25,6 +25,7 @@ import {setAnalyticsConfig} from '@angular/cli/models/analytics';
 import {group} from '@angular/animations';
 import {Group} from '../store/group/group.model';
 import * as groupSelector from '../store/group/group.selectors';
+import {setSelectedMember} from '../store/member/member.actions';
 
 @Component({
   selector: 'app-menu',
@@ -83,6 +84,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   memberGroupSubscription: Subscription;
   memberGroupSub: Subscription;
   group$: Observable<Group>;
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     private store: Store<ApplicationState>,
@@ -171,13 +173,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
             this.fetchData = false;
             this.initiateLastUpdatedTimes(member_groups);
             for (const mem of member_groups) {
-              const activeGroup = localStorage.getItem('group_savings_active_group');
-              if (activeGroup) {
-                this.store.dispatch(setSelectedGroup({groupId: activeGroup}));
-              } else {
-                localStorage.setItem('group_savings_active_group', mem.group_id);
-                this.store.dispatch(setSelectedGroup({groupId: mem.group_id}));
-              }
+              this.setActiveGroupAndMember(mem);
               this.offlineService.saveItem({
                 ...mem,
               }, DataKeys.MemberGroup).then();
@@ -186,18 +182,22 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     } else {
       this.initiateLastUpdatedTimes(local_member_groups).then();
-      const activeGroup = localStorage.getItem('group_savings_active_group');
-      if (activeGroup) {
-        this.store.dispatch(setSelectedGroup({groupId: activeGroup}));
-      } else {
-        const mem = local_member_groups[0];
-        if (mem) {
-          localStorage.setItem('group_savings_active_group', mem.group_id);
-          this.store.dispatch(setSelectedGroup({groupId: mem.group_id}));
-        }
-      }
+      this.setActiveGroupAndMember(local_member_groups[0]);
     }
+  }
 
+  setActiveGroupAndMember(memberGroup) {
+    const activeGroup = localStorage.getItem('group_savings_active_group');
+    const currentMember = localStorage.getItem('group_savings_current_member');
+    if (activeGroup) {
+      this.store.dispatch(setSelectedGroup({groupId: activeGroup}));
+      this.store.dispatch(setSelectedMember({memberId: currentMember}));
+    } else {
+      localStorage.setItem('group_savings_active_group', memberGroup.group_id);
+      localStorage.setItem('group_savings_current_member', memberGroup.member_id);
+      this.store.dispatch(setSelectedGroup({groupId: memberGroup.group_id}));
+      this.store.dispatch(setSelectedMember({memberId: memberGroup.member_id}));
+    }
   }
 
   // This method is used to initialize data from store if the user is logged in
@@ -215,7 +215,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
             // Get Last Updated Times from the local database
             const localTimes: LastUpdatedAt = await this.offlineService.getLastUpdatedTimes();
             // get group Information
-            await this.firestoreService.getUpdatedData(
+            this.firestoreService.getUpdatedData(
               localTimes,
               updateTimes,
               DataKeys.Group,
@@ -223,7 +223,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
               getGroups(),
               group1.group_id,
               UpdatedDataKeys[DataKeys.Group]
-              );
+            ).then();
             // get Other Information
             const keysToWorkWith = Object.keys(DataKeys)
               .map(i => DataKeys[i])
@@ -232,7 +232,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
               .filter(i => i !== DataKeys.MemberGroup)
               .filter(i => i !== 'groups');
             for (const storeKey of keysToWorkWith) {
-              await this.firestoreService.getUpdatedData(
+              this.firestoreService.getUpdatedData(
                 localTimes,
                 updateTimes,
                 storeKey,
@@ -240,7 +240,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
                 GET_METHODS[storeKey],
                 group1.group_id,
                 UpdatedDataKeys[storeKey]
-              );
+              ).then();
             }
             this.offlineService.saveLastUpdatedTimes({
               ...updateTimes,

@@ -3,17 +3,7 @@
   icon="settings"
 >
   <ng-container ngProjectAs="table">
-    <div class="main-menu-container">
-      <div class="menu-grid content-area" *ngFor="let menu of menus">
-        <div class="img-div">
-          <img alt="test" src="assets/images/icons/{{menu.image}}">
-        </div>
-        <div>
-          <h2 class="registration-title mb-1">{{menu.name}}</h2>
-          <p class="lead">{{menu.description}}</p>
-        </div>
-      </div>
-    </div>
+    <app-menu-items [menus]="menus"></app-menu-items>
 
   </ng-container>
 </app-shared-layout>

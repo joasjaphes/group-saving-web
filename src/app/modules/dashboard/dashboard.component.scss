@@ -4,4 +4,40 @@
   grid-gap: 20px;
   border-radius: 20px;
   padding-top: 30px;
+
+  .progressArea {
+    height: 300px;
+    width: 300px
+  }
+
+  .textArea {
+    height: 300px;
+    vertical-align: middle;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .progress-container {
+    display: grid;
+    grid-template-columns: auto;
+    grid-gap: 20px;
+    border-radius: 20px;
+    padding-top: 30px;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+
+
+
+    .progressArea {
+      height: 300px;
+      width: 100%;
+    }
+
+    .textArea {
+      height: 300px;
+      vertical-align: middle;
+      padding: 15px;
+    }
+  }
 }

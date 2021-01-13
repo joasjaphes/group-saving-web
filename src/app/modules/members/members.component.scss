@@ -1,0 +1,136 @@
+.main-menu-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: 120px auto 40px;
+  padding: 27px 20px 20px 20px;
+  border-radius: 20px;
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
+  cursor: pointer;
+
+  p {
+    font-size: 15px;
+    color: #8e8e8e;
+  }
+
+  .edit-button {
+    border: 1px solid #574c79;
+    border-radius: 25px;
+  }
+
+  .img-div {
+    background-color: #ffffff96;
+    width: 85px;
+    height: 83px;
+    padding: 25px;
+    text-align: center;
+    border-radius: 42px;
+    vertical-align: middle;
+
+    img {
+      height: 50px;
+      width: 50px;
+    }
+  }
+}
+
+.menu-grid:hover {
+  background-color: #1a1a1a;
+  transform: scale(1.03);
+}
+
+.progress-container {
+  display: grid;
+  grid-template-columns: 350px minmax(400px, 1fr);
+  grid-gap: 20px;
+  border-radius: 20px;
+  padding-top: 30px;
+
+  .progressArea {
+    height: 300px;
+    width: 300px;
+    margin-left: 20px;
+
+    img {
+      height: 250px;
+      width: 250px;
+      opacity: 0.8;
+      border-radius: 50%;
+    }
+  }
+
+  .textArea {
+    height: 300px;
+    vertical-align: middle;
+  }
+}
+
+
+@media only screen and (max-width: 768px) {
+  .progress-container {
+    display: grid;
+    grid-template-columns: auto;
+    grid-gap: 20px;
+    border-radius: 20px;
+    padding-top: 30px;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+
+
+
+    .progressArea {
+      height: 300px;
+      width: 100%;
+      text-align: center;
+      margin-left: 0;
+
+      img {
+        height: 250px;
+        width: 250px;
+        opacity: 0.8;
+        border-radius: 50%;
+      }
+    }
+
+    .textArea {
+      height: 300px;
+      vertical-align: middle;
+      padding: 15px;
+    }
+  }
+
+
+
+  .main-menu-container {
+    display: grid;
+    grid-template-columns:  1fr;
+    grid-gap: 20px;
+  }
+
+  .menu-grid {
+
+    h2 {
+      padding-top: 20px;
+    }
+
+    .img-div {
+      background-color: #ffffff96;
+      width: 75px;
+      height: 75px;
+      padding: 20px;
+      text-align: center;
+      border-radius: 40px;
+      vertical-align: middle;
+
+      img {
+        height: 45px;
+        width: 45px;
+      }
+    }
+  }
+}

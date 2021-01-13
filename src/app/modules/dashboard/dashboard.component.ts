@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {Group} from '../../store/group/group.model';
 import * as groupSelector from '../../store/group/group.selectors';
 import * as contrSelector from '../../store/contribution-type/contribution-type.selectors';
+import * as memberSelector from '../../store/member/member.selectors';
 import {ContributionType} from '../../store/contribution-type/contribution-type.model';
 
 @Component({
@@ -18,6 +19,7 @@ export class DashboardComponent implements OnInit {
   contributions$: Observable<ContributionType[]>;
   progress$: Observable<any>;
   progressDetails$: Observable<any>;
+  memberName$: Observable<string>;
   constructor(
     private store: Store<ApplicationState>
   ) {
@@ -25,6 +27,7 @@ export class DashboardComponent implements OnInit {
     this.contributions$ = this.store.pipe(select(contrSelector.selectAll));
     this.progress$ = this.store.pipe(select(groupSelector.selectProgressPercent));
     this.progressDetails$ = this.store.pipe(select(groupSelector.selectProgress));
+    this.memberName$ = this.store.pipe(select(memberSelector.selectFirstNameOnly));
   }
 
   ngOnInit(): void {

@@ -60,16 +60,16 @@
 
 <ng-container>
   <div class="col-md-12" *ngIf="!viewDetails">
-    <a
-      style="z-index: 100;"
+    <button
       *ngIf="!hideAdd"
       title="Add"
       (click)="add()"
-      mat-fab
       color="primary"
       class="add-item"
+      mat-raised-button
     >
-      <mat-icon>add</mat-icon>
-    </a>
+      <mat-icon>{{addIcon}}</mat-icon>
+      {{addText}}
+    </button>
   </div>
 </ng-container>

@@ -22,6 +22,8 @@ export class SharedLayoutComponent implements OnInit {
 
   @Input() viewDetails = false;
   @Input() hideAdd = true;
+  @Input() addIcon = 'add';
+  @Input() addText = 'Add';
   @Input() smallForm = true;
   @Input() hideBreadcrumb = false;
 

@@ -48,9 +48,38 @@ body * {
 
 }
 
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 10px 0 10px 0 !important;
+}
+
 .mat-form-field {
   width: 100% !important;
 }
+
+button.add-item {
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  margin-left: 5px;
+  z-index: 100;
+  border-radius: 199px;
+  border: 1px solid #F15A28!important;
+  padding: 8px 15px;
+  font-family: CMSansSerif, serif !important;
+  font-weight: bold;
+  background-color: #1a1a1a!important;
+  color: #F15A28!important;
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
+  mat-icon {
+    font-weight: bold;
+    font-size: 20px;
+  }
+}
+
+button.add-item:hover {
+  transform: scale(1.08);
+}
+
 
 
 .registration-button {
@@ -73,4 +102,56 @@ body * {
 button:focus {
   outline: none;
   outline: 0;
+}
+
+.entry-table {
+  .mat-form-field-wrapper {
+    padding-bottom: 0 !important;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: 0 !important;
+    margin-bottom: 5px !important;
+  }
+
+  .mat-tab-body-content {
+    overflow: hidden !important;
+  }
+
+  .mat-tab-label-active {
+    font-weight: bolder !important;
+    background-color: rgba(0,0,0,0.1) !important;
+    border-top-right-radius: 5px !important;
+    border-top-left-radius: 5px !important;
+    opacity: 0.8 !important;
+  }
+
+  .mat-tab-label {
+    border-top-right-radius: 5px !important;
+    border-top-left-radius: 5px !important;
+    margin-right: 8px;
+    border: 1px solid rgba(0,0,0,0.2) !important;
+    border-bottom: 0px !important;
+  }
+
+
+  .pull-right .cursor {
+    position: relative;
+    bottom: 20px !important;
+  }
+  td {
+    padding: 2px!important;
+  }
+}
+
+
+.add-button {
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
+  mat-icon {
+    font-weight: bold;
+  }
+}
+
+.add-button:hover {
+  transform: scale(1.1);
 }

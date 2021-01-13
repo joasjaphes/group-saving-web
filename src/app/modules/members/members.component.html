@@ -1,8 +1,73 @@
 <app-shared-layout
   title="Group Members"
   icon="people_outline"
+  [hideAdd]="false"
+  [addIcon]="'group_add'"
+  [addText]="'Add Members'"
 >
   <ng-container ngProjectAs="table">
-    <h1>Group Members will be here</h1>
+<!--    In case there is only one member-->
+    <div *ngIf="(members$ | async).length != 1" class="progress-container content-area mb-5">
+      <div class="progressArea">
+        <img src="assets/images/member.jpg">
+      </div>
+      <div class="textArea">
+        <h1 style="font-size: 40px; line-height: 45px" class="registration-title mt-5 mb-4">
+          Looks like your the only one here
+        </h1>
+        <button
+          style="font-weight: 900; border-radius: 20px;margin-top: 10px;padding: 5px 25px;font-size: 15px;border: 1px solid #FF7043;"
+          mat-raised-button
+          class="registration-title add-button"
+        >
+          <mat-icon>group_add</mat-icon>&nbsp;
+          Add Members&nbsp;
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </div>
+<!--    List of Members-->
+    <div *ngIf="(members$ | async).length > 1" class="main-menu-container">
+      <div
+        [ngClass]="routeAnimationsElements"
+        class="menu-grid content-area"
+        *ngFor="let member of members$ | async"
+      >
+        <div class="img-div">
+          <h1 style="font-size: 40px; color: #0d0d0d" class="registration-title">{{member.name[0].toUpperCase()}}</h1>
+        </div>
+
+        <div>
+          <h2 class="registration-title mb-1">{{member.name}}</h2>
+          <p class="lead">{{member.phone_number}}</p>
+          <p>
+            <button mat-button class="edit-button">
+              <mat-icon style="color: #0277bd">mode_edit</mat-icon>
+              <span style="color: #0277bd">Edit</span>
+            </button>&nbsp;
+            <button mat-button>
+              <mat-icon>remove_red_eye</mat-icon> View Details
+            </button>
+          </p>
+        </div>
+
+        <div class="menu">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon style="color: white">more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>remove_red_eye</mat-icon> View Details
+            </button>
+            <button mat-menu-item >
+              <mat-icon style="color: #0277bd">mode_edit</mat-icon> Edit
+            </button>
+            <button mat-menu-item >
+              <mat-icon style="color: red">delete</mat-icon> Delete
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+    </div>
   </ng-container>
 </app-shared-layout>

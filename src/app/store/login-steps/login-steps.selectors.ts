@@ -62,16 +62,6 @@ export function trimPhoneNumber(value: string) {
 export const selectProgressValue = createSelector(
   selectCurrentStep,
   (currentStep) => {
-    // CountrySelection= 'Country selection',
-    //   PhoneNumber = 'Phone number',
-    //   EnterPassword = 'Enter password',
-    //   MemberGroup = 'Member groups',
-    //   MemberName = 'Member name',
-    //   SetPassword = 'Select password',
-    //   GroupName = 'Group name',
-    //   ConfirmPassword = 'Confirm password',
-    //   GroupSize = 'Group size',
-    //   CreatingGroup = 'Creating group...',
     let progressValue = 12;
     switch (currentStep) {
       case (RegistrationSteps.CountrySelection):
@@ -88,6 +78,9 @@ export const selectProgressValue = createSelector(
         break;
       case (RegistrationSteps.SetPassword):
         progressValue = 81;
+        break;
+      case (RegistrationSteps.EnterPassword):
+        progressValue = 90;
         break;
       case (RegistrationSteps.ConfirmPassword):
         progressValue = 86;

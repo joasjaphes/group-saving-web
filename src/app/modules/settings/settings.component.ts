@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
 
 @Component({
   selector: 'app-settings',

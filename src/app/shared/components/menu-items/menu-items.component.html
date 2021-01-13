@@ -1,0 +1,14 @@
+<div class="main-menu-container">
+  <div
+    [ngClass]="routeAnimationsElements"
+    class="menu-grid content-area"
+    *ngFor="let menu of menus">
+    <div class="img-div">
+      <img alt="test" src="assets/images/icons/{{menu.image}}">
+    </div>
+    <div>
+      <h2 class="registration-title mb-1">{{menu.name}}</h2>
+      <p class="lead" *ngIf="!(isHandset$ | async)">{{menu.description}}</p>
+    </div>
+  </div>
+</div>

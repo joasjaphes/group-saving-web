@@ -18,3 +18,8 @@ export const selectById = (id: string) => createSelector(
 export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
+
+export const selectFirstNameOnly = createSelector(
+  selected,
+  (member) => member.name.split(' ')[0]
+);

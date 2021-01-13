@@ -13,6 +13,7 @@ import {ViewHelpComponent} from './components/view-help/view-help.component';
 import { FirstUpperCasePipe } from './pipes/first-upper-case.pipe';
 import {ToUpperPipe} from './pipes/to-upper.pipe';
 import { CircularProgressComponent } from './components/circular-progress/circular-progress.component';
+import { MenuItemsComponent } from './components/menu-items/menu-items.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { CircularProgressComponent } from './components/circular-progress/circul
     FirstUpperCasePipe,
     ToUpperPipe,
     CircularProgressComponent,
+    MenuItemsComponent,
   ],
   imports: [
     CommonModule,
@@ -47,6 +49,7 @@ import { CircularProgressComponent } from './components/circular-progress/circul
     TopBannerComponent,
     ViewHelpComponent,
     CircularProgressComponent,
+    MenuItemsComponent,
     SearchPipe,
     FirstUpperCasePipe,
     ToUpperPipe,

@@ -62,8 +62,8 @@ export class FirestoreService {
     updatedKey: string,
   ) {
     if (localTimes) {
-      const local_time = localTimes[updatedKey] || 0;
-      const online_time = onlineTimes[updatedKey] || 0;
+      const local_time = (localTimes ? localTimes[updatedKey] : 0) || 0;
+      const online_time = (onlineTimes ? onlineTimes[updatedKey] : 0) || 0;
       if (local_time !== online_time) {
         await dataGetter(local_time, this, dbKey, group_id);
         this.store.dispatch(dispatcher);
