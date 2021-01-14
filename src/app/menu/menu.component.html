@@ -57,7 +57,7 @@
 
     <!--    user dropdown menu-->
     <mat-menu #appMenu="matMenu">
-      <a [routerLink]="['', 'profile']" mat-menu-item>
+      <button [routerLink]="['', 'profile']" mat-menu-item>
         <mat-icon>person</mat-icon>
         <span
           style="
@@ -67,8 +67,8 @@
           "
         >Profile</span
         >
-      </a>
-      <a [routerLink]="['', 'change-password']" mat-menu-item>
+      </button>
+      <button [routerLink]="['', 'change-password']" mat-menu-item>
         <mat-icon>lock</mat-icon>
         <span
           style="
@@ -78,9 +78,9 @@
           "
         >Change Password</span
         >
-      </a>
+      </button>
       <mat-divider></mat-divider>
-      <a (click)="logout()" mat-menu-item>
+      <button (click)="logout()" mat-menu-item>
         <mat-icon>send</mat-icon>
         <span
           style="
@@ -90,15 +90,7 @@
           "
         >Logout</span
         >
-      </a>
-      <mat-divider></mat-divider>
-      <a (click)="logout()" mat-menu-item>
-        <div class="col-sm-12 mt-2" *ngIf="(user$ | async)" @fadeIn>
-          <p class="userPhone m-0 text-center">
-            <span>{{ (user$ | async)?.phoneNumber }}</span>
-          </p>
-        </div>
-      </a>
+      </button>
     </mat-menu>
 
     <!--    Notifications-->

@@ -21,6 +21,16 @@ export class OfflineManagerService {
     return null;
   }
 
+  async clearAll(table: string) {
+    try {
+      await this.localDbService.clearAll(table);
+      return null;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
+
   getItems(dataKey: string): Observable<any> {
     return new Observable( (observer) => {
       this.localDbService.getAll(dataKey)

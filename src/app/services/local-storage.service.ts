@@ -136,6 +136,18 @@ export class LocalStorageService {
   }
 
   /**
+   * delete all items in a store
+   * @returns {any}
+   */
+  async clearEverything( ) {
+    await this._initiateStoreObjects();
+    Object.keys(this.offlineKeys).forEach((key) => {
+      console.log(`removing items in ${key} table`);
+      this.clearAll(this.offlineKeys[key]);
+    });
+  }
+
+  /**
    * delete a single item in a store
    * @param store_key
    * @param index

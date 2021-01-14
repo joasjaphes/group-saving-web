@@ -21,5 +21,5 @@ export const selected = createSelector(
 
 export const selectFirstNameOnly = createSelector(
   selected,
-  (member) => member.name.split(' ')[0]
+  (member) => member && member.name ? member.name.split(' ')[0] : ''
 );

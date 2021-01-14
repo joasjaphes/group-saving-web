@@ -16,6 +16,7 @@ export class EnterPasswordComponent implements OnInit, AfterViewInit {
   password: string;
   hide = true;
   @ViewChild('myInput') myInputField: ElementRef;
+  loading: any;
 
   constructor(
     private authService: AuthService
@@ -29,6 +30,12 @@ export class EnterPasswordComponent implements OnInit, AfterViewInit {
   }
 
   async login() {
-    await this.authService.login(this.email, this.password);
+    this.loading = true;
+    try {
+      await this.authService.login(this.email, this.password);
+      this.loading = false;
+    } catch (e) {
+      this.loading = false;
+    }
   }
 }
