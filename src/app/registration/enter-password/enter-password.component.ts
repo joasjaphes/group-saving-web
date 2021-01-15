@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {fadeIn, ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
 import {AuthService} from '../../services/auth.service';
+import {CommonService} from '../../services/common.service';
 
 @Component({
   selector: 'app-enter-password',
@@ -19,7 +20,8 @@ export class EnterPasswordComponent implements OnInit, AfterViewInit {
   loading: any;
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private commonService: CommonService
   ) { }
 
   ngOnInit(): void {
@@ -36,6 +38,7 @@ export class EnterPasswordComponent implements OnInit, AfterViewInit {
       this.loading = false;
     } catch (e) {
       this.loading = false;
+      this.commonService.showError('Incorrect Username or Password');
     }
   }
 }
