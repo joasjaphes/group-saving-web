@@ -1,22 +1,7 @@
-<!--<mat-toolbar class="no-print">-->
-<!--  <mat-toolbar-row>-->
-<!--    <div class="ks-title">-->
-<!--      <h3 style="cursor: pointer; font-size: 15px" [ngClass]="routeAnimationsElements">-->
-<!--        <img *ngIf="image" class="mr-2" [src]="'assets/images/icons/'+image" style="height: 32px; margin-top: -15px">-->
-<!--        <mat-icon *ngIf="icon">{{icon}}</mat-icon>&nbsp;-->
-<!--        {{ title }}-->
-<!--      </h3>-->
-<!--      <div *ngIf="showHelp">-->
-<!--        <button mat-icon-button title="Get Help Here" class="fa-pull-right mr-1" (click)="openHelp()">-->
-<!--&lt;!&ndash;          <i class="fa fa-question-circle" style="color: dodgerblue"></i>&ndash;&gt;-->
-<!--          <mat-icon style="color: #0091f9cc">help_outline</mat-icon>-->
-<!--        </button>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </mat-toolbar-row>-->
-<!--</mat-toolbar>-->
-<!--<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>-->
-<div class="container-fluid" style="padding-left: 25px; padding-top: 25px; padding-right: 25px; background-color: #303030">
+<div
+  class="container-fluid"
+  style="padding-left: 25px; padding-top: 25px; padding-right: 25px; background-color: #1d1d42"
+>
   <div class="row">
     <div [ngClass]="{'col-sm-12': (isHandset$ | async), 'col-sm-10': !(isHandset$ | async)}">
       <h1 style="font-size: 27px" class="registration-title" [ngClass]="routeAnimationsElements">

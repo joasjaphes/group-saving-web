@@ -146,14 +146,16 @@
     <div class="row pt-3 pb-3 m-0">
 
       <div style="cursor: pointer" title="Switch Group" class="col-sm-12 titleArea" *ngIf="(user$ | async)" @fadeIn>
-        <div>
-          <img alt="logo" style="height: 30px; border-radius: 50%" src="assets/icons/icon-72x72.png">
+        <div style="padding-top: 5px;">
+          <div style="display: inline">
+            <img alt="logo" style="height: 30px; border-radius: 50%; vertical-align: middle" src="assets/icons/icon-72x72.png">
+          </div>
+          <div style="display: inline-block; white-space: nowrap; position: absolute; bottom: 0">
+            <span>{{(group$ | async)?.group_name}}</span>
+          </div>
         </div>
         <div style="padding-top: 5px;">
-          <span style="font-size: 1vw">{{(group$ | async)?.group_name}}</span>
-        </div>
-        <div style="padding-top: 5px;">
-          <mat-icon style="color: white;">keyboard_arrow_down</mat-icon>
+<!--          <mat-icon style="color: white;">keyboard_arrow_down</mat-icon>-->
         </div>
       </div>
     </div>
@@ -164,7 +166,7 @@
         <ng-container *ngIf="!menu.children">
           <a
             mat-list-item
-            class="big-menu-items1"
+            class="big-menu-items1 registration-title"
             [routerLink]="menu?.route"
             routerLinkActive="active-menu"
             (click)="closeMenu(drawer)"

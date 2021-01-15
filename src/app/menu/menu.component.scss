@@ -2,6 +2,9 @@
 .sidenav-container {
   height: 100%;
 }
+.mat-sidenav-content {
+  background-color: #1d1d42!important;
+}
 
 .main-navv {
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
@@ -13,7 +16,6 @@
   left: 240px;
   right: 0;
   z-index: 2;
-  //background-color: white;
 }
 
 .main-nav1 {
@@ -21,7 +23,6 @@
   top: 0;
   left: 0;
   right: 0;
-  //background-color: white;
   z-index: 2;
 }
 
@@ -38,7 +39,8 @@ mat-nav-list {
 
 .active-menu {
   border-radius: 0px!important;
-  background-color: rgba(0,0,0,0.08)!important;
+  //background-color: rgba(0,0,0,0.08)!important;
+  background-color: #141432;
   border-right: 4px solid #FF7043!important;
   font-weight: 600;
   color: #ff7143;
@@ -109,7 +111,8 @@ mat-nav-list {
 .mat-toolbar{
   //background-image:
   //  linear-gradient(to bottom, rgb(92, 162, 243, 0.3), rgba(3, 6, 24, 0.2));
-  background-color: #303030;
+  //background-color: #303030;
+  background-color: #1d1d42;
   border-bottom: 1px solid rgba(0,0,0,0.05);
   //padding-bottom: 20px;
   //  url('../../assets/images/flag.png');
@@ -140,7 +143,7 @@ mat-nav-list {
   width: 240px;
   box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.14);
   height: 100%!important;
-  background-color: #303030;
+  background-color: #1d1d42;
 }
 
 .userName {
@@ -177,9 +180,11 @@ mat-nav-list {
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
   display: grid;
   width: 100%;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto 40px;
   grid-gap: 5px;
-  justify-content: space-evenly;
+  font-weight: bolder;
+  font-size: 1.2em;
+  justify-content: space-between;
 }
 
 .titleArea:hover {

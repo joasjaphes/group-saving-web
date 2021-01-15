@@ -39,7 +39,7 @@ export class AuthService {
 
   getLoginUser(): Observable<User> {
     const userData = localStorage.getItem('group-saving-user');
-    return userData ? of(JSON.parse(userData)) : this.afAuth.authState;
+    return JSON.parse(userData) ? of(JSON.parse(userData)) : this.afAuth.authState;
   }
 
 }

@@ -8,6 +8,7 @@
 $angular-primary: mat-palette($mat-teal, 500, 100, 900);
 $angular-accent: mat-palette($mat-pink, A200, A100, A400);
 $angular-warn: mat-palette($mat-red);
+$custom-background-color: #141434;
 $angular-default-theme: mat-light-theme(
     (
       color: (
@@ -67,7 +68,7 @@ button.add-item {
   padding: 8px 15px;
   font-family: CMSansSerif, serif !important;
   font-weight: bold;
-  background-color: #1a1a1a!important;
+  background-color: #141432!important;
   color: #F15A28!important;
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
   mat-icon {
@@ -96,7 +97,7 @@ button.add-item:hover {
 }
 
 .content-area {
-  background-color: #262626;
+  background-color: #141432;
 }
 
 button:focus {

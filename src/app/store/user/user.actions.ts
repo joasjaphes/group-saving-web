@@ -74,3 +74,7 @@ export const deleteUsers = createAction(
 export const clearUsers = createAction(
   '[User/API] Clear Users'
 );
+
+export const logout = createAction(
+  '[User/API] Logout'
+);

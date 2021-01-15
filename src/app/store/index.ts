@@ -1,6 +1,7 @@
 import {
+  ActionReducer,
   ActionReducerMap,
-  createFeatureSelector,
+  createFeatureSelector, INIT,
   MetaReducer
 } from '@ngrx/store';
 import { environment } from '../../environments/environment';
@@ -36,6 +37,7 @@ import * as fromShareDividendMember from './share-dividend-member/share-dividend
 import * as fromLoginSteps from './login-steps/login-steps.reducer';
 import * as fromRouter from '@ngrx/router-store';
 import {RouterStateUrl} from './router/router.reducer';
+import * as UserActions from './user/user.actions';
 
 
 export interface ApplicationState {
@@ -108,8 +110,16 @@ export const reducers: ActionReducerMap<ApplicationState> = {
   [fromLoginSteps.loginStepsFeatureKey]: fromLoginSteps.reducer,
 };
 
+export function logout(reducer: ActionReducer<any>): ActionReducer<any> {
+  return (state, action) => {
+    if ( action != null && action.type === UserActions.logout.type) {
+      return reducer( undefined, {type: INIT});
+    }
+    return reducer(state, action);
+  };
+}
 
-export const metaReducers: MetaReducer<ApplicationState>[] = !environment.production ? [] : [];
+export const metaReducers: MetaReducer<ApplicationState>[] = !environment.production ? [logout] : [logout];
 
 export const getRouteState = createFeatureSelector<
   fromRouter.RouterReducerState<RouterStateUrl>
