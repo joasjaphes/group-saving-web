@@ -5,7 +5,7 @@
 @import '../node_modules/bootstrap/scss/bootstrap';
 @import "~@angular/material/theming";
 @include mat-core();
-$angular-primary: mat-palette($mat-teal, 500, 100, 900);
+$angular-primary: mat-palette($mat-deep-orange, 500, 100, 900);
 $angular-accent: mat-palette($mat-pink, A200, A100, A400);
 $angular-warn: mat-palette($mat-red);
 $custom-background-color: #141434;
@@ -148,6 +148,8 @@ button:focus {
 
 .add-button {
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
+  background-color: #1d1d42;
+  color: #F15A28;
   mat-icon {
     font-weight: bold;
   }
@@ -155,4 +157,38 @@ button:focus {
 
 .add-button:hover {
   transform: scale(1.1);
+}
+
+.zoom-on-hover {
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
+}
+
+.zoom-on-hover:hover {
+  transform: scale(1.1);
+}
+
+.mat-dialog-container {
+  background-color: #1d1d42;
+  border: 1px solid rgba(241, 90, 40, 0.4);
+  border-radius: 20px!important;
+  padding: 15px!important;
+}
+
+.mat-select-panel .mat-optgroup-label, .mat-select-panel .mat-option {
+  background-color: #14142E!important;
+}
+
+.mat-select-panel .mat-optgroup-label, .mat-select-panel .mat-option:hover {
+  background-color: #1d1d42!important;
+}
+
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: #F15A28!important;
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: white!important;
+}
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: white!important;
 }

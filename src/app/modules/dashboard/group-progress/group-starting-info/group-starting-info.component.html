@@ -1,0 +1,86 @@
+<div class="row">
+  <div class="col-md-6">
+    <mat-form-field appearance="outline">
+      <mat-label>Meeting Frequency</mat-label>
+      <mat-select [(ngModel)]="meetingFrequency">
+        <mat-option value="Month">Monthly <small> (Group meet every Month)</small></mat-option>
+        <mat-option value="Week">Weekly <small> (Group meet every Week)</small></mat-option>
+        <mat-option value="Random">Random <small> (There is no defined meeting timetable)</small></mat-option>
+        <mat-option value="No Meeting">No meeting <small> (Group has no meetings)</small></mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-md-6" *ngIf="meetingFrequency" @fadeIn>
+    <mat-form-field appearance="outline">
+      <mat-label>Currency</mat-label>
+      <mat-select [(ngModel)]="currency">
+        <ng-container *ngFor="let country of countries">
+          <mat-option *ngIf="country.currency" [value]="country.currency">
+            <img [alt]="country.name" style="height: 15px; width: 25px" src="assets/flags/{{country.isoCode.toLowerCase()}}.png">
+            &nbsp; {{country.currencyName}} ({{country.currency}})
+          </mat-option>
+        </ng-container>
+        </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-sm-12 mt-2" *ngIf="meetingFrequency && currency" @fadeIn>
+    <h4 class="registration-title">Contribution Types</h4>
+  </div>
+  <div class="col-sm-3 cont-type" *ngIf="meetingFrequency && currency" @fadeIn [ngClass]="{'cont-active': shareChecked}" (click)="shareChecked = !shareChecked">
+    <div>
+      <mat-icon *ngIf="shareChecked" @fadeIn>check_box_outline</mat-icon>
+      <mat-icon *ngIf="!shareChecked" @fadeIn>check_box_outline_blank</mat-icon>
+    </div>
+    <div>
+      <p class="cont-title">Shares</p>
+      <p class="cont-description">Buying of shares, which may be divided as dividends after some time</p>
+    </div>
+  </div>
+  <div class="col-sm-3 cont-type" *ngIf="meetingFrequency && currency" @fadeIn [ngClass]="{'cont-active': socialChecked}" (click)="socialChecked = !socialChecked">
+    <div>
+      <mat-icon *ngIf="socialChecked" @fadeIn>check_box_outline</mat-icon>
+      <mat-icon *ngIf="!socialChecked" @fadeIn>check_box_outline_blank</mat-icon>
+    </div>
+    <div>
+      <p class="cont-title">Social</p>
+      <p class="cont-description">Covers social needs of members like, sickness, funerals, etc</p>
+    </div>
+  </div>
+  <div class="col-sm-3 cont-type" *ngIf="meetingFrequency && currency" @fadeIn [ngClass]="{'cont-active': entryChecked}" (click)="entryChecked = !entryChecked">
+    <div>
+      <mat-icon *ngIf="entryChecked" @fadeIn>check_box_outline</mat-icon>
+      <mat-icon *ngIf="!entryChecked" @fadeIn>check_box_outline_blank</mat-icon>
+    </div>
+    <div>
+      <p class="cont-title">Entry Fee</p>
+      <p class="cont-description">Contribution that member pays when joining  the group</p>
+    </div>
+  </div>
+  <div class="col-sm-3 cont-type" *ngIf="meetingFrequency && currency" @fadeIn [ngClass]="{'cont-active': otherChecked}" (click)="otherChecked = !otherChecked">
+    <div>
+      <mat-icon *ngIf="otherChecked" @fadeIn>check_box_outline</mat-icon>
+      <mat-icon *ngIf="!otherChecked" @fadeIn>check_box_outline_blank</mat-icon>
+    </div>
+    <div>
+      <p class="cont-title">Other</p>
+      <p class="cont-description">Other contributions that are not like share, social or entry fee</p>
+    </div>
+  </div>
+<!--  Entry fee amount if entry fee is checked-->
+  <div class="col-sm-12" *ngIf="entryChecked" @fadeIn>
+    <mat-form-field appearance="outline">
+      <mat-label>Entre fee amount</mat-label>
+      <input type="number" matInput [(ngModel)]="entryFeeAmount" placeholder="Entry fee amount per member">
+      <mat-hint *ngIf="entryFeeAmount" @fadeIn>
+        Each member will pay <b>{{entryFeeAmount | number}}</b> when joining the group
+      </mat-hint>
+    </mat-form-field>
+  </div>
+
+  <div class="col-sm-12 mt-3" *ngIf="meetingFrequency && currency && (shareChecked || socialChecked || entryChecked || otherChecked)">
+    <app-save-area
+      [saveDisabled]="!entryFeeAmount && entryChecked"
+      [confirmFirst]="true"
+    ></app-save-area>
+  </div>
+</div>

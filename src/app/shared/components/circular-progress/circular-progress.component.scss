@@ -5,7 +5,7 @@
   stroke-width: 1em;
 }
 #svg #bar {
-  stroke: #FF7043;
+  stroke: #F15A28;
 }
 #cont {
   display: block;
@@ -15,6 +15,7 @@
   box-shadow: 0 0 1em black;
   border-radius: 100%;
   position: relative;
+  background-color: #1d1d42;
 }
 #cont:after {
   position: absolute;

@@ -4,9 +4,7 @@ import {ApplicationState} from '../../store';
 import {Observable} from 'rxjs';
 import {Group} from '../../store/group/group.model';
 import * as groupSelector from '../../store/group/group.selectors';
-import * as contrSelector from '../../store/contribution-type/contribution-type.selectors';
 import * as memberSelector from '../../store/member/member.selectors';
-import {ContributionType} from '../../store/contribution-type/contribution-type.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,15 +14,13 @@ import {ContributionType} from '../../store/contribution-type/contribution-type.
 export class DashboardComponent implements OnInit {
 
   group$: Observable<Group>;
-  contributions$: Observable<ContributionType[]>;
   progress$: Observable<any>;
-  progressDetails$: Observable<any>;
+  progressDetails$: Observable<{title: string; buttonLabel: string}>;
   memberName$: Observable<string>;
   constructor(
-    private store: Store<ApplicationState>
+    private store: Store<ApplicationState>,
   ) {
     this.group$ = this.store.pipe(select(groupSelector.selected));
-    this.contributions$ = this.store.pipe(select(contrSelector.selectAll));
     this.progress$ = this.store.pipe(select(groupSelector.selectProgressPercent));
     this.progressDetails$ = this.store.pipe(select(groupSelector.selectProgress));
     this.memberName$ = this.store.pipe(select(memberSelector.selectFirstNameOnly));

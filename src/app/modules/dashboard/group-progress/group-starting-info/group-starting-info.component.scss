@@ -1,0 +1,33 @@
+.cont-type {
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 50px auto;
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
+
+  .cont-title {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .cont-description {
+    color: rgba(255,255,255,0.6);
+  }
+
+}
+
+.cont-active {
+  transform: scale(1.02);
+  .cont-title {
+    font-weight: bolder;
+  }
+  .cont-description {
+    color: rgba(255,255,255,0.9);
+  }
+}
+
+.cont-type:hover {
+  transform: scale(1.05);
+  .cont-description {
+    color: rgba(255,255,255,0.9);
+  }
+}

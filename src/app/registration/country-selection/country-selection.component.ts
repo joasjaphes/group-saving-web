@@ -1,8 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {fadeIn, ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
 import {countries, Country} from '../../store/countries';
-import {Store} from '@ngrx/store';
-import {ApplicationState} from '../../store';
 import {RegistrationSteps} from '../registration-steps';
 
 @Component({

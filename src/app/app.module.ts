@@ -42,6 +42,9 @@ import { SettingsComponent } from './modules/settings/settings.component';
 import { MoreInfomationComponent } from './modules/more-infomation/more-infomation.component';
 import { ProfileComponent } from './modules/my-account/profile/profile.component';
 import { ChangePasswordComponent } from './modules/my-account/change-password/change-password.component';
+import { GroupProgressComponent } from './modules/dashboard/group-progress/group-progress.component';
+import { GroupProgressDialogComponent } from './modules/dashboard/group-progress/group-progress-dialog/group-progress-dialog.component';
+import { GroupStartingInfoComponent } from './modules/dashboard/group-progress/group-starting-info/group-starting-info.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -80,7 +83,10 @@ const firebaseConfig = {
     SettingsComponent,
     MoreInfomationComponent,
     ProfileComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    GroupProgressComponent,
+    GroupProgressDialogComponent,
+    GroupStartingInfoComponent
   ],
   imports: [
     BrowserModule,

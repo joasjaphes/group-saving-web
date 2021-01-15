@@ -3,23 +3,11 @@
   icon="home"
 >
   <ng-container ngProjectAs="table">
-    <div class="progress-container content-area">
-      <div class="progressArea">
-        <app-circular-progress [value]="(progress$ | async)"></app-circular-progress>
-      </div>
-      <div class="textArea">
-        <h1 style="font-size: 40px; line-height: 45px" class="registration-title mt-5 mb-4">Complete Group Profile</h1>
-        <p style="font-size: 25px; font-weight: 100">{{(progressDetails$ | async)?.title}}</p>
-        <button
-          style="font-weight: 900; border-radius: 20px;margin-top: 10px;padding: 5px 25px;font-size: 15px;border: 1px solid #FF7043;"
-          mat-raised-button
-          class="registration-title add-button"
-        >
-          Add Information
-          <mat-icon>arrow_forward</mat-icon>
-        </button>
-      </div>
-    </div>
+    <app-group-progress
+      [group]="group$ | async"
+      [progress]="progress$ | async"
+      [progressDetails]="progressDetails$ | async"
+    ></app-group-progress>
 
 
   </ng-container>

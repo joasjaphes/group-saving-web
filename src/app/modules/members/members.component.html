@@ -1,7 +1,7 @@
 <app-shared-layout
   title="Group Members"
   icon="people_outline"
-  [hideAdd]="false"
+  [hideAdd]="(members$ | async).length == 1"
   [addIcon]="'group_add'"
   [addText]="'Add Members'"
 >

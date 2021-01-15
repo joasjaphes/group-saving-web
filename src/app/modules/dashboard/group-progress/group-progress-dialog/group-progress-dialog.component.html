@@ -1,0 +1,19 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-10">
+      <h2 class="registration-title">Group basic information</h2>
+    </div>
+    <div class="col-sm-2 pr-0" style="text-align: right">
+      <button mat-button (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+                    <span> Close</span>
+      </button>
+    </div>
+
+    <div class="col-sm-12 mt-3">
+      <app-group-starting-info
+        [group]="data.group"
+      ></app-group-starting-info>
+    </div>
+  </div>
+</div>

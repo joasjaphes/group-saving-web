@@ -83,81 +83,75 @@ export const selectProgressPercent = createSelector(
       }
       return percent;
     }
-    return  12;
+    return 12;
   }
 );
 
+/**
+ * This selector will return the current progress of setting up the group
+ * the return will be {title: string, buttonLabel: string}
+ */
 export const selectProgress = createSelector(
   selected,
   fromLoan.selectAll,
   fromContribution.selectAll,
-  fromMember.selectAll,
   (
     selectedGroup,
     loanTypes,
     contributionTypes,
-    members
   ) => {
     let title = 'Update Your Group Information';
+    let buttonLabel = 'Add information';
     if (selectedGroup) {
       const share_exist = !!contributionTypes.find(i => i.type === 'Share');
       const entry_fee_exist = !!contributionTypes.find(i => i.type === 'Entry Fee');
       const social_exist = !!contributionTypes.find(i => i.type === 'Social');
       const other_exist = !!contributionTypes.find(i => i.type === 'Other');
-      let percent = 12;
-      if (members.length === 1) {
-        title = 'Add other group members';
-      }
-      else if (!(selectedGroup.meeting_settings && selectedGroup.meeting_settings.meeting_frequency)) {
-        percent += 7;
-        title = 'Add group information';
-      }
-      else if (!(selectedGroup.currency)) {
-        percent += 8;
+      console.log(!(selectedGroup.meeting_settings && selectedGroup.meeting_settings.meeting_frequency));
+      if (!(selectedGroup.meeting_settings && selectedGroup.meeting_settings.meeting_frequency)) {
+        title = 'Add basic group information';
+        buttonLabel = 'Add group information';
+      } else if (!(selectedGroup.currency)) {
         title = 'Select Currency';
-      }
-      else if (!(selectedGroup.has_share || selectedGroup.has_entry_fee || selectedGroup.has_social || selectedGroup.has_other_contribution)) {
-        percent += 10;
-        title = 'Set contribution types';
-      }
-      else if (!(selectedGroup.has_share && share_exist)) {
-        percent += 4;
+        buttonLabel = 'Set Currency';
+      } else if (!(selectedGroup.has_share || selectedGroup.has_entry_fee || selectedGroup.has_social || selectedGroup.has_other_contribution)) {
+        title = 'Define group contribution types';
+        buttonLabel = 'Set contribution types';
+      } else if (!(selectedGroup.has_share && share_exist)) {
         title = 'Add information about share contribution';
-      }
-      else if (!(selectedGroup.has_entry_fee && entry_fee_exist)) {
-        percent += 4;
+        buttonLabel = 'Add Share contribution details';
+      } else if (!(selectedGroup.has_entry_fee && entry_fee_exist)) {
         title = 'Add information about entry fee';
-      }
-      else if (!(selectedGroup.has_social && social_exist)) {
-        percent += 4;
+        buttonLabel = 'Add Entry fee details';
+      } else if (!(selectedGroup.has_social && social_exist)) {
         title = 'Add information about social contribution';
-      }
-      else if (!(selectedGroup.has_other_contribution && other_exist)) {
-        percent += 4;
+        buttonLabel = 'Add Social contribution details';
+      } else if (!(selectedGroup.has_other_contribution && other_exist)) {
         title = 'Add information about other contribution';
-      }
-      else if (contributionTypes.length > 0 && contributionTypes.filter(i => i.allow_loan).length > 0) {
+        buttonLabel = 'Add Social contribution details';
+      } else if (contributionTypes.length > 0 && contributionTypes.filter(i => i.allow_loan).length > 0) {
         const contr_need_loan = contributionTypes.filter(i => i.allow_loan);
         for (const contr of contr_need_loan) {
           if (!loanTypes.find(i => i.contribution_type_id === contr.id)) {
-            title = 'Add information about loan from ' + contr.name ;
+            title = 'Add information about loan from ' + contr.name;
+            buttonLabel = 'Add Loan Information';
           }
         }
-      }
-      else if (!(!!selectedGroup.chairperson && !!selectedGroup.treasure && !!selectedGroup.secretary)) {
-        title = 'Add leadership information';
-      }
-      if (!(selectedGroup.meeting_settings && !(selectedGroup.meeting_settings.must_attend === null || selectedGroup.meeting_settings.must_attend === undefined))) {
-        title = 'Add meeting information';
+      } else if (!(!!selectedGroup.chairperson && !!selectedGroup.treasure && !!selectedGroup.secretary)) {
+        title = 'Define group leadership information';
+        buttonLabel = 'Add leadership information';
+      } else if (!(selectedGroup.meeting_settings && !(selectedGroup.meeting_settings.must_attend === null || selectedGroup.meeting_settings.must_attend === undefined))) {
+        title = 'Define group meeting rules';
+        buttonLabel = 'Add Meeting rules';
       }
       return {
-        completion_percent: percent,
-        title
+        title,
+        buttonLabel,
       };
     }
     return {
-      completion_percent: 12,
-      title
+      title,
+      buttonLabel,
     };
   }
 );
