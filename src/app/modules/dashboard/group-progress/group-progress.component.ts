@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {GroupProgressDialogComponent} from './group-progress-dialog/group-progress-dialog.component';
 import {Group} from '../../../store/group/group.model';
+import {GroupProgress} from '../../../store/group/group-progress.model';
 
 @Component({
   selector: 'app-group-progress',
@@ -12,7 +13,7 @@ export class GroupProgressComponent implements OnInit {
 
   @Input() group: Group;
   @Input() progress: number;
-  @Input() progressDetails: {title: string; buttonLabel: string};
+  @Input() progressDetails: GroupProgress;
   constructor(
     public dialog: MatDialog,
   ) { }
@@ -25,8 +26,10 @@ export class GroupProgressComponent implements OnInit {
       width: '80%',
       minHeight: '60vh',
       data: {
-        group: this.group
-      }
+        group: this.group,
+        progressDetails: this.progressDetails
+      },
+      disableClose: true,
     });
   }
 }

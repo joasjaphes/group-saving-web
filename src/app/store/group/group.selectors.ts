@@ -3,6 +3,7 @@ import * as fromReducer from './group.reducer';
 import * as fromMember from '../member/member.selectors';
 import * as fromLoan from '../loan-type/loan-type.selectors';
 import * as fromContribution from '../contribution-type/contribution-type.selectors';
+import {GroupProgressEnum} from './group-progress.enum';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.groupsFeatureKey);
 
@@ -64,6 +65,7 @@ export const selectProgressPercent = createSelector(
       if (selectedGroup.has_other_contribution && other_exist) {
         percent += 4;
       }
+      // TODO: this calculation is wrong!!!
       if (contributionTypes.length > 0) {
         const contr_need_loan = contributionTypes.filter(i => i.allow_loan);
         const steps = contr_need_loan.length === 0 ? 16 : 16 / contr_need_loan.length;
@@ -102,6 +104,9 @@ export const selectProgress = createSelector(
   ) => {
     let title = 'Update Your Group Information';
     let buttonLabel = 'Add information';
+    let key = GroupProgressEnum.AddBasicInformation;
+    let currentContributionType = '';
+    let contributionName = '';
     if (selectedGroup) {
       const share_exist = !!contributionTypes.find(i => i.type === 'Share');
       const entry_fee_exist = !!contributionTypes.find(i => i.type === 'Entry Fee');
@@ -111,47 +116,69 @@ export const selectProgress = createSelector(
       if (!(selectedGroup.meeting_settings && selectedGroup.meeting_settings.meeting_frequency)) {
         title = 'Add basic group information';
         buttonLabel = 'Add group information';
+        key = GroupProgressEnum.AddBasicInformation;
       } else if (!(selectedGroup.currency)) {
         title = 'Select Currency';
         buttonLabel = 'Set Currency';
+        key = GroupProgressEnum.SetCurrency;
       } else if (!(selectedGroup.has_share || selectedGroup.has_entry_fee || selectedGroup.has_social || selectedGroup.has_other_contribution)) {
         title = 'Define group contribution types';
         buttonLabel = 'Set contribution types';
+        key = GroupProgressEnum.SetContributionType;
       } else if (!(selectedGroup.has_share && share_exist)) {
         title = 'Add information about share contribution';
         buttonLabel = 'Add Share contribution details';
+        key = GroupProgressEnum.AddContribution;
+        currentContributionType = 'Share';
+        contributionName = 'Share';
       } else if (!(selectedGroup.has_entry_fee && entry_fee_exist)) {
         title = 'Add information about entry fee';
         buttonLabel = 'Add Entry fee details';
+        key = GroupProgressEnum.AddContribution;
+        currentContributionType = 'Entry Fee';
+        contributionName = 'Entry Fee';
       } else if (!(selectedGroup.has_social && social_exist)) {
         title = 'Add information about social contribution';
         buttonLabel = 'Add Social contribution details';
+        key = GroupProgressEnum.AddContribution;
+        currentContributionType = 'Social';
+        contributionName = 'Social Contribution';
       } else if (!(selectedGroup.has_other_contribution && other_exist)) {
         title = 'Add information about other contribution';
-        buttonLabel = 'Add Social contribution details';
+        buttonLabel = 'Add Other contribution details';
+        key = GroupProgressEnum.AddContribution;
+        currentContributionType = 'Other';
+        contributionName = '';
       } else if (contributionTypes.length > 0 && contributionTypes.filter(i => i.allow_loan).length > 0) {
         const contr_need_loan = contributionTypes.filter(i => i.allow_loan);
         for (const contr of contr_need_loan) {
           if (!loanTypes.find(i => i.contribution_type_id === contr.id)) {
             title = 'Add information about loan from ' + contr.name;
             buttonLabel = 'Add Loan Information';
+            key = GroupProgressEnum.AddLoanInformation;
           }
         }
       } else if (!(!!selectedGroup.chairperson && !!selectedGroup.treasure && !!selectedGroup.secretary)) {
         title = 'Define group leadership information';
         buttonLabel = 'Add leadership information';
+        key = GroupProgressEnum.AddLeadershipInformation;
       } else if (!(selectedGroup.meeting_settings && !(selectedGroup.meeting_settings.must_attend === null || selectedGroup.meeting_settings.must_attend === undefined))) {
         title = 'Define group meeting rules';
         buttonLabel = 'Add Meeting rules';
+        key = GroupProgressEnum.AddMeetingInformation;
       }
       return {
         title,
         buttonLabel,
+        key,
+        currentContributionType,
+        contributionName,
       };
     }
     return {
       title,
       buttonLabel,
+      key,
     };
   }
 );

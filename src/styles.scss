@@ -28,7 +28,6 @@ $angular-dark-theme: mat-dark-theme(
     )
 );
 @include angular-material-theme($angular-dark-theme);
-
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 body * {
@@ -178,6 +177,10 @@ button:focus {
   background-color: #14142E!important;
 }
 
+.mat-stepper-horizontal, .mat-stepper-vertical {
+  background-color: #1d1d42!important;
+}
+
 .mat-select-panel .mat-optgroup-label, .mat-select-panel .mat-option:hover {
   background-color: #1d1d42!important;
 }
@@ -191,4 +194,24 @@ button:focus {
 }
 .mat-form-field.mat-focused .mat-form-field-label {
   color: white!important;
+}
+
+.success {
+  background-color: green !important;
+}
+
+.error {
+  background-color: rgba(250, 69, 0, 0.5) !important;
+}
+
+.warning {
+  background-color: rgba(250, 207, 26, 0.54) !important;
+  color: black!important;
+  font-weight: bold;
+}
+
+.next-btn {
+  border: 1px solid rgba(248, 87, 34, 0.4)!important;
+  border-radius: 20px!important;
+  color: #F15A28!important;
 }

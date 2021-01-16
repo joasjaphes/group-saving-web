@@ -1,7 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {countries} from 'src/app/store/countries';
 import {Group} from '../../../../store/group/group.model';
 import {fadeIn} from '../../../../shared/animations/router-animation';
+import {FunctionsService} from '../../../../services/functions.service';
+import {CommonService} from '../../../../services/common.service';
 
 @Component({
   selector: 'app-group-starting-info',
@@ -11,6 +13,7 @@ import {fadeIn} from '../../../../shared/animations/router-animation';
 })
 export class GroupStartingInfoComponent implements OnInit {
   @Input() group: Group;
+  @Output() closeForm = new EventEmitter();
   countries = countries;
   currency;
   currencyName;
@@ -20,8 +23,12 @@ export class GroupStartingInfoComponent implements OnInit {
   entryChecked = false;
   otherChecked = false;
   entryFeeAmount;
+  loading;
 
-  constructor() {
+  constructor(
+    private functionsService: FunctionsService,
+    private commonService: CommonService,
+  ) {
   }
 
   ngOnInit(): void {
@@ -32,4 +39,41 @@ export class GroupStartingInfoComponent implements OnInit {
     }
   }
 
+  onChangeCurrency(value) {
+    console.log(value);
+    const selectedCurrency = this.countries.find(i => i.currency === value);
+    if (selectedCurrency) {
+      this.currencyName = selectedCurrency.currencyName;
+    }
+  }
+
+  onClose() {
+    this.closeForm.emit();
+  }
+
+  async save() {
+    const dataToSave = {
+      groupId: this.group.id,
+      frequency: this.meetingFrequency,
+      currency: this.currency,
+      currency_name: this.currencyName,
+      has_share: this.shareChecked,
+      has_social: this.socialChecked,
+      has_entry_fee: this.entryChecked,
+      has_other_contribution: this.otherChecked,
+      entry_fee_amount: this.entryFeeAmount,
+    };
+    this.loading = true;
+    try {
+      const response: any = await this.functionsService.saveData('setBasicInfo', dataToSave);
+      console.log(JSON.stringify(response));
+      this.loading = false;
+      this.commonService.showSuccess('Group basic information set successful');
+      this.onClose();
+    } catch (e) {
+      this.loading = false;
+      console.error(e);
+    }
+
+  }
 }

@@ -1,0 +1,183 @@
+<mat-vertical-stepper #stepper>
+  <mat-step >
+    <ng-template matStepLabel>
+      Basic Information
+    </ng-template>
+    <div class="row">
+<!--      Contribution TYpe-->
+      <div class="col-sm-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Type</mat-label>
+          <mat-select [(ngModel)]="contributionType" disabled>
+            <mat-option value="Share">Share </mat-option>
+            <mat-option value="Social">Social </mat-option>
+            <mat-option value="Entry Fee">Entry Fee </mat-option>
+            <mat-option value="Other">Other </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+<!--      Contribution Name-->
+      <div class="col-sm-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Contribution name</mat-label>
+          <input [(ngModel)]="name" matInput placeholder="Contribution name">
+        </mat-form-field>
+      </div>
+
+<!--      Contribution Frequency-->
+      <div class="col-sm-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Contribution Frequency</mat-label>
+          <mat-select [(ngModel)]="frequency">
+            <mat-option value="Monthly">Monthly <small> (Member contribute every Month)</small></mat-option>
+            <mat-option value="Weekly">Weekly <small> (Member contribute every Week)</small></mat-option>
+            <mat-option value="Random">Random <small> (There is no defined contribution time)</small></mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+<!--      Next step for first step-->
+      <div class="col-sm-12">
+        <button class="next-btn zoom-on-hover" style="float: right" mat-button matStepperNext>
+          Next
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </div>
+
+  </mat-step>
+  <mat-step>
+      <ng-template matStepLabel>
+        Amount Information
+      </ng-template>
+    <div class="row">
+      <div class="col-sm-12 mb-2" *ngIf="contributionType == 'Share'">
+        <mat-form-field appearance="outline">
+          <mat-label>Price per share</mat-label>
+          <input placeholder="Price per share" matInput type="number" [(ngModel)]="pricePerShare">
+          <mat-hint *ngIf="pricePerShare" @fadeIn>buying price of share is <b>{{pricePerShare | number}}</b></mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-4" *ngIf="pricePerShare || contributionType != 'Share'" @fadeIn>
+        <mat-form-field appearance="outline">
+          <mat-label>Is Mandatory?</mat-label>
+          <mat-select [(ngModel)]="isMandatory" placeholder="Is this contribution mandatory" (selectionChange)="setIsMandatory($event.value)">
+            <mat-option value="Yes">Yes <small> (Each member must contribute)</small></mat-option>
+            <mat-option value="No">No <small> (This contribution is optional)</small></mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-4" *ngIf="isMandatory" @fadeIn>
+        <mat-form-field appearance="outline">
+          <mat-label>Is Amount Same?</mat-label>
+          <mat-select [(ngModel)]="isAmountSame">
+            <mat-option value="Yes">Yes <small> (Each member contribute same Amount)</small></mat-option>
+            <mat-option value="No">No <small> (Each member contribute different Amount)</small></mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+      <div class="col-sm-4" *ngIf="isAmountSame == 'Yes'" @fadeIn>
+        <mat-form-field appearance="outline">
+          <mat-label>Amount</mat-label>
+          <input matInput type="number" [(ngModel)]="amount">
+          <mat-hint *ngIf="amount" @fadeIn>Each member will contribute <b>{{amount | number}}</b></mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-4" *ngIf="isAmountSame == 'No'" @fadeIn>
+        <mat-form-field appearance="outline">
+          <mat-label>Minimum Amount</mat-label>
+          <input matInput type="number" [(ngModel)]="minimumAmount">
+          <mat-hint *ngIf="minimumAmount" @fadeIn>Each member will contribute a minimum of <b>{{minimumAmount | number}}</b></mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12">
+        <button [disabled]="!(!!amount || !!minimumAmount)" class="next-btn zoom-on-hover" style="float: right" mat-button matStepperNext>
+          Next
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+        <button class="next-btn zoom-on-hover" mat-button matStepperPrevious>
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+      </div>
+    </div>
+
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>
+      Fine Information
+    </ng-template>
+    <div class="row">
+      <div class="col-sm-12">
+        <mat-form-field appearance="outline">
+          <mat-label>Is there fine for late contribution?</mat-label>
+          <mat-select [(ngModel)]="allowFine">
+            <mat-option value="Yes">Yes</mat-option>
+            <mat-option value="No">No</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-sm-6" *ngIf="allowFine == 'Yes'" @fadeIn>
+        <mat-form-field appearance="outline">
+          <mat-label>Fine Calculation Type</mat-label>
+          <mat-select [(ngModel)]="fineCalculationType">
+            <mat-option value="Fixed">Fixed <small> (Member will pay a fixed amount of fine)</small></mat-option>
+            <mat-option value="Amount per day">Amount per day <small> (Member will pay for each day delayed)</small></mat-option>
+            <mat-option value="Amount per week">Amount per week <small> (Member will pay for each week delayed)</small></mat-option>
+            <mat-option value="Amount per month">Amount per month <small> (Member will pay for each month delayed)</small></mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6" *ngIf="fineCalculationType" @fadeIn>
+        <mat-form-field appearance="outline">
+          <mat-label>Fine Amount</mat-label>
+          <input matInput placeholder="Fine amount" type="number" [(ngModel)]="fineAmount">
+          <mat-hint *ngIf="fineAmount" @fadeIn>Member will pay a fine of  <b>{{fineAmount | number}} ( {{fineCalculationType}} )</b></mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12">
+        <button class="next-btn zoom-on-hover" style="float: right" mat-button matStepperNext>
+          Next
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+        <button class="next-btn zoom-on-hover" mat-button matStepperPrevious>
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+      </div>
+    </div>
+
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>
+      Loan Information
+    </ng-template>
+    <div class="row">
+      <div class="col-sm-12">
+        <mat-form-field appearance="outline">
+          <mat-label>Is loan allowed?</mat-label>
+          <mat-select [(ngModel)]="allowLoan">
+            <mat-option value="Yes">Yes <small>members are allowed to take loan from this contribution</small></mat-option>
+            <mat-option value="No">No <small>members are cannot take loan from this contribution</small></mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12">
+        <button class="next-btn zoom-on-hover" mat-button matStepperPrevious>
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+      </div>
+      <div class="col-sm-12 mt-2">
+        <app-save-area
+          [confirmFirst]="true"
+          [saveDisabled]="!allowLoan || !allowFine || !frequency"
+          (cancel)="close()"
+          [savingData]="loading"
+          (save)="sendData()"
+        ></app-save-area>
+      </div>
+    </div>
+
+  </mat-step>
+</mat-vertical-stepper>

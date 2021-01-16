@@ -45,6 +45,7 @@ import { ChangePasswordComponent } from './modules/my-account/change-password/ch
 import { GroupProgressComponent } from './modules/dashboard/group-progress/group-progress.component';
 import { GroupProgressDialogComponent } from './modules/dashboard/group-progress/group-progress-dialog/group-progress-dialog.component';
 import { GroupStartingInfoComponent } from './modules/dashboard/group-progress/group-starting-info/group-starting-info.component';
+import { StartingContributionTypeComponent } from './modules/dashboard/group-progress/starting-contribution-type/starting-contribution-type.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -86,7 +87,8 @@ const firebaseConfig = {
     ChangePasswordComponent,
     GroupProgressComponent,
     GroupProgressDialogComponent,
-    GroupStartingInfoComponent
+    GroupStartingInfoComponent,
+    StartingContributionTypeComponent
   ],
   imports: [
     BrowserModule,

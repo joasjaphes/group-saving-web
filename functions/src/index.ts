@@ -9,6 +9,7 @@ import * as createUserOnly from './user/createUserOnly';
 import * as createMembers from './members/create-members';
 import * as updateNeedToAddMember from './group/update-need-to-add-members';
 import * as confirmCurrency from './group/confirm-currency';
+import * as setBasicInfo from './group/set-basic-info';
 import * as setMeetingFrequency from './group/set-meeting-frequency';
 import * as setAvailableContributionType from './contribution/set-available-contribution-type';
 import * as createContributionType from './contribution/create-contribution-type';
@@ -26,3 +27,4 @@ exports.setAvailableContributionType = setAvailableContributionType.setAvailable
 exports.updateNeedToAddMember = updateNeedToAddMember.updateNeedToAddMember;
 exports.confirmCurrency = confirmCurrency.confirmCurrency;
 exports.createContributionType = createContributionType.createContributionType;
+exports.setBasicInfo = setBasicInfo.setBasicInfo;

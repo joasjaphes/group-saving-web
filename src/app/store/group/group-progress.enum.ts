@@ -1,0 +1,9 @@
+export enum GroupProgressEnum {
+  AddBasicInformation = 'Add Basic Information',
+  SetCurrency = 'Set Currency',
+  SetContributionType = 'Set Contribution Type',
+  AddContribution = 'Add Contribution Details',
+  AddLoanInformation = 'Add Loan Information',
+  AddLeadershipInformation = 'Add Leadership Information',
+  AddMeetingInformation = 'Add Meeting Information',
+}

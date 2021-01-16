@@ -3,6 +3,9 @@
   display: grid;
   grid-template-columns: 50px auto;
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
+  div {
+    padding: 5px;
+  }
 
   .cont-title {
     font-size: 15px;
@@ -17,6 +20,7 @@
 
 .cont-active {
   transform: scale(1.02);
+  border-radius: 20px;
   .cont-title {
     font-weight: bolder;
   }
