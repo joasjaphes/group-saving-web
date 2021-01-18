@@ -4,6 +4,7 @@ import * as fromMember from '../member/member.selectors';
 import * as fromLoan from '../loan-type/loan-type.selectors';
 import * as fromContribution from '../contribution-type/contribution-type.selectors';
 import {GroupProgressEnum} from './group-progress.enum';
+import {ContributionTypes} from '../contribution-type/contribution-type.enum';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.groupsFeatureKey);
 
@@ -105,8 +106,9 @@ export const selectProgress = createSelector(
     let title = 'Update Your Group Information';
     let buttonLabel = 'Add information';
     let key = GroupProgressEnum.AddBasicInformation;
-    let currentContributionType = '';
+    let currentContributionType: ContributionTypes;
     let contributionName = '';
+    let contributionTypeId = '';
     if (selectedGroup) {
       const share_exist = !!contributionTypes.find(i => i.type === 'Share');
       const entry_fee_exist = !!contributionTypes.find(i => i.type === 'Entry Fee');
@@ -129,30 +131,32 @@ export const selectProgress = createSelector(
         title = 'Add information about share contribution';
         buttonLabel = 'Add Share contribution details';
         key = GroupProgressEnum.AddContribution;
-        currentContributionType = 'Share';
+        currentContributionType = ContributionTypes.Share;
         contributionName = 'Share';
       } else if (!(selectedGroup.has_entry_fee && entry_fee_exist)) {
         title = 'Add information about entry fee';
         buttonLabel = 'Add Entry fee details';
         key = GroupProgressEnum.AddContribution;
-        currentContributionType = 'Entry Fee';
+        currentContributionType = ContributionTypes.EntryFee;
         contributionName = 'Entry Fee';
       } else if (!(selectedGroup.has_social && social_exist)) {
         title = 'Add information about social contribution';
         buttonLabel = 'Add Social contribution details';
         key = GroupProgressEnum.AddContribution;
-        currentContributionType = 'Social';
+        currentContributionType = ContributionTypes.Social;
         contributionName = 'Social Contribution';
       } else if (!(selectedGroup.has_other_contribution && other_exist)) {
         title = 'Add information about other contribution';
         buttonLabel = 'Add Other contribution details';
         key = GroupProgressEnum.AddContribution;
-        currentContributionType = 'Other';
+        currentContributionType = ContributionTypes.Other;
         contributionName = '';
       } else if (contributionTypes.length > 0 && contributionTypes.filter(i => i.allow_loan).length > 0) {
         const contr_need_loan = contributionTypes.filter(i => i.allow_loan);
         for (const contr of contr_need_loan) {
           if (!loanTypes.find(i => i.contribution_type_id === contr.id)) {
+            currentContributionType = contr.type;
+            contributionTypeId = contr.id;
             title = 'Add information about loan from ' + contr.name;
             buttonLabel = 'Add Loan Information';
             key = GroupProgressEnum.AddLoanInformation;
@@ -173,6 +177,7 @@ export const selectProgress = createSelector(
         key,
         currentContributionType,
         contributionName,
+        contributionTypeId,
       };
     }
     return {

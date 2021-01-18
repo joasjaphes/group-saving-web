@@ -72,8 +72,7 @@ export class StartingContributionTypeComponent implements OnInit {
     };
     this.loading = true;
     try {
-      const response: any = await this.functionsService.saveData('createContributionType', dataToSave);
-      console.log(JSON.stringify(response));
+      await this.functionsService.saveData('createContributionType', dataToSave);
       this.loading = false;
       this.commonService.showSuccess('Contribution information successful');
       this.close();

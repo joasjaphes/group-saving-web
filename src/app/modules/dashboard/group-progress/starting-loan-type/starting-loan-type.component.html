@@ -16,14 +16,6 @@
         </mat-form-field>
       </div>
 
-      <!--      Loan Name-->
-      <div class="col-sm-6">
-        <mat-form-field appearance="outline">
-          <mat-label>Loan name</mat-label>
-          <input [(ngModel)]="name" matInput placeholder="Loan name">
-        </mat-form-field>
-      </div>
-
       <!--      Loan Duration Type-->
       <div class="col-sm-6">
         <mat-form-field appearance="outline">
@@ -35,6 +27,15 @@
           </mat-select>
         </mat-form-field>
       </div>
+
+      <!--      Loan Name-->
+      <div class="col-sm-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Loan name</mat-label>
+          <input [(ngModel)]="name" matInput placeholder="Loan name">
+        </mat-form-field>
+      </div>
+
       <!--      Next step for first step-->
       <div class="col-sm-12">
         <button [disabled]="!name || !frequency" class="next-btn zoom-on-hover" style="float: right" mat-button
@@ -45,6 +46,110 @@
       </div>
     </div>
   </mat-step>
+
+
+  <mat-step>
+    <ng-template matStepLabel>
+      Amounts
+    </ng-template>
+    <div class="row">
+
+      <!--      Profit Calculation Type-->
+      <div [ngClass]="{'col-sm-6': !!profitCalculationType, 'col-sm-12': !profitCalculationType}" class="transition-element">
+        <mat-form-field appearance="outline">
+          <mat-label>Profit Calculation Type</mat-label>
+          <mat-select [(ngModel)]="profitCalculationType">
+            <mat-option value="Fixed Percent">Fixed Percent</mat-option>
+            <mat-option value="Custom Formula">Custom Formula</mat-option>
+            <mat-option value="Reducing Balance">Reducing Balance</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!--Interest Percent-->
+      <div class="col-sm-6"
+           *ngIf="profitCalculationType == 'Fixed Percent' || profitCalculationType == 'Reducing Balance'" @fadeIn>
+        <mat-form-field appearance="outline">
+          <mat-label>Interest Rate <span>({{interestRate}}%)</span></mat-label>
+          <input matInput type="number" placeholder="Interest Rate" [(ngModel)]="interestRate">
+        </mat-form-field>
+      </div>
+
+      <!--Interest Percent-->
+      <div class="col-sm-6" *ngIf="profitCalculationType == 'Custom Formula'" @fadeIn>
+        <mat-form-field appearance="outline">
+          <mat-label>Loan Formula</mat-label>
+          <input matInput type="text" placeholder="Loan Formular eg (M*(T+1)*1)/200" [(ngModel)]="loanFormular">
+          <mat-hint>M to be replaced with amount and T to be replaced with time default eg (M*(T+1)*1)/200</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <!--     Same Payment Per Return-->
+      <div class="col-sm-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Same Payment Per Return</mat-label>
+          <mat-select [(ngModel)]="samePaymentPerReturn">
+            <mat-option value="Yes">Yes (Member must return same amount every {{durationTYpe}}</mat-option>
+            <mat-option value="No">No (Member can return in random fashion)</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!--      Payment Option-->
+      <div class="col-sm-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Loan Option</mat-label>
+          <mat-select [(ngModel)]="paymentOption" placeholder="Payment Option">
+            <mat-option value="Member receive full amount loaned">Member receive full amount loaned</mat-option>
+            <mat-option value="Cut profit from the loan">Cut profit from the loan</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!--      Is Loan Insured-->
+      <div class="transition-element" [ngClass]="{'col-sm-6': isLoanInsured == 'Yes', 'col-sm-12': isLoanInsured != 'Yes'}">
+        <mat-form-field appearance="outline">
+          <mat-label>Is Loan Insured</mat-label>
+          <mat-select [(ngModel)]="isLoanInsured">
+            <mat-option value="Yes">Yes</mat-option>
+            <mat-option value="No">No</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!--Insurance Percent-->
+      <div class="col-sm-6" *ngIf="isLoanInsured == 'Yes'" @fadeIn>
+        <mat-form-field appearance="outline">
+          <mat-label>Insurance Percent <span>({{insurancePercent}}%)</span></mat-label>
+          <input matInput type="number" placeholder="Interest Rate" [(ngModel)]="insurancePercent">
+          <mat-hint>This amount will be reduced from the loan amount</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <!--      Next and previous icons for second stage-->
+      <div class="col-sm-12">
+        <button
+          [disabled]="!profitCalculationType
+          || !samePaymentPerReturn
+          || !isLoanInsured
+          || !paymentOption
+          || (isLoanInsured === 'Yes' && !insurancePercent)
+          || ((profitCalculationType == 'Fixed Percent' || profitCalculationType == 'Reducing Balance') && !interestRate)
+          || (profitCalculationType == 'Custom Formula' && !loanFormular)
+"
+          class="next-btn zoom-on-hover" style="float: right" mat-button matStepperNext>
+          Next
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+        <button class="next-btn zoom-on-hover" mat-button matStepperPrevious>
+          <mat-icon>arrow_back</mat-icon>
+          Back
+        </button>
+      </div>
+    </div>
+  </mat-step>
+
+  <!--  Loan Condition Section-->
   <mat-step>
     <ng-template matStepLabel>
       Loan Conditions
@@ -101,7 +206,7 @@
       </div>
 
       <!--      Maximum Loan Amount Balance Factor-->
-      <div class="col-sm-6" *ngIf="maximumAmountType == 'Relative to balance'" @fadeIn>
+      <div class="col-sm-6" *ngIf="maximumAmountType == 'Relative to Balance'" @fadeIn>
         <mat-form-field appearance="outline">
           <mat-label>Balance Factor <small>(This number times members current contribution balance will be maximum
             amount )</small></mat-label>
@@ -109,101 +214,13 @@
         </mat-form-field>
       </div>
 
-      <!--      Next and previous icons for second stage-->
-      <div class="col-sm-12">
-        <button class="next-btn zoom-on-hover" style="float: right" mat-button matStepperNext>
-          Next
-          <mat-icon>arrow_forward</mat-icon>
-        </button>
-        <button class="next-btn zoom-on-hover" mat-button matStepperPrevious>
-          <mat-icon>arrow_back</mat-icon>
-          Back
-        </button>
-      </div>
-    </div>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>
-      Amounts
-    </ng-template>
-    <div class="row">
-
-      <!--      Maximum Loan Amount Balance Factor-->
-      <div class="col-sm-6" *ngIf="maximumAmountType == 'Relative to balance'" @fadeIn>
-        <mat-form-field appearance="outline">
-          <mat-label>Balance Factor <small>(This number times members current contribution balance will be maximum
-            amount )</small></mat-label>
-          <input matInput type="number" placeholder="Balance Factor" [(ngModel)]="maximumAmountBalanceFactor">
-        </mat-form-field>
-      </div>
-
-      <!--      Profit Calculation Type-->
+      <!--      Loan Topup allowed-->
       <div class="col-sm-6">
         <mat-form-field appearance="outline">
-          <mat-label>Profit Calculation Type</mat-label>
-          <mat-select [(ngModel)]="profitCalculationType">
-            <mat-option value="Fixed Percent">Fixed Percent</mat-option>
-            <mat-option value="Custom Formula">Custom Formula</mat-option>
-            <mat-option value="Reducing Balance">Reducing Balance</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!--Interest Percent-->
-      <div class="col-sm-6"
-           *ngIf="profitCalculationType == 'Fixed Percent' || profitCalculationType == 'Reducing Balance'" @fadeIn>
-        <mat-form-field appearance="outline">
-          <mat-label>Interest Rate <span>({{interestRate}}%)</span></mat-label>
-          <input matInput type="number" placeholder="Interest Rate" [(ngModel)]="interestRate">
-        </mat-form-field>
-      </div>
-
-      <!--Interest Percent-->
-      <div class="col-sm-6" *ngIf="profitCalculationType == 'Custom Formula'" @fadeIn>
-        <mat-form-field appearance="outline">
-          <mat-label>Loan Formula</mat-label>
-          <input matInput type="text" placeholder="Loan Formular eg (M*(T+1)*1)/200" [(ngModel)]="loanFormular">
-          <mat-hint>M to be replaced with amount and T to be replaced with time default eg (M*(T+1)*1)/200</mat-hint>
-        </mat-form-field>
-      </div>
-
-      <!--     Same Payment Per Return-->
-      <div class="col-sm-6">
-        <mat-form-field appearance="outline">
-          <mat-label>Same Payment Per Return</mat-label>
-          <mat-select [(ngModel)]="samePaymentPerReturn">
+          <mat-label>Allow loan top up</mat-label>
+          <mat-select [(ngModel)]="allowLoanTopUp">
             <mat-option value="Yes">Yes</mat-option>
             <mat-option value="No">No</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!--      Is Loan Insured-->
-      <div class="col-sm-6">
-        <mat-form-field appearance="outline">
-          <mat-label>Is Loan Insured</mat-label>
-          <mat-select [(ngModel)]="isLoanInsured">
-            <mat-option value="Yes">Yes</mat-option>
-            <mat-option value="No">No</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!--Insurance Percent-->
-      <div class="col-sm-6" *ngIf="isLoanInsured == 'Yes'" @fadeIn>
-        <mat-form-field appearance="outline">
-          <mat-label>Insurance Percent <span>({{insurancePercent}}%)</span></mat-label>
-          <input matInput type="number" placeholder="Interest Rate" [(ngModel)]="insurancePercent">
-        </mat-form-field>
-      </div>
-
-      <!--      Payment Option-->
-      <div class="col-sm-6">
-        <mat-form-field appearance="outline">
-          <mat-label>Payment Option</mat-label>
-          <mat-select [(ngModel)]="paymentOption" placeholder="Payment Option">
-            <mat-option value="Normal">Normal</mat-option>
-            <mat-option value="Cut Profit From the Loan">Cut Profit From the Loan</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -221,13 +238,15 @@
       </div>
     </div>
   </mat-step>
+
+  <!--  Fine Section-->
   <mat-step>
     <ng-template matStepLabel>
       Loan Fines
     </ng-template>
     <div class="row">
       <div class="col-sm-12">
-        <h4 class="registration-title">fine for late {{durationTYpe}} Returns</h4>
+        <h5 class="registration-title">fine for late {{durationTYpe}} Returns</h5>
       </div>
       <!--      Is fine allowed-->
       <div class="col-sm-12">
@@ -270,10 +289,11 @@
         </mat-form-field>
       </div>
     </div>
+    <hr>
     <div class="row">
 
       <div class="col-sm-12">
-        <h4 class="registration-title">fine for late completion of loan</h4>
+        <h5 class="registration-title">fine for late completion of loan</h5>
       </div>
       <!--      Is fine allowed-->
       <div class="col-sm-12">
@@ -328,11 +348,16 @@
       </div>
     </div>
   </mat-step>
+
+  <!--  Loan Caluculation Test-->
   <mat-step>
     <ng-template matStepLabel>
       Calculation Test
     </ng-template>
     <div class="row">
+      <div class="col-sm-12">
+        <h5 class="registration-title">Test loan formular calculation</h5>
+      </div>
       <!--     Amount Loaned-->
       <div class="col-sm-6" @fadeIn>
         <mat-form-field appearance="outline">
@@ -351,7 +376,8 @@
 
       <div class="col-sm-12">
         <p *ngIf="testAmount" @fadeIn>Amount Taken: <span class="registration-title"> {{testAmount | number}}</span></p>
-        <p *ngIf="testDuration" @fadeIn>Duration of Loan: <span class="registration-title"> {{testDuration | number}}</span></p>
+        <p *ngIf="testDuration" @fadeIn>Duration of Loan: <span
+          class="registration-title"> {{testDuration | number}}</span></p>
         <p *ngIf="testAmount && testDuration" @fadeIn>
           Amount To Return: <span class="registration-title"> {{testToReturn | number}}</span>
         </p>

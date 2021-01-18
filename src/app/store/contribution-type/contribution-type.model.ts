@@ -1,6 +1,8 @@
+import {ContributionTypes} from './contribution-type.enum';
+
 export interface ContributionType {
   id: string;
-  type: string;
+  type: ContributionTypes;
   group_id: string;
   is_active: boolean;
   last_update: number;

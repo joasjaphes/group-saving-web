@@ -162,6 +162,10 @@ function prepareContributionData(data: any, contributionTypeId: string, last_upd
     name: data.name,
     members_can_see_others: false,
     day_of_contribution: null,
+    is_fine_allowed: data.isFineAllowed,
+    fine_period_type: data.fineCalculationType || null,
+    fine_calculation: data.fineCalculationType || null,
+    fine_amount_per_period: data.fineAmount || 0,
     managed_by: null,
     additional_config: {},
   };

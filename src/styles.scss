@@ -162,6 +162,10 @@ button:focus {
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
 }
 
+.transition-element {
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
+}
+
 .zoom-on-hover:hover {
   transform: scale(1.1);
 }

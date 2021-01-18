@@ -9,6 +9,7 @@ import {ApplicationState} from '../../../../store';
 import * as contributionSelector from '../../../../store/contribution-type/contribution-type.selectors';
 import {Observable} from 'rxjs';
 import {ContributionType} from '../../../../store/contribution-type/contribution-type.model';
+import {ContributionTypes} from '../../../../store/contribution-type/contribution-type.enum';
 
 @Component({
   selector: 'app-starting-loan-type',
@@ -37,6 +38,7 @@ export class StartingLoanTypeComponent implements OnInit {
   paymentOption: string;
   interestRate: any;
   samePaymentPerReturn: string;
+  allowLoanTopUp: string;
   loanFormular = '(M*(T+1)*1)/200';
   isLoanInsured: string;
   insurancePercent: any;
@@ -65,7 +67,8 @@ export class StartingLoanTypeComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.progressDetails) {
-      this.contributionType = this.progressDetails.currentContributionType;
+      this.contributionType = this.progressDetails.contributionTypeId;
+      console.log(this.contributionType);
       this.name = this.progressDetails.contributionName;
     }
     if (this.group) {
@@ -102,7 +105,44 @@ export class StartingLoanTypeComponent implements OnInit {
   }
 
   async sendData() {
-    console.log('saving data');
+    const dataToSave = {
+      groupId: this.group.id,
+      contribution_type_id: this.contributionType,
+      duration_type: this.frequency,
+      name: this.name,
+      profit_type: this.profitCalculationType,
+      interest_rate: this.interestRate,
+      loan_formular: this.loanFormular,
+      pay_same_amount_is_must: this.samePaymentPerReturn,
+      is_insured: this.isLoanInsured,
+      insurance_percent: this.insurancePercent,
+      min_duration: this.minimumDuration,
+      max_duration: this.maximumDuration,
+      minimum_amount: this.minimumAmount,
+      max_amount_type: this.maximumAmountType,
+      max_amount_balance_base: this.maximumAmountBalanceFactor,
+      maximum_amount: this.maximumAmount,
+      payment_option: this.paymentOption,
+      allow_loan_top_up: this.allowLoanTopUp,
+      is_fine_for_returns: this.fineForReturns,
+      fine_for_returns_calculation_type: this.fineForReturnType,
+      fine_for_returns_amount: this.fineForReturnAmount,
+      fine_for_returns_balance_factor: this.fineForReturnBalanceFactor,
+      is_fine_for_completion: this.fineForCompletes,
+      fine_for_completion_calculation_type: this.fineForCompleteType,
+      fine_for_completion_amount: this.fineForCompleteAmount,
+      fine_for_completion_balance_factor: this.fineForCompleteBalanceFactor,
+    };
+    this.loading = true;
+    try {
+      await this.functionsService.saveData('createLoanType', dataToSave);
+      this.loading = false;
+      this.commonService.showSuccess('Loan Type information successful');
+      this.close();
+    } catch (e) {
+      this.loading = false;
+      console.error(e);
+    }
   }
   close() {
     this.closeForm.emit();

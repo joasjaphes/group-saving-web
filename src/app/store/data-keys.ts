@@ -71,7 +71,7 @@ export const UpdatedDataKeys = {
   [DataKeys.Expense]: 'expense_updated',
   [DataKeys.ExpenseType]: 'expense_type_updated',
   [DataKeys.Fine]: 'fine_update',
-  [DataKeys.FineType]: 'fine_type_updated',
+  [DataKeys.FineType]: 'fine_type_update',
   [DataKeys.Group]: 'group_updated',
   [DataKeys.LoanPayment]: 'loan_payment_updated',
   [DataKeys.LoanQueue]: 'loan_queue_updated',
