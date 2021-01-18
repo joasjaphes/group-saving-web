@@ -166,6 +166,7 @@ button:focus {
   transform: scale(1.1);
 }
 
+
 .mat-dialog-container {
   background-color: #1d1d42;
   border: 1px solid rgba(241, 90, 40, 0.4);
@@ -214,4 +215,15 @@ button:focus {
   border: 1px solid rgba(248, 87, 34, 0.4)!important;
   border-radius: 20px!important;
   color: #F15A28!important;
+}
+
+
+.zoom-on-hover.mat-button-disabled {
+  color: gray!important;
+  border:1px gray!important;
+}
+
+
+.zoom-on-hover.mat-button-disabled:hover {
+  transform: scale(1.0);
 }

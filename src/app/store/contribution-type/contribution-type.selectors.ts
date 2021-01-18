@@ -18,3 +18,7 @@ export const selectById = (id: string) => createSelector(
 export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
+
+export const selectedWithLoan = createSelector(
+  selectAll, (allItems, id) => allItems.filter(i => i.allow_loan)
+);

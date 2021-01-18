@@ -11,18 +11,28 @@
     </div>
 
     <div class="col-sm-12 mt-3" *ngIf="data.progressDetails">
+<!--      Adding group basic informatoin-->
       <app-group-starting-info
         *ngIf="data.progressDetails.key == progressDetailsEnum.AddBasicInformation"
         [group]="data.group"
         (closeForm)="closeDialog()"
       ></app-group-starting-info>
 
+<!--      Adding contribution types-->
       <app-starting-contribution-type
         *ngIf="data.progressDetails.key == progressDetailsEnum.AddContribution"
         [group]="data.group"
         [progressDetails]="data.progressDetails"
         (closeForm)="closeDialog()"
       ></app-starting-contribution-type>
+
+<!--      Adding Loan types-->
+      <app-starting-loan-type
+        *ngIf="data.progressDetails.key == progressDetailsEnum.AddLoanInformation"
+        [group]="data.group"
+        [progressDetails]="data.progressDetails"
+        (closeForm)="closeDialog()"
+      ></app-starting-loan-type>
     </div>
   </div>
 </div>

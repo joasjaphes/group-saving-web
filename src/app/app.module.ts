@@ -46,6 +46,7 @@ import { GroupProgressComponent } from './modules/dashboard/group-progress/group
 import { GroupProgressDialogComponent } from './modules/dashboard/group-progress/group-progress-dialog/group-progress-dialog.component';
 import { GroupStartingInfoComponent } from './modules/dashboard/group-progress/group-starting-info/group-starting-info.component';
 import { StartingContributionTypeComponent } from './modules/dashboard/group-progress/starting-contribution-type/starting-contribution-type.component';
+import { StartingLoanTypeComponent } from './modules/dashboard/group-progress/starting-loan-type/starting-loan-type.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -88,7 +89,8 @@ const firebaseConfig = {
     GroupProgressComponent,
     GroupProgressDialogComponent,
     GroupStartingInfoComponent,
-    StartingContributionTypeComponent
+    StartingContributionTypeComponent,
+    StartingLoanTypeComponent
   ],
   imports: [
     BrowserModule,
