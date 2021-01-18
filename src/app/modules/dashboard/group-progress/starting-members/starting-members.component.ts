@@ -22,7 +22,6 @@ export class StartingMembersComponent implements OnInit {
   country: Country;
   phoneNumber: string;
   currentPhoneNumber: string;
-  phoneNumberValid: boolean;
   memberName: string;
   members = [];
   loading = false;

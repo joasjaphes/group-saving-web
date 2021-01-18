@@ -1,1 +1,55 @@
-<p>starting-leadership works!</p>
+<div class="row">
+  <div class="col-sm-12">
+    <h4 class="registration-title mb-1">Chairperson</h4>
+  </div>
+  <div class="col-sm-12">
+    <mat-form-field appearance="outline">
+      <mat-label>Select Chairperson</mat-label>
+      <mat-select [(ngModel)]="chairperson" placeholder="Select Chairperson">
+        <mat-option [value]="member.id" *ngFor="let member of members$ | async">
+          {{member.name}} <small>({{member.phone_number}})</small>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <hr>
+
+  <div class="col-sm-12">
+    <h4 class="registration-title mb-1">Secretary</h4>
+  </div>
+  <div class="col-sm-12">
+    <mat-form-field appearance="outline">
+      <mat-label>Select Secretary</mat-label>
+      <mat-select [(ngModel)]="secretary" placeholder="Select Secretary">
+        <mat-option [value]="member.id" *ngFor="let member of members$ | async">
+          {{member.name}} <small>({{member.phone_number}})</small>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <hr>
+
+  <div class="col-sm-12">
+    <h4 class="registration-title mb-1">Treasure</h4>
+  </div>
+  <div class="col-sm-12">
+    <mat-form-field appearance="outline">
+      <mat-label>Select Treasury</mat-label>
+      <mat-select [(ngModel)]="treasure" placeholder="Select Treasury">
+        <mat-option [value]="member.id" *ngFor="let member of members$ | async">
+          {{member.name}} <small>({{member.phone_number}})</small>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="col-sm-12 mt-2">
+    <app-save-area
+      [saveDisabled]="!chairperson || !secretary || !treasure"
+      [confirmFirst]="true"
+      (cancel)="onClose()"
+      (save)="save()"
+      [savingData]="loading"
+    ></app-save-area>
+  </div>
+</div>

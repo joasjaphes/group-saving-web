@@ -4,6 +4,7 @@
 >
   <ng-container ngProjectAs="table">
     <app-group-progress
+      *ngIf="(progress$ | async) != 100"
       [group]="group$ | async"
       [memberName]="memberName$ | async"
       [progress]="progress$ | async"
