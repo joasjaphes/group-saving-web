@@ -89,8 +89,14 @@ export const selectProgressPercent = createSelector(
       if (!!selectedGroup.chairperson && !!selectedGroup.treasure && !!selectedGroup.secretary) {
         percent += 5;
       }
-      if (selectedGroup.meeting_settings && !(selectedGroup.meeting_settings.must_attend === null || selectedGroup.meeting_settings.must_attend === undefined)) {
-        percent += 5;
+      if (selectedGroup.meeting_settings ) {
+        if (selectedGroup.meeting_settings.meeting_frequency === 'No Meeting') {
+          percent += 5;
+        } else {
+          if (!(selectedGroup.meeting_settings.must_attend == null || selectedGroup.meeting_settings.must_attend === undefined)) {
+            percent += 5;
+          }
+        }
       }
       return percent;
     }
@@ -106,10 +112,12 @@ export const selectProgress = createSelector(
   selected,
   fromLoan.selectAll,
   fromContribution.selectAll,
+  fromMember.selectAll,
   (
     selectedGroup,
     loanTypes,
     contributionTypes,
+    members
   ) => {
     let title = 'Update Your Group Information';
     let buttonLabel = 'Add information';
@@ -175,14 +183,18 @@ export const selectProgress = createSelector(
             key = GroupProgressEnum.AddLoanInformation;
           }
         }
-      } else if (!(!!selectedGroup.chairperson && !!selectedGroup.treasure && !!selectedGroup.secretary)) {
-        title = 'Define group leadership information';
-        buttonLabel = 'Add leadership information';
-        key = GroupProgressEnum.AddLeadershipInformation;
       } else if (!(selectedGroup.meeting_settings && !(selectedGroup.meeting_settings.must_attend === null || selectedGroup.meeting_settings.must_attend === undefined))) {
         title = 'Define group meeting rules';
         buttonLabel = 'Add Meeting rules';
         key = GroupProgressEnum.AddMeetingInformation;
+      } else if (members.length === 1) {
+        title = 'You are the only one in group';
+        buttonLabel = 'Add members';
+        key = GroupProgressEnum.AddMembers;
+      } else if (!(!!selectedGroup.chairperson && !!selectedGroup.treasure && !!selectedGroup.secretary)) {
+        title = 'Define group leadership information';
+        buttonLabel = 'Add leadership information';
+        key = GroupProgressEnum.AddLeadershipInformation;
       }
       return {
         title,

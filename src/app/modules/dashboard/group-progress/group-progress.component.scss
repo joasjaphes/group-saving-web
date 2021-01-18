@@ -20,7 +20,7 @@
   .progress-container {
     display: grid;
     grid-template-columns: auto;
-    grid-gap: 20px;
+    grid-gap: 0;
     border-radius: 20px;
     padding-top: 30px;
     align-content: center;
@@ -37,8 +37,15 @@
     .textArea {
       height: 300px;
       vertical-align: middle;
-      padding: 15px;
+      padding-left: 15px;
+      padding-right: 15px;
+      padding-top: 0;
+      text-align: center;
       color: #cccccc;
+
+      h1 {
+        margin-top: 0!important;
+      }
     }
   }
 }

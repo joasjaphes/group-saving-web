@@ -14,6 +14,7 @@ import * as setMeetingFrequency from './group/set-meeting-frequency';
 import * as setAvailableContributionType from './contribution/set-available-contribution-type';
 import * as createContributionType from './contribution/create-contribution-type';
 import * as createLoanType from './loan/create-loan-type';
+import * as setMeetingDetails from './meeting/set-meeting-details';
 
 exports.getUserByPhoneNumber = getUserByPhoneNumber.getUserByPhoneNumber;
 
@@ -30,3 +31,4 @@ exports.confirmCurrency = confirmCurrency.confirmCurrency;
 exports.createContributionType = createContributionType.createContributionType;
 exports.createLoanType = createLoanType.createLoanType;
 exports.setBasicInfo = setBasicInfo.setBasicInfo;
+exports.setMeetingDetails = setMeetingDetails.setMeetingDetails;

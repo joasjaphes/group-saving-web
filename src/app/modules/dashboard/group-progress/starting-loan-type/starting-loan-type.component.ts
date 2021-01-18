@@ -9,7 +9,6 @@ import {ApplicationState} from '../../../../store';
 import * as contributionSelector from '../../../../store/contribution-type/contribution-type.selectors';
 import {Observable} from 'rxjs';
 import {ContributionType} from '../../../../store/contribution-type/contribution-type.model';
-import {ContributionTypes} from '../../../../store/contribution-type/contribution-type.enum';
 
 @Component({
   selector: 'app-starting-loan-type',
@@ -144,6 +143,7 @@ export class StartingLoanTypeComponent implements OnInit {
       console.error(e);
     }
   }
+
   close() {
     this.closeForm.emit();
   }

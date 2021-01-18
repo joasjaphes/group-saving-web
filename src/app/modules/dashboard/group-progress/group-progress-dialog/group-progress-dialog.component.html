@@ -33,6 +33,14 @@
         [progressDetails]="data.progressDetails"
         (closeForm)="closeDialog()"
       ></app-starting-loan-type>
+
+<!--      Adding Loan types-->
+      <app-starting-meeting-rules
+        *ngIf="data.progressDetails.key == progressDetailsEnum.AddMeetingInformation"
+        [group]="data.group"
+        [progressDetails]="data.progressDetails"
+        (closeForm)="closeDialog()"
+      ></app-starting-meeting-rules>
     </div>
   </div>
 </div>
