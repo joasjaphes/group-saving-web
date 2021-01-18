@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Group} from '../../../../store/group/group.model';
 import {GroupProgress} from '../../../../store/group/group-progress.model';
 import {GroupProgressEnum} from '../../../../store/group/group-progress.enum';
+import {Member} from '../../../../store/member/member.model';
 
 @Component({
   selector: 'app-group-progress-dialog',
@@ -16,7 +17,8 @@ export class GroupProgressDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<GroupProgressDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
       group: Group,
-      progressDetails: GroupProgress
+      progressDetails: GroupProgress,
+      memberName: string
     }
   ) { }
 

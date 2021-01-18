@@ -1,0 +1,84 @@
+<div class="row">
+  <div class="col-md-5">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-4 p-0" @fadeIn>
+          <mat-form-field appearance="fill">
+            <img
+              matPrefix
+              style="height: 15px; width: 25px; margin-right: 10px"
+              *ngIf="country"
+              src="assets/flags/{{country.isoCode.toLowerCase()}}.png">
+            <mat-select (selectionChange)="setPhoneCountry($event)" [(ngModel)]="selectedCountry">
+              <mat-option *ngFor="let count of countries" [value]="count.phoneCode">
+                <img style="height: 15px; width: 25px" src="assets/flags/{{count.isoCode.toLowerCase()}}.png">
+                &nbsp; +{{count.phoneCode}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-8 p-0" @fadeIn>
+          <mat-form-field appearance="fill">
+            <mat-label>Phone number</mat-label>
+            <input
+              [(ngModel)]="phoneNumber"
+              (input)="setPhoneNumber($event.target.value)"
+              matInput type="text" placeholder="OXXXXXXXXX"
+              #myInput
+            >
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5" *ngIf="phoneIsValid" @fadeIn>
+     <mat-form-field appearance="fill">
+       <mat-label>Member name</mat-label>
+       <mat-icon matPrefix>person_outline</mat-icon>
+       <input matInput [(ngModel)]="memberName">
+     </mat-form-field>
+  </div>
+  <div class="col-md-2" *ngIf="memberName && memberName.length > 2" @fadeIn>
+    <button (click)="addMember()" class="save-btn zoom-on-hover" mat-raised-button>
+      <mat-icon>add</mat-icon>
+      Add
+    </button>
+  </div>
+</div>
+
+<div class="row mt-2" *ngIf="members.length > 0" @fadeIn>
+  <div class="col-sm-12">
+    <h4 class="registration-title">Members to be added</h4>
+  </div>
+  <div class="col-sm-12">
+    <table style="font-size: 12px; color: white" class="table table-bordered">
+      <tr>
+        <th>#</th>
+        <th>Phone Number</th>
+        <th>Member Name</th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let member of members; let i = index;" @fadeIn @fadeOut>
+        <td style="padding-top: 3px; padding-bottom: 3px">{{ i+1 }}</td>
+        <td style="padding-top: 3px; padding-bottom: 3px">{{ member.phoneNumber }}</td>
+        <td style="padding-top: 3px; padding-bottom: 3px">{{ member.name }}</td>
+        <td style="padding-top: 3px; padding-bottom: 3px">
+          <button mat-icon-button (click)="deleteMember(member.phoneNumber)">
+            <mat-icon style="font-size: 24px" color="warn">delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="col-sm-12">
+    <app-save-area
+      [saveDisabled]="members.length == 0"
+      [confirmFirst]="true"
+      (cancel)="onClose()"
+      (save)="save()"
+      [savingData]="loading"
+    ></app-save-area>
+  </div>
+</div>

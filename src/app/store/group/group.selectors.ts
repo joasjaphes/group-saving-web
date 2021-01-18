@@ -188,7 +188,7 @@ export const selectProgress = createSelector(
         buttonLabel = 'Add Meeting rules';
         key = GroupProgressEnum.AddMeetingInformation;
       } else if (members.length === 1) {
-        title = 'You are the only one in group';
+        title = 'You are the only one in group, add other members';
         buttonLabel = 'Add members';
         key = GroupProgressEnum.AddMembers;
       } else if (!(!!selectedGroup.chairperson && !!selectedGroup.treasure && !!selectedGroup.secretary)) {

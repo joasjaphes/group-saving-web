@@ -12,6 +12,7 @@ import {GroupProgress} from '../../../store/group/group-progress.model';
 export class GroupProgressComponent implements OnInit {
 
   @Input() group: Group;
+  @Input() memberName: string;
   @Input() progress: number;
   @Input() progressDetails: GroupProgress;
 
@@ -41,7 +42,8 @@ export class GroupProgressComponent implements OnInit {
       minHeight: '60vh',
       data: {
         group: this.group,
-        progressDetails: this.progressDetails
+        progressDetails: this.progressDetails,
+        memberName: this.memberName,
       },
       disableClose: true,
     });

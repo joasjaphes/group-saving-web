@@ -40,7 +40,6 @@ export class GroupStartingInfoComponent implements OnInit {
   }
 
   onChangeCurrency(value) {
-    console.log(value);
     const selectedCurrency = this.countries.find(i => i.currency === value);
     if (selectedCurrency) {
       this.currencyName = selectedCurrency.currencyName;

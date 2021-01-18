@@ -5,6 +5,7 @@
   <ng-container ngProjectAs="table">
     <app-group-progress
       [group]="group$ | async"
+      [memberName]="memberName$ | async"
       [progress]="progress$ | async"
       [progressDetails]="progressDetails$ | async"
     ></app-group-progress>
