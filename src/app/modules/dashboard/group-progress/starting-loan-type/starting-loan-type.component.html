@@ -158,7 +158,7 @@
       <!--      Minimum Duration-->
       <div class="col-sm-6">
         <mat-form-field appearance="outline">
-          <mat-label>Minimum Duration <span *ngIf="durationTYpe">({{minimumDuration}} {{durationTYpe}})</span>
+          <mat-label>Minimum Duration <span *ngIf="durationTYpe">({{minimumDuration | number}} {{durationTYpe}})</span>
           </mat-label>
           <input matInput type="number" placeholder="Minimum duration in {{durationTYpe}}"
                  [(ngModel)]="minimumDuration">
@@ -167,7 +167,7 @@
       <!--      Maximum Duration-->
       <div class="col-sm-6">
         <mat-form-field appearance="outline">
-          <mat-label>Maximum Duration <span *ngIf="durationTYpe">({{maximumDuration}} {{durationTYpe}})</span>
+          <mat-label>Maximum Duration <span *ngIf="durationTYpe">({{maximumDuration | number}} {{durationTYpe}})</span>
           </mat-label>
           <input matInput type="number" placeholder="Maximum duration in {{durationTYpe}}"
                  [(ngModel)]="maximumDuration">
@@ -356,12 +356,12 @@
     </ng-template>
     <div class="row">
       <div class="col-sm-12">
-        <h5 class="registration-title">Test loan formular calculation</h5>
+        <h4 class="registration-title">Test loan formular calculation</h4>
       </div>
       <!--     Amount Loaned-->
       <div class="col-sm-6" @fadeIn>
         <mat-form-field appearance="outline">
-          <mat-label>Amount Loaned <small>({{testAmount | number}})</small></mat-label>
+          <mat-label>Amount Loaned <small *ngIf="testAmount">({{testAmount | number}})</small></mat-label>
           <input (input)="calculateLoan()" matInput type="number" placeholder="Amount Loaned" [(ngModel)]="testAmount">
         </mat-form-field>
       </div>

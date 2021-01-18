@@ -36,7 +36,8 @@ export const selectProgressPercent = createSelector(
     members
   ) => {
     if (selectedGroup) {
-
+      let requiredContributions = 0;
+      let availableContributions = 0;
       let percent = 12;
       if (members.length > 1) {
         percent += 21;
@@ -51,23 +52,30 @@ export const selectProgressPercent = createSelector(
         percent += 10;
       }
       const share_exist = !!contributionTypes.find(i => i.type === 'Share');
+      requiredContributions = selectedGroup.has_share ? requiredContributions += 1 :  requiredContributions;
       const entry_fee_exist = !!contributionTypes.find(i => i.type === 'Entry Fee');
+      requiredContributions = selectedGroup.has_entry_fee ? requiredContributions += 1 :  requiredContributions;
       const social_exist = !!contributionTypes.find(i => i.type === 'Social');
+      requiredContributions = selectedGroup.has_social ? requiredContributions += 1 :  requiredContributions;
       const other_exist = !!contributionTypes.find(i => i.type === 'Other');
+      requiredContributions = selectedGroup.has_other_contribution ? requiredContributions += 1 :  requiredContributions;
       if (selectedGroup.has_share && share_exist) {
         percent += 4;
+        availableContributions += 1;
       }
       if (selectedGroup.has_entry_fee && entry_fee_exist) {
         percent += 4;
+        availableContributions += 1;
       }
       if (selectedGroup.has_social && social_exist) {
         percent += 4;
+        availableContributions += 1;
       }
       if (selectedGroup.has_other_contribution && other_exist) {
         percent += 4;
+        availableContributions += 1;
       }
-      // TODO: this calculation is wrong!!!
-      if (contributionTypes.length > 0) {
+      if (contributionTypes.length > 0 && availableContributions === requiredContributions) {
         const contr_need_loan = contributionTypes.filter(i => i.allow_loan);
         const steps = contr_need_loan.length === 0 ? 16 : 16 / contr_need_loan.length;
         const difference = 16 - parseInt(steps + '', 10) * contr_need_loan.length;
@@ -114,7 +122,9 @@ export const selectProgress = createSelector(
       const entry_fee_exist = !!contributionTypes.find(i => i.type === 'Entry Fee');
       const social_exist = !!contributionTypes.find(i => i.type === 'Social');
       const other_exist = !!contributionTypes.find(i => i.type === 'Other');
-      console.log(!(selectedGroup.meeting_settings && selectedGroup.meeting_settings.meeting_frequency));
+      const uncreatedLoans = contributionTypes
+        .filter(i => i.allow_loan)
+        .filter(i => !loanTypes.find(k => k.contribution_type_id === i.id));
       if (!(selectedGroup.meeting_settings && selectedGroup.meeting_settings.meeting_frequency)) {
         title = 'Add basic group information';
         buttonLabel = 'Add group information';
@@ -151,7 +161,10 @@ export const selectProgress = createSelector(
         key = GroupProgressEnum.AddContribution;
         currentContributionType = ContributionTypes.Other;
         contributionName = '';
-      } else if (contributionTypes.length > 0 && contributionTypes.filter(i => i.allow_loan).length > 0) {
+      } else if (
+        contributionTypes.length > 0
+        && uncreatedLoans.length > 0
+      ) {
         const contr_need_loan = contributionTypes.filter(i => i.allow_loan);
         for (const contr of contr_need_loan) {
           if (!loanTypes.find(i => i.contribution_type_id === contr.id)) {
