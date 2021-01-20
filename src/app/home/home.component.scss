@@ -7,7 +7,8 @@
 }
 
 .bgimage {
-  background: url(../../assets/images/member.jpg) no-repeat center center fixed;
+  //background: url(../../assets/images/member.jpg) no-repeat center center fixed;
+  background: url(../../assets/images/vector-compostion2.png) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -17,7 +18,7 @@
 }
 
 .bgcolor {
-  background-color: rgba(20, 20, 46, 0.7);
+  background-color: #1d1d42ad;
 }
 
 .example-container {
@@ -32,7 +33,7 @@
   justify-content: center;
   bottom: 10px;
   img {
-    height: 15px;
+    height: 25px;
   }
 }
 

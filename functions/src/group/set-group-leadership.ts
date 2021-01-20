@@ -33,7 +33,7 @@ export const setGroupLeadership = functions.https.onRequest((request, response) 
         chairperson: data.chairperson,
         secretary: data.secretary,
         treasure: data.treasure,
-        last_update
+        last_update,
       });
       batch.update(otherUpdateAtRef, {group_updated: last_update});
       await batch.commit();

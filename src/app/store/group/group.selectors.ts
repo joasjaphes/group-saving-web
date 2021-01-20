@@ -59,20 +59,24 @@ export const selectProgressPercent = createSelector(
       requiredContributions = selectedGroup.has_social ? requiredContributions += 1 :  requiredContributions;
       const other_exist = !!contributionTypes.find(i => i.type === 'Other');
       requiredContributions = selectedGroup.has_other_contribution ? requiredContributions += 1 :  requiredContributions;
+      console.log({requiredContributions});
+      const contrSteps = 16 / requiredContributions;
+      console.log(parseInt(contrSteps + '', 10));
+      percent += 16 - parseInt(contrSteps + '', 10) * requiredContributions;
       if (selectedGroup.has_share && share_exist) {
-        percent += 4;
+        percent += parseInt(contrSteps + '', 10);
         availableContributions += 1;
       }
       if (selectedGroup.has_entry_fee && entry_fee_exist) {
-        percent += 4;
+        percent += parseInt(contrSteps + '', 10);
         availableContributions += 1;
       }
       if (selectedGroup.has_social && social_exist) {
-        percent += 4;
+        percent += parseInt(contrSteps + '', 10);
         availableContributions += 1;
       }
       if (selectedGroup.has_other_contribution && other_exist) {
-        percent += 4;
+        percent += parseInt(contrSteps + '', 10);
         availableContributions += 1;
       }
       if (contributionTypes.length > 0 && availableContributions === requiredContributions) {
@@ -145,25 +149,25 @@ export const selectProgress = createSelector(
         title = 'Define group contribution types';
         buttonLabel = 'Set contribution types';
         key = GroupProgressEnum.SetContributionType;
-      } else if (!(selectedGroup.has_share && share_exist)) {
+      } else if (selectedGroup.has_share && !share_exist) {
         title = 'Add information about share contribution';
         buttonLabel = 'Add Share contribution details';
         key = GroupProgressEnum.AddContribution;
         currentContributionType = ContributionTypes.Share;
         contributionName = 'Share';
-      } else if (!(selectedGroup.has_entry_fee && entry_fee_exist)) {
+      } else if (selectedGroup.has_entry_fee && !entry_fee_exist) {
         title = 'Add information about entry fee';
         buttonLabel = 'Add Entry fee details';
         key = GroupProgressEnum.AddContribution;
         currentContributionType = ContributionTypes.EntryFee;
         contributionName = 'Entry Fee';
-      } else if (!(selectedGroup.has_social && social_exist)) {
+      } else if (selectedGroup.has_social && !social_exist) {
         title = 'Add information about social contribution';
         buttonLabel = 'Add Social contribution details';
         key = GroupProgressEnum.AddContribution;
         currentContributionType = ContributionTypes.Social;
         contributionName = 'Social Contribution';
-      } else if (!(selectedGroup.has_other_contribution && other_exist)) {
+      } else if (selectedGroup.has_other_contribution && !other_exist) {
         title = 'Add information about other contribution';
         buttonLabel = 'Add Other contribution details';
         key = GroupProgressEnum.AddContribution;

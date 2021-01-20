@@ -11,7 +11,7 @@
               src="assets/flags/{{country.isoCode.toLowerCase()}}.png">
             <mat-select (selectionChange)="setPhoneCountry($event)" [(ngModel)]="selectedCountry">
               <mat-option *ngFor="let count of countries" [value]="count.phoneCode">
-                <img style="height: 15px; width: 25px" src="assets/flags/{{count.isoCode.toLowerCase()}}.png">
+                <img alt="flag" style="height: 15px; width: 25px" src="assets/flags/{{count.isoCode.toLowerCase()}}.png">
                 &nbsp; +{{count.phoneCode}}
               </mat-option>
             </mat-select>

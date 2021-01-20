@@ -20,7 +20,7 @@
           src="assets/flags/{{selectedCountry.isoCode.toLowerCase()}}.png">
         <mat-select (selectionChange)="countrySelected($event.value)" [(ngModel)]="selectedCountryId" name="ampm" class="ampm">
           <mat-option *ngFor="let country of countries" [value]="country.phoneCode">
-            <img style="height: 15px; width: 25px" src="assets/flags/{{country.isoCode.toLowerCase()}}.png">
+            <img alt="flag" style="height: 15px; width: 25px" src="assets/flags/{{country.isoCode.toLowerCase()}}.png">
             &nbsp; {{country.name}}
           </mat-option>
         </mat-select>

@@ -1,19 +1,40 @@
 <div class="grid-area">
-  <div class="contents">
-    <div [ngClass]="routeAnimationsElements" style="text-align: center">
-      <img src="assets/icons/icon-512x512.png">
+  <div class="contetia">
+    <!--    <div class="contents">-->
+    <!--      <div [ngClass]="routeAnimationsElements" style="text-align: center">-->
+    <!--        <img src="assets/icons/icon-512x512.png">-->
+    <!--      </div>-->
+    <!--      <h1 class="mb-0" [ngClass]="routeAnimationsElements" style="text-align: center; font-family: CMSansSerif">-->
+    <!--        <span class="orange">Group</span><span class="blue"> Savings</span>-->
+    <!--      </h1>-->
+    <!--      <h2 class="mb-0" [ngClass]="routeAnimationsElements" style="text-align: center; font-family: CMSansSerif">-->
+    <!--        Save Together Save Better!-->
+    <!--      </h2>-->
+    <!--      <div [ngClass]="routeAnimationsElements" style="text-align: center">-->
+    <!--        <button mat-raised-button [routerLink]="['', 'welcome', 'registration']">-->
+    <!--          Start Here-->
+    <!--        </button>-->
+    <!--      </div>-->
+    <!--      &lt;!&ndash;        <h2>Save Together Save Better!</h2>&ndash;&gt;-->
+    <!--    </div>-->
+    <div class="textArea1">
+      <h1  [ngClass]="routeAnimationsElements" class="registration-title" style="font-size: 50px">
+        <span class="orange">Group</span><span class="blue">Savings</span>
+      </h1>
+      <p style="font-size: 20px; color: #fdfdfdad" [ngClass]="routeAnimationsElements">
+        Save Together Save Better
+      </p>
+      <div class="mt-5">
+        <div [ngClass]="routeAnimationsElements">
+          <button class="zoom-on-hover" mat-raised-button [routerLink]="['', 'welcome', 'registration']">
+            Start Here
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+      </div>
     </div>
-    <h1 class="mb-0" [ngClass]="routeAnimationsElements" style="text-align: center; font-family: CMSansSerif">
-      <span class="orange">Group</span><span class="blue"> Savings</span>
-    </h1>
-    <h2 class="mb-0" [ngClass]="routeAnimationsElements" style="text-align: center; font-family: CMSansSerif">
-      Save Together Save Better!
-    </h2>
-    <div [ngClass]="routeAnimationsElements" style="text-align: center">
-      <button mat-raised-button [routerLink]="['', 'welcome', 'registration']">
-        Start Here
-      </button>
+    <div [ngClass]="routeAnimationsElements">
+      <img alt="first" src="assets/images/vector-compostion1.png" style="height: 60vh; opacity: 0.65">
     </div>
-    <!--        <h2>Save Together Save Better!</h2>-->
   </div>
 </div>
