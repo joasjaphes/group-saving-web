@@ -59,10 +59,10 @@
             <mat-icon style="color: white">more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="addContribution(member)">
               <mat-icon>add</mat-icon> Add Contribution
             </button>
-            <button mat-menu-item>
+            <button mat-menu-item (click)="addLoan(member)">
               <mat-icon>money</mat-icon> Assign Loan
             </button>
             <mat-divider></mat-divider>

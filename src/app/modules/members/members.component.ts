@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Member} from '../../store/member/member.model';
 import {ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
@@ -6,7 +6,16 @@ import {select, Store} from '@ngrx/store';
 import {ApplicationState} from '../../store';
 import * as memberSelector from '../../store/member/member.selectors';
 import * as groupSelector from '../../store/group/group.selectors';
+import * as contributionTypeSelector from '../../store/contribution-type/contribution-type.selectors';
 import {Group} from '../../store/group/group.model';
+import {GroupProgressDialogComponent} from '../dashboard/group-progress/group-progress-dialog/group-progress-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {AddContributionComponent} from './add-contribution/add-contribution.component';
+import {first} from 'rxjs/operators';
+import {ContributionType} from '../../store/contribution-type/contribution-type.model';
+import {LoanType} from '../../store/loan-type/loan-type.model';
+import * as loanSelector from '../../store/loan-type/loan-type.selectors';
+import {AssignLoanComponent} from './assign-loan/assign-loan.component';
 
 @Component({
   selector: 'app-members',
@@ -17,15 +26,51 @@ export class MembersComponent implements OnInit {
 
   members$: Observable<Member[]>;
   group$: Observable<Group>;
+  contributionTypes$: Observable<ContributionType[]>;
+  loanTypes$: Observable<LoanType[]>;
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
+
   constructor(
-    private store: Store<ApplicationState>
+    private store: Store<ApplicationState>,
+    public dialog: MatDialog,
   ) {
     this.members$ = this.store.pipe(select(memberSelector.selectAll));
     this.group$ = this.store.pipe(select(groupSelector.selected));
+    this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectAll));
+    this.loanTypes$ = this.store.pipe(select(loanSelector.selectAll));
   }
 
   ngOnInit(): void {
+  }
+
+  async addContribution(member: Member) {
+    const group = await this.group$.pipe(first()).toPromise();
+    const contributionTypes = await this.contributionTypes$.pipe(first()).toPromise();
+    const dialogRef = this.dialog.open(AddContributionComponent, {
+      width: '80%',
+      minHeight: '60vh',
+      data: {
+        group,
+        contributionTypes,
+        member,
+      },
+      disableClose: true,
+    });
+  }
+
+  async addLoan(member: Member) {
+    const group = await this.group$.pipe(first()).toPromise();
+    const contributionTypes = await this.contributionTypes$.pipe(first()).toPromise();
+    const dialogRef = this.dialog.open(AssignLoanComponent, {
+      width: '80%',
+      minHeight: '60vh',
+      data: {
+        group,
+        contributionTypes,
+        member,
+      },
+      disableClose: true,
+    });
   }
 
 }
