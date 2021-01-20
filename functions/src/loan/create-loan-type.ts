@@ -9,8 +9,8 @@ const cors = require('cors')({origin: true});
  * profit_type, interest_rate, loan_formular, pay_same_amount_is_must, is_insured,
  * insurance_percent, min_duration,  max_duration,  minimum_amount, max_amount_type, max_amount_balance_base, maximum_amount,
  * allow_loan_top_up, is_fine_for_returns,  fine_for_returns_calculation_type, fine_for_returns_amount,
- * fine_for_returns_balance_factor, is_fine_for_completion, fine_for_completion_calculation_type,
- * fine_for_completion_amount,  fine_for_completion_balance_factor, payment_option
+ * fine_for_returns_balance_factor, is_fine_for_completion, fine_for_completion_calculation_type, fine_for_late_return_name
+ * fine_for_completion_amount,  fine_for_completion_balance_factor, payment_option, fine_for_completion_name
  */
 export const createLoanType = functions.https.onRequest((request, response) => {
   return cors(request, response, async () => {
@@ -40,17 +40,17 @@ export const createLoanType = functions.https.onRequest((request, response) => {
         // Here I am preparing and dealing with fine types
         if (data.is_fine_for_returns === 'Yes') {
           const fineTypes = fine_types.docs.map(i => i.data());
-          const fineToUse = fineTypes.find(i => i.type === 'Loan' && i.loan_type_id === loanTypeId);
+          const fineToUse = fineTypes.find(i => i.type === 'Loan' && i.loan_type_id === loanTypeId && i.loan_type === 'returns');
           const fineId = fineToUse ? fineToUse.id : helpers.makeid();
           const fineDocRef = admin.firestore().doc(`groups/${groupId}/fine_type/${fineId}`);
-          transaction.set(fineDocRef, prepareFineData(fineId, data, fineToUse, last_update, loanTypeId, 'Fine for late returns of'), {merge: true});
+          transaction.set(fineDocRef, prepareFineData(fineId, data, fineToUse, last_update, loanTypeId, 'returns'), {merge: true});
         }
         if (data.is_fine_for_completion === 'Yes') {
           const fineTypes = fine_types.docs.map(i => i.data());
-          const fineToUse = fineTypes.find(i => i.type === 'Loan' && i.loan_type_id === loanTypeId);
+          const fineToUse = fineTypes.find(i => i.type === 'Loan' && i.loan_type_id === loanTypeId && i.loan_type === 'completion');
           const fineId = fineToUse ? fineToUse.id : helpers.makeid();
           const fineDocRef = admin.firestore().doc(`groups/${groupId}/fine_type/${fineId}`);
-          transaction.set(fineDocRef, prepareFineData(fineId, data, fineToUse, last_update, loanTypeId, 'Fine for late completion of '), {merge: true});
+          transaction.set(fineDocRef, prepareFineData(fineId, data, fineToUse, last_update, loanTypeId, 'completion'), {merge: true});
         }
 
         transaction.set(loanTypeDocRef, prepareContributionData(data, loanTypeId, last_update), {merge: true});
@@ -83,19 +83,19 @@ function prepareFineData(fineId: string, data: any, fineData: any, last_update: 
     last_update,
     contribution_type_id: data.contribution_type_id,
     loan_type_id,
-    description: `${name} ${data.name}`,
-    calculation: (name === 'Fine for late returns of' ? data.fine_for_returns_calculation_type : data.fine_for_completion_calculation_type) || null,
+    description: (name === 'returns' ? data.fine_for_late_return_name : data.fine_for_completion_name) || '',
+    calculation: (name === 'returns' ? data.fine_for_returns_calculation_type : data.fine_for_completion_calculation_type) || null,
     is_based_on_balance: false,
     is_based_on_amount_to_be_paid: false,
-    balance_percentage: (name === 'Fine for late returns of' ? data.fine_for_returns_balance_factor : data.fine_for_completion_balance_factor) || null,
+    balance_percentage: (name === 'returns' ? data.fine_for_returns_balance_factor : data.fine_for_completion_balance_factor) || null,
     amount_to_be_paid_percentage: null,
-    is_fixed: name === 'Fine for late returns of' ? data.fine_for_returns_calculation_type === 'Fixed' : data.fine_for_completion_calculation_type === 'Fixed',
-    fixed_amount: (name === 'Fine for late returns of' ? data.fine_for_returns_amount : data.fine_for_completion_amount) || 0,
+    is_fixed: name === 'returns' ? data.fine_for_returns_calculation_type === 'Fixed' : data.fine_for_completion_calculation_type === 'Fixed',
+    fixed_amount: (name === 'returns' ? data.fine_for_returns_amount : data.fine_for_completion_amount) || 0,
     is_based_on_time: false,
     type: 'Loan',
     period_type: null,
     amount_per_period: null,
-    loan_type: null,
+    loan_type: name,
     count_as_profit: false,
     additional_config: {},
   };

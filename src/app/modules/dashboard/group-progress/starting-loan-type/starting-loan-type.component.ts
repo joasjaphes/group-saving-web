@@ -9,6 +9,7 @@ import {ApplicationState} from '../../../../store';
 import * as contributionSelector from '../../../../store/contribution-type/contribution-type.selectors';
 import {Observable} from 'rxjs';
 import {ContributionType} from '../../../../store/contribution-type/contribution-type.model';
+import {MatSelectChange} from '@angular/material/select';
 
 @Component({
   selector: 'app-starting-loan-type',
@@ -42,10 +43,12 @@ export class StartingLoanTypeComponent implements OnInit {
   isLoanInsured: string;
   insurancePercent: any;
   fineForReturns: string;
+  fineForReturnName: string;
   fineForReturnAmount: string;
   fineForReturnBalanceFactor: string;
   fineForReturnType: string;
   fineForCompletes: string;
+  fineForCompleteName: string;
   fineForCompleteAmount: string;
   fineForCompleteBalanceFactor: string;
   fineForCompleteType: string;
@@ -131,6 +134,8 @@ export class StartingLoanTypeComponent implements OnInit {
       fine_for_completion_calculation_type: this.fineForCompleteType,
       fine_for_completion_amount: this.fineForCompleteAmount,
       fine_for_completion_balance_factor: this.fineForCompleteBalanceFactor,
+      fine_for_late_return_name: this.fineForReturnName,
+      fine_for_completion_name: this.fineForCompleteName,
     };
     this.loading = true;
     try {
@@ -148,4 +153,15 @@ export class StartingLoanTypeComponent implements OnInit {
     this.closeForm.emit();
   }
 
+  setCompletionFineAllowed($event: MatSelectChange) {
+    if ($event.value === 'Yes') {
+      this.fineForCompleteName = 'Fine for late completion of ' + this.name;
+    }
+  }
+
+  setLateReturnFineAllowed($event: MatSelectChange) {
+    if ($event.value === 'Yes') {
+      this.fineForReturnName = 'Fine for late ' + this.durationTYpe + ' returns of ' + this.name;
+    }
+  }
 }

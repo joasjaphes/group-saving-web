@@ -23,11 +23,16 @@
     </mat-form-field>
   </div>
 
+  <hr  *ngIf="memberMustAttend == 'Yes'" @fadeIn>
+  <div class="col-sm-12" *ngIf="memberMustAttend == 'Yes'" @fadeIn>
+    <h4 class="registration-title">Fine for being late to the meeting</h4>
+  </div>
+
   <!--  Is there fine for being late to the meeting?-->
   <div [ngClass]="allowFineForLate == 'Yes' ? 'col-sm-6' : 'col-sm-12'" class="transition-element" *ngIf="memberMustAttend == 'Yes'" @fadeIn>
     <mat-form-field appearance="outline">
       <mat-label>Is there fine for being late to the meeting?</mat-label>
-      <mat-select [(ngModel)]="allowFineForLate">
+      <mat-select [(ngModel)]="allowFineForLate" (selectionChange)="setLateMeetingFine($event)">
         <mat-option value="Yes">Yes (Members will be charged for being late)</mat-option>
         <mat-option value="No">No (There is no fine for being late)</mat-option>
       </mat-select>
@@ -37,16 +42,40 @@
   <!--      Fine Amount-->
   <div class="col-sm-6" *ngIf="allowFineForLate == 'Yes'">
     <mat-form-field appearance="outline">
-      <mat-label>Fine for being late ({{lateFineAmount | number}})</mat-label>
+      <mat-label>Fine Name</mat-label>
+      <input matInput placeholder="Name Fine for being late" [(ngModel)]="lateFineName">
+    </mat-form-field>
+  </div>
+
+  <!--      Fine Amount-->
+  <div class="col-sm-6" *ngIf="allowFineForLate == 'Yes'">
+    <mat-form-field appearance="outline">
+      <mat-label>Fine Amount ({{lateFineAmount | number}})</mat-label>
       <input matInput placeholder="Fine for being late" type="number" [(ngModel)]="lateFineAmount">
     </mat-form-field>
   </div>
 
+
+  <div class="col-sm-6" *ngIf="allowFineForLate == 'Yes'" @fadeIn>
+    <mat-form-field appearance="outline">
+      <mat-label>Fines should be added to</mat-label>
+      <mat-select [(ngModel)]="addLateFineTo" placeholder="Late meeting fine should be added to">
+        <mat-option *ngFor="let contr of contributionTypes$ | async" [value]="contr.id">
+          {{contr.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <hr *ngIf="memberMustAttend == 'Yes' && allowFineForLate" @fadeIn>
+  <div class="col-sm-12" *ngIf="memberMustAttend == 'Yes' && allowFineForLate" @fadeIn>
+    <h4 class="registration-title">Fine for not attending meeting</h4>
+  </div>
   <!--  Fine for not attending the meeting-->
-  <div [ngClass]="allowFineForNotAttending == 'Yes' ? 'col-sm-6' : 'col-sm-12'"  class="transition-element" *ngIf="memberMustAttend == 'Yes' && allowFineForLate">
+  <div [ngClass]="allowFineForNotAttending == 'Yes' ? 'col-sm-6' : 'col-sm-12'"  class="transition-element" *ngIf="memberMustAttend == 'Yes' && allowFineForLate" @fadeIn>
     <mat-form-field appearance="outline">
       <mat-label>Is there fine for not attending meeting?</mat-label>
-      <mat-select [(ngModel)]="allowFineForNotAttending">
+      <mat-select [(ngModel)]="allowFineForNotAttending" (selectionChange)="setNotAttendingLMeetingFine($event)">
         <mat-option value="Yes">Yes (Members will be charged for not attending meeting)</mat-option>
         <mat-option value="No">No (There is no fine for not attending meeting)</mat-option>
       </mat-select>
@@ -54,10 +83,30 @@
   </div>
 
   <!--      Fine Amount-->
+  <div class="col-sm-6" *ngIf="allowFineForNotAttending == 'Yes'">
+    <mat-form-field appearance="outline">
+      <mat-label>Fine Name</mat-label>
+      <input matInput placeholder="Fine for not attending meeting" [(ngModel)]="notAttendingFineName">
+    </mat-form-field>
+  </div>
+
+
+  <!--      Fine Amount-->
   <div class="col-sm-6" *ngIf="allowFineForNotAttending == 'Yes'" @fadeIn>
     <mat-form-field appearance="outline">
-      <mat-label>Fine for not attending meeting ({{notAttendingFineAmount | number}})</mat-label>
+      <mat-label>Fine Amount ({{notAttendingFineAmount | number}})</mat-label>
       <input matInput placeholder="Fine for not attending meeting" type="number" [(ngModel)]="notAttendingFineAmount">
+    </mat-form-field>
+  </div>
+
+  <div class="col-sm-6" *ngIf="allowFineForNotAttending == 'Yes'" @fadeIn>
+    <mat-form-field appearance="outline">
+      <mat-label>Fines should be added to</mat-label>
+      <mat-select [(ngModel)]="addNotAttendingFineTo" placeholder="Fine for not attending a meeting should be added to">
+        <mat-option *ngFor="let contr of contributionTypes$ | async" [value]="contr.id">
+          {{contr.name}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
   </div>
 

@@ -59,25 +59,26 @@ export const selectProgressPercent = createSelector(
       requiredContributions = selectedGroup.has_social ? requiredContributions += 1 :  requiredContributions;
       const other_exist = !!contributionTypes.find(i => i.type === 'Other');
       requiredContributions = selectedGroup.has_other_contribution ? requiredContributions += 1 :  requiredContributions;
-      console.log({requiredContributions});
-      const contrSteps = 16 / requiredContributions;
-      console.log(parseInt(contrSteps + '', 10));
-      percent += 16 - parseInt(contrSteps + '', 10) * requiredContributions;
-      if (selectedGroup.has_share && share_exist) {
-        percent += parseInt(contrSteps + '', 10);
-        availableContributions += 1;
-      }
-      if (selectedGroup.has_entry_fee && entry_fee_exist) {
-        percent += parseInt(contrSteps + '', 10);
-        availableContributions += 1;
-      }
-      if (selectedGroup.has_social && social_exist) {
-        percent += parseInt(contrSteps + '', 10);
-        availableContributions += 1;
-      }
-      if (selectedGroup.has_other_contribution && other_exist) {
-        percent += parseInt(contrSteps + '', 10);
-        availableContributions += 1;
+      if (requiredContributions !== 0) {
+        const contrSteps = 16 / requiredContributions;
+        console.log(parseInt(contrSteps + '', 10));
+        percent += 16 - parseInt(contrSteps + '', 10) * requiredContributions;
+        if (selectedGroup.has_share && share_exist) {
+          percent += parseInt(contrSteps + '', 10);
+          availableContributions += 1;
+        }
+        if (selectedGroup.has_entry_fee && entry_fee_exist) {
+          percent += parseInt(contrSteps + '', 10);
+          availableContributions += 1;
+        }
+        if (selectedGroup.has_social && social_exist) {
+          percent += parseInt(contrSteps + '', 10);
+          availableContributions += 1;
+        }
+        if (selectedGroup.has_other_contribution && other_exist) {
+          percent += parseInt(contrSteps + '', 10);
+          availableContributions += 1;
+        }
       }
       if (contributionTypes.length > 0 && availableContributions === requiredContributions) {
         const contr_need_loan = contributionTypes.filter(i => i.allow_loan);

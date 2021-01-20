@@ -4,6 +4,7 @@ import {GroupProgress} from '../../../../store/group/group-progress.model';
 import {fadeIn} from '../../../../shared/animations/router-animation';
 import {FunctionsService} from '../../../../services/functions.service';
 import {CommonService} from '../../../../services/common.service';
+import {MatSelectChange} from '@angular/material/select';
 
 @Component({
   selector: 'app-starting-contribution-type',
@@ -30,6 +31,7 @@ export class StartingContributionTypeComponent implements OnInit {
   allowLoan: string;
   fineCalculationType: string;
   fineAmount: any;
+  fineName: string;
   loading;
   constructor(
     private functionsService: FunctionsService,
@@ -68,6 +70,7 @@ export class StartingContributionTypeComponent implements OnInit {
       isAmountTheSame: this.isAmountSame,
       fineCalculationType: this.fineCalculationType,
       fineAmount: this.fineAmount,
+      fineName: this.fineName,
       isLoanAllowed: this.allowLoan,
     };
     this.loading = true;
@@ -84,5 +87,11 @@ export class StartingContributionTypeComponent implements OnInit {
 
   close() {
     this.closeForm.emit();
+  }
+
+  setAllowFine($event: MatSelectChange) {
+    if ($event.value === 'Yes') {
+      this.fineName = 'Late submission of ' + this.name;
+    }
   }
 }

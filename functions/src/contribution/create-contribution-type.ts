@@ -5,7 +5,7 @@ import * as admin from 'firebase-admin';
 const cors = require('cors')({origin: true});
 
 /**
- * input data : { groupId, contributionKey, name, valuePerShare, amount, minimumAmount, frequency, isMandatory, isAmountTheSame,  isLoanAllowed, isFineAllowed, fineAmount, fineCalculationType  fistTime, isOneTime}
+ * input data : { groupId, contributionKey, name, valuePerShare, amount, minimumAmount, frequency, isMandatory, isAmountTheSame,  isLoanAllowed, isFineAllowed, fineAmount, fineCalculationType, fineName}
  */
 export const createContributionType = functions.https.onRequest((request, response) => {
   return cors(request, response, async () => {
@@ -80,7 +80,7 @@ function prepareFineData(fineId: string, data: any, fineData: any, last_update: 
     is_active: true,
     last_update,
     contribution_type_id,
-    description: `Late submission of ${data.name}`,
+    description: data.fineName || null,
     calculation: data.fineCalculationType,
     is_based_on_balance: false,
     is_based_on_amount_to_be_paid: false,

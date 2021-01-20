@@ -5,6 +5,7 @@
         <div class="col-sm-4 p-0" @fadeIn>
           <mat-form-field appearance="fill">
             <img
+              alt="flag"
               matPrefix
               style="height: 15px; width: 25px; margin-right: 10px"
               *ngIf="country"
@@ -47,7 +48,7 @@
   </div>
 </div>
 
-<div class="row mt-2" *ngIf="members.length > 0" @fadeIn>
+<div class="row mt-2" *ngIf="members.length > 0" @fadeIn style="max-height: 550px; overflow: auto">
   <div class="col-sm-12">
     <h4 class="registration-title">Members to be added</h4>
   </div>

@@ -131,22 +131,33 @@
         <mat-form-field appearance="outline">
           <mat-label>Is loan allowed?</mat-label>
           <mat-select [(ngModel)]="allowLoan">
-            <mat-option value="Yes">Yes <small>members are allowed to take loan from this contribution</small>
+            <mat-option value="Yes">Yes <small>(members are allowed to take loan from this contribution)</small>
             </mat-option>
-            <mat-option value="No">No <small>members are cannot take loan from this contribution</small></mat-option>
+            <mat-option value="No">No <small>(members are cannot take loan from this contribution)</small></mat-option>
           </mat-select>
         </mat-form-field>
       </div>
       <!--      Is fine allowed-->
-      <div class="col-sm-12">
+      <div [ngClass]="allowLoan == 'Yes' ? 'col-sm-6' : 'col-sm-12'" *ngIf="allowLoan" @fadeIn>
         <mat-form-field appearance="outline">
           <mat-label>Is there fine for late contribution?</mat-label>
-          <mat-select [(ngModel)]="allowFine">
+          <mat-select [(ngModel)]="allowFine" (selectionChange)="setAllowFine($event)">
             <mat-option value="Yes">Yes</mat-option>
             <mat-option value="No">No</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
+
+
+      <!--      Fine Amount-->
+      <div class="col-sm-6" *ngIf="allowFine == 'Yes'" @fadeIn>
+        <mat-form-field appearance="outline">
+          <mat-label>Fine Name</mat-label>
+          <input matInput placeholder="Fine name" [(ngModel)]="fineName">
+          <mat-hint>The name that will appear during contribution</mat-hint>
+        </mat-form-field>
+      </div>
+
 
       <!--      Fine Calculation type-->
       <div class="col-sm-6" *ngIf="allowFine == 'Yes'" @fadeIn>
@@ -166,7 +177,7 @@
       <!--      Fine Amount-->
       <div class="col-sm-6" *ngIf="fineCalculationType" @fadeIn>
         <mat-form-field appearance="outline">
-          <mat-label>Fine Amount</mat-label>
+          <mat-label>Fine Amount ({{fineAmount | number}})</mat-label>
           <input matInput placeholder="Fine amount" type="number" [(ngModel)]="fineAmount">
           <mat-hint *ngIf="fineAmount" @fadeIn>Member will pay a fine of <b>{{fineAmount | number}}
             ( {{fineCalculationType}} )</b></mat-hint>

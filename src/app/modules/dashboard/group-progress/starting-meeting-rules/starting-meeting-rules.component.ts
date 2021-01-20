@@ -4,6 +4,12 @@ import {GroupProgress} from '../../../../store/group/group-progress.model';
 import {fadeIn} from '../../../../shared/animations/router-animation';
 import {FunctionsService} from '../../../../services/functions.service';
 import {CommonService} from '../../../../services/common.service';
+import {MatSelectChange} from '@angular/material/select';
+import {Observable} from 'rxjs';
+import {ContributionType} from '../../../../store/contribution-type/contribution-type.model';
+import {select, Store} from '@ngrx/store';
+import {ApplicationState} from '../../../../store';
+import * as contributionSelector from '../../../../store/contribution-type/contribution-type.selectors';
 
 @Component({
   selector: 'app-starting-meeting-rules',
@@ -16,20 +22,26 @@ export class StartingMeetingRulesComponent implements OnInit {
   @Input() progressDetails: GroupProgress;
 
   @Output() closeForm = new EventEmitter();
-
+  contributionTypes$: Observable<ContributionType[]>;
   meetingFrequency: string;
   memberMustAttend: string;
   allowFineForLate: string;
   allowFineForNotAttending: string;
   lateFineAmount: string;
   notAttendingFineAmount: string;
+  lateFineName: string;
+  notAttendingFineName: string;
+  addNotAttendingFineTo: string;
+  addLateFineTo: string;
 
   loading = false;
 
   constructor(
     private functionsService: FunctionsService,
     private commonService: CommonService,
+    private store: Store<ApplicationState>,
   ) {
+    this.contributionTypes$ = this.store.pipe(select(contributionSelector.selectAll));
   }
 
   ngOnInit(): void {
@@ -47,6 +59,10 @@ export class StartingMeetingRulesComponent implements OnInit {
       allow_not_attending_fine: this.allowFineForNotAttending,
       late_fine_amount: this.lateFineAmount,
       not_attending_fine_amount: this.notAttendingFineAmount,
+      late_fine_name: this.lateFineName,
+      not_attending_fine_name: this.notAttendingFineName,
+      add_not_attending_fine_to: this.addNotAttendingFineTo,
+      add_late_fine_to: this.addLateFineTo,
     };
     this.loading = true;
     try {
@@ -62,5 +78,17 @@ export class StartingMeetingRulesComponent implements OnInit {
 
   close() {
     this.closeForm.emit();
+  }
+
+  setLateMeetingFine($event: MatSelectChange) {
+    if ($event.value === 'Yes') {
+      this.lateFineName = 'Fine for being late to a meeting';
+    }
+  }
+
+  setNotAttendingLMeetingFine($event: MatSelectChange) {
+    if ($event.value === 'Yes') {
+      this.notAttendingFineName = 'Fine for not attending a meeting';
+    }
   }
 }
