@@ -1,4 +1,5 @@
 export interface LoanType {
+  interest_rate?: any;
   id: string;
   name: string;
   group_id: string;

@@ -61,12 +61,14 @@ export class MembersComponent implements OnInit {
   async addLoan(member: Member) {
     const group = await this.group$.pipe(first()).toPromise();
     const contributionTypes = await this.contributionTypes$.pipe(first()).toPromise();
+    const loanTypes = await this.loanTypes$.pipe(first()).toPromise();
     const dialogRef = this.dialog.open(AssignLoanComponent, {
       width: '80%',
       minHeight: '60vh',
       data: {
         group,
         contributionTypes,
+        loanTypes,
         member,
       },
       disableClose: true,

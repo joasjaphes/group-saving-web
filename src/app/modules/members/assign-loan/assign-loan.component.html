@@ -10,4 +10,77 @@
       </button>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="row">
+        <!--        Type of Loan-->
+        <div class="col-sm-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Loan Type</mat-label>
+            <mat-select [(ngModel)]="loanType" placeholder="Loan Type"
+                        (selectionChange)="loanTypeSelected($event.value)">
+              <mat-option *ngFor="let contr of data.loanTypes" [value]="contr.id">
+                {{contr.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!--        Start Date-->
+        <div class="col-sm-12" *ngIf="loanType" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Loan start date</mat-label>
+            <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="loanStartDate"/>
+            <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
+            <mat-datepicker #endingDate></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <!--        Loan amount-->
+        <div class="col-sm-12" *ngIf="loanStartDate && loanType" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Loan amount <span *ngIf="loanAmount">({{loanAmount | number}})</span></mat-label>
+            <input matInput [(ngModel)]="loanAmount" type="number" placeholder="Loan amount" (input)="calculateLoan()">
+          </mat-form-field>
+        </div>
+
+        <!--        Loan Duration-->
+        <div class="col-sm-12" *ngIf="loanStartDate && loanType && loanAmount" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Loan Duration
+              <span>({{duration | number}} {{durationTYpe}})</span>
+            </mat-label>
+            <input matInput [(ngModel)]="duration" placeholder="Loan Duration" (input)="calculateLoan()">
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6" *ngIf="loanAmount && duration" @fadeIn>
+      <div class="row summary-area">
+        <div class="col-sm-6">
+          <p class="text-muted">Amount Taken <b>({{loanStartDate | date:'mediumDate'}})</b></p>
+          <h1 class="registration-title">{{loanAmount | number}}</h1>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Duration </p>
+          <h1 class="registration-title">{{duration | number}} {{durationTYpe}}</h1>
+<!--          <p class="text-muted">from </p>-->
+        </div>
+        <div class="col-sm-6" style="margin-top: 20px">
+          <p class="text-muted">Amount to return <b>({{newDate | date:'mediumDate'}})</b></p>
+          <h1 class="registration-title">{{testToReturn | number}}</h1>
+        </div>
+        <div class="col-sm-6" style="margin-top: 20px">
+          <p class="text-muted">Amount per return</p>
+          <h1 class="registration-title">{{testAmountPerReturn | number}}</h1>
+        </div>
+        <div class="col-sm-12 mt-5">
+          <app-save-area></app-save-area>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
 </div>
