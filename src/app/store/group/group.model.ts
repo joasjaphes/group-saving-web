@@ -26,6 +26,7 @@ export interface Group {
     must_attend: boolean;
     maximum_meetings_to_miss: number;
   };
+  current_balances: any;
   next_meeting: any;
   country: string;
   currency: string;

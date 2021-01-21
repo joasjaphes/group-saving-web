@@ -73,6 +73,7 @@ export class GroupStartingInfoComponent implements OnInit {
       has_entry_fee: this.entryChecked,
       has_other_contribution: this.otherChecked,
       entry_fee_amount: this.entryFeeAmount,
+      track_contribution_period: this.trackContribution,
     };
     this.loading = true;
     try {

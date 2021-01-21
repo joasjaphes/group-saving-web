@@ -22,3 +22,4 @@ export const selected = createSelector(
 export const selectedWithLoan = createSelector(
   selectAll, (allItems, id) => allItems.filter(i => i.allow_loan)
 );
+

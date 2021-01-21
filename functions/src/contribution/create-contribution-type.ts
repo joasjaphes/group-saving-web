@@ -167,6 +167,7 @@ function prepareContributionData(data: any, contributionTypeId: string, last_upd
     fine_calculation: data.fineCalculationType || null,
     fine_amount_per_period: data.fineAmount || 0,
     managed_by: null,
+    track_balance: data.trackBalance === 'Yes',
     additional_config: {},
   };
 }

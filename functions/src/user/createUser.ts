@@ -43,7 +43,7 @@ export const createUser = functions.https.onRequest((request, response) => {
       const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
       const groupDocRef = admin.firestore().doc(`groups/${groupId}`);
       const last_update = new Date().getTime();
-      await createGroup(data, groupDocRef, groupId, last_update);
+      await createGroup(data, groupDocRef, groupId, last_update, memberId);
       await createMember(data, memberDocRef, groupId, memberId, last_update);
       await updateLastUpdated(otherUpdateAtRef, last_update);
       await groupMemberDocRef.add({
@@ -95,7 +95,7 @@ function createMember(data: any, memberDocRef: FirebaseFirestore.DocumentReferen
   });
 }
 
-function createGroup(data: any, groupDocRef: FirebaseFirestore.DocumentReference, groupId: string, last_update: number) {
+function createGroup(data: any, groupDocRef: FirebaseFirestore.DocumentReference, groupId: string, last_update: number, memberId: string) {
   return groupDocRef.create({
     id: groupId,
     allow_multiple_loan: null,
@@ -131,5 +131,6 @@ function createGroup(data: any, groupDocRef: FirebaseFirestore.DocumentReference
     payment_reference: helpers.makeid(),
     start_year: null,
     start_month: null,
+    created_by: memberId,
   });
 }

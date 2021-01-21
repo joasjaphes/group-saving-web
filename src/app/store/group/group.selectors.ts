@@ -217,3 +217,9 @@ export const selectProgress = createSelector(
     };
   }
 );
+
+export const selectNeedBalance = createSelector(
+  selected,
+  fromContribution.selectAll, (group, allItems, id) => allItems
+    .filter(i => i.track_balance && group.current_balances && group.current_balances[i.id])
+);

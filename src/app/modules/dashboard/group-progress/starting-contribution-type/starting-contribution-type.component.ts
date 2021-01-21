@@ -32,6 +32,7 @@ export class StartingContributionTypeComponent implements OnInit {
   fineCalculationType: string;
   fineAmount: any;
   fineName: string;
+  trackBalance: string;
   loading;
   constructor(
     private functionsService: FunctionsService,
@@ -44,7 +45,7 @@ export class StartingContributionTypeComponent implements OnInit {
       this.name = this.progressDetails.contributionName;
     }
     if (this.group) {
-      this.frequency = this.group.meeting_settings ? this.group.meeting_settings.meeting_frequency : '';
+      this.frequency = this.group.contribution_frequency;
     }
   }
 
@@ -72,6 +73,7 @@ export class StartingContributionTypeComponent implements OnInit {
       fineAmount: this.fineAmount,
       fineName: this.fineName,
       isLoanAllowed: this.allowLoan,
+      trackBalance: this.trackBalance,
     };
     this.loading = true;
     try {

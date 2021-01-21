@@ -49,6 +49,7 @@ export const setBasicInfo = functions.https.onRequest((request, response) => {
           social_set: false,
           entry_fee_set: false,
           other_contribution_set: false,
+          track_contribution_period: data.track_contribution_period === 'Yes',
         });
         if (data.has_entry_fee) {
           const contributionTypeId = helpers.makeid();

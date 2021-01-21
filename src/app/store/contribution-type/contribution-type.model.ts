@@ -28,4 +28,5 @@ export interface ContributionType {
   managed_by: string;
   members_can_see_others: boolean;
   day_of_contribution: string;
+  track_balance: boolean;
 }
