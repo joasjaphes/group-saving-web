@@ -227,6 +227,9 @@ button:focus {
   border:1px gray!important;
 }
 
+.mat-menu-panel {
+  background: #1d1e42!important;
+}
 
 .zoom-on-hover.mat-button-disabled:hover {
   transform: scale(1.0);

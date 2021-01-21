@@ -28,11 +28,10 @@ export const setMeetingDetails = functions.https.onRequest((request, response) =
       const last_update = new Date().getTime();
       const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
       const groupDocRef = admin.firestore().doc(`groups/${groupId}`);
-      const finesRef = admin.firestore().collection(`groups/${groupId}/fine_type`);
       await admin.firestore().runTransaction(async (transaction) => {
         const groupDoc = await transaction.get(groupDocRef);
-        const fine_types = await transaction.get(finesRef);
         const groupData: any = {...groupDoc.data()};
+        const fine_types = groupData.fines ? Object.keys(groupData.fines).map(i => groupData.fines[i]) : [];
         const meeting_settings = groupData.meeting_settings
           ? {
             ...groupData.meeting_settings,
@@ -56,30 +55,31 @@ export const setMeetingDetails = functions.https.onRequest((request, response) =
             not_attending_fine_name: data.not_attending_fine_name || null,
           };
         if (data.allow_late_fine === 'Yes') {
-          const fineTypes = fine_types.docs.map(i => i.data());
-          const fineToUse = fineTypes.find(i => i.type === 'Meeting' && i.meeting_type === 'late');
+          const fineToUse = fine_types.find(i => i.type === 'Meeting' && i.meeting_type === 'late');
           const fineId = fineToUse ? fineToUse.id : helpers.makeid();
-          const fineDocRef = admin.firestore().doc(`groups/${groupId}/fine_type/${fineId}`);
-          transaction.set(fineDocRef, prepareMeetingFineData(fineId, data, fineToUse, last_update, 'late'), {merge: true});
+          const fine = prepareMeetingFineData(fineId, data, fineToUse, last_update, 'late');
+          if (groupData.fines) {
+            groupData.fines[fineId] = fine;
+          } else {
+            groupData.fines = {[fineId]: fine};
+          }
+          // const fineDocRef = admin.firestore().doc(`groups/${groupId}/fine_type/${fineId}`);
+          // transaction.set(fineDocRef, prepareMeetingFineData(fineId, data, fineToUse, last_update, 'late'), {merge: true});
         }
         if (data.allow_not_attending_fine === 'Yes') {
-          const fineTypes = fine_types.docs.map(i => i.data());
-          const fineToUse = fineTypes.find(i => i.type === 'Meeting' && i.meeting_type === 'not_attending');
+          const fineToUse = fine_types.find(i => i.type === 'Meeting' && i.meeting_type === 'not_attending');
           const fineId = fineToUse ? fineToUse.id : helpers.makeid();
-          const fineDocRef = admin.firestore().doc(`groups/${groupId}/fine_type/${fineId}`);
-          transaction.set(fineDocRef, prepareMeetingFineData(fineId, data, fineToUse, last_update, 'not_attending'), {merge: true});
+          const fine = prepareMeetingFineData(fineId, data, fineToUse, last_update, 'not_attending');
+          if (groupData.fines) {
+            groupData.fines[fineId] = fine;
+          } else {
+            groupData.fines = {[fineId]: fine};
+          }
+          // const fineDocRef = admin.firestore().doc(`groups/${groupId}/fine_type/${fineId}`);
+          // transaction.set(fineDocRef, prepareMeetingFineData(fineId, data, fineToUse, last_update, 'not_attending'), {merge: true});
         }
-        transaction.update(groupDocRef, {...groupData, last_update, meeting_settings});
-        if (data.allow_late_fine === 'Yes' || data.allow_not_attending_fine === 'Yes') {
-          transaction.set(otherUpdateAtRef, {
-            group_updated: last_update,
-            fine_type_update: last_update,
-          }, {merge: true});
-        } else {
-          transaction.set(otherUpdateAtRef, {
-            group_updated: last_update,
-          }, {merge: true});
-        }
+        transaction.update(groupDocRef, {...groupData, last_update, meeting_settings });
+        transaction.set(otherUpdateAtRef, { group_updated: last_update }, {merge: true});
       });
       response.status(200).send({data: 'Success'});
     } catch (e) {

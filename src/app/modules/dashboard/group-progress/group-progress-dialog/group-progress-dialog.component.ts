@@ -4,6 +4,7 @@ import {Group} from '../../../../store/group/group.model';
 import {GroupProgress} from '../../../../store/group/group-progress.model';
 import {GroupProgressEnum} from '../../../../store/group/group-progress.enum';
 import {Member} from '../../../../store/member/member.model';
+import {ContributionType} from '../../../../store/contribution-type/contribution-type.model';
 
 @Component({
   selector: 'app-group-progress-dialog',
@@ -19,6 +20,7 @@ export class GroupProgressDialogComponent implements OnInit {
       group: Group,
       progressDetails: GroupProgress,
       memberName: string
+      contributionTypeNeedBalance: ContributionType[]
     }
   ) { }
 

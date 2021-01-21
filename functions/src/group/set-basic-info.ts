@@ -34,6 +34,15 @@ export const setBasicInfo = functions.https.onRequest((request, response) => {
         const meeting_settings = groupData.meeting_settings
           ? {...groupData.meeting_settings, meeting_frequency: data.frequency}
           : {meeting_frequency: data.frequency};
+        if (data.has_entry_fee) {
+          const contributionTypeId = helpers.makeid();
+          const contr = prepareEntryFee(data, contributionTypeId, last_update);
+          if (groupData.contributions) {
+            groupData.contributions[contributionTypeId] = contr;
+          } else {
+            groupData.contributions = {[contributionTypeId]: contr};
+          }
+        }
         transaction.update(groupDocRef, {
           ...groupData,
           last_update,
@@ -51,14 +60,7 @@ export const setBasicInfo = functions.https.onRequest((request, response) => {
           other_contribution_set: false,
           track_contribution_period: data.track_contribution_period === 'Yes',
         });
-        if (data.has_entry_fee) {
-          const contributionTypeId = helpers.makeid();
-          const contributionTypeDocRef = admin.firestore().doc(`groups/${groupId}/contribution_type/${contributionTypeId}`);
-          transaction.set(contributionTypeDocRef, prepareEntryFee(data, contributionTypeId, last_update), {merge: true});
-          transaction.set(otherUpdateAtRef, {group_updated: last_update, contribution_type_updated: last_update}, {merge: true});
-        } else {
-          transaction.set(otherUpdateAtRef, {group_updated: last_update}, {merge: true});
-        }
+        transaction.set(otherUpdateAtRef, { group_updated: last_update }, {merge: true});
       });
       response.status(200).send({data: 'Success'});
     } catch (e) {

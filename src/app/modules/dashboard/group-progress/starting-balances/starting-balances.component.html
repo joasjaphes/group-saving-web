@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-sm-12" *ngFor="let contr of contributions_need_balances">
+    <h4 class="registration-title mb-1">
+      {{contr.name}} Starting Balance
+      <span *ngIf="balances[contr.id]"><b>({{balances[contr.id] | number}})</b></span>
+    </h4>
+    <mat-form-field appearance="outline">
+      <mat-label>{{contr.name}}</mat-label>
+      <input matInput [(ngModel)]="balances[contr.id]" placeholder="Starting balance for {{contr.name}}">
+    </mat-form-field>
+  </div>
+  <div class="col-sm-12 mt-2">
+    <app-save-area
+      [saveDisabled]="!canSave"
+      [confirmFirst]="true"
+      (cancel)="onClose()"
+      (save)="save()"
+      [savingData]="loading"
+    ></app-save-area>
+  </div>
+</div>

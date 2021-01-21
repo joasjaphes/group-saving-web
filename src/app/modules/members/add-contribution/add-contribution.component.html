@@ -14,38 +14,140 @@
   <div class="row">
     <div class="col-sm-7">
       <div class="row">
-        <div class="col-sm-6">
-          <!--        Start Date-->
-            <mat-form-field appearance="outline">
-              <mat-label>Date</mat-label>
-              <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="contributionDate"/>
-              <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
-              <mat-datepicker #endingDate></mat-datepicker>
-            </mat-form-field>
-        </div>
-        <div class="col-sm-6">
-          <!--        Start Date-->
-            <mat-form-field appearance="outline">
-              <mat-label>Contribution for</mat-label>
-              <mat-select>
-                <mat-option>Jan 2020</mat-option>
-                <mat-option>Feb 2020</mat-option>
-                <mat-option>Mar 2020</mat-option>
-                <mat-option>Apr 2020</mat-option>
-                <mat-option>May 2020</mat-option>
-                <mat-option>Jun 2020</mat-option>
-              </mat-select>
-            </mat-form-field>
-        </div>
+        <!--        Contribution Types-->
         <div class="col-sm-12" *ngFor="let contr of data.contributionTypes">
-          <mat-checkbox [(ngModel)]="contributionSelected[contr.id]">
-            {{contr.name}} <span *ngIf="contributionAmount[contr.id]">({{contributionAmount[contr.id] | number}})</span>
+          <mat-checkbox [(ngModel)]="contributionSelected[contr.id]"
+                        (change)="enableContribution($event.checked, contr)">
+            {{contr.name}} <b *ngIf="contributionAmount[contr.id]">({{contributionAmount[contr.id] | number}})</b>
           </mat-checkbox>
           <mat-form-field appearance="outline" *ngIf="contributionSelected[contr.id]" @fadeIn>
             <mat-label>Amount for {{contr.name}}</mat-label>
-            <input [(ngModel)]="contributionAmount[contr.id]" matInput type="number" placeholder="Amount for {{contr.name}}">
+            <input
+              [(ngModel)]="contributionAmount[contr.id]"
+              matInput
+              type="number"
+              placeholder="Amount for {{contr.name}}"
+              (input)="findTotal()"
+            >
           </mat-form-field>
         </div>
+
+        <!--        Loans Payments-->
+        <div class="col-sm-12" *ngFor="let loan of memberLoans$ | async">
+          <mat-checkbox [(ngModel)]="loanSelected[loan.id]" (change)="enableLoanPayment($event.checked, loan)">
+            {{loan.loanType?.name}} remaining {{loan.remaining_balance | number}}
+            <b *ngIf="loanAmount[loan.id]">(now paying {{loanAmount[loan.id] | number}})</b>
+          </mat-checkbox>
+          <mat-form-field appearance="outline" *ngIf="loanSelected[loan.id]" @fadeIn>
+            <mat-label>Amount for {{loan.loanType?.name}}</mat-label>
+            <input
+              [(ngModel)]="loanAmount[loan.id]"
+              matInput
+              type="number"
+              placeholder="Amount for {{loan.loanType?.name}}"
+              (input)="findTotal()"
+            >
+          </mat-form-field>
+        </div>
+
+        <!--        Fine payments-->
+        <div class="col-sm-12">
+          <mat-checkbox [(ngModel)]="haveFines">Do {{data.member.name}} have any fine?</mat-checkbox>
+        </div>
+        <div class="col-sm-12" *ngIf="haveFines" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Fine to be paid</mat-label>
+            <mat-select multiple [(ngModel)]="finesToBePaid" (selectionChange)="setSelectedFines($event)">
+              <mat-option *ngFor="let fineType of fineTypes$ | async" [value]="fineType.id">
+                {{fineType.description}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-12" *ngFor="let toBePaid of selectedFineTypes" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Amount for {{toBePaid?.description}}</mat-label>
+            <input
+              [(ngModel)]="fineAmounts[toBePaid?.id]"
+              matInput
+              type="number"
+              placeholder="Amount for {{toBePaid?.description}}"
+              (input)="findTotal()"
+            >
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-5">
+      <div class="menu-grid">
+        <div class="img-div">
+          <h1 style="font-size: 40px; color: #0d0d0d"
+              class="registration-title">{{data.member.name[0].toUpperCase()}}</h1>
+        </div>
+        <div>
+          <h2 class="registration-title mb-1">{{data.member.name}}</h2>
+          <p class="lead">{{data.member.phone_number}}</p>
+        </div>
+      </div>
+      <div class="row summary-area">
+        <div class="col-sm-12">
+          <p class="text-muted m-0">Total </p>
+          <h1 class="registration-title">{{total | number}}</h1>
+        </div>
+
+      </div>
+
+      <div class="row" *ngIf="total" @fadeIn>
+        <div class="col-sm-12">
+          <!--        Start Date-->
+          <mat-form-field appearance="outline">
+            <mat-label>Date</mat-label>
+            <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="contributionDate"/>
+            <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
+            <mat-datepicker #endingDate></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6" *ngIf="data.group.track_contribution_period" @fadeIn>
+          <!-- Contribution Year-->
+          <mat-form-field appearance="outline">
+            <mat-label>Contribution Year</mat-label>
+            <mat-select [(ngModel)]="year">
+              <mat-option *ngFor="let y of years" [value]="y">{{y}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6" *ngIf="data.group.track_contribution_period" @fadeIn>
+          <!-- Contribution Month-->
+          <mat-form-field appearance="outline">
+            <mat-label>Contribution Month</mat-label>
+            <mat-select [(ngModel)]="month">
+              <mat-option value="01">Jan {{year}}</mat-option>
+              <mat-option value="02">Feb {{year}}</mat-option>
+              <mat-option value="03">Mar {{year}}</mat-option>
+              <mat-option value="04">Apr {{year}}</mat-option>
+              <mat-option value="05">May {{year}}</mat-option>
+              <mat-option value="06">Jun {{year}}</mat-option>
+              <mat-option value="07">Jul {{year}}</mat-option>
+              <mat-option value="08">Aug {{year}}</mat-option>
+              <mat-option value="09">Sep {{year}}</mat-option>
+              <mat-option value="10">Oct {{year}}</mat-option>
+              <mat-option value="11">Nov {{year}}</mat-option>
+              <mat-option value="12">Dec {{year}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-12 mt-3" *ngIf="total" @fadeIn>
+          <app-save-area
+            [confirmFirst]="true"
+            (cancel)="closeDialog()"
+            (save)="save()"
+            [savingData]="loading"
+          ></app-save-area>
+        </div>
+
       </div>
     </div>
   </div>

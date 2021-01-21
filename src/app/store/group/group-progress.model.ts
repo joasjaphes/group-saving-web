@@ -5,7 +5,7 @@ export interface GroupProgress {
   title: string;
   buttonLabel: string;
   key: GroupProgressEnum;
-  currentContributionType: ContributionTypes;
-  contributionName: string;
+  currentContributionType?: ContributionTypes;
+  contributionName?: string;
   contributionTypeId: string;
 }

@@ -36,7 +36,7 @@ export class MembersComponent implements OnInit {
   ) {
     this.members$ = this.store.pipe(select(memberSelector.selectAll));
     this.group$ = this.store.pipe(select(groupSelector.selected));
-    this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectAll));
+    this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectRepeating));
     this.loanTypes$ = this.store.pipe(select(loanSelector.selectAll));
   }
 

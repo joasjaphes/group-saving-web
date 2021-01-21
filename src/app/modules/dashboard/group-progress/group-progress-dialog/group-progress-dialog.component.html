@@ -56,6 +56,13 @@
         [group]="data.group"
         (closeForm)="closeDialog()"
       ></app-starting-leadership>
+
+      <app-starting-balances
+        *ngIf="data.progressDetails.key == progressDetailsEnum.AddContributionBalances"
+        [group]="data.group"
+        [contributions_need_balances]="data.contributionTypeNeedBalance"
+        (closeForm)="closeDialog()"
+      ></app-starting-balances>
     </div>
   </div>
 </div>

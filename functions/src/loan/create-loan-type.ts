@@ -32,38 +32,50 @@ export const createLoanType = functions.https.onRequest((request, response) => {
       const groupId = data.groupId;
       const last_update = new Date().getTime();
       const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
-      const finesRef = admin.firestore().collection(`groups/${groupId}/fine_type`);
       const loanTypeId = data.id ? data.id : helpers.makeid();
-      const loanTypeDocRef = admin.firestore().doc(`groups/${groupId}/loan_type/${loanTypeId}`);
+      const groupDocRef = admin.firestore().doc(`groups/${groupId}`);
       await admin.firestore().runTransaction(async transaction => {
-        const fine_types = await transaction.get(finesRef);
+        const groupDoc = await transaction.get(groupDocRef);
+        if (!groupDoc.exists) {
+          response.status(500).send({data: 'Fail'});
+        }
+        const groupData = {...groupDoc.data()};
+        const fine_types = groupData.fines ? Object.keys(groupData.fines).map(i => groupData.fines[i]) : [];
         // Here I am preparing and dealing with fine types
         if (data.is_fine_for_returns === 'Yes') {
-          const fineTypes = fine_types.docs.map(i => i.data());
-          const fineToUse = fineTypes.find(i => i.type === 'Loan' && i.loan_type_id === loanTypeId && i.loan_type === 'returns');
+          const fineToUse = fine_types.find(i => i.type === 'Loan' && i.loan_type_id === loanTypeId && i.loan_type === 'returns');
           const fineId = fineToUse ? fineToUse.id : helpers.makeid();
-          const fineDocRef = admin.firestore().doc(`groups/${groupId}/fine_type/${fineId}`);
-          transaction.set(fineDocRef, prepareFineData(fineId, data, fineToUse, last_update, loanTypeId, 'returns'), {merge: true});
+          const fine = prepareFineData(fineId, data, fineToUse, last_update, loanTypeId, 'returns');
+          if (groupData.fines) {
+            groupData.fines[fineId] = fine;
+          } else {
+            groupData.fines = {[fineId]: fine};
+          }
+          // const fineDocRef = admin.firestore().doc(`groups/${groupId}/fine_type/${fineId}`);
+          // transaction.set(fineDocRef, prepareFineData(fineId, data, fineToUse, last_update, loanTypeId, 'returns'), {merge: true});
         }
         if (data.is_fine_for_completion === 'Yes') {
-          const fineTypes = fine_types.docs.map(i => i.data());
-          const fineToUse = fineTypes.find(i => i.type === 'Loan' && i.loan_type_id === loanTypeId && i.loan_type === 'completion');
+          const fineToUse = fine_types.find(i => i.type === 'Loan' && i.loan_type_id === loanTypeId && i.loan_type === 'completion');
           const fineId = fineToUse ? fineToUse.id : helpers.makeid();
-          const fineDocRef = admin.firestore().doc(`groups/${groupId}/fine_type/${fineId}`);
-          transaction.set(fineDocRef, prepareFineData(fineId, data, fineToUse, last_update, loanTypeId, 'completion'), {merge: true});
+          const fine = prepareFineData(fineId, data, fineToUse, last_update, loanTypeId, 'completion');
+          if (groupData.fines) {
+            groupData.fines[fineId] = fine;
+          } else {
+            groupData.fines = {[fineId]: fine};
+          }
+          // const fineDocRef = admin.firestore().doc(`groups/${groupId}/fine_type/${fineId}`);
+          // transaction.set(fineDocRef, prepareFineData(fineId, data, fineToUse, last_update, loanTypeId, 'completion'), {merge: true});
         }
 
-        transaction.set(loanTypeDocRef, prepareContributionData(data, loanTypeId, last_update), {merge: true});
-        if (data.is_fine_for_returns === 'Yes' || data.is_fine_for_completion === 'Yes') {
-          transaction.update(otherUpdateAtRef, {
-            loan_type_updated: last_update,
-            fine_type_update: last_update,
-          });
+        const loanType = prepareContributionData(data, loanTypeId, last_update);
+        if (groupData.loanTypes) {
+          groupData.loanTypes[loanTypeId] = loanType;
         } else {
-          transaction.update(otherUpdateAtRef, {
-            loan_type_updated: last_update,
-          });
+          groupData.loanTypes = {[loanTypeId]: loanType};
         }
+        // transaction.set(loanTypeDocRef, prepareContributionData(data, loanTypeId, last_update), {merge: true});
+        transaction.update(groupDocRef, {...groupData, last_update });
+        transaction.set(otherUpdateAtRef, {group_updated: last_update }, {merge: true});
       });
       response.status(200).send({data: 'Success'});
     } catch (e) {

@@ -7,4 +7,5 @@ export enum GroupProgressEnum {
   AddLoanInformation = 'Add Loan Information',
   AddLeadershipInformation = 'Add Leadership Information',
   AddMeetingInformation = 'Add Meeting Information',
+  AddContributionBalances = 'Add Contribution Balances',
 }

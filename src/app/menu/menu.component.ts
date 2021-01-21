@@ -21,8 +21,6 @@ import {DataKeys, GET_METHODS, UpdatedDataKeys} from '../store/data-keys';
 import {LastUpdatedAt} from '../store/last-updated-at/last-updated-at.model';
 import {getGroups, setSelectedGroup} from '../store/group/group.actions';
 import {addCurrentUser, logout} from '../store/user/user.actions';
-import {setAnalyticsConfig} from '@angular/cli/models/analytics';
-import {group} from '@angular/animations';
 import {Group} from '../store/group/group.model';
 import * as groupSelector from '../store/group/group.selectors';
 import {setSelectedMember} from '../store/member/member.actions';
@@ -233,6 +231,9 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
               .filter(i => i !== 'updated')
               .filter(i => i !== 'user')
               .filter(i => i !== DataKeys.MemberGroup)
+              .filter(i => i !== DataKeys.LoanType)
+              .filter(i => i !== DataKeys.ContributionType)
+              .filter(i => i !== DataKeys.FineType)
               .filter(i => i !== 'groups');
             for (const storeKey of keysToWorkWith) {
               this.firestoreService.getUpdatedData(
@@ -261,6 +262,9 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
       .map(i => DataKeys[i])
       .filter(i => i !== 'updated')
       .filter(i => i !== 'user')
+      .filter(i => i !== DataKeys.LoanType)
+      .filter(i => i !== DataKeys.ContributionType)
+      .filter(i => i !== DataKeys.FineType)
       .forEach(
         storeKey => this.store.dispatch(GET_METHODS[storeKey])
       );

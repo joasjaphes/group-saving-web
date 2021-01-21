@@ -1,0 +1,37 @@
+.summary-area {
+  h1 {
+    font-size: 30px;
+  }
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: 85px auto;
+  padding: 9px 9px 20px 0;
+  cursor: pointer;
+
+  p {
+    font-size: 15px;
+    color: #8e8e8e;
+  }
+
+  .edit-button {
+    border: 1px solid #574c79;
+    border-radius: 25px;
+  }
+
+  .img-div {
+    background-color: #ffffff96;
+    width: 65px;
+    height: 66px;
+    padding: 18px;
+    text-align: center;
+    border-radius: 32px;
+    vertical-align: middle;
+
+    img {
+      height: 50px;
+      width: 50px;
+    }
+  }
+}

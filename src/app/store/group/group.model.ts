@@ -1,3 +1,7 @@
+import {FineType} from '../fine-type/fine-type.model';
+import {ContributionType} from '../contribution-type/contribution-type.model';
+import {LoanType} from '../loan-type/loan-type.model';
+
 export interface Group {
   id: string;
   last_update: number;
@@ -26,6 +30,10 @@ export interface Group {
     must_attend: boolean;
     maximum_meetings_to_miss: number;
   };
+  fines: {[id: string]: FineType};
+  contributions: {[id: string]: ContributionType};
+  loanTypes: {[id: string]: LoanType};
+  contribution_balances?: {[id: string]: any};
   current_balances: any;
   next_meeting: any;
   country: string;
@@ -45,4 +53,5 @@ export interface Group {
   other_contribution_set: boolean;
   start_month: string;
   start_year: string;
+  track_contribution_period: boolean;
 }

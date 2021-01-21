@@ -3,6 +3,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {GroupProgressDialogComponent} from './group-progress-dialog/group-progress-dialog.component';
 import {Group} from '../../../store/group/group.model';
 import {GroupProgress} from '../../../store/group/group-progress.model';
+import {ContributionType} from '../../../store/contribution-type/contribution-type.model';
 
 @Component({
   selector: 'app-group-progress',
@@ -15,6 +16,7 @@ export class GroupProgressComponent implements OnInit, OnChanges {
   @Input() memberName: string;
   @Input() progress: number;
   @Input() progressDetails: GroupProgress;
+  @Input() contributionTypeNeedBalance: ContributionType[];
 
   assignedNumber = 0;
   constructor(
@@ -48,6 +50,7 @@ export class GroupProgressComponent implements OnInit, OnChanges {
         group: this.group,
         progressDetails: this.progressDetails,
         memberName: this.memberName,
+        contributionTypeNeedBalance: this.contributionTypeNeedBalance,
       },
       disableClose: true,
     });

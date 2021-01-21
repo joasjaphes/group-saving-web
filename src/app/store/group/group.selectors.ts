@@ -5,6 +5,7 @@ import * as fromLoan from '../loan-type/loan-type.selectors';
 import * as fromContribution from '../contribution-type/contribution-type.selectors';
 import {GroupProgressEnum} from './group-progress.enum';
 import {ContributionTypes} from '../contribution-type/contribution-type.enum';
+import {group} from '@angular/animations';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.groupsFeatureKey);
 
@@ -40,7 +41,7 @@ export const selectProgressPercent = createSelector(
       let availableContributions = 0;
       let percent = 12;
       if (members.length > 1) {
-        percent += 21;
+        percent += 16;
       }
       if (selectedGroup.meeting_settings && selectedGroup.meeting_settings.meeting_frequency) {
         percent += 7;
@@ -81,6 +82,17 @@ export const selectProgressPercent = createSelector(
         }
       }
       if (contributionTypes.length > 0 && availableContributions === requiredContributions) {
+        // check for balance issues
+        const contr_need_balance = contributionTypes.filter(i => i.track_balance);
+        const steps1 = contr_need_balance.length === 0 ? 5 : 5 / contr_need_balance.length;
+        const difference1 = 5 - parseInt(steps1 + '', 10) * contr_need_balance.length;
+        percent += difference1;
+        for (const contr of contr_need_balance) {
+          if (selectedGroup.contribution_balances && selectedGroup.contribution_balances[contr.id]) {
+            percent += parseInt(steps1 + '', 10);
+          }
+        }
+        // check for loan configuration
         const contr_need_loan = contributionTypes.filter(i => i.allow_loan);
         const steps = contr_need_loan.length === 0 ? 16 : 16 / contr_need_loan.length;
         const difference = 16 - parseInt(steps + '', 10) * contr_need_loan.length;
@@ -200,6 +212,13 @@ export const selectProgress = createSelector(
         title = 'Define group leadership information';
         buttonLabel = 'Add leadership information';
         key = GroupProgressEnum.AddLeadershipInformation;
+      } else if (
+        contributionTypes.length > 0
+        && contributionTypes.filter(i => i.track_balance && selectedGroup.contribution_balances && selectedGroup.contribution_balances[i.id]).length === 0
+      ) {
+        title = 'To help to track group information fill the current balances';
+        buttonLabel = 'Add starting balances';
+        key = GroupProgressEnum.AddContributionBalances;
       }
       return {
         title,
@@ -214,6 +233,9 @@ export const selectProgress = createSelector(
       title,
       buttonLabel,
       key,
+      currentContributionType,
+      contributionName,
+      contributionTypeId,
     };
   }
 );
@@ -221,5 +243,8 @@ export const selectProgress = createSelector(
 export const selectNeedBalance = createSelector(
   selected,
   fromContribution.selectAll, (group, allItems, id) => allItems
-    .filter(i => i.track_balance && group.current_balances && group.current_balances[i.id])
+    .filter(i => {
+      const hasBalance = group && group.current_balances && !!group.current_balances[i.id];
+      return i.track_balance && !hasBalance;
+    })
 );

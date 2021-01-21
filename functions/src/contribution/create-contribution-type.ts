@@ -28,40 +28,37 @@ export const createContributionType = functions.https.onRequest((request, respon
       const last_update = new Date().getTime();
       const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
       const groupDocRef = admin.firestore().doc(`groups/${groupId}`);
-      const finesRef = admin.firestore().collection(`groups/${groupId}/fine_type`);
       const contributionTypeId = data.id ? data.id : helpers.makeid();
-      const contributionTypeDocRef = admin.firestore().doc(`groups/${groupId}/contribution_type/${contributionTypeId}`);
+      // const contributionTypeDocRef = admin.firestore().doc(`groups/${groupId}/contribution_type/${contributionTypeId}`);
       await admin.firestore().runTransaction(async transaction => {
         const groupDoc = await transaction.get(groupDocRef);
-        const fine_types = await transaction.get(finesRef);
         if (!groupDoc.exists) {
           response.status(500).send({data: 'Fail'});
         }
         const groupData = {...groupDoc.data()};
+        const fine_types = groupData.fines ? Object.keys(groupData.fines).map(i => groupData.fines[i]) : [];
         // Here I am preparing and dealing with fine types
         if (data.isFineAllowed === 'Yes') {
-          const fineTypes = fine_types.docs.map(i => i.data());
-          const fineToUse = fineTypes.find(i => i.type === 'Contribution' && i.contribution_type_id === contributionTypeId);
+          const fineToUse = fine_types.find(i => i.type === 'Contribution' && i.contribution_type_id === contributionTypeId);
           const fineId = fineToUse ? fineToUse.id : helpers.makeid();
-          const fineDocRef = admin.firestore().doc(`groups/${groupId}/fine_type/${fineId}`);
-          transaction.set(fineDocRef, prepareFineData(fineId, data, fineToUse, last_update, contributionTypeId), {merge: true});
+          // const fineDocRef = admin.firestore().doc(`groups/${groupId}/fine_type/${fineId}`);
+          const fine = prepareFineData(fineId, data, fineToUse, last_update, contributionTypeId);
+          if (groupData.fines) {
+            groupData.fines[fineId] = fine;
+          } else {
+            groupData.fines = {[fineId]: fine};
+          }
+          // transaction.set(fineDocRef, prepareFineData(fineId, data, fineToUse, last_update, contributionTypeId), {merge: true});
         }
-
-        // Start of saving data
-        transaction.update(groupDocRef, {...getGroupUpdateData(data, groupData, last_update)});
-        transaction.set(contributionTypeDocRef, prepareContributionData(data, contributionTypeId, last_update), {merge: true});
-        if (data.isFineAllowed === 'Yes') {
-          transaction.update(otherUpdateAtRef, {
-            group_updated: last_update,
-            contribution_type_updated: last_update,
-            fine_type_update: last_update,
-          });
+        const contr = prepareContributionData(data, contributionTypeId, last_update);
+        if (groupData.contributions) {
+          groupData.contributions[contributionTypeId] = contr;
         } else {
-          transaction.update(otherUpdateAtRef, {
-            group_updated: last_update,
-            contribution_type_updated: last_update,
-          });
+          groupData.contributions = {[contributionTypeId]: contr};
         }
+        // Start of saving data
+        transaction.update(groupDocRef, {...groupData, last_update});
+        transaction.set(otherUpdateAtRef, { group_updated: last_update }, {merge: true});
       });
       response.status(200).send({data: 'Success'});
     } catch (e) {
@@ -96,43 +93,6 @@ function prepareFineData(fineId: string, data: any, fineData: any, last_update: 
     count_as_profit: false,
     additional_config: {},
   };
-}
-
-function getGroupUpdateData(data: any, groupData: any, last_update: any) {
-  const shareReady = (groupData.has_share && groupData.share_set) || (!groupData.has_share);
-  const socialReady = (groupData.has_social && groupData.social_set) || (!groupData.has_social);
-  const entryReady = (groupData.has_entry_fee && groupData.entry_fee_set) || (!groupData.has_entry_fee);
-  const otherReady = (groupData.has_other_contribution && groupData.other_contribution_set) || (!groupData.has_other_contribution);
-  if (data.contibutionKey === 'Share') {
-    return {
-      installation_step: socialReady && entryReady && otherReady ? 'SIXTH' : 'FIRTH',
-      share_set: true,
-      last_update,
-    };
-  } else if (data.contibutionKey === 'Social') {
-    return {
-      installation_step: shareReady && entryReady && otherReady ? 'SIXTH' : 'FIRTH',
-      social_set: true,
-      last_update,
-    };
-  } else if (data.contibutionKey === 'Other') {
-    return {
-      installation_step: socialReady && shareReady && entryReady ? 'SIXTH' : 'FIRTH',
-      other_contribution_set: true,
-      last_update,
-    };
-  } else if (data.contibutionKey === 'Entry Fee') {
-    return {
-      installation_step: socialReady && shareReady && otherReady ? 'SIXTH' : 'FIRTH',
-      entry_fee_set: true,
-      last_update,
-    };
-  } else {
-    return {
-      last_update,
-    };
-  }
-
 }
 
 function prepareContributionData(data: any, contributionTypeId: string, last_update: any) {

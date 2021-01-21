@@ -1,5 +1,6 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import {createFeatureSelector, createSelector} from '@ngrx/store';
 import * as fromReducer from './loan.reducer';
+import * as fromLoanTypes from '../loan-type/loan-type.selectors';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.loansFeatureKey);
 
@@ -17,4 +18,18 @@ export const selectById = (id: string) => createSelector(
 
 export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
+);
+
+export const selectLoanByMember = (memberId: string) => createSelector(
+  selectAll,
+  fromLoanTypes.selectEntities,
+  (allItems, loanTypes) => allItems
+    .filter(i => i.member_id === memberId)
+    .map(i => ({
+        ...i,
+        loanType: {
+          ...loanTypes[i.loan_used]
+        }
+      })
+    )
 );

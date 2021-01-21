@@ -25,15 +25,13 @@ export const assignLoanToMember = functions.https.onRequest((request, response) 
       const last_update = new Date().getTime();
       const groupDocRef = admin.firestore().doc(`groups/${groupId}`);
       const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
-      const loanTypeDocRef = admin.firestore().doc(`groups/${groupId}/loan_type/${data.loanUsed}`);
       const memberLoanQueueRef = admin.firestore().collection(`groups/${groupId}/loan_queue`).where('member_id', '==', data.memberId);
       await admin.firestore().runTransaction(async transaction => {
         const groupDoc = await transaction.get(groupDocRef);
-        const loanType = await transaction.get(loanTypeDocRef);
         const groupData: any = {...groupDoc.data()};
         const loan_queues = await transaction.get(memberLoanQueueRef);
         const loanId = helpers.makeid();
-        const loanTypeData: any = {...loanType.data()};
+        const loanTypeData: any = groupData.loanTypes[data.loanUsed];
         const loanQueueData = loan_queues.docs.map(i => i.data());
         const loanDocRef = admin.firestore().doc(`groups/${groupId}/loan/${loanId}`);
         transaction.set(loanDocRef, prepareLoan(loanId, data, loanTypeData, last_update, loanQueueData), {merge: true});

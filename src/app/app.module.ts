@@ -52,6 +52,7 @@ import { StartingMembersComponent } from './modules/dashboard/group-progress/sta
 import { StartingLeadershipComponent } from './modules/dashboard/group-progress/starting-leadership/starting-leadership.component';
 import { AddContributionComponent } from './modules/members/add-contribution/add-contribution.component';
 import { AssignLoanComponent } from './modules/members/assign-loan/assign-loan.component';
+import { StartingBalancesComponent } from './modules/dashboard/group-progress/starting-balances/starting-balances.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -100,7 +101,8 @@ const firebaseConfig = {
     StartingMembersComponent,
     StartingLeadershipComponent,
     AddContributionComponent,
-    AssignLoanComponent
+    AssignLoanComponent,
+    StartingBalancesComponent
   ],
   imports: [
     BrowserModule,

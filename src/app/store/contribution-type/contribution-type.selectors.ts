@@ -23,3 +23,7 @@ export const selectedWithLoan = createSelector(
   selectAll, (allItems, id) => allItems.filter(i => i.allow_loan)
 );
 
+export const selectRepeating = createSelector(
+  selectAll, (allItems, id) => allItems.filter(i => !i.is_one_time_contribution)
+);
+
