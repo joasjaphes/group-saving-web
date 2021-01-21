@@ -14,6 +14,7 @@ import {fadeIn} from '../../../shared/animations/router-animation';
 })
 export class AddContributionComponent implements OnInit {
 
+  contributionDate = new Date();
   contributionSelected: any = {};
   contributionAmount: any = {};
   constructor(

@@ -1,12 +1,11 @@
 <div class="row">
   <div class="col-md-6">
     <mat-form-field appearance="outline">
-      <mat-label>Meeting Frequency</mat-label>
+      <mat-label>Contribution Frequency</mat-label>
       <mat-select [(ngModel)]="meetingFrequency">
-        <mat-option value="Monthly">Monthly <small> (Group meet every Month)</small></mat-option>
-        <mat-option value="Weekly">Weekly <small> (Group meet every Week)</small></mat-option>
-        <mat-option value="Random">Random <small> (There is no defined meeting timetable)</small></mat-option>
-        <mat-option value="No Meeting">No meeting <small> (Group has no meetings)</small></mat-option>
+        <mat-option value="Monthly">Monthly <small> (Contribution done every Month)</small></mat-option>
+        <mat-option value="Weekly">Weekly <small> (Contribution done every Week)</small></mat-option>
+        <mat-option value="Random">Random <small> (There is no defined contribution time)</small></mat-option>
       </mat-select>
     </mat-form-field>
   </div>
@@ -67,14 +66,15 @@
       <p class="cont-description">Other contributions that are not like share, social or entry fee</p>
     </div>
   </div>
-<!--  Entry fee amount if entry fee is checked-->
-  <div class="col-sm-12 mt-2" *ngIf="entryChecked" @fadeIn>
+
+<!--  Check either to track contribution duration type or not-->
+  <div class="col-md-12 mt-3" *ngIf="meetingFrequency && meetingFrequency != 'Random' && (otherChecked || shareChecked || socialChecked)">
     <mat-form-field appearance="outline">
-      <mat-label>Entre fee amount</mat-label>
-      <input type="number" matInput [(ngModel)]="entryFeeAmount" placeholder="Entry fee amount per member">
-      <mat-hint *ngIf="entryFeeAmount" @fadeIn>
-        Each member will pay <b>{{entryFeeAmount | number}}</b> when joining the group
-      </mat-hint>
+      <mat-label>Track contribution {{durationTYpe}}</mat-label>
+      <mat-select [(ngModel)]="trackContribution">
+        <mat-option value="Yes">Yes <small> (Record contribution {{durationTYpe}}  )</small></mat-option>
+        <mat-option value="No">No <small> (Contribution will be recorded with date only)</small></mat-option>
+      </mat-select>
     </mat-form-field>
   </div>
 

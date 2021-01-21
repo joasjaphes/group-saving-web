@@ -39,6 +39,7 @@ export const setBasicInfo = functions.https.onRequest((request, response) => {
           last_update,
           meeting_settings,
           currency: data.currency,
+          contribution_frequency: data.frequency,
           currency_name: data.currency_name,
           has_share: data.has_share ?? false,
           has_social: data.has_social ?? false,

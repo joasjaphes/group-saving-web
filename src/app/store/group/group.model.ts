@@ -18,6 +18,7 @@ export interface Group {
   number_of_loan_types: number;
   members_can_see_all: boolean;
   additional_config: any;
+  contribution_frequency: string;
   meeting_settings: {
     meeting_frequency: string;
     has_late_fine: boolean;

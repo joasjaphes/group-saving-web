@@ -18,6 +18,7 @@ export class GroupStartingInfoComponent implements OnInit {
   currency;
   currencyName;
   meetingFrequency;
+  trackContribution;
   shareChecked = false;
   socialChecked = false;
   entryChecked = false;
@@ -43,6 +44,17 @@ export class GroupStartingInfoComponent implements OnInit {
     const selectedCurrency = this.countries.find(i => i.currency === value);
     if (selectedCurrency) {
       this.currencyName = selectedCurrency.currencyName;
+    }
+  }
+
+  get durationTYpe() {
+    switch (this.meetingFrequency) {
+      case 'Monthly':
+        return 'Month';
+      case 'Weekly':
+        return 'Week';
+      default:
+        return '';
     }
   }
 
