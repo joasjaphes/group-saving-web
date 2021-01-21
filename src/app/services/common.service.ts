@@ -329,4 +329,8 @@ export class CommonService {
     return digitsGroup.join(' ');
   } //  End of numToWords function
 
+  formatDate(dateReceived) {
+    return dateReceived ? moment(dateReceived).format('YYYY-MM-DD') : '';
+  }
+
 }

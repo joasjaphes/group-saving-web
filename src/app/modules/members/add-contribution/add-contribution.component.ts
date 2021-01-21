@@ -4,14 +4,18 @@ import {Group} from '../../../store/group/group.model';
 import {Member} from '../../../store/member/member.model';
 import {FineType} from '../../../store/fine-type/fine-type.model';
 import {ContributionType} from '../../../store/contribution-type/contribution-type.model';
+import {fadeIn} from '../../../shared/animations/router-animation';
 
 @Component({
   selector: 'app-add-contribution',
   templateUrl: './add-contribution.component.html',
-  styleUrls: ['./add-contribution.component.scss']
+  styleUrls: ['./add-contribution.component.scss'],
+  animations: [fadeIn]
 })
 export class AddContributionComponent implements OnInit {
 
+  contributionSelected: any = {};
+  contributionAmount: any = {};
   constructor(
     public dialogRef: MatDialogRef<AddContributionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {

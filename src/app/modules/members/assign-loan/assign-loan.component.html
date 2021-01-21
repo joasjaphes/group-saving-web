@@ -54,29 +54,54 @@
             <input matInput [(ngModel)]="duration" placeholder="Loan Duration" (input)="calculateLoan()">
           </mat-form-field>
         </div>
+
+        <!--        Amount to return-->
+        <div class="col-sm-12" *ngIf="loanStartDate && loanType && loanAmount && duration" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Amount to return
+              <span>({{testToReturn | number}})</span>
+            </mat-label>
+            <input matInput [(ngModel)]="testToReturn" placeholder="Amount to return" (input)="setAmountPerReturn()">
+          </mat-form-field>
+        </div>
       </div>
     </div>
-    <div class="col-sm-6" *ngIf="loanAmount && duration" @fadeIn>
+    <div class="col-sm-6" >
+      <div class="menu-grid">
+        <div class="img-div">
+          <h1 style="font-size: 40px; color: #0d0d0d" class="registration-title">{{data.member.name[0].toUpperCase()}}</h1>
+        </div>
+        <div>
+          <h2 class="registration-title mb-1">{{data.member.name}}</h2>
+          <p class="lead">{{data.member.phone_number}}</p>
+        </div>
+      </div>
       <div class="row summary-area">
-        <div class="col-sm-6">
-          <p class="text-muted">Amount Taken <b>({{loanStartDate | date:'mediumDate'}})</b></p>
+
+        <div class="col-sm-6" *ngIf="loanAmount" @fadeIn>
+          <p class="text-muted m-0">Amount Taken <b style="color: #ffffffb5;">({{loanStartDate | date:'mediumDate'}})</b></p>
           <h1 class="registration-title">{{loanAmount | number}}</h1>
         </div>
-        <div class="col-sm-6">
-          <p class="text-muted">Duration </p>
+        <div class="col-sm-6" *ngIf="duration" @fadeIn>
+          <p class="text-muted m-0">Duration </p>
           <h1 class="registration-title">{{duration | number}} {{durationTYpe}}</h1>
 <!--          <p class="text-muted">from </p>-->
         </div>
-        <div class="col-sm-6" style="margin-top: 20px">
-          <p class="text-muted">Amount to return <b>({{newDate | date:'mediumDate'}})</b></p>
+        <div class="col-sm-6" style="margin-top: 10px" *ngIf="loanAmount && duration" @fadeIn>
+          <p class="text-muted m-0">Amount to return <b style="color: #ffffffb5;">({{newDate | date:'mediumDate'}})</b></p>
           <h1 class="registration-title">{{testToReturn | number}}</h1>
         </div>
-        <div class="col-sm-6" style="margin-top: 20px">
-          <p class="text-muted">Amount per return</p>
+        <div class="col-sm-6" style="margin-top: 10px" *ngIf="loanAmount && duration" @fadeIn>
+          <p class="text-muted m-0">Amount per return</p>
           <h1 class="registration-title">{{testAmountPerReturn | number}}</h1>
         </div>
-        <div class="col-sm-12 mt-5">
-          <app-save-area></app-save-area>
+        <div class="col-sm-12 mt-3" *ngIf="loanAmount && duration" @fadeIn>
+          <app-save-area
+            [confirmFirst]="true"
+            (cancel)="closeDialog()"
+            (save)="save()"
+            [savingData]="loading"
+          ></app-save-area>
         </div>
       </div>
 

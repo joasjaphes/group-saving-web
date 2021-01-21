@@ -1,4 +1,5 @@
 import * as Moment from 'moment';
+import * as admin from 'firebase-admin';
 
 export const makeid = () => {
   let text = '';
@@ -70,5 +71,32 @@ export const getNextMonth = (duration: any, startYear: string, startMonth: strin
     end_month,
   };
 };
+
+
+export const sendNotification = (data: {groupId: any, title: any, body: any}) => {
+  const icon = 'https://sample-32870.firebaseapp.com/assets/img/donate.png';
+  const {groupId, title, body} = data;
+  let tokens = [];
+  const tokensRef = admin.firestore().doc(`groups/${groupId}/devices/tokens`);
+  return tokensRef.get().then((tokenDoc: any) => {
+    tokens = tokenDoc.data().tokens;
+    // Notification details.
+    const payload = {
+      data: {
+        click_action: 'FLUTTER_NOTIFICATION_CLICK',
+        title,
+        body,
+      },
+      notification: {
+        title,
+        body,
+        icon,
+      },
+    };
+    return admin.messaging().sendToDevice(tokens, payload);
+  });
+};
+
+
 
 export const token = 'groupsavings';
