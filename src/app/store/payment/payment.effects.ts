@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import * as fromActions from './payment.actions';
+import * as fineActions from '../fine/fine.actions';
 import {switchMap, tap} from 'rxjs/operators';
 import {OfflineManagerService} from '../../services/offline-manager.service';
 import {DataKeys} from '../data-keys';
 import * as helpers from '../../../../functions/src/helpers';
+import {Payment} from './payment.model';
 
 @Injectable()
 export class PaymentEffects {
@@ -12,21 +14,36 @@ export class PaymentEffects {
   loadData$ = createEffect(() => this.actions$.pipe(
     ofType(fromActions.getPayments),
     switchMap((action) => this.offlineService.getItems(DataKeys.Payments)),
-    switchMap(payments => {
-      // fine Data
-      // id: paymentId + fineType.id,
-      //   group_id: data.memberId,
-      //   member_id: data.memberId,
-      //   amount: parseFloat(fineAmount),
-      //   date: helpers.formatDate(data.date),
-      //   month: group.track_contribution_period ? data.month : helpers.getMonth(data.date),
-      //   year: group.track_contribution_period ? data.year : helpers.getYear(data.date),
-      //   payment_mode: data.paymentMode,
-      //   payment_type: data.paymentType,
-      //   reference_number: data.referenceNumber,
-      //   fine_id: fineType.id
+    switchMap((payments: Payment[]) => {
+      const fines = [];
+      payments.forEach(payment => {
+        if (payment.fines) {
+          const fine = Object.keys(payment.fines).map(
+            fineKey => {
+              const fineAmount = payment.fines[fineKey] + '';
+              if (!!fineAmount) {
+                return {
+                   id: payment.id + fineKey,
+                    group_id: payment.memberId,
+                    member_id: payment.memberId,
+                    amount: parseFloat(fineAmount),
+                    date: payment.date,
+                    month: payment.month,
+                    year: payment.year,
+                    payment_mode: payment.paymentMode,
+                    payment_type: payment.paymentType,
+                    reference_number: payment.referenceNumber,
+                    fine_id: fineKey
+                };
+              }
+            }
+          );
+          fines.push(...fine);
+        }
+      });
       return [
         fromActions.upsertPayments({payments}),
+        fineActions.upsertFines({fines}),
         fromActions.doneLoadingPayments()
       ];
     })

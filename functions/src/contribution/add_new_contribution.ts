@@ -87,8 +87,12 @@ export const addNewContribution = functions.https.onRequest((request, response) 
           done_paying.forEach(loanId => {
             if ( active_loans[loanId] ) {
               completed_loans.push(active_loans[loanId]);
-              const newKeys = Object.keys(active_loans).filter(i => i !== loanId);
-              active_loans = newKeys.map(i => active_loans[i]);
+              active_loans = Object.keys(active_loans).reduce((object: any, key: string) => {
+                if (key !== loanId) {
+                  object[key] = active_loans[key];
+                }
+                return object;
+              }, {});
             }
           });
         }
@@ -121,10 +125,10 @@ export const addNewContribution = functions.https.onRequest((request, response) 
 
       });
       await batch.commit();
-      response.status(200).send('Success');
+      response.status(200).send({data: 'Success'});
     } catch (e) {
       console.log('Error fetching user data:', e);
-      response.status(500).send('Fail');
+      response.status(500).send({data: 'Fail'});
     }
 
   });
@@ -135,8 +139,8 @@ function preparePayment(data: any, group: any) {
   return {
     id: helpers.makeid(),
     ...data,
-    year: group.group.track_contribution_period ? data.year : helpers.getYear(data.date),
-    month: group.group.track_contribution_period ? data.month : helpers.getMonth(data.date),
+    year: group.track_contribution_period ? data.year : helpers.getYear(data.date),
+    month: group.track_contribution_period ? data.month : helpers.getMonth(data.date),
     date: helpers.formatDate(data.date),
   };
 }
@@ -223,9 +227,9 @@ function prepareLoanPayment(member_active_loans: any, data: any, loanConfigs: an
       }
       const payment: any = {
         id: helpers.makeid(),
-        period: group.group.track_contribution_period ? data.year + '' + data.month : helpers.getYear(data.date) + '' + helpers.getMonth(data.date),
-        month: group.group.track_contribution_period ? data.month : helpers.getMonth(data.date),
-        year: group.group.track_contribution_period ? data.year : helpers.getYear(data.date),
+        period: group.track_contribution_period ? data.year + '' + data.month : helpers.getYear(data.date) + '' + helpers.getMonth(data.date),
+        month: group.track_contribution_period ? data.month : helpers.getMonth(data.date),
+        year: group.track_contribution_period ? data.year : helpers.getYear(data.date),
         amount: loanreturn[loan.id],
         paid_on_time: true,
         payment_mode: data.paymentMode || '',

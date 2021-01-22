@@ -41,6 +41,14 @@ export const assignLoanToMember = functions.https.onRequest((request, response) 
           memberData.active_loans = {};
           memberData.active_loans[loanDetails.id] = loanDetails;
         }
+        // update contribution balance
+        const account = loanTypeData ? loanTypeData.contribution_type_id : null;
+        if (account && groupData.contribution_balances && groupData.contribution_balances[account]) {
+          groupData.contribution_balances[account] = parseFloat(groupData.contribution_balances[account] + '') - parseFloat(data.amountTaken);
+          if (groupData.contribution_balances[account] < 0) { // contingency in case balance goes to zero
+            groupData.contribution_balances[account] = 0;
+          }
+        }
         const loan_queue = old_loan_queue.filter((item: any) => !(item.member_id === data.memberId && item.loan_type_id === data.loanUsed));
         transaction.update(memberRef, {...memberData, last_update});
         transaction.update(groupDocRef, {...groupData, loan_queue, last_update});

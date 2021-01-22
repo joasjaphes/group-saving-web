@@ -1,4 +1,7 @@
+import {Loan} from '../loan/loan.model';
+
 export interface Member {
+  active_loans?: { [id: string]: Loan };
   id: string;
   group_id: string;
   is_active: boolean;
