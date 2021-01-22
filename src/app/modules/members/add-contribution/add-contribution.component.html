@@ -14,6 +14,10 @@
   <div class="row">
     <div class="col-sm-7">
       <div class="row">
+        <div class="col-sm-12">
+          <h4 class="registration-title mb-0">Payment Amounts</h4>
+          <p><small class="text-muted">Select contributions that {{data.member.name}} is contributing</small></p>
+        </div>
         <!--        Contribution Types-->
         <div class="col-sm-12" *ngFor="let contr of data.contributionTypes">
           <mat-checkbox [(ngModel)]="contributionSelected[contr.id]"
@@ -54,6 +58,8 @@
         <div class="col-sm-12">
           <mat-checkbox [(ngModel)]="haveFines">Do {{data.member.name}} have any fine?</mat-checkbox>
         </div>
+
+        <!--        Fine Types selector-->
         <div class="col-sm-12" *ngIf="haveFines" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Fine to be paid</mat-label>
@@ -65,6 +71,7 @@
           </mat-form-field>
         </div>
 
+        <!--        Fine Amounts-->
         <div class="col-sm-12" *ngFor="let toBePaid of selectedFineTypes" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Amount for {{toBePaid?.description}}</mat-label>
@@ -77,25 +84,48 @@
             >
           </mat-form-field>
         </div>
+
+        <!--        Payment Reference-->
+<!--        <div class="col-sm-12 mt-2" *ngIf="total" @fadeIn>-->
+<!--          <h4 class="registration-title mb-0">Payment Reference</h4>-->
+<!--          <p><small class="text-muted">Payment mode and reference number</small></p>-->
+<!--        </div>-->
+
+        <!--        Payment Mode-->
+
       </div>
     </div>
 
     <div class="col-sm-5">
-      <div class="menu-grid">
-        <div class="img-div">
-          <h1 style="font-size: 40px; color: #0d0d0d"
-              class="registration-title">{{data.member.name[0].toUpperCase()}}</h1>
-        </div>
-        <div>
-          <h2 class="registration-title mb-1">{{data.member.name}}</h2>
-          <p class="lead">{{data.member.phone_number}}</p>
-        </div>
-      </div>
+<!--      <div class="menu-grid">-->
+<!--        <div class="img-div">-->
+<!--          <h1 style="font-size: 40px; color: #0d0d0d"-->
+<!--              class="registration-title">{{data.member.name[0].toUpperCase()}}</h1>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <h2 class="registration-title mb-1">{{data.member.name}}</h2>-->
+<!--          <p class="lead">{{data.member.phone_number}}</p>-->
+<!--        </div>-->
+<!--      </div>-->
       <div class="row summary-area">
-        <div class="col-sm-12">
-          <p class="text-muted m-0">Total </p>
+
+        <div class="col-sm-6">
+          <div class="menu-grid">
+            <div class="img-div">
+              <h1 style="font-size: 40px; color: #0d0d0d"
+                  class="registration-title">{{data.member.name[0].toUpperCase()}}</h1>
+            </div>
+            <div>
+              <h3 class="registration-title mb-1">{{data.member.name}}</h3>
+              <p class="lead">{{data.member.phone_number}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" style="padding-top: 10px">
+          <p class="text-muted" style="margin-bottom: 5px">Total </p>
           <h1 class="registration-title">{{total | number}}</h1>
         </div>
+
 
       </div>
 
@@ -136,6 +166,26 @@
               <mat-option value="11">Nov {{year}}</mat-option>
               <mat-option value="12">Dec {{year}}</mat-option>
             </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div [ngClass]="paymentMode == 'Bank Deposit' || paymentMode == 'Mobile Money' ? 'col-sm-6' : 'col-sm-12'"
+             class="col-sm-4" *ngIf="!!total" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Payment Mode</mat-label>
+            <mat-select [(ngModel)]="paymentMode" placeholder="Payment Mode">
+              <mat-option value="Cash">Cash</mat-option>
+              <mat-option value="Bank Deposit">Bank Deposit</mat-option>
+              <mat-option value="Mobile Money">Mobile Money</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!--        Payment Reference Number-->
+        <div class="col-sm-6" *ngIf="paymentMode == 'Bank Deposit' || paymentMode == 'Mobile Money'" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Reference Number <small class="text-muted">(Optional)</small> </mat-label>
+            <input matInput [(ngModel)]="referenceNumber" placeholder="Payment Reference Number">
           </mat-form-field>
         </div>
 

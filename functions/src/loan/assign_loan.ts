@@ -24,20 +24,28 @@ export const assignLoanToMember = functions.https.onRequest((request, response) 
       const groupId = data.groupId;
       const last_update = new Date().getTime();
       const groupDocRef = admin.firestore().doc(`groups/${groupId}`);
+      const memberRef = admin.firestore().doc(`groups/${data.groupId}/members/${data.memberId}`);
       const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
-      const memberLoanQueueRef = admin.firestore().collection(`groups/${groupId}/loan_queue`).where('member_id', '==', data.memberId);
       await admin.firestore().runTransaction(async transaction => {
         const groupDoc = await transaction.get(groupDocRef);
         const groupData: any = {...groupDoc.data()};
-        const loan_queues = await transaction.get(memberLoanQueueRef);
+        const memberDoc = await transaction.get(memberRef);
+        const memberData: any = {...memberDoc.data()};
         const loanId = helpers.makeid();
         const loanTypeData: any = groupData.loanTypes[data.loanUsed];
-        const loanQueueData = loan_queues.docs.map(i => i.data());
-        const loanDocRef = admin.firestore().doc(`groups/${groupId}/loan/${loanId}`);
-        transaction.set(loanDocRef, prepareLoan(loanId, data, loanTypeData, last_update, loanQueueData), {merge: true});
-        transaction.update(groupDocRef, {...groupData, last_update});
+        const old_loan_queue = groupData.loan_queue || [];
+        const loanDetails = prepareLoan(loanId, data, loanTypeData, last_update);
+        if (memberData.active_loans) {
+          memberData.active_loans[loanDetails.id] = loanDetails;
+        } else {
+          memberData.active_loans = {};
+          memberData.active_loans[loanDetails.id] = loanDetails;
+        }
+        const loan_queue = old_loan_queue.filter((item: any) => !(item.member_id === data.memberId && item.loan_type_id === data.loanUsed));
+        transaction.update(memberRef, {...memberData, last_update});
+        transaction.update(groupDocRef, {...groupData, loan_queue, last_update});
         transaction.set(otherUpdateAtRef, {
-          loan_updated: last_update,
+          member_updated: last_update,
           group_updated: last_update,
         }, {merge: true});
       });
@@ -51,7 +59,7 @@ export const assignLoanToMember = functions.https.onRequest((request, response) 
 
 });
 
-function prepareLoan(loanId: string, data: any, currentLoanType: any, last_update: any,  loanQueue: any) {
+function prepareLoan(loanId: string, data: any, currentLoanType: any, last_update: any) {
   const loan: any = {
     id: loanId,
     group_id: data.groupId,

@@ -13,6 +13,8 @@ import {ApplicationState} from '../../../store';
 import {selectLoanByMember} from '../../../store/loan/loan.selectors';
 import {MatSelectChange} from '@angular/material/select';
 import {first} from 'rxjs/operators';
+import {CommonService} from '../../../services/common.service';
+import {FunctionsService} from '../../../services/functions.service';
 
 @Component({
   selector: 'app-add-contribution',
@@ -38,8 +40,12 @@ export class AddContributionComponent implements OnInit {
   year = new Date().getFullYear();
   years = [];
   month: string;
+  paymentMode: string;
+  referenceNumber: string;
   constructor(
     public dialogRef: MatDialogRef<AddContributionComponent>,
+    private commonService: CommonService,
+    private functionsService: FunctionsService,
     private store: Store<ApplicationState>,
     @Inject(MAT_DIALOG_DATA) public data: {
       group: Group;
@@ -108,7 +114,32 @@ export class AddContributionComponent implements OnInit {
     this.total = sum;
   }
 
-  save() { }
+  async save() {
+    const dataToSave = {
+      groupId: this.data.group.id,
+      memberId: this.data.member.id,
+      amountTaken: this.loanAmount,
+      loans: this.loanAmount,
+      fines: this.fineAmounts,
+      contributions: this.contributionAmount,
+      date: this.commonService.formatDate(this.contributionDate),
+      year: this.year,
+      month: this.month,
+      referenceNumber: this.referenceNumber,
+      paymentMode: this.paymentMode,
+    };
+    this.loading = true;
+    try {
+      await this.functionsService.saveData('addNewContribution', dataToSave);
+      this.loading = false;
+      this.commonService.showSuccess('Contribution from ' + this.data.member.name + ' Submitted Successful');
+      this.closeDialog();
+    } catch (e) {
+      this.loading = false;
+      this.commonService.showError('Loan was not assigned successful');
+      console.error(e);
+    }
+  }
 
   enableContribution(checked: boolean, contributionType: ContributionType) {
     if (checked && contributionType.is_must && contributionType.is_fixed) {
