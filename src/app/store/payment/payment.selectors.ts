@@ -73,3 +73,12 @@ export const selectTotalIn = (year) => createSelector(
     return payments + loans + fines;
   }
 );
+
+export const selectTotalContributions = (year) => createSelector(
+  selectTotalPaymentByYear(year),
+  selectTotalLoanPaymentByYear(year),
+  selectTotalFinePaymentByYear (year),
+  (payments, loans, fines) => {
+    return payments + fines;
+  }
+);

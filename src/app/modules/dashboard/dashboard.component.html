@@ -72,7 +72,24 @@
             </div>
           </div>
         </div>
-        <div class="content-area" ></div>
+        <div class="content-area" >
+          <div class="inner1-grid">
+            <div class="inner1-item-grid">
+              <div class="img-area"><img src="assets/images/icons/cash-in-hand.png"></div>
+              <div>
+                <p class="text-muted">Contribution</p>
+                <h1 class="registration-title"> {{totalContributionOnly$ | async | number}}</h1>
+              </div>
+            </div>
+            <div class="inner1-item-grid">
+              <div class="img-area"><img src="assets/images/icons/request-money.png"></div>
+              <div>
+                <p class="text-muted">Fines</p>
+                <h1 class="registration-title"> {{totalFinesPaid$ | async | number}}</h1>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
