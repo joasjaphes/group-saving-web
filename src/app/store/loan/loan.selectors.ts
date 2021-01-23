@@ -33,3 +33,29 @@ export const selectLoanByMember = (memberId: string) => createSelector(
       })
     )
 );
+
+
+export const selectTotalByYear = (year) => createSelector(
+  selectAll,
+  (allItems) => {
+    const items = allItems.filter(i => i.start_year + '' === year + '');
+    let sum = 0;
+    for (const item of items) {
+      sum += parseFloat(item.amount_taken + '');
+    }
+    return sum;
+  }
+);
+
+// TODO: correct this formula to check the payments items
+export const selectTotalPaidByYear = (year) => createSelector(
+  selectAll,
+  (allItems) => {
+    const items = allItems.filter(i => i.start_year + '' === year + '');
+    let sum = 0;
+    for (const item of items) {
+      sum += parseFloat(item.amount_paid_to_date + '');
+    }
+    return sum;
+  }
+);
