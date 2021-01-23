@@ -1,0 +1,39 @@
+<app-shared-layout
+  title="{{(member$ | async)?.name}}"
+  icon="account_circle"
+>
+  <ng-container ngProjectAs="table">
+
+    <div class="row content-area p-3" *ngFor="let loan of loans$ | async">
+      <div class="col-sm-4">
+        <div class="row">
+          <div class="col-sm-12"><h2 class="registration-title">Loan Details</h2></div>
+          <div class="col-sm-12">
+            <p class="text-muted mb-1">Amount Taken</p>
+            <h1 class="registration-title">{{loan.amount_taken | number}}</h1>
+          </div>
+          <div class="col-sm-12">
+            <p class="text-muted mb-1">Amount Remained</p>
+            <h1 class="registration-title">{{loan.remaining_balance | number}}</h1>
+          </div>
+          <div class="col-sm-12">
+            <p class="text-muted mb-1">Amount Paid</p>
+            <h1 class="registration-title">{{loan.amount_paid_to_date | number}}</h1>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-8">
+        <div class="row">
+          <div class="col-sm-12">
+            <h2>Payments</h2>
+            <div *ngFor="let payment of loan.payments">
+              <p class="text-muted mb-1">{{payment.date_of_payment | date}}</p>
+              <h3 class="registration-title">{{payment.amount | number}}</h3>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</app-shared-layout>

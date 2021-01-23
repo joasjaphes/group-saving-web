@@ -12,6 +12,7 @@ import {MoreInfomationComponent} from './modules/more-infomation/more-infomation
 import {MeetingComponent} from './modules/meeting/meeting.component';
 import {MyAccountComponent} from './modules/my-account/my-account.component';
 import {MembersComponent} from './modules/members/members.component';
+import {SingleMemberComponent} from './modules/members/single-member/single-member.component';
 
 
 const routes: Routes = [
@@ -36,6 +37,11 @@ const routes: Routes = [
         path: 'members',
         component: MembersComponent,
         data: { title: 'Members' }
+      },
+      {
+        path: 'members/:id',
+        component: SingleMemberComponent,
+        data: { title: 'Member Details' }
       },
       {
         path: 'my-account',

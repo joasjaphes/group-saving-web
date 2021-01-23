@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromReducer from './member.reducer';
+import {getRouteState} from '../index';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.membersFeatureKey);
 
@@ -22,4 +23,13 @@ export const selected = createSelector(
 export const selectFirstNameOnly = createSelector(
   selected,
   (member) => member && member.name ? member.name.split(' ')[0] : ''
+);
+
+export const selectMemberFromRoute = createSelector(
+  selectEntities,
+  getRouteState,
+  (entities, routeState) => {
+    const memberId = routeState.state && routeState.state.params ? routeState.state.params.id : null;
+    return entities[memberId];
+  }
 );

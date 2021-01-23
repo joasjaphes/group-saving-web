@@ -48,7 +48,7 @@
               <mat-icon style="color: #0277bd">mode_edit</mat-icon>
               <span style="color: #0277bd">Edit</span>
             </button>&nbsp;
-            <button mat-button>
+            <button mat-button [routerLink]="['', 'members', member.id]">
               <mat-icon>remove_red_eye</mat-icon> View Details
             </button>
           </p>

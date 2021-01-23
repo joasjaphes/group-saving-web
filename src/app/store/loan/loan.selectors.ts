@@ -1,6 +1,7 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 import * as fromReducer from './loan.reducer';
 import * as fromLoanTypes from '../loan-type/loan-type.selectors';
+import {getRouteState} from '../index';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.loansFeatureKey);
 
@@ -34,6 +35,25 @@ export const selectLoanByMember = (memberId: string) => createSelector(
     )
 );
 
+export const selectLoanByMemberFromRoute = createSelector(
+  selectAll,
+  getRouteState,
+  fromLoanTypes.selectEntities,
+  (allItems, routeState, loanTypes) => {
+    const memberId = routeState.state && routeState.state.params ? routeState.state.params.id : null;
+
+    return  allItems
+      .filter(i => i.member_id === memberId)
+      .map(i => ({
+          ...i,
+          loanType: {
+            ...loanTypes[i.loan_used]
+          }
+        })
+      );
+  }
+);
+
 
 export const selectTotalByYear = (year) => createSelector(
   selectAll,
@@ -47,15 +67,3 @@ export const selectTotalByYear = (year) => createSelector(
   }
 );
 
-// TODO: correct this formula to check the payments items
-export const selectTotalPaidByYear = (year) => createSelector(
-  selectAll,
-  (allItems) => {
-    const items = allItems.filter(i => i.start_year + '' === year + '');
-    let sum = 0;
-    for (const item of items) {
-      sum += parseFloat(item.amount_paid_to_date + '');
-    }
-    return sum;
-  }
-);
