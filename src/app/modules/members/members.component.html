@@ -3,7 +3,8 @@
   icon="people_outline"
   [hideAdd]="(members$ | async).length == 1"
   [addIcon]="'group_add'"
-  [addText]="'Add Members'"
+  (addItem)="addMembers()"
+  [addText]="'New Member'"
 >
   <ng-container ngProjectAs="table">
 <!--    In case there is only one member-->

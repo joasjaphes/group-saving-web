@@ -1,0 +1,69 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-10">
+      <h2 class="registration-title">Add new member</h2>
+    </div>
+    <div class="col-sm-2 pr-0" style="text-align: right">
+      <button mat-button (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+        <span> Close</span>
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-4 p-0" @fadeIn>
+            <mat-form-field appearance="fill">
+              <img
+                alt="flag"
+                matPrefix
+                style="height: 15px; width: 25px; margin-right: 10px"
+                *ngIf="country"
+                src="assets/flags/{{country.isoCode.toLowerCase()}}.png">
+              <mat-select (selectionChange)="setPhoneCountry($event)" [(ngModel)]="selectedCountry">
+                <mat-option *ngFor="let count of countries" [value]="count.phoneCode">
+                  <img alt="flag" style="height: 15px; width: 25px"
+                       src="assets/flags/{{count.isoCode.toLowerCase()}}.png">
+                  &nbsp; +{{count.phoneCode}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-8 p-0" @fadeIn>
+            <mat-form-field appearance="fill">
+              <mat-label>Phone number</mat-label>
+              <input
+                [(ngModel)]="phoneNumber"
+                (input)="setPhoneNumber($event.target.value)"
+                matInput type="text" placeholder="OXXXXXXXXX"
+                #myInput
+              >
+              <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-12" *ngIf="numberTakenMember" @fadeIn>
+            <p> This number has already being added as {{numberTakenMember.name}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12" *ngIf="phoneIsValid && !numberTakenMember" @fadeIn>
+      <mat-form-field appearance="fill">
+        <mat-label>Member name</mat-label>
+        <mat-icon matPrefix>person_outline</mat-icon>
+        <input matInput [(ngModel)]="memberName">
+      </mat-form-field>
+    </div>
+    <div class="col-sm-12 mt-3" *ngIf="phoneIsValid && memberName" @fadeIn>
+      <app-save-area
+        [confirmFirst]="true"
+        (cancel)="closeDialog()"
+        (save)="save()"
+        [savingData]="loading"
+      ></app-save-area>
+    </div>
+  </div>
+</div>

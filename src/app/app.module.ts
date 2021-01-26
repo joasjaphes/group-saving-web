@@ -56,6 +56,7 @@ import { StartingBalancesComponent } from './modules/dashboard/group-progress/st
 import { SingleMemberComponent } from './modules/members/single-member/single-member.component';
 import { ExpensesComponent } from './modules/expenses/expenses.component';
 import { AddExpenseComponent } from './modules/expenses/add-expense/add-expense.component';
+import { AddMemberComponent } from './modules/members/add-member/add-member.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -108,7 +109,8 @@ const firebaseConfig = {
     StartingBalancesComponent,
     SingleMemberComponent,
     ExpensesComponent,
-    AddExpenseComponent
+    AddExpenseComponent,
+    AddMemberComponent
   ],
   imports: [
     BrowserModule,

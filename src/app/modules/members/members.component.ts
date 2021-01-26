@@ -17,6 +17,7 @@ import {LoanType} from '../../store/loan-type/loan-type.model';
 import * as loanSelector from '../../store/loan-type/loan-type.selectors';
 import {AssignLoanComponent} from './assign-loan/assign-loan.component';
 import {HttpClient} from '@angular/common/http';
+import {AddMemberComponent} from './add-member/add-member.component';
 
 @Component({
   selector: 'app-members',
@@ -29,6 +30,7 @@ export class MembersComponent implements OnInit {
   group$: Observable<Group>;
   contributionTypes$: Observable<ContributionType[]>;
   loanTypes$: Observable<LoanType[]>;
+  memberName$: Observable<string>;
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
 
   constructor(
@@ -40,6 +42,7 @@ export class MembersComponent implements OnInit {
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectRepeating));
     this.loanTypes$ = this.store.pipe(select(loanSelector.selectAll));
+    this.memberName$ = this.store.pipe(select(memberSelector.selectFirstNameOnly));
   }
 
   ngOnInit(): void {
@@ -72,6 +75,22 @@ export class MembersComponent implements OnInit {
         contributionTypes,
         loanTypes,
         member,
+      },
+      disableClose: true,
+    });
+  }
+
+  async addMembers() {
+    const group = await this.group$.pipe(first()).toPromise();
+    const members = await this.members$.pipe(first()).toPromise();
+    const memberName = await this.memberName$.pipe(first()).toPromise();
+    const dialogRef = this.dialog.open(AddMemberComponent, {
+      width: '60%',
+      minHeight: '60vh',
+      data: {
+        group,
+        memberName,
+        members,
       },
       disableClose: true,
     });

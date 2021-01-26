@@ -76,10 +76,6 @@ export class AddContributionComponent implements OnInit {
     this.month = (monthValue + '').length === 1 ? '0' + monthValue : monthValue + '';
   }
 
-  closeDialog() {
-    this.dialogRef.close();
-  }
-
   async setSelectedFines($event: MatSelectChange) {
     const fineTypes = await this.fineTypes$.pipe(first()).toPromise();
     this.selectedFineTypes = $event.value.map(i => fineTypes.find(k => k.id === i));
@@ -160,5 +156,9 @@ export class AddContributionComponent implements OnInit {
       this.loanAmount[loan.id] = null;
       this.findTotal();
     }
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
   }
 }
