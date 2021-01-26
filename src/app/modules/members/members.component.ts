@@ -18,6 +18,8 @@ import * as loanSelector from '../../store/loan-type/loan-type.selectors';
 import {AssignLoanComponent} from './assign-loan/assign-loan.component';
 import {HttpClient} from '@angular/common/http';
 import {AddMemberComponent} from './add-member/add-member.component';
+import {GroupProgress} from '../../store/group/group-progress.model';
+import {GroupProgressEnum} from '../../store/group/group-progress.enum';
 
 @Component({
   selector: 'app-members',
@@ -31,6 +33,8 @@ export class MembersComponent implements OnInit {
   contributionTypes$: Observable<ContributionType[]>;
   loanTypes$: Observable<LoanType[]>;
   memberName$: Observable<string>;
+  progress$: Observable<any>;
+  progressDetails$: Observable<GroupProgress>;
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
 
   constructor(
@@ -39,6 +43,8 @@ export class MembersComponent implements OnInit {
     public dialog: MatDialog,
   ) {
     this.members$ = this.store.pipe(select(memberSelector.selectAll));
+    this.progress$ = this.store.pipe(select(groupSelector.selectProgressPercent));
+    this.progressDetails$ = this.store.pipe(select(groupSelector.selectProgress));
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectRepeating));
     this.loanTypes$ = this.store.pipe(select(loanSelector.selectAll));
@@ -91,6 +97,25 @@ export class MembersComponent implements OnInit {
         group,
         memberName,
         members,
+      },
+      disableClose: true,
+    });
+  }
+
+  async openModel() {
+    const group = await this.group$.pipe(first()).toPromise();
+    const progressDetails = await this.progressDetails$.pipe(first()).toPromise();
+    const memberName = await this.memberName$.pipe(first()).toPromise();
+    const progressDetailsKey = GroupProgressEnum.AddMembers;
+    const dialogRef = this.dialog.open(GroupProgressDialogComponent, {
+      width: '80%',
+      minHeight: '60vh',
+      data: {
+        group,
+        progressDetails,
+        progressDetailsKey,
+        memberName,
+        contributionTypeNeedBalance: false,
       },
       disableClose: true,
     });

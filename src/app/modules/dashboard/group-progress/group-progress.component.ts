@@ -49,6 +49,7 @@ export class GroupProgressComponent implements OnInit, OnChanges {
       data: {
         group: this.group,
         progressDetails: this.progressDetails,
+        progressDetailsKey: this.progressDetails.key,
         memberName: this.memberName,
         contributionTypeNeedBalance: this.contributionTypeNeedBalance,
       },

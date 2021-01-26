@@ -19,6 +19,7 @@ export class GroupProgressDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: {
       group: Group,
       progressDetails: GroupProgress,
+      progressDetailsKey: string,
       memberName: string
       contributionTypeNeedBalance: ContributionType[]
     }

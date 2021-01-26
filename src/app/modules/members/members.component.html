@@ -10,7 +10,7 @@
 <!--    In case there is only one member-->
     <div *ngIf="(members$ | async).length == 1" class="progress-container content-area mb-5">
       <div class="progressArea">
-        <img alt="member" src="assets/images/member.jpg">
+        <img alt="member" src="assets/images/Member-registration.png">
       </div>
       <div class="textArea">
         <h1 style="font-size: 40px; line-height: 45px" class="registration-title mt-5 mb-4">
@@ -23,6 +23,7 @@
           style="font-weight: 900; border-radius: 20px;margin-top: 10px;padding: 5px 25px;font-size: 15px;border: 1px solid #FF7043;"
           mat-raised-button
           class="registration-title add-button"
+          (click)="openModel()"
         >
           <mat-icon>group_add</mat-icon>&nbsp;
           Add Members&nbsp;

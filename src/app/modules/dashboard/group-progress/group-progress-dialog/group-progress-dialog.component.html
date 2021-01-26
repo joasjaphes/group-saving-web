@@ -13,14 +13,14 @@
     <div class="col-sm-12 mt-3" *ngIf="data.progressDetails">
       <!--      Adding group basic informatoin-->
       <app-group-starting-info
-        *ngIf="data.progressDetails.key == progressDetailsEnum.AddBasicInformation"
+        *ngIf="data.progressDetailsKey == progressDetailsEnum.AddBasicInformation"
         [group]="data.group"
         (closeForm)="closeDialog()"
       ></app-group-starting-info>
 
       <!--      Adding contribution types-->
       <app-starting-contribution-type
-        *ngIf="data.progressDetails.key == progressDetailsEnum.AddContribution"
+        *ngIf="data.progressDetailsKey == progressDetailsEnum.AddContribution"
         [group]="data.group"
         [progressDetails]="data.progressDetails"
         (closeForm)="closeDialog()"
@@ -28,7 +28,7 @@
 
       <!--      Adding Loan types-->
       <app-starting-loan-type
-        *ngIf="data.progressDetails.key == progressDetailsEnum.AddLoanInformation"
+        *ngIf="data.progressDetailsKey == progressDetailsEnum.AddLoanInformation"
         [group]="data.group"
         [progressDetails]="data.progressDetails"
         (closeForm)="closeDialog()"
@@ -36,7 +36,7 @@
 
       <!--      Adding Loan types-->
       <app-starting-meeting-rules
-        *ngIf="data.progressDetails.key == progressDetailsEnum.AddMeetingInformation"
+        *ngIf="data.progressDetailsKey == progressDetailsEnum.AddMeetingInformation"
         [group]="data.group"
         [progressDetails]="data.progressDetails"
         (closeForm)="closeDialog()"
@@ -44,7 +44,7 @@
 
       <!--      Add members-->
       <app-starting-members
-        *ngIf="data.progressDetails.key == progressDetailsEnum.AddMembers"
+        *ngIf="data.progressDetailsKey == progressDetailsEnum.AddMembers"
         [group]="data.group"
         [currentMemberName]="data.memberName"
         (closeForm)="closeDialog()"
@@ -52,13 +52,13 @@
 
       <!--     Define Leadership-->
       <app-starting-leadership
-        *ngIf="data.progressDetails.key == progressDetailsEnum.AddLeadershipInformation"
+        *ngIf="data.progressDetailsKey == progressDetailsEnum.AddLeadershipInformation"
         [group]="data.group"
         (closeForm)="closeDialog()"
       ></app-starting-leadership>
 
       <app-starting-balances
-        *ngIf="data.progressDetails.key == progressDetailsEnum.AddContributionBalances"
+        *ngIf="data.progressDetailsKey == progressDetailsEnum.AddContributionBalances"
         [group]="data.group"
         [contributions_need_balances]="data.contributionTypeNeedBalance"
         (closeForm)="closeDialog()"
