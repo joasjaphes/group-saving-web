@@ -1,16 +1,19 @@
+import {Member} from '../member/member.model';
+
 export interface Expense {
   id: string;
-  groupId: string;
-  isActive: boolean;
-  lastUpdate: number;
-  additionalConfig: any;
+  group_id: string;
+  is_active: boolean;
+  last_update: number;
+  additional_config: any;
   date: string;
   month: string;
   week: string;
   year: string;
-  memberId: string;
-  contributionTypeId: string;
+  associated_member_id: string;
+  member?: Member;
+  associated_account: string;
   amount: number;
-  expenseTypeId: string;
-  description: string;
+  expense_type_id: string;
+  reason: string;
 }

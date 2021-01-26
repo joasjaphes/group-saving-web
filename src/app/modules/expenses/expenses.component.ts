@@ -30,7 +30,7 @@ export class ExpensesComponent implements OnInit {
     private store: Store<ApplicationState>,
     public dialog: MatDialog,
   ) {
-    this.expenses$ = this.store.pipe(select(expenseSelector.selectAll));
+    this.expenses$ = this.store.pipe(select(expenseSelector.selectDetailed));
     this.members$ = this.store.pipe(select(memberSelector.selectAll));
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectRepeating));

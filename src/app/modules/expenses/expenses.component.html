@@ -3,12 +3,13 @@
   image="cash-in-hand.png"
   [hideAdd]="(expenses$ | async).length == 0"
   [addIcon]="'add'"
+  (addItem)="addExpense()"
   [addText]="'Create Expense'"
 >
   <ng-container ngProjectAs="table">
-    <div class="progress-container content-area mb-5">
+    <div class="progress-container content-area mb-5" *ngIf="(expenses$ | async)?.length == 0">
       <div class="progressArea">
-        <img alt="meeting" src="assets/images/share-and-expenses.png">
+        <img alt="meeting" src="assets/images/investments.jpg">
       </div>
       <div class="textArea">
         <h1 style="font-size: 40px; line-height: 45px" class="registration-title mt-5 mb-1">
@@ -28,6 +29,22 @@
           Create Expense
           <mat-icon>arrow_forward</mat-icon>
         </button>
+      </div>
+    </div>
+    <div class="main-expense-grid">
+      <div *ngFor="let expense of expenses$ | async" class="expenseGrid">
+        <div>
+          <mat-icon>money</mat-icon>
+        </div>
+        <div>
+          <h3 class="mb-1 registration-title">{{ expense.reason }}</h3>
+          <p *ngIf="expense.member" class="text-muted mb-0 name-area">{{ expense.member.name }}</p>
+          <p *ngIf="!expense.member" class="text-muted mb-0 name-area">Group Expense</p>
+          <p class="text-muted"><small>{{ expense.date | date }}</small></p>
+        </div>
+        <div class="amount-area">
+          <h1 class="registration-title">{{ expense.amount | number }}</h1>
+        </div>
       </div>
     </div>
   </ng-container>

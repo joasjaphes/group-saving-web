@@ -68,7 +68,9 @@ function prepareExpenseDetails(data: any, last_update: any) {
     month: helpers.getMonth(data.date),
     reason: data.reason,
     last_update,
+    is_active: true,
     associated_member_id: data.memberId ? data.memberId : null,
-    year: helpers.getYear(data.date)
+    additional_config: {},
+    year: helpers.getYear(data.date),
   };
 }

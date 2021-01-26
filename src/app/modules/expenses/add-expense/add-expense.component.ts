@@ -51,13 +51,13 @@ export class AddExpenseComponent implements OnInit {
     };
     this.loading = true;
     try {
-      await this.functionsService.saveData('assignLoanToMember', dataToSave);
+      await this.functionsService.saveData('createExpense', dataToSave);
       this.loading = false;
-      this.commonService.showSuccess('Loan assigned to ' + this.data.member.name + ' Successful');
+      this.commonService.showSuccess('Expense added Successful');
       this.closeDialog();
     } catch (e) {
       this.loading = false;
-      this.commonService.showError('Loan was not assigned successful');
+      this.commonService.showError('Expense was not assigned successful');
       console.error(e);
     }
   }

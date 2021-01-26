@@ -5,7 +5,13 @@
   <div class="row">
     <div [ngClass]="{'col-sm-12': (isHandset$ | async), 'col-sm-10': !(isHandset$ | async)}">
       <h1 style="font-size: 27px" class="registration-title" [ngClass]="routeAnimationsElements">
-        <img alt="image" *ngIf="image" class="mr-2" [src]="'assets/images/icons/'+image" style="height: 32px; margin-top: -15px">
+        <img
+          alt="image"
+          *ngIf="image"
+          class="mr-2"
+          [src]="'assets/images/icons/'+image"
+          style="height: 32px; margin-top: -15px; border-radius: 11px; background-color: #ffffffa6"
+        >
         <mat-icon *ngIf="icon">{{icon}}</mat-icon>&nbsp;
         {{ title }}
       </h1>
