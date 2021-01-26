@@ -12,7 +12,8 @@ $multiple-check-width: 33px;
   top: 0;
   width: calc(100% + #{2 * $mat-menu-side-padding - $scrollbar-width});
   border-bottom: 1px solid #cccccc;
-  background: white;
+  background: #1d1e42;
+  color: white;
   z-index: 100;
   &.mat-select-search-inner-multiple {
 

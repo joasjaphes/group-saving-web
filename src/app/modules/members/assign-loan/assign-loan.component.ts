@@ -35,7 +35,6 @@ export class AssignLoanComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: {
       group: Group;
       contributionTypes: ContributionType[];
-      fineTypes: FineType[];
       loanTypes: LoanType[];
       member: Member;
     }

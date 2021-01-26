@@ -1,0 +1,90 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-10">
+      <h2 class="registration-title">Add new expense</h2>
+    </div>
+    <div class="col-sm-2 pr-0" style="text-align: right">
+      <button mat-button (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+        <span> Close</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <!--    Expense Date-->
+    <div class="col-sm-12">
+      <mat-form-field appearance="outline">
+        <mat-label>Expense date</mat-label>
+        <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="expenseDate"/>
+        <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
+        <mat-datepicker #endingDate></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <!--    Expense for-->
+    <div [ngClass]="expenseFor == 'MEMBER' ? 'col-sm-6' : 'col-sm-12'" class="" *ngIf="expenseDate" @fadeIn>
+      <mat-form-field appearance="outline">
+        <mat-label>Expense For</mat-label>
+        <mat-select [(ngModel)]="expenseFor">
+          <mat-option value="GROUP">Group</mat-option>
+          <mat-option value="MEMBER">Specific Member <small>(The amount was given to a specific member)</small>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!--    Members-->
+    <div class="col-sm-6" *ngIf="expenseFor == 'MEMBER'" @fadeIn>
+      <mat-form-field appearance="outline">
+        <mat-label>Amount will be given to</mat-label>
+        <mat-select [(ngModel)]="memberId" (selectionChange)="selectMember($event.value)">
+          <app-mat-select-search [(ngModel)]="memberSearch"></app-mat-select-search>
+          <mat-option [value]="member.id" *ngFor="let member of data.members | search:'name':memberSearch">
+            {{member.name}}
+          </mat-option>
+        </mat-select>
+        <mat-hint *ngIf="memberName">This expense will be given to {{memberName}}</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <!--    Contribution Types-->
+    <div class="col-sm-12" *ngIf="expenseFor" @fadeIn>
+      <mat-form-field appearance="outline">
+        <mat-label>Contribution Type</mat-label>
+        <mat-select [(ngModel)]="contributionType" (selectionChange)="selectContributionType($event.value)">
+          <mat-option [value]="contr.id" *ngFor="let contr of data.contributionTypes">
+            {{contr.name}}
+          </mat-option>
+        </mat-select>
+        <mat-hint>This expense will come from which account?</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <!--    Contribution Amount-->
+    <div class="col-sm-12 mt-2" *ngIf="contributionType" @fadeIn>
+      <mat-form-field appearance="outline">
+        <mat-label>Amount <b *ngIf="amount">({{amount | number}})</b> </mat-label>
+        <input type="number" matInput [(ngModel)]="amount" placeholder="Expense amount">
+        <mat-hint *ngIf="balanceLimit">Amount available is <b>{{balanceLimit | number}}</b></mat-hint>
+      </mat-form-field>
+    </div>
+
+    <!--    Contribution Amount-->
+    <div class="col-sm-12 mt-2" *ngIf="amount" @fadeIn>
+      <mat-form-field appearance="outline">
+        <mat-label>Expense description</mat-label>
+        <textarea rows="4" matInput [(ngModel)]="description" placeholder="Expense description"></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="col-sm-12 mt-3" *ngIf="description && contributionType" @fadeIn>
+      <app-save-area
+        [confirmFirst]="true"
+        (cancel)="closeDialog()"
+        (save)="save()"
+        [savingData]="loading"
+      ></app-save-area>
+    </div>
+  </div>
+</div>
