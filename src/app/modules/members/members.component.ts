@@ -20,6 +20,7 @@ import {HttpClient} from '@angular/common/http';
 import {AddMemberComponent} from './add-member/add-member.component';
 import {GroupProgress} from '../../store/group/group-progress.model';
 import {GroupProgressEnum} from '../../store/group/group-progress.enum';
+import {ContributionTypes} from '../../store/contribution-type/contribution-type.enum';
 
 @Component({
   selector: 'app-members',
@@ -104,7 +105,12 @@ export class MembersComponent implements OnInit {
 
   async openModel() {
     const group = await this.group$.pipe(first()).toPromise();
-    const progressDetails = await this.progressDetails$.pipe(first()).toPromise();
+    const progressDetails = {
+      title: 'Add ' + group?.group_name + ' group members',
+      buttonLabel: 'Add Members',
+      key: GroupProgressEnum.AddMembers,
+      contributionTypeId: null
+    };
     const memberName = await this.memberName$.pipe(first()).toPromise();
     const progressDetailsKey = GroupProgressEnum.AddMembers;
     const dialogRef = this.dialog.open(GroupProgressDialogComponent, {
