@@ -44,7 +44,7 @@
           <h2 class="registration-title mb-1">{{member.name}}</h2>
           <p class="lead">{{member.phone_number}}</p>
           <p>
-            <button mat-button class="edit-button">
+            <button mat-button class="edit-button" (click)="edit()">
               <mat-icon style="color: #0277bd">mode_edit</mat-icon>
               <span style="color: #0277bd">Edit</span>
             </button>&nbsp;

@@ -16,6 +16,7 @@ import {ContributionType} from '../../store/contribution-type/contribution-type.
 import {LoanType} from '../../store/loan-type/loan-type.model';
 import * as loanSelector from '../../store/loan-type/loan-type.selectors';
 import {AssignLoanComponent} from './assign-loan/assign-loan.component';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-members',
@@ -32,6 +33,7 @@ export class MembersComponent implements OnInit {
 
   constructor(
     private store: Store<ApplicationState>,
+    private httpClient: HttpClient,
     public dialog: MatDialog,
   ) {
     this.members$ = this.store.pipe(select(memberSelector.selectAll));
@@ -75,4 +77,13 @@ export class MembersComponent implements OnInit {
     });
   }
 
+  async edit() {
+    try {
+      const url = 'https://demo.shulesoft.com/api/mobile?method=getParent&phone=+255624076248';
+      const response = await this.httpClient.post(url, {}).toPromise();
+      console.log(JSON.stringify(response));
+    } catch (e) {
+      console.error(e);
+    }
+  }
 }
