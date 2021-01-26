@@ -13,6 +13,7 @@ import {MeetingComponent} from './modules/meeting/meeting.component';
 import {MyAccountComponent} from './modules/my-account/my-account.component';
 import {MembersComponent} from './modules/members/members.component';
 import {SingleMemberComponent} from './modules/members/single-member/single-member.component';
+import {ExpensesComponent} from './modules/expenses/expenses.component';
 
 
 const routes: Routes = [
@@ -52,6 +53,11 @@ const routes: Routes = [
         path: 'meeting',
         component: MeetingComponent,
         data: { title: 'Meeting' }
+      },
+      {
+        path: 'expenses',
+        component: ExpensesComponent,
+        data: { title: 'Expenses' }
       },
       {
         path: 'more-information',

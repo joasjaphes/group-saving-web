@@ -2,7 +2,9 @@
   <div
     [ngClass]="routeAnimationsElements"
     class="menu-grid content-area"
-    *ngFor="let menu of menus">
+    *ngFor="let menu of menus"
+    (click)="goTo(menu)"
+  >
     <div class="img-div">
       <img alt="test" src="assets/images/icons/{{menu.image}}">
     </div>

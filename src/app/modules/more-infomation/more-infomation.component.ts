@@ -27,7 +27,7 @@ export class MoreInfomationComponent implements OnInit {
     },
     {
       name: 'Expenses',
-      route: '',
+      route: ['', 'expenses'],
       description: 'View summary of expenses by time or members',
       image: 'cash-in-hand.png'
     },
