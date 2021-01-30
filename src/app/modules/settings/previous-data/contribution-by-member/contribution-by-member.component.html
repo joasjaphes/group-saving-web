@@ -15,9 +15,11 @@
     <div class="col-sm-12" *ngIf="memberId" @fadeIn>
       <div class="row">
         <div class="col-sm-2">
-          <p *ngFor="let contr of memberContributions$ | async">
-            {{contr.contributions | json}}
-          </p>
+          <p class="registration-title">Current Contribution</p>
+          <div *ngFor="let contr of memberContributions$ | async">
+            <h2 class="registration-title mb-0">{{contr.totalAmount | number}}</h2>
+            <h4 class="text-muted">{{contr.date | date}}</h4>
+          </div>
         </div>
         <div class="col-sm-10">
           <div class="row">

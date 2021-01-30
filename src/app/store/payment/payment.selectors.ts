@@ -1,6 +1,8 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromReducer from './payment.reducer';
-import {ObjectUnsubscribedError} from 'rxjs';
+import * as fromContributionTypes from '../contribution-type/contribution-type.selectors';
+import * as fromFineTypes from '../fine-type/fine-type.selectors';
+import {Payment} from './payment.model';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.paymentsFeatureKey);
 
@@ -18,6 +20,32 @@ export const selectById = (id: string) => createSelector(
 
 export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
+);
+
+export const selectDetailed = createSelector(
+  selectAll,
+  fromContributionTypes.selectEntities,
+  fromFineTypes.selectEntities,
+  (allItems, contributionTypes, fineTypes) => {
+    return allItems.map(item => {
+      const contributionsDetails = Object.keys(item.contributions).map(contrId => ({
+        name: contributionTypes[contrId] ? contributionTypes[contrId].name : '',
+        amount: item.contributions[contrId],
+        contributionTypeId: contrId,
+      }));
+      const fineDetails = Object.keys(item.fines).map(contrId => ({
+        name: fineTypes[contrId] ? fineTypes[contrId].description : '',
+        amount: item.fines[contrId],
+        contributionTypeId: contrId,
+      }));
+      return {
+        ...item,
+        contributionsDetails,
+        fineDetails,
+        totalAmount: findTotal(item)
+      };
+    });
+  }
 );
 
 export const selectTotalPaymentByYear = (year) => createSelector(
@@ -86,7 +114,31 @@ export const selectTotalContributions = (year) => createSelector(
   }
 );
 
-export const selectByMember = (memberId) => createSelector(
-  selectAll,
-  (allItems) => allItems.filter(i => memberId === i.memberId)
+export const selectContributionOnlyByMember = (memberId) => createSelector(
+  selectDetailed,
+  (allItems) => allItems
+    .filter(i => memberId === i.memberId && i.contributionsDetails.length > 0)
 );
+
+export function findTotal(payment: Payment) {
+  let sum = 0;
+  Object.keys(payment.contributions).forEach(item => {
+    const val = payment.contributions[item];
+    if (val) {
+      sum += parseFloat(val);
+    }
+  });
+  Object.keys(payment.loans).forEach(item => {
+    const val = payment.loans[item];
+    if (val) {
+      sum += parseFloat(val);
+    }
+  });
+  Object.keys(payment.fines).forEach(item => {
+    const val = payment.fines[item];
+    if (val) {
+      sum += parseFloat(val);
+    }
+  });
+  return sum;
+}

@@ -128,8 +128,8 @@ export class FinesByMemberComponent implements OnInit {
         memberId: this.memberId,
         amountTaken: i.total,
         loans: {},
-        fines: {},
-        contributions: i.contributions,
+        fines: i.fines,
+        contributions: {},
         date: this.commonService.formatDate(i.date),
         year: i.year,
         month: i.month,
@@ -144,7 +144,7 @@ export class FinesByMemberComponent implements OnInit {
         membersData
       });
       this.loading = false;
-      this.commonService.showSuccess('Contributions Submitted Successful');
+      this.commonService.showSuccess('Fines Submitted Successful');
       this.onClose();
     } catch (e) {
       this.loading = false;

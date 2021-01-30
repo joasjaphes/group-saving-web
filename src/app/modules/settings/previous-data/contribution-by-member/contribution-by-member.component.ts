@@ -44,7 +44,7 @@ export class ContributionByMemberComponent implements OnInit {
     private functionsService: FunctionsService,
     private store: Store<ApplicationState>
   ) {
-    this.memberContributions$ = this.store.pipe(select(paymentSelector.selectByMember(this.memberId)));
+    this.memberContributions$ = this.store.pipe(select(paymentSelector.selectContributionOnlyByMember(this.memberId)));
   }
 
   ngOnInit(): void {
@@ -166,7 +166,7 @@ export class ContributionByMemberComponent implements OnInit {
 
   setMember(value: any) {
     this.currentMember = this.members.find(i => i.id === value);
-    this.memberContributions$ = this.store.pipe(select(paymentSelector.selectByMember(value)));
+    this.memberContributions$ = this.store.pipe(select(paymentSelector.selectContributionOnlyByMember(value)));
   }
 
   onClose() {

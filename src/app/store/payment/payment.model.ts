@@ -13,8 +13,10 @@ export interface Payment {
   paymentType: string;
   referenceNumber: string;
   contributions: any;
+  contributionsDetails?: any[];
+  fineDetails?: any[];
   fines: any;
   loans: any;
   isPending: boolean;
-  totalAmount: number;
+  totalAmount?: number;
 }
