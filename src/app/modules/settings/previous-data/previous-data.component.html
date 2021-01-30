@@ -36,5 +36,13 @@
       [members]="members$ | async"
       (closeForm)="closePanel()"
     ></app-loan-by-member>
+    <app-fines-by-member
+      *ngIf="viewType == 'Fines'"
+      [group]="group$ | async"
+      [fineTypes]="fineTypes$ | async"
+      [contributionTypes]="contributionTypes$ | async"
+      [members]="members$ | async"
+      (closeForm)="closePanel()"
+    ></app-fines-by-member>
   </ng-container>
 </app-shared-layout>

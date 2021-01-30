@@ -2,27 +2,23 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Member} from '../../../../store/member/member.model';
 import {ContributionType} from '../../../../store/contribution-type/contribution-type.model';
 import {Group} from '../../../../store/group/group.model';
-import {fadeIn} from '../../../../shared/animations/router-animation';
+import {FineType} from '../../../../store/fine-type/fine-type.model';
 import {CommonService} from '../../../../services/common.service';
 import {FunctionsService} from '../../../../services/functions.service';
-import {select, Store} from '@ngrx/store';
-import {ApplicationState} from '../../../../store';
-import {Observable} from 'rxjs';
-import {Payment} from '../../../../store/payment/payment.model';
-import * as paymentSelector from '../../../../store/payment/payment.selectors';
+import {fadeIn} from '../../../../shared/animations/router-animation';
 
 @Component({
-  selector: 'app-contribution-by-member',
-  templateUrl: './contribution-by-member.component.html',
-  styleUrls: ['./contribution-by-member.component.scss'],
+  selector: 'app-fines-by-member',
+  templateUrl: './fines-by-member.component.html',
+  styleUrls: ['./fines-by-member.component.scss'],
   animations: [fadeIn]
 })
-export class ContributionByMemberComponent implements OnInit {
+export class FinesByMemberComponent implements OnInit {
   @Input() members: Member[];
   @Input() contributionTypes: ContributionType[];
+  @Input() fineTypes: FineType[];
   @Input() group: Group;
   @Output() closeForm = new EventEmitter();
-
   currentMember: Member;
   years = [];
   memberId;
@@ -37,14 +33,10 @@ export class ContributionByMemberComponent implements OnInit {
   contributionTotal = {};
   loading: any;
 
-  memberContributions$: Observable<Payment[]>;
-
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
-    private store: Store<ApplicationState>
   ) {
-    this.memberContributions$ = this.store.pipe(select(paymentSelector.selectByMember(this.memberId)));
   }
 
   ngOnInit(): void {
@@ -59,21 +51,43 @@ export class ContributionByMemberComponent implements OnInit {
     }
   }
 
-  setNewMonth(event: any) {
-    try {
-      const contributions = {};
-      this.contributionTypes.forEach(contr => {
-        if (contr.is_fixed && contr.is_must) {
-          contributions[contr.id] = contr.fixed_value;
+
+  deleteEntry(id) {
+    this.monthsDatas = this.monthsDatas.filter(i => i.id !== id);
+    this.calculateTotal();
+  }
+
+  calculateTotal() {
+    this.grandTotal = 0;
+
+    this.monthsDatas.forEach(data => {
+      data.total = 0;
+      this.fineTypes.forEach(contr => {
+        const amount = data.fines[contr.id] ? data.fines[contr.id] + '' : '0';
+        if (!!amount) {
+          console.log(amount);
+          data.total += parseFloat(amount);
+          this.grandTotal += parseFloat(amount);
+        } else {
+          console.log({amount});
+          data.total += 0;
+          this.grandTotal += 0;
         }
       });
+    });
+  }
+
+  setNewMonth(event: any) {
+    try {
+      const fines = {};
       this.monthsDatas.push({
         id: this.commonService.makeid(),
         year: this.year,
         month: this.month,
         date: this.commonService.formatDate(new Date(`${this.year}-${this.month}-01`)),
         memberId: this.memberId,
-        contributions,
+        fines,
+        hasFine: {},
         total: 0,
       });
       this.year = null;
@@ -87,45 +101,25 @@ export class ContributionByMemberComponent implements OnInit {
   }
 
   setDate() {
-    const contributions = {};
-    this.contributionTypes.forEach(contr => {
-      if (contr.is_fixed && contr.is_must) {
-        contributions[contr.id] = contr.fixed_value;
-      }
-    });
+    const fines = {};
+    // this.fineTypes.forEach(contr => {
+    //   if (contr.calculation === 'Fixed') {
+    //     fines[contr.id] = contr.fixed_amount;
+    //   }
+    // });
     this.monthsDatas.push({
       id: this.commonService.makeid(),
       year: '',
       month: '',
       memberId: this.memberId,
       date: this.contributionDate,
-      contributions,
+      fines,
+      hasFine: {},
       total: 0,
     });
     this.contributionDate = '';
     this.calculateTotal();
   }
-
-  calculateTotal() {
-    this.grandTotal = 0;
-    this.contributionTypes.forEach(contr => {
-      this.contributionTotal[contr.id] = 0;
-      this.monthsDatas.forEach(data => {
-        data.total = 0;
-        const amount = data.contributions[contr.id] ? data.contributions[contr.id] + '' : '0';
-        if (!!amount) {
-          data.total += parseFloat(amount);
-          this.contributionTotal[contr.id] += parseFloat(amount);
-          this.grandTotal += parseFloat(amount);
-        } else {
-          data.total += 0;
-          this.contributionTotal[contr.id] += 0;
-          this.grandTotal += 0;
-        }
-      });
-    });
-  }
-
 
   async save() {
     const membersData = this.monthsDatas.map(i => {
@@ -159,18 +153,23 @@ export class ContributionByMemberComponent implements OnInit {
     }
   }
 
-  deleteEntry(id) {
-    this.monthsDatas = this.monthsDatas.filter(i => i.id !== id);
-    this.calculateTotal();
-  }
-
   setMember(value: any) {
     this.currentMember = this.members.find(i => i.id === value);
-    this.memberContributions$ = this.store.pipe(select(paymentSelector.selectByMember(value)));
   }
 
   onClose() {
     this.closeForm.emit();
   }
 
+
+  setFine(checked: boolean, contr: FineType, monthData: any) {
+    if (checked) {
+      if (contr.calculation === 'Fixed') {
+        monthData.fines[contr.id] = contr.fixed_amount;
+      }
+    } else {
+      monthData.fines[contr.id] = 0;
+    }
+    this.calculateTotal();
+  }
 }

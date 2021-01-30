@@ -85,3 +85,8 @@ export const selectTotalContributions = (year) => createSelector(
     return payments + fines;
   }
 );
+
+export const selectByMember = (memberId) => createSelector(
+  selectAll,
+  (allItems) => allItems.filter(i => memberId === i.memberId)
+);
