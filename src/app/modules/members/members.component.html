@@ -5,6 +5,11 @@
   [addIcon]="'group_add'"
   (addItem)="addMembers()"
   [addText]="'New Member'"
+  [viewDetails]="viewDetails"
+  (closeDetails)="onClose()"
+  [animationSize]="'full'"
+  [smallForm]="false"
+  [formTitle]="formTitle"
 >
   <ng-container ngProjectAs="table">
 <!--    In case there is only one member-->
@@ -81,5 +86,9 @@
         </div>
       </div>
     </div>
+  </ng-container>
+
+  <ng-container ngProjectAs="form">
+    <app-assign-loan *ngIf="viewDetails" [details]="details"></app-assign-loan>
   </ng-container>
 </app-shared-layout>

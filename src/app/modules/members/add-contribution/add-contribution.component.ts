@@ -79,6 +79,7 @@ export class AddContributionComponent implements OnInit {
   async setSelectedFines($event: MatSelectChange) {
     const fineTypes = await this.fineTypes$.pipe(first()).toPromise();
     this.selectedFineTypes = $event.value.map(i => fineTypes.find(k => k.id === i));
+    this.fineAmounts = {};
     this.selectedFineTypes.forEach(fineType => {
       if (fineType.calculation === 'Fixed') {
         this.fineAmounts[fineType.id] = fineType.fixed_amount;

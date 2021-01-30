@@ -27,8 +27,17 @@
           </mat-form-field>
         </div>
 
+        <!--        Loan amount-->
+        <div class="col-sm-12" *ngIf="loanStartDate && loanType" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Loan amount <span *ngIf="loanAmount">({{loanAmount | number}})</span></mat-label>
+            <input matInput [(ngModel)]="loanAmount" type="number" placeholder="Loan amount" (input)="calculateLoan()">
+            <mat-hint *ngIf="!!maximumAmount">Maximum available amount is <b>{{maximumAmount | number}}</b></mat-hint>
+          </mat-form-field>
+        </div>
+
         <!--        Start Date-->
-        <div class="col-sm-12" *ngIf="loanType" @fadeIn>
+        <div [ngClass]="maximumAmount ? 'mt-2' : ''" class="col-sm-12" *ngIf="loanType" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Loan start date</mat-label>
             <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="loanStartDate"/>
@@ -37,26 +46,20 @@
           </mat-form-field>
         </div>
 
-        <!--        Loan amount-->
-        <div class="col-sm-12" *ngIf="loanStartDate && loanType" @fadeIn>
-          <mat-form-field appearance="outline">
-            <mat-label>Loan amount <span *ngIf="loanAmount">({{loanAmount | number}})</span></mat-label>
-            <input matInput [(ngModel)]="loanAmount" type="number" placeholder="Loan amount" (input)="calculateLoan()">
-          </mat-form-field>
-        </div>
-
         <!--        Loan Duration-->
         <div class="col-sm-12" *ngIf="loanStartDate && loanType && loanAmount" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Loan Duration
-              <span>({{duration | number}} {{durationTYpe}})</span>
+              <span *ngIf="!duration">({{currentLoanType.min_duration}} to {{currentLoanType.max_duration}} {{durationTYpe}})</span>
+              <span *ngIf="duration">({{duration | number}} {{durationTYpe}})</span>
             </mat-label>
-            <input matInput [(ngModel)]="duration" placeholder="Loan Duration" (input)="calculateLoan()">
+            <input matInput [(ngModel)]="duration" placeholder="Loan Duration ({{currentLoanType.min_duration}} to {{currentLoanType.max_duration}} {{durationTYpe}})" (input)="calculateLoan()">
+            <mat-hint>From {{currentLoanType.min_duration}} to {{currentLoanType.max_duration}} {{durationTYpe}}</mat-hint>
           </mat-form-field>
         </div>
 
         <!--        Amount to return-->
-        <div class="col-sm-12" *ngIf="loanStartDate && loanType && loanAmount && duration" @fadeIn>
+        <div class="col-sm-12 mt-2" *ngIf="loanStartDate && loanType && loanAmount && duration" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Amount to return
               <span>({{testToReturn | number}})</span>

@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Group} from '../../../store/group/group.model';
 import {ContributionType} from '../../../store/contribution-type/contribution-type.model';
@@ -16,7 +16,12 @@ import {FunctionsService} from '../../../services/functions.service';
   animations: [fadeIn]
 })
 export class AssignLoanComponent implements OnInit {
-
+  @Input() details: {
+    group: Group;
+    contributionTypes: ContributionType[];
+    loanTypes: LoanType[];
+    member: Member;
+  };
   loanType: string;
   loanStartDate: any = new Date();
   currentLoanType: LoanType;
@@ -28,6 +33,7 @@ export class AssignLoanComponent implements OnInit {
   insuranceAmount: number;
   newDate: any;
   loading = false;
+  maximumAmount;
   constructor(
     public dialogRef: MatDialogRef<AssignLoanComponent>,
     private commonService: CommonService,
@@ -41,6 +47,9 @@ export class AssignLoanComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (!this.data) {
+      this.data = this.details;
+    }
     if (this.data.loanTypes && this.data.loanTypes.length === 1) {
       this.loanType = this.data.loanTypes[0].id;
       this.loanTypeSelected(this.loanType);
@@ -49,6 +58,12 @@ export class AssignLoanComponent implements OnInit {
 
   loanTypeSelected(loanTypeId) {
     this.currentLoanType = this.data.loanTypes.find(i => i.id === loanTypeId);
+    const contributionType = this.data.contributionTypes.find(i => i.id === this.currentLoanType.contribution_type_id);
+    if (contributionType) {
+      if (contributionType.track_balance && this.data.group.contribution_balances) {
+        this.maximumAmount = this.data.group.contribution_balances[contributionType.id];
+      }
+    }
     this.calculateLoan();
   }
 

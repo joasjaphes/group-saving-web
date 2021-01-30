@@ -37,6 +37,9 @@ export class MembersComponent implements OnInit {
   progress$: Observable<any>;
   progressDetails$: Observable<GroupProgress>;
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
+  viewDetails = false;
+  formTitle = '';
+  details;
 
   constructor(
     private store: Store<ApplicationState>,
@@ -74,6 +77,13 @@ export class MembersComponent implements OnInit {
     const group = await this.group$.pipe(first()).toPromise();
     const contributionTypes = await this.contributionTypes$.pipe(first()).toPromise();
     const loanTypes = await this.loanTypes$.pipe(first()).toPromise();
+    // this.viewDetails = true;
+    // this.details = {
+    //   group,
+    //   contributionTypes,
+    //   loanTypes,
+    //   member,
+    // };
     const dialogRef = this.dialog.open(AssignLoanComponent, {
       width: '80%',
       minHeight: '60vh',
@@ -135,5 +145,10 @@ export class MembersComponent implements OnInit {
     } catch (e) {
       console.error(e);
     }
+  }
+
+  onClose() {
+    this.viewDetails = false;
+    this.formTitle = '';
   }
 }
