@@ -58,7 +58,8 @@ export const selectLoanByMemberFromRoute = createSelector(
 export const selectTotalByYear = (year) => createSelector(
   selectAll,
   (allItems) => {
-    const items = allItems.filter(i => i.start_year + '' === year + '');
+    // const items = allItems.filter(i => i.start_year + '' === year + '');
+    const items = allItems;
     let sum = 0;
     for (const item of items) {
       sum += parseFloat(item.amount_taken + '');

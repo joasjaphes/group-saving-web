@@ -19,12 +19,22 @@
       [group]="group$ | async"
       [contributionTypes]="contributionTypes$ | async"
       [members]="members$ | async"
+      (closeForm)="closePanel()"
     ></app-contribution-by-period>
     <app-contribution-by-member
       *ngIf="viewType == 'Contribution By Member'"
       [group]="group$ | async"
       [contributionTypes]="contributionTypes$ | async"
       [members]="members$ | async"
+      (closeForm)="closePanel()"
     ></app-contribution-by-member>
+    <app-loan-by-member
+      *ngIf="viewType == 'Loans'"
+      [group]="group$ | async"
+      [loanTypes]="loanTypes$ | async"
+      [contributionTypes]="contributionTypes$ | async"
+      [members]="members$ | async"
+      (closeForm)="closePanel()"
+    ></app-loan-by-member>
   </ng-container>
 </app-shared-layout>

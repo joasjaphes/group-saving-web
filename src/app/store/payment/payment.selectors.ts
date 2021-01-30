@@ -23,7 +23,8 @@ export const selected = createSelector(
 export const selectTotalPaymentByYear = (year) => createSelector(
   selectAll,
   (allItems) => {
-    const items = allItems.filter(i => i.year + '' === year + '');
+    // const items = allItems.filter(i => i.year + '' === year + '');
+    const items = allItems;
     let sum = 0;
     for (const item of items) {
       const contr = Object.keys(item.contributions).map(i => item.contributions[i]);
@@ -38,7 +39,8 @@ export const selectTotalPaymentByYear = (year) => createSelector(
 export const selectTotalLoanPaymentByYear = (year) => createSelector(
   selectAll,
   (allItems) => {
-    const items = allItems.filter(i => i.year + '' === year + '');
+    // const items = allItems.filter(i => i.year + '' === year + '');
+    const items = allItems;
     let sum = 0;
     for (const item of items) {
       const contr = Object.keys(item.loans).map(i => item.loans[i]);
@@ -53,7 +55,8 @@ export const selectTotalLoanPaymentByYear = (year) => createSelector(
 export const selectTotalFinePaymentByYear = (year) => createSelector(
   selectAll,
   (allItems) => {
-    const items = allItems.filter(i => i.year + '' === year + '');
+    // const items = allItems.filter(i => i.year + '' === year + '');
+    const items = allItems;
     let sum = 0;
     for (const item of items) {
       const contr = Object.keys(item.fines).map(i => item.fines[i]);
