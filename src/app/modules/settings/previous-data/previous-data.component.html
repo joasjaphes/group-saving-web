@@ -1,0 +1,19 @@
+<app-shared-layout
+  title="Previous Data"
+  icon="settings"
+  [viewDetails]="viewDetails"
+  [smallForm]="false"
+  [animationSize]="'full'"
+  [formTitle]="panelTitle"
+  (closeDetails)="closePanel()"
+>
+  <ng-container ngProjectAs="table">
+    <app-menu-items
+      [menus]="menus"
+      (menuClicked)="openPanel($event)"
+    ></app-menu-items>
+  </ng-container>
+  <ng-container ngProjectAs="form">
+    <h1>Form Itakaa hapa</h1>
+  </ng-container>
+</app-shared-layout>

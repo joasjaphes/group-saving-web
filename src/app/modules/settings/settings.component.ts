@@ -39,6 +39,12 @@ export class SettingsComponent implements OnInit {
       description: 'Set rules for meetings to be help by the group, frequency, late attendance fines, missing meeting fines etc',
       image: 'meeting.png'
     },
+    {
+      name: 'Add Previous Data',
+      route: ['', 'settings', 'add-previous-data'],
+      description: 'Add data that are missing and cannot be added one by one',
+      image: 'past_data.png'
+    },
   ];
   constructor() { }
 

@@ -57,6 +57,10 @@ import { SingleMemberComponent } from './modules/members/single-member/single-me
 import { ExpensesComponent } from './modules/expenses/expenses.component';
 import { AddExpenseComponent } from './modules/expenses/add-expense/add-expense.component';
 import { AddMemberComponent } from './modules/members/add-member/add-member.component';
+import { PreviousDataComponent } from './modules/settings/previous-data/previous-data.component';
+import { ContributionByMemberComponent } from './modules/settings/previous-data/contribution-by-member/contribution-by-member.component';
+import { ContributionByPeriodComponent } from './modules/settings/previous-data/contribution-by-period/contribution-by-period.component';
+import { LoanByMemberComponent } from './modules/settings/previous-data/loan-by-member/loan-by-member.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -110,7 +114,11 @@ const firebaseConfig = {
     SingleMemberComponent,
     ExpensesComponent,
     AddExpenseComponent,
-    AddMemberComponent
+    AddMemberComponent,
+    PreviousDataComponent,
+    ContributionByMemberComponent,
+    ContributionByPeriodComponent,
+    LoanByMemberComponent
   ],
   imports: [
     BrowserModule,

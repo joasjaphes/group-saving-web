@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {ROUTE_ANIMATIONS_ELEMENTS} from '../../animations/router-animation';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {Observable} from 'rxjs';
@@ -14,6 +14,7 @@ import {Go} from '../../../store/router/router.action';
 })
 export class MenuItemsComponent implements OnInit {
   @Input() menus: any;
+  @Output() menuClicked = new EventEmitter();
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(map((result) => result.matches));
@@ -30,6 +31,8 @@ export class MenuItemsComponent implements OnInit {
     console.log(menu);
     if (menu.route) {
       this.store.dispatch(new Go({path: menu.route}));
+    } else {
+      this.menuClicked.emit(menu);
     }
   }
 }

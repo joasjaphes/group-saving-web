@@ -14,6 +14,7 @@ import {MyAccountComponent} from './modules/my-account/my-account.component';
 import {MembersComponent} from './modules/members/members.component';
 import {SingleMemberComponent} from './modules/members/single-member/single-member.component';
 import {ExpensesComponent} from './modules/expenses/expenses.component';
+import {PreviousDataComponent} from './modules/settings/previous-data/previous-data.component';
 
 
 const routes: Routes = [
@@ -68,6 +69,11 @@ const routes: Routes = [
         path: 'settings',
         component: SettingsComponent,
         data: { title: 'Settings' }
+      },
+      {
+        path: 'settings/add-previous-data',
+        component: PreviousDataComponent,
+        data: { title: 'Previous Data' }
       },
       {
         path: 'change-password',
