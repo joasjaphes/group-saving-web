@@ -1,1 +1,78 @@
-<p>contribution-by-period works!</p>
+<div class="container-fluid">
+  <div class="row">
+<!--    year selection-->
+    <div class="col-sm-6">
+      <mat-form-field appearance="outline">
+        <mat-label>Contribution Year</mat-label>
+        <mat-select [(ngModel)]="year">
+          <mat-option *ngFor="let y of years" [value]="y">{{y}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+<!--    Month selection-->
+    <div class="col-sm-6">
+      <mat-form-field appearance="outline">
+        <mat-label>Contribution Month</mat-label>
+        <mat-select [(ngModel)]="month">
+          <mat-option value="01">Jan {{year}}</mat-option>
+          <mat-option value="02">Feb {{year}}</mat-option>
+          <mat-option value="03">Mar {{year}}</mat-option>
+          <mat-option value="04">Apr {{year}}</mat-option>
+          <mat-option value="05">May {{year}}</mat-option>
+          <mat-option value="06">Jun {{year}}</mat-option>
+          <mat-option value="07">Jul {{year}}</mat-option>
+          <mat-option value="08">Aug {{year}}</mat-option>
+          <mat-option value="09">Sep {{year}}</mat-option>
+          <mat-option value="10">Oct {{year}}</mat-option>
+          <mat-option value="11">Nov {{year}}</mat-option>
+          <mat-option value="12">Dec {{year}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-sm-12" *ngIf="month" @fadeIn>
+      <table class="table entry-table table-bordered">
+        <tr>
+          <th>Member Name</th>
+          <th *ngFor="let contr of contributionTypes">
+            {{contr.name}}
+          </th>
+          <th>Total</th>
+        </tr>
+        <tr *ngFor="let member of members">
+          <th>{{member.name}}</th>
+          <td *ngFor="let contr of contributionTypes">
+            <mat-form-field appearance="outline">
+              <input
+                [(ngModel)]="membersAmount[member.id][contr.id]"
+                placeholder="{{contr.name}} Amount"
+                type="number"
+                matInput
+                (input)="calculateTotal()"
+              >
+            </mat-form-field>
+          </td>
+          <th>
+            {{memberTotals[member.id] | number}}
+          </th>
+        </tr>
+        <tr>
+          <th style="text-align: right" [colSpan]="1 + contributionTypes.length">Total</th>
+          <th>{{grandTotal | number}}</th>
+        </tr>
+      </table>
+    </div>
+
+    <div class="col-sm-12 mt-3" *ngIf="grandTotal && month" @fadeIn>
+      <app-save-area
+        [confirmFirst]="true"
+        confirmText="Are you sure you want to ADD {{grandTotal | number}}  as contribution for {{month}} {{ year}}?"
+        [saveDisabled]="!grandTotal || !month"
+        (cancel)="onClose()"
+        (save)="save()"
+        [savingData]="loading"
+      ></app-save-area>
+    </div>
+  </div>
+</div>

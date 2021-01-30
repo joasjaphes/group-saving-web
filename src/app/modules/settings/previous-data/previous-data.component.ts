@@ -1,4 +1,13 @@
 import {Component, OnInit} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Member} from '../../../store/member/member.model';
+import {Group} from '../../../store/group/group.model';
+import {ContributionType} from '../../../store/contribution-type/contribution-type.model';
+import {select, Store} from '@ngrx/store';
+import {ApplicationState} from '../../../store';
+import * as groupSelector from '../../../store/group/group.selectors';
+import * as contributionTypeSelector from '../../../store/contribution-type/contribution-type.selectors';
+import * as memberSelector from '../../../store/member/member.selectors';
 
 @Component({
   selector: 'app-previous-data',
@@ -29,16 +38,24 @@ export class PreviousDataComponent implements OnInit {
 
   viewDetails = false;
   panelTitle = '';
-
-  constructor() {
+  viewType = '';
+  members$: Observable<Member[]>;
+  group$: Observable<Group>;
+  contributionTypes$: Observable<ContributionType[]>;
+  constructor(
+    private store: Store<ApplicationState>,
+  ) {
+    this.group$ = this.store.pipe(select(groupSelector.selected));
+    this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectRepeating));
+    this.members$ = this.store.pipe(select(memberSelector.selectAll));
   }
 
   ngOnInit(): void {
   }
 
   openPanel(title: any) {
-    console.log(title);
     this.viewDetails = true;
+    this.viewType = title.name;
     this.panelTitle = title.description;
   }
 

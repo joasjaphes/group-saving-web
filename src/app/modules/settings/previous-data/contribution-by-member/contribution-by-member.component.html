@@ -1,1 +1,136 @@
-<p>contribution-by-member works!</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <mat-form-field appearance="outline">
+        <mat-label>Select Member</mat-label>
+        <mat-select [(ngModel)]="memberId" (selectionChange)="setMember($event.value)">
+          <app-mat-select-search [(ngModel)]="searchMembers"></app-mat-select-search>
+          <mat-option *ngFor="let member of members | search:'name':searchMembers" [value]="member.id">
+            {{member.name}} ({{member.phone_number}})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-sm-12 mt-2" *ngIf="memberId" @fadeIn>
+      <table class="table table-bordered entry-table">
+        <tr>
+          <th *ngIf="group.track_contribution_period">Year</th>
+          <th *ngIf="group.track_contribution_period">Month</th>
+          <th *ngIf="!group.track_contribution_period">Contribution Date</th>
+          <th *ngFor="let contr of contributionTypes">{{contr.name}}</th>
+          <th>Total</th>
+          <td></td>
+        </tr>
+        <tr *ngFor="let monthData of monthsDatas">
+          <td *ngIf="group.track_contribution_period">
+            <mat-form-field appearance="outline">
+              <mat-select [(ngModel)]="monthData.year">
+                <mat-option *ngFor="let y of years" [value]="y">{{y}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <td *ngIf="group.track_contribution_period">
+            <mat-form-field appearance="outline">
+              <mat-select [(ngModel)]="monthData.month">
+                <mat-option value="01">Jan {{monthData.year}}</mat-option>
+                <mat-option value="02">Feb {{monthData.year}}</mat-option>
+                <mat-option value="03">Mar {{monthData.year}}</mat-option>
+                <mat-option value="04">Apr {{monthData.year}}</mat-option>
+                <mat-option value="05">May {{monthData.year}}</mat-option>
+                <mat-option value="06">Jun {{monthData.year}}</mat-option>
+                <mat-option value="07">Jul {{monthData.year}}</mat-option>
+                <mat-option value="08">Aug {{monthData.year}}</mat-option>
+                <mat-option value="09">Sep {{monthData.year}}</mat-option>
+                <mat-option value="10">Oct {{monthData.year}}</mat-option>
+                <mat-option value="11">Nov {{monthData.year}}</mat-option>
+                <mat-option value="12">Dec {{monthData.year}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <th *ngIf="!group.track_contribution_period" >
+            {{monthData.date | date}}
+          </th>
+          <td *ngFor="let contr of contributionTypes">
+            <mat-form-field appearance="outline">
+              <input
+                matInput
+                placeholder="{{contr.name}} Amount"
+                [(ngModel)]="monthData.contributions[contr.id]"
+                (input)="calculateTotal()"
+              >
+            </mat-form-field>
+          </td>
+          <th>{{monthData.total | number}}</th>
+          <td>
+            <button mat-icon-button (click)="deleteEntry(monthData.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+<!--        New Entry-->
+        <tr>
+          <td *ngIf="group.track_contribution_period">
+            <mat-form-field appearance="outline">
+              <mat-label>Contribution Year</mat-label>
+              <mat-select [(ngModel)]="year">
+                <mat-option *ngFor="let y of years" [value]="y">{{y}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <td *ngIf="group.track_contribution_period">
+            <mat-form-field appearance="outline" @fadeIn *ngIf="year">
+              <mat-label>Contribution Month</mat-label>
+              <mat-select [(ngModel)]="month" (selectionChange)="setNewMonth($event)">
+                <mat-option value="01">Jan {{year}}</mat-option>
+                <mat-option value="02">Feb {{year}}</mat-option>
+                <mat-option value="03">Mar {{year}}</mat-option>
+                <mat-option value="04">Apr {{year}}</mat-option>
+                <mat-option value="05">May {{year}}</mat-option>
+                <mat-option value="06">Jun {{year}}</mat-option>
+                <mat-option value="07">Jul {{year}}</mat-option>
+                <mat-option value="08">Aug {{year}}</mat-option>
+                <mat-option value="09">Sep {{year}}</mat-option>
+                <mat-option value="10">Oct {{year}}</mat-option>
+                <mat-option value="11">Nov {{year}}</mat-option>
+                <mat-option value="12">Dec {{year}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <td *ngIf="!group.track_contribution_period">
+            <mat-form-field appearance="outline">
+              <mat-label>Date</mat-label>
+              <input (dateChange)="setDate()" readonly matInput [matDatepicker]="endingDate" [(ngModel)]="contributionDate"/>
+              <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
+              <mat-datepicker #endingDate></mat-datepicker>
+            </mat-form-field>
+          </td>
+          <td *ngFor="let contr of contributionTypes">
+          </td>
+          <td colspan="2"></td>
+        </tr>
+        <tr *ngIf="monthsDatas.length > 0">
+          <th style="text-align: right" [attr.colspan]="group.track_contribution_period ? 2 : 1">
+            Total
+          </th>
+          <th *ngFor="let contr of contributionTypes">
+            {{contributionTotal[contr.id] |  number}}
+          </th>
+          <th colspan="2">
+            {{grandTotal | number}}
+          </th>
+        </tr>
+      </table>
+    </div>
+    <div class="col-sm-12 mt-3" *ngIf="grandTotal" @fadeIn>
+      <app-save-area
+        [confirmFirst]="true"
+        confirmText="Are you sure you want to ADD {{grandTotal | number}}  as contribution for {{currentMember.name}}?"
+        [saveDisabled]="!grandTotal"
+        (cancel)="onClose()"
+        (save)="save()"
+        [savingData]="loading"
+      ></app-save-area>
+    </div>
+  </div>
+</div>

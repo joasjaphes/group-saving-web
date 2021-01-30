@@ -25,7 +25,6 @@ export const addNewContribution = functions.https.onRequest((request, response) 
     }
     try {
       const groupId = data.groupId;
-      const batch = admin.firestore().batch();
       const last_update = new Date().getTime();
       const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
       const memberRef = admin.firestore().doc(`groups/${data.groupId}/members/${data.memberId}`);
@@ -124,7 +123,6 @@ export const addNewContribution = functions.https.onRequest((request, response) 
         }
 
       });
-      await batch.commit();
       response.status(200).send({data: 'Success'});
     } catch (e) {
       console.log('Error fetching user data:', e);

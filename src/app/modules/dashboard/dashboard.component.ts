@@ -41,8 +41,8 @@ export class DashboardComponent implements OnInit {
     this.memberName$ = this.store.pipe(select(memberSelector.selectFirstNameOnly));
     this.contributionTypeNeedBalance$ = this.store.pipe(select(selectNeedBalance));
 
-    this.totalContributions$ = this.store.pipe(select(paymentSelector.selectTotalContributions(2021)));
-    this.totalContributionOnly$ = this.store.pipe(select(paymentSelector.selectTotalPaymentByYear(2021)));
+    this.totalContributions$ = this.store.pipe(select(paymentSelector.selectTotalContributions(2020)));
+    this.totalContributionOnly$ = this.store.pipe(select(paymentSelector.selectTotalPaymentByYear(2020)));
     this.totalLoanReturns$ = this.store.pipe(select(paymentSelector.selectTotalLoanPaymentByYear(2021)));
     this.totalFinesPaid$ = this.store.pipe(select(paymentSelector.selectTotalFinePaymentByYear(2021)));
     this.totalExpenses$ = this.store.pipe(select(expenseSelector.selectTotalByYear(2021)));

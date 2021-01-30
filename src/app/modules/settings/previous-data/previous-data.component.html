@@ -14,6 +14,17 @@
     ></app-menu-items>
   </ng-container>
   <ng-container ngProjectAs="form">
-    <h1>Form Itakaa hapa</h1>
+    <app-contribution-by-period
+      *ngIf="viewType == 'Contribution By Period'"
+      [group]="group$ | async"
+      [contributionTypes]="contributionTypes$ | async"
+      [members]="members$ | async"
+    ></app-contribution-by-period>
+    <app-contribution-by-member
+      *ngIf="viewType == 'Contribution By Member'"
+      [group]="group$ | async"
+      [contributionTypes]="contributionTypes$ | async"
+      [members]="members$ | async"
+    ></app-contribution-by-member>
   </ng-container>
 </app-shared-layout>
