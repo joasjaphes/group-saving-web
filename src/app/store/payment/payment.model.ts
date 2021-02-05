@@ -2,7 +2,7 @@ export interface Payment {
   id: string;
   groupId: string;
   isActive: boolean;
-  lastUpdate: number;
+  last_update: number;
   additionalConfig: any;
   date: string;
   month: string;

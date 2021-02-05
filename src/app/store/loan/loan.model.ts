@@ -29,5 +29,6 @@ export interface Loan {
   start_week: string;
   payments: any;
   fines: any;
+  durationName?: any;
 
 }

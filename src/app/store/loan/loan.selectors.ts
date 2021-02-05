@@ -21,13 +21,13 @@ export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
 
-export const selectLoanByMember = (memberId: string) => createSelector(
+export const selectDetailed = createSelector(
   selectAll,
   fromLoanTypes.selectEntities,
   (allItems, loanTypes) => allItems
-    .filter(i => i.member_id === memberId)
     .map(i => ({
         ...i,
+        durationName: durationTYpe(i.duration_type),
         loanType: {
           ...loanTypes[i.loan_used]
         }
@@ -35,22 +35,19 @@ export const selectLoanByMember = (memberId: string) => createSelector(
     )
 );
 
-export const selectLoanByMemberFromRoute = createSelector(
-  selectAll,
-  getRouteState,
-  fromLoanTypes.selectEntities,
-  (allItems, routeState, loanTypes) => {
-    const memberId = routeState.state && routeState.state.params ? routeState.state.params.id : null;
+export const selectLoanByMember = (memberId: string) => createSelector(
+  selectDetailed,
+  (allItems) => allItems
+    .filter(i => i.member_id === memberId)
+);
 
-    return  allItems
-      .filter(i => i.member_id === memberId)
-      .map(i => ({
-          ...i,
-          loanType: {
-            ...loanTypes[i.loan_used]
-          }
-        })
-      );
+export const selectLoanByMemberFromRoute = createSelector(
+  selectDetailed,
+  getRouteState,
+  (allItems, routeState) => {
+    const memberId = routeState.state && routeState.state.params ? routeState.state.params.id : null;
+    return allItems
+      .filter(i => i.member_id === memberId);
   }
 );
 
@@ -68,3 +65,15 @@ export const selectTotalByYear = (year) => createSelector(
   }
 );
 
+export function durationTYpe(frequency) {
+  switch (frequency) {
+    case 'Monthly':
+      return 'Months';
+    case 'Weekly':
+      return 'Weeks';
+    case 'Yearly':
+      return 'Years';
+    default:
+      return '';
+  }
+}

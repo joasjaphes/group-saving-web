@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import * as fromActions from './member.actions';
 import * as loanActions from '../loan/loan.actions';
+import * as fromPaymentActions from '../payment/payment.actions';
 import {switchMap, tap} from 'rxjs/operators';
 import {OfflineManagerService} from '../../services/offline-manager.service';
 import {DataKeys} from '../data-keys';
@@ -15,15 +16,40 @@ export class MemberEffects {
     switchMap((action) => this.offlineService.getItems(DataKeys.Member)),
     switchMap((members: Member[]) => {
       const loans = [];
+      const payments = [];
       members.forEach(member => {
         if (member.active_loans) {
           const loan = Object.keys(member.active_loans).map(i => member.active_loans[i]);
           loans.push(...loan);
+          loan.forEach(loanItem => {
+            if (loanItem.payments && loanItem.payments.length > 0) {
+              loanItem.payments.forEach(payment => {
+                if (payment.from_previous_loan) {
+                  payments.push({
+                    id: payment.id,
+                    groupId: loanItem.group_id,
+                    date: payment.date,
+                    month: payment.month,
+                    year: payment.year,
+                    week: payment.week,
+                    memberId: payment.member_id,
+                    contributions: {},
+                    fines: {},
+                    loans: {
+                      [loanItem.id]: payment.amount,
+                    },
+                    totalAmount: payment.amount,
+                  });
+                }
+              });
+            }
+          });
         }
       });
       return [
         fromActions.upsertMembers({members}),
         loanActions.upsertLoans({loans}),
+        fromPaymentActions.upsertPayments({payments}),
         fromActions.doneLoadingMembers()
       ];
     })
@@ -32,5 +58,6 @@ export class MemberEffects {
   constructor(
     private actions$: Actions,
     private offlineService: OfflineManagerService,
-  ) {}
+  ) {
+  }
 }

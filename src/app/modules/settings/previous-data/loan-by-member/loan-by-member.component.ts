@@ -6,6 +6,12 @@ import {fadeIn} from '../../../../shared/animations/router-animation';
 import {LoanType} from '../../../../store/loan-type/loan-type.model';
 import {CommonService} from '../../../../services/common.service';
 import {FunctionsService} from '../../../../services/functions.service';
+import {Observable} from 'rxjs';
+import {Loan} from '../../../../store/loan/loan.model';
+import {select, Store} from '@ngrx/store';
+import {ApplicationState} from '../../../../store';
+import {selectLoanByMember} from '../../../../store/loan/loan.selectors';
+import {MatSelectChange} from '@angular/material/select';
 
 @Component({
   selector: 'app-loan-by-member',
@@ -37,16 +43,43 @@ export class LoanByMemberComponent implements OnInit {
   insuranceAmount = 0;
   amountPerReturn = 0;
   remainingBalance: any;
+  memberLoans$: Observable<Loan[]>;
+  year = new Date().getFullYear();
+  years = [];
+  month: string;
+  payments = [];
+  recordByDate = false;
+  paymentDate = null;
+
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
-  ) { }
+    private store: Store<ApplicationState>
+  ) {
+    this.memberLoans$ = this.store.pipe(select(selectLoanByMember(null)));
+  }
 
   ngOnInit(): void {
+    this.generateYears();
+  }
+
+  generateYears(year?: number) {
+    this.years = [];
+    const currentYear = year ? year : new Date().getFullYear();
+    if (year){
+      for (let i = 0; i < 10; i++) {
+        this.years.push(currentYear + i);
+      }
+    } else {
+      for (let i = -5; i < 10; i++) {
+        this.years.push(currentYear + i);
+      }
+    }
   }
 
   setMember(value: any) {
     this.currentMember = this.members.find(i => i.id === value);
+    this.memberLoans$ = this.store.pipe(select(selectLoanByMember(value)));
   }
 
   onClose() {
@@ -79,7 +112,7 @@ export class LoanByMemberComponent implements OnInit {
       if (profitCalculationType === 'Fixed Percent') {
         this.returnAmount = (parseInt(this.loanAmount, 10) + (this.loanAmount * (interestRate / 100)));
         this.amountPerReturn = this.returnAmount / this.duration;
-      } else if (profitCalculationType  === 'Custom Formula') {
+      } else if (profitCalculationType === 'Custom Formula') {
         // tslint:disable-next-line:no-eval
         const interest = eval(loanFormular.replace('M', this.loanAmount + '').replace('T', this.duration + ''));
         this.returnAmount = parseInt(this.loanAmount, 10) + parseInt(interest, 10);
@@ -109,6 +142,8 @@ export class LoanByMemberComponent implements OnInit {
       d.setMonth(d.getMonth() + this.duration);
       this.endDate = d;
     }
+    this.year = new Date(this.contributionDate).getFullYear();
+    this.generateYears(this.year);
   }
 
   async save() {
@@ -125,7 +160,8 @@ export class LoanByMemberComponent implements OnInit {
       total_profit_contribution: parseFloat(this.returnAmount + '') - parseFloat(this.loanAmount + ''),
       remaining_balance: this.remainingBalance,
       amount_returned: this.returnedAmount,
-      last_return_date: this.commonService.formatDate(this.lastReturnDate)
+      last_return_date: this.commonService.formatDate(this.lastReturnDate),
+      payments: this.payments
     };
     this.loading = true;
     try {
@@ -144,5 +180,64 @@ export class LoanByMemberComponent implements OnInit {
     if ($event.target.value) {
       this.remainingBalance = this.returnAmount - this.returnedAmount;
     }
+  }
+
+  calculateTotal() {
+    let total = 0;
+    for (const payment of this.payments) {
+      const amount = payment.amount + '';
+      if (!!amount) {
+        total += parseFloat(amount);
+      }
+    }
+    this.returnedAmount = total;
+    if (this.returnedAmount) {
+      this.remainingBalance = this.returnAmount - this.returnedAmount;
+    }
+  }
+
+  setNewMonth($event: MatSelectChange) {
+    let amount = null;
+    if (this.currentLoanType.pay_same_amount_is_must) {
+      amount = this.amountPerReturn;
+    }
+    this.payments.push({
+      id: this.commonService.makeid(),
+      year: this.year,
+      month: this.month,
+      date: this.commonService.formatDate(new Date(`${this.year}-${this.month}-01`)),
+      memberId: this.memberId,
+      amount
+    });
+    this.year = null;
+    this.month = null;
+    if (this.payments.length > 0) {
+      setTimeout(() => {
+        this.year = this.payments[this.payments.length - 1].year;
+      }, 100);
+    }
+    this.calculateTotal();
+  }
+
+  setDate() {
+    let amount = null;
+    if (this.currentLoanType.pay_same_amount_is_must) {
+      amount = this.amountPerReturn;
+    }
+    const month = new Date(this.contributionDate).getMonth() + 1;
+    this.payments.push({
+      id: this.commonService.makeid(),
+      year: new Date(this.contributionDate).getFullYear(),
+      month: (month + '').length === 1 ? '0' + month : month + '',
+      date: this.commonService.formatDate(this.contributionDate),
+      memberId: this.memberId,
+      amount
+    });
+    this.paymentDate = null;
+  }
+
+  deletePay(payment: any) {
+    this.payments = this.payments.filter(i => i.id !== payment.id);
+    this.calculateTotal();
   }
 }

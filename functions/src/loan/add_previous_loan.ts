@@ -34,16 +34,20 @@ export const assignPastActiveLoanToMember = functions.https.onRequest((request, 
         const loanId = helpers.makeid();
         const loanTypeData: any = groupData.loanTypes[data.loanUsed];
         const loanDetails = prepareLoan(loanId, data, loanTypeData, last_update);
-        if (memberData.active_loans) {
-          memberData.active_loans[loanDetails.id] = loanDetails;
+        if (parseInt(data.remaining_balance + '', 10) === 0) {
+          const loanRef = admin.firestore().doc(`groups/${data.groupId}/loans/${loanDetails.id}`);
+          transaction.set(loanRef, {...loanDetails, last_update }, {merge: true});
+          transaction.set(otherUpdateAtRef, {  loan_updated: last_update }, {merge: true});
         } else {
-          memberData.active_loans = {};
-          memberData.active_loans[loanDetails.id] = loanDetails;
+          if (memberData.active_loans) {
+            memberData.active_loans[loanDetails.id] = loanDetails;
+          } else {
+            memberData.active_loans = {};
+            memberData.active_loans[loanDetails.id] = loanDetails;
+          }
+          transaction.update(memberRef, {...memberData, last_update});
+          transaction.set(otherUpdateAtRef, {  member_updated: last_update }, {merge: true});
         }
-        transaction.update(memberRef, {...memberData, last_update});
-        transaction.set(otherUpdateAtRef, {
-          member_updated: last_update,
-        }, {merge: true});
       });
       response.status(200).send({data: 'Success'});
     } catch (e) {
@@ -76,21 +80,25 @@ function prepareLoan(loanId: string, data: any, currentLoanType: any, last_updat
     end_year: helpers.getYear(data.end_date),
     account_used: currentLoanType.contribution_type_id,
     total_profit_contribution: data.total_profit_contribution,
-    remaining_balance: data.return_amount,
+    remaining_balance: data.remaining_balance || 0,
     payments: [],
     additional_config: {},
   };
-  const payment: any = {
-    id: helpers.makeid(),
-    period: helpers.getYear(data.last_return_date) + '' + helpers.getMonth(data.last_return_date),
-    month: helpers.getMonth(data.last_return_date),
-    year: helpers.getYear(data.last_return_date),
-    amount: data.amount_returned,
-    paid_on_time: true,
-    date_of_payment: helpers.formatDate(data.last_return_date),
-    member_id: data.memberId,
-  };
-  loan.payments.push(payment);
+  if (data.payments && data.payments.length !== 0) {
+    loan.payments = data.payments.map(
+      (payment: any) => ({
+        id: payment.id,
+        period: payment.year + '' + payment.month,
+        month: payment.month,
+        year: payment.year,
+        amount: payment.amount,
+        paid_on_time: true,
+        date_of_payment: helpers.formatDate(payment.date),
+        member_id: data.memberId,
+        from_previous_loan: true,
+      })
+    );
+  }
   loan.amount_paid_to_date = data.amount_returned;
   loan.remaining_balance = data.remaining_balance;
   return loan;
