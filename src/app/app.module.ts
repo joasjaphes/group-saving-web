@@ -39,7 +39,7 @@ import { MembersComponent } from './modules/members/members.component';
 import { MeetingComponent } from './modules/meeting/meeting.component';
 import { MyAccountComponent } from './modules/my-account/my-account.component';
 import { SettingsComponent } from './modules/settings/settings.component';
-import { MoreInfomationComponent } from './modules/more-infomation/more-infomation.component';
+import { SummaryComponent } from './modules/summary/summary.component';
 import { ProfileComponent } from './modules/my-account/profile/profile.component';
 import { ChangePasswordComponent } from './modules/my-account/change-password/change-password.component';
 import { GroupProgressComponent } from './modules/dashboard/group-progress/group-progress.component';
@@ -54,14 +54,19 @@ import { AddContributionComponent } from './modules/members/add-contribution/add
 import { AssignLoanComponent } from './modules/members/assign-loan/assign-loan.component';
 import { StartingBalancesComponent } from './modules/dashboard/group-progress/starting-balances/starting-balances.component';
 import { SingleMemberComponent } from './modules/members/single-member/single-member.component';
-import { ExpensesComponent } from './modules/expenses/expenses.component';
-import { AddExpenseComponent } from './modules/expenses/add-expense/add-expense.component';
+import { ExpensesComponent } from './modules/summary/expenses/expenses.component';
+import { AddExpenseComponent } from './modules/summary/expenses/add-expense/add-expense.component';
 import { AddMemberComponent } from './modules/members/add-member/add-member.component';
 import { PreviousDataComponent } from './modules/settings/previous-data/previous-data.component';
 import { ContributionByMemberComponent } from './modules/settings/previous-data/contribution-by-member/contribution-by-member.component';
 import { ContributionByPeriodComponent } from './modules/settings/previous-data/contribution-by-period/contribution-by-period.component';
 import { LoanByMemberComponent } from './modules/settings/previous-data/loan-by-member/loan-by-member.component';
 import { FinesByMemberComponent } from './modules/settings/previous-data/fines-by-member/fines-by-member.component';
+import { LoansComponent } from './modules/summary/loans/loans.component';
+import { ContributionsComponent } from './modules/summary/contributions/contributions.component';
+import { FinesComponent } from './modules/summary/fines/fines.component';
+import { AdjustmentsComponent } from './modules/summary/adjustments/adjustments.component';
+import { CashTransfersComponent } from './modules/summary/cash-transfers/cash-transfers.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -98,7 +103,7 @@ const firebaseConfig = {
     MeetingComponent,
     MyAccountComponent,
     SettingsComponent,
-    MoreInfomationComponent,
+    SummaryComponent,
     ProfileComponent,
     ChangePasswordComponent,
     GroupProgressComponent,
@@ -120,7 +125,12 @@ const firebaseConfig = {
     ContributionByMemberComponent,
     ContributionByPeriodComponent,
     LoanByMemberComponent,
-    FinesByMemberComponent
+    FinesByMemberComponent,
+    LoansComponent,
+    ContributionsComponent,
+    FinesComponent,
+    AdjustmentsComponent,
+    CashTransfersComponent
   ],
   imports: [
     BrowserModule,

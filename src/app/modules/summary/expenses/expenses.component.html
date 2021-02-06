@@ -5,11 +5,20 @@
   [addIcon]="'add'"
   (addItem)="addExpense()"
   [addText]="'Create Expense'"
+  [viewDetails]="viewDetails"
+  [smallForm]="false"
+  [animationSize]="'full'"
+  [formTitle]="panelTitle"
+  (closeDetails)="closePanel()"
 >
   <ng-container ngProjectAs="table">
-    <div class="progress-container content-area mb-5" *ngIf="(expenses$ | async)?.length == 0">
+    <p class="registration-title lead mb-3">Some information needed to process expenses have not been defined yet!</p>
+    <app-group-progress
+      *ngIf="(contributionTypes$ | async)?.length == 0"
+    ></app-group-progress>
+    <div class="summary-progress-container content-area mb-5" *ngIf="(expenses$ | async)?.length == 0 && (contributionTypes$ | async)?.length != 0">
       <div class="progressArea">
-        <img alt="meeting" src="assets/images/investments.jpg">
+        <img alt="meeting" src="../../../../assets/images/investments.jpg">
       </div>
       <div class="textArea">
         <h1 style="font-size: 40px; line-height: 45px" class="registration-title mt-5 mb-1">
@@ -47,5 +56,13 @@
         </div>
       </div>
     </div>
+  </ng-container>
+
+  <ng-container ngProjectAs="form">
+    <app-add-expense
+      [group]="group$ | async"
+      [members]="members$ | async"
+      [contributionTypes]="contributionTypes$ | async"
+    ></app-add-expense>
   </ng-container>
 </app-shared-layout>

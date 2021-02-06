@@ -1,10 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import {ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
+import {fadeIn, ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
+import {select, Store} from '@ngrx/store';
+import {ApplicationState} from '../../store';
+import {Observable} from 'rxjs';
+import {Group} from '../../store/group/group.model';
+import * as groupSelector from '../../store/group/group.selectors';
+import * as memberSelector from '../../store/member/member.selectors';
+import {GroupProgress} from '../../store/group/group-progress.model';
+import {ContributionType} from '../../store/contribution-type/contribution-type.model';
+import {selectNeedBalance} from '../../store/group/group.selectors';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  styleUrls: ['./settings.component.scss'],
+  animations: [fadeIn]
 })
 export class SettingsComponent implements OnInit {
 
@@ -46,9 +56,49 @@ export class SettingsComponent implements OnInit {
       image: 'past_data.png'
     },
   ];
-  constructor() { }
+  group$: Observable<Group>;
+  memberName$: Observable<string>;
+  progress$: Observable<any>;
+  progressDetails$: Observable<GroupProgress>;
+  contributionTypeNeedBalance$: Observable<ContributionType[]>;
+  viewDetails = false;
+  panelTitle = '';
+  viewType = '';
+  constructor(
+    private store: Store<ApplicationState>,
+  ) {
+    this.group$ = this.store.pipe(select(groupSelector.selected));
+    this.progress$ = this.store.pipe(select(groupSelector.selectProgressPercent));
+    this.progressDetails$ = this.store.pipe(select(groupSelector.selectProgress));
+    this.memberName$ = this.store.pipe(select(memberSelector.selectFirstNameOnly));
+    this.contributionTypeNeedBalance$ = this.store.pipe(select(selectNeedBalance));
+  }
 
   ngOnInit(): void {
   }
 
+  menuClicked(clickedMenu) {
+    if (clickedMenu.name === 'Meeting Rules') {
+      this.viewDetails = true;
+      this.viewType = 'meeting';
+    }
+    if (clickedMenu.name === 'Leadership') {
+      this.viewDetails = true;
+      this.viewType = 'leadership';
+    }
+    if (clickedMenu.name === 'Basic Group Information') {
+      this.viewDetails = true;
+      this.viewType = 'basic';
+    }
+    if (clickedMenu.name === 'Contribution Balances') {
+      this.viewDetails = true;
+      this.viewType = 'balance';
+    }
+  }
+
+  closePanel() {
+    this.viewDetails = false;
+    this.panelTitle = '';
+    this.viewType = '';
+  }
 }

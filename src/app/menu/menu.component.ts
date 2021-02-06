@@ -61,9 +61,9 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
       icon: 'group_work',
     },
     {
-      name: 'More',
-      route: '/more-information',
-      icon: 'more_vert',
+      name: 'Summary',
+      route: '/summary',
+      icon: 'list',
     },
     {
       name: 'Settings',

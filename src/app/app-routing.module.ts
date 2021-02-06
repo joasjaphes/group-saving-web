@@ -8,13 +8,18 @@ import {MenuComponent} from './menu/menu.component';
 import {ProfileComponent} from './modules/my-account/profile/profile.component';
 import {ChangePasswordComponent} from './modules/my-account/change-password/change-password.component';
 import {SettingsComponent} from './modules/settings/settings.component';
-import {MoreInfomationComponent} from './modules/more-infomation/more-infomation.component';
+import {SummaryComponent} from './modules/summary/summary.component';
 import {MeetingComponent} from './modules/meeting/meeting.component';
 import {MyAccountComponent} from './modules/my-account/my-account.component';
 import {MembersComponent} from './modules/members/members.component';
 import {SingleMemberComponent} from './modules/members/single-member/single-member.component';
-import {ExpensesComponent} from './modules/expenses/expenses.component';
+import {ExpensesComponent} from './modules/summary/expenses/expenses.component';
 import {PreviousDataComponent} from './modules/settings/previous-data/previous-data.component';
+import {LoansComponent} from './modules/summary/loans/loans.component';
+import {ContributionsComponent} from './modules/summary/contributions/contributions.component';
+import {FinesComponent} from './modules/summary/fines/fines.component';
+import {AdjustmentsComponent} from './modules/summary/adjustments/adjustments.component';
+import {CashTransfersComponent} from './modules/summary/cash-transfers/cash-transfers.component';
 
 
 const routes: Routes = [
@@ -56,14 +61,39 @@ const routes: Routes = [
         data: { title: 'Meeting' }
       },
       {
-        path: 'expenses',
+        path: 'summary',
+        component: SummaryComponent,
+        data: { title: 'Group Summary' }
+      },
+      {
+        path: 'summary/expenses',
         component: ExpensesComponent,
         data: { title: 'Expenses' }
       },
       {
-        path: 'more-information',
-        component: MoreInfomationComponent,
-        data: { title: 'More Information' }
+        path: 'summary/loans',
+        component: LoansComponent,
+        data: { title: 'Loans' }
+      },
+      {
+        path: 'summary/contributions',
+        component: ContributionsComponent,
+        data: { title: 'Contribution' }
+      },
+      {
+        path: 'summary/fines',
+        component: FinesComponent,
+        data: { title: 'Fines' }
+      },
+      {
+        path: 'summary/adjustments',
+        component: AdjustmentsComponent,
+        data: { title: 'Adjustments' }
+      },
+      {
+        path: 'summary/cash-transfers',
+        component: CashTransfersComponent,
+        data: { title: 'Cash Transfers' }
       },
       {
         path: 'settings',

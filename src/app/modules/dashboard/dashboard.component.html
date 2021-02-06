@@ -3,14 +3,12 @@
   icon="home"
 >
   <ng-container ngProjectAs="table">
-    <app-group-progress
-      *ngIf="(progress$ | async) != 100"
-      [group]="group$ | async"
-      [memberName]="memberName$ | async"
-      [progress]="progress$ | async"
-      [contributionTypeNeedBalance]="contributionTypeNeedBalance$ | async"
-      [progressDetails]="progressDetails$ | async"
-    ></app-group-progress>
+    <div class="mb-4">
+      <app-group-progress
+        *ngIf="(progress$ | async) != 100"
+      ></app-group-progress>
+    </div>
+
 
     <div class="row">
       <div class="col-sm-12 top-grid">

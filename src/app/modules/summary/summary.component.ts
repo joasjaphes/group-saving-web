@@ -1,45 +1,45 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-more-infomation',
-  templateUrl: './more-infomation.component.html',
-  styleUrls: ['./more-infomation.component.scss']
+  selector: 'app-summary',
+  templateUrl: './summary.component.html',
+  styleUrls: ['./summary.component.scss']
 })
-export class MoreInfomationComponent implements OnInit {
+export class SummaryComponent implements OnInit {
   menus = [
     {
       name: 'Loans',
-      route: '',
+      route: ['', 'summary', 'loans'],
       description: 'View summary of loans by time and members',
       image: 'request-money.png'
     },
     {
       name: 'Contributions',
-      route: '',
+      route: ['', 'summary',  'contributions'],
       description: 'View summary of contributions by time and members',
       image: 'money.png'
     },
     {
       name: 'Fines',
-      route: '',
+      route: ['', 'summary',  'fines'],
       description: 'View summary of fines by time or members',
       image: 'fine.png'
     },
     {
       name: 'Expenses',
-      route: ['', 'expenses'],
+      route: ['', 'summary',  'expenses'],
       description: 'View summary of expenses by time or members',
       image: 'cash-in-hand.png'
     },
     {
       name: 'Adjustments',
-      route: '',
+      route: ['', 'summary',  'adjustments'],
       description: 'Summary of adjustments performed in accounts',
       image: 'adjustment.png'
     },
     {
       name: 'Cash Transfers',
-      route: '',
+      route: ['', 'summary', 'cash-transfers'],
       description: 'Summary of cash transfers from one account to another',
       image: 'meeting.png'
     },

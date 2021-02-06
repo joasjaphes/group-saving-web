@@ -21,9 +21,7 @@ export class DashboardComponent implements OnInit {
 
   group$: Observable<Group>;
   progress$: Observable<any>;
-  progressDetails$: Observable<GroupProgress>;
   memberName$: Observable<string>;
-  contributionTypeNeedBalance$: Observable<ContributionType[]>;
   totalIn$: Observable<number>;
   totalOut$: Observable<number>;
   totalLoanOut$: Observable<number>;
@@ -37,9 +35,7 @@ export class DashboardComponent implements OnInit {
   ) {
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.progress$ = this.store.pipe(select(groupSelector.selectProgressPercent));
-    this.progressDetails$ = this.store.pipe(select(groupSelector.selectProgress));
     this.memberName$ = this.store.pipe(select(memberSelector.selectFirstNameOnly));
-    this.contributionTypeNeedBalance$ = this.store.pipe(select(selectNeedBalance));
 
     this.totalContributions$ = this.store.pipe(select(paymentSelector.selectTotalContributions(2020)));
     this.totalContributionOnly$ = this.store.pipe(select(paymentSelector.selectTotalPaymentByYear(2020)));
