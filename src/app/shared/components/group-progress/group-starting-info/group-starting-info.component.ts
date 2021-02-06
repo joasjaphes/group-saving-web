@@ -13,6 +13,7 @@ import {CommonService} from '../../../../services/common.service';
 })
 export class GroupStartingInfoComponent implements OnInit {
   @Input() group: Group;
+  @Input() editing = false;
   @Output() closeForm = new EventEmitter();
   countries = countries;
   currency;
@@ -37,6 +38,7 @@ export class GroupStartingInfoComponent implements OnInit {
       this.currency = this.group.currency;
       this.currencyName = this.group.currency_name;
       this.meetingFrequency = this.group.meeting_settings ? this.group.meeting_settings.meeting_frequency : '';
+      this.trackContribution = this.group.track_contribution_period ? 'Yes' : 'No';
     }
   }
 

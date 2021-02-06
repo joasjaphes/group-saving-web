@@ -58,6 +58,9 @@ import { ContributionsComponent } from './modules/summary/contributions/contribu
 import { FinesComponent } from './modules/summary/fines/fines.component';
 import { AdjustmentsComponent } from './modules/summary/adjustments/adjustments.component';
 import { CashTransfersComponent } from './modules/summary/cash-transfers/cash-transfers.component';
+import { LoanTypesComponent } from './modules/settings/loan-types/loan-types.component';
+import { FineTypesComponent } from './modules/settings/fine-types/fine-types.component';
+import { ContributionTypesComponent } from './modules/settings/contribution-types/contribution-types.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -112,7 +115,10 @@ const firebaseConfig = {
     ContributionsComponent,
     FinesComponent,
     AdjustmentsComponent,
-    CashTransfersComponent
+    CashTransfersComponent,
+    LoanTypesComponent,
+    FineTypesComponent,
+    ContributionTypesComponent
   ],
   imports: [
     BrowserModule,

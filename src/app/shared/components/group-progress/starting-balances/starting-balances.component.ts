@@ -13,6 +13,7 @@ import {ContributionType} from '../../../../store/contribution-type/contribution
 })
 export class StartingBalancesComponent implements OnInit {
   @Input() group: Group;
+  @Input() editing = false;
   @Input() contributions_need_balances: ContributionType[];
   @Output() closeForm = new EventEmitter();
 

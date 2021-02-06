@@ -33,6 +33,11 @@ export class StartingLeadershipComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.group) {
+      this.chairperson = this.group.chairperson;
+      this.treasure = this.group.treasure;
+      this.secretary = this.group.secretary;
+    }
   }
 
   async save() {

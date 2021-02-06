@@ -32,6 +32,13 @@
       (closeForm)="closePanel()"
     ></app-starting-meeting-rules>
 
+    <app-starting-balances
+      *ngIf="viewType == 'balance'"
+      [group]="group$ | async"
+      [contributions_need_balances]="contributionTypeNeedBalance$ | async"
+      (closeForm)="closePanel()"
+    ></app-starting-balances>
+
     <app-starting-leadership
       [group]="group$ | async"
       (closeForm)="closePanel()"
@@ -41,6 +48,7 @@
     <app-group-starting-info
       *ngIf="viewType == 'basic'"
       [group]="group$ | async"
+      [editing]="true"
       (closeForm)="closePanel()"
     ></app-group-starting-info>
   </ng-container>

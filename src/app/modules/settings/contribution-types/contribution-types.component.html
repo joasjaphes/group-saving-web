@@ -1,0 +1,17 @@
+<app-shared-layout
+  title="Contribution Types"
+  image="contribution.png"
+  [hideAdd]="false"
+  [addIcon]="'add'"
+  (addItem)="addItem()"
+  [addText]="'New Contribution Type'"
+  [viewDetails]="viewDetails"
+  [smallForm]="false"
+  [animationSize]="'full'"
+  [formTitle]="panelTitle"
+  (closeDetails)="closePanel()"
+>
+  <ng-container ngProjectAs="table">
+    <h1>Contribution Types will stay here</h1>
+  </ng-container>
+</app-shared-layout>

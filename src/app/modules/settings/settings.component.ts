@@ -29,15 +29,21 @@ export class SettingsComponent implements OnInit {
     },
     {
       name: 'Contribution Types',
-      route: '',
+      route: ['', 'settings', 'contribution-types'],
       description: 'Set contribution types available for the group, Share, Social, Entry fees etc',
-      image: 'money.png'
+      image: 'contribution.png'
     },
     {
       name: 'Loan Types',
-      route: '',
+      route: ['', 'settings', 'loan-types'],
       description: 'Set loan configuration options, types of loan allowed, fines, profit contributions',
       image: 'request-money.png'
+    },
+    {
+      name: 'Fine Types',
+      route: ['', 'settings', 'fine-types'],
+      description: 'Set fine types available for the group',
+      image: 'fine.png'
     },
     {
       name: 'Leadership',
@@ -52,9 +58,15 @@ export class SettingsComponent implements OnInit {
       image: 'meeting.png'
     },
     {
+      name: 'Contribution Type Balances',
+      route: '',
+      description: 'Update balances for contribution types to match that of bank',
+      image: 'money.png'
+    },
+    {
       name: 'Add Previous Data',
       route: ['', 'settings', 'add-previous-data'],
-      description: 'Add data that are missing and cannot be added one by one',
+      description: 'Add existing group data that are missing and cannot be added one by one',
       image: 'past_data.png'
     },
   ];
@@ -83,18 +95,22 @@ export class SettingsComponent implements OnInit {
 
   menuClicked(clickedMenu) {
     if (clickedMenu.name === 'Meeting Rules') {
+      this.panelTitle = 'Define meeting rules';
       this.viewDetails = true;
       this.viewType = 'meeting';
     }
     if (clickedMenu.name === 'Leadership') {
+      this.panelTitle = 'Define group leadership';
       this.viewDetails = true;
       this.viewType = 'leadership';
     }
     if (clickedMenu.name === 'Basic Group Information') {
+      this.panelTitle = 'Basic group information';
       this.viewDetails = true;
       this.viewType = 'basic';
     }
-    if (clickedMenu.name === 'Contribution Balances') {
+    if (clickedMenu.name === 'Contribution Type Balances') {
+      this.panelTitle = 'Update contribution type balances';
       this.viewDetails = true;
       this.viewType = 'balance';
     }

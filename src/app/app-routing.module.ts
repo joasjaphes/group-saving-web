@@ -20,6 +20,9 @@ import {ContributionsComponent} from './modules/summary/contributions/contributi
 import {FinesComponent} from './modules/summary/fines/fines.component';
 import {AdjustmentsComponent} from './modules/summary/adjustments/adjustments.component';
 import {CashTransfersComponent} from './modules/summary/cash-transfers/cash-transfers.component';
+import {LoanTypesComponent} from './modules/settings/loan-types/loan-types.component';
+import {ContributionTypesComponent} from './modules/settings/contribution-types/contribution-types.component';
+import {FineTypesComponent} from './modules/settings/fine-types/fine-types.component';
 
 
 const routes: Routes = [
@@ -99,6 +102,21 @@ const routes: Routes = [
         path: 'settings',
         component: SettingsComponent,
         data: { title: 'Settings' }
+      },
+      {
+        path: 'settings/loan-types',
+        component: LoanTypesComponent,
+        data: { title: 'Loan Types' }
+      },
+      {
+        path: 'settings/contribution-types',
+        component: ContributionTypesComponent,
+        data: { title: 'Contribution Types' }
+      },
+      {
+        path: 'settings/fine-types',
+        component: FineTypesComponent,
+        data: { title: 'Fine Types' }
       },
       {
         path: 'settings/add-previous-data',
