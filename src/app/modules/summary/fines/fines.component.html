@@ -1,1 +1,17 @@
-<p>fines works!</p>
+<app-shared-layout
+  title="Fines"
+  image="fine.png"
+  [hideAdd]="true"
+  [addIcon]="'add'"
+  (addItem)="addItem()"
+  [addText]="'Assign Loan'"
+  [viewDetails]="viewDetails"
+  [smallForm]="false"
+  [animationSize]="'full'"
+  [formTitle]="panelTitle"
+  (closeDetails)="closePanel()"
+>
+  <ng-container ngProjectAs="table">
+    <h1>Fines will stay here</h1>
+  </ng-container>
+</app-shared-layout>

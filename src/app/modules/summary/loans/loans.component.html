@@ -1,0 +1,17 @@
+<app-shared-layout
+  title="Loans"
+  image="request-money.png"
+  [hideAdd]="false"
+  [addIcon]="'add'"
+  (addItem)="addItem()"
+  [addText]="'Assign Loan'"
+  [viewDetails]="viewDetails"
+  [smallForm]="false"
+  [animationSize]="'full'"
+  [formTitle]="panelTitle"
+  (closeDetails)="closePanel()"
+>
+  <ng-container ngProjectAs="table">
+    <h1>Loans will stay here</h1>
+  </ng-container>
+</app-shared-layout>

@@ -1,1 +1,17 @@
-<p>contributions works!</p>
+<app-shared-layout
+  title="Contributions"
+  image="money.png"
+  [hideAdd]="false"
+  [addIcon]="'add'"
+  (addItem)="addItem()"
+  [addText]="'Add Contributions'"
+  [viewDetails]="viewDetails"
+  [smallForm]="false"
+  [animationSize]="'full'"
+  [formTitle]="panelTitle"
+  (closeDetails)="closePanel()"
+>
+  <ng-container ngProjectAs="table">
+    <h1>Contributions will stay here</h1>
+  </ng-container>
+</app-shared-layout>

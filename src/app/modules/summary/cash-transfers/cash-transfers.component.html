@@ -1,1 +1,17 @@
-<p>cash-transfers works!</p>
+<app-shared-layout
+  title="Cash Transfers"
+  image="money-transfer.png"
+  [hideAdd]="false"
+  [addIcon]="'add'"
+  (addItem)="addItem()"
+  [addText]="'Add Cash Transfers'"
+  [viewDetails]="viewDetails"
+  [smallForm]="false"
+  [animationSize]="'full'"
+  [formTitle]="panelTitle"
+  (closeDetails)="closePanel()"
+>
+  <ng-container ngProjectAs="table">
+    <h1>Cash Transfers will stay here</h1>
+  </ng-container>
+</app-shared-layout>

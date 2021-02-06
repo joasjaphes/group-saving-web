@@ -17,20 +17,24 @@ import {Loan} from '../../../store/loan/loan.model';
   styleUrls: ['./loans.component.scss']
 })
 export class LoansComponent implements OnInit {
-  members$: Observable<Member[]>;
-  group$: Observable<Group>;
-  loanTypes$: Observable<LoanType[]>;
-  loans$: Observable<Loan[]>;
-  constructor(
-    private store: Store<ApplicationState>,
-  ) {
-    this.members$ = this.store.pipe(select(memberSelector.selectAll));
-    this.group$ = this.store.pipe(select(groupSelector.selected));
-    this.loans$ = this.store.pipe(select(loanSelector.selectDetailed));
-    this.loanTypes$ = this.store.pipe(select(loanTypeSelector.selectAll));
-  }
+  viewDetails = false;
+  panelTitle = '';
+  viewType = '';
+  constructor() { }
 
   ngOnInit(): void {
+  }
+
+  addItem() {
+    this.viewDetails = true;
+    this.panelTitle = 'Add new expense';
+    this.viewType = 'add';
+  }
+
+  closePanel() {
+    this.viewDetails = false;
+    this.panelTitle = '';
+    this.viewType = '';
   }
 
 }

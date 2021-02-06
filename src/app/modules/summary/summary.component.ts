@@ -41,7 +41,7 @@ export class SummaryComponent implements OnInit {
       name: 'Cash Transfers',
       route: ['', 'summary', 'cash-transfers'],
       description: 'Summary of cash transfers from one account to another',
-      image: 'meeting.png'
+      image: 'money-transfer.png'
     },
   ];
   constructor() { }
