@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Group} from '../../../../store/group/group.model';
 import {GroupProgress} from '../../../../store/group/group-progress.model';
-import {fadeIn} from '../../../../shared/animations/router-animation';
+import {fadeIn} from '../../../animations/router-animation';
 import {FunctionsService} from '../../../../services/functions.service';
 import {CommonService} from '../../../../services/common.service';
 import {MatSelectChange} from '@angular/material/select';
@@ -10,6 +10,8 @@ import {ContributionType} from '../../../../store/contribution-type/contribution
 import {select, Store} from '@ngrx/store';
 import {ApplicationState} from '../../../../store';
 import * as contributionSelector from '../../../../store/contribution-type/contribution-type.selectors';
+import set = Reflect.set;
+import {FineType} from '../../../../store/fine-type/fine-type.model';
 
 @Component({
   selector: 'app-starting-meeting-rules',
@@ -19,7 +21,9 @@ import * as contributionSelector from '../../../../store/contribution-type/contr
 })
 export class StartingMeetingRulesComponent implements OnInit {
   @Input() group: Group;
+  @Input() fineTypes: FineType[];
   @Input() progressDetails: GroupProgress;
+  @Input() editing = false;
 
   @Output() closeForm = new EventEmitter();
   contributionTypes$: Observable<ContributionType[]>;
@@ -27,8 +31,8 @@ export class StartingMeetingRulesComponent implements OnInit {
   memberMustAttend: string;
   allowFineForLate: string;
   allowFineForNotAttending: string;
-  lateFineAmount: string;
-  notAttendingFineAmount: string;
+  lateFineAmount: number;
+  notAttendingFineAmount: number;
   lateFineName: string;
   notAttendingFineName: string;
   addNotAttendingFineTo: string;
@@ -46,7 +50,26 @@ export class StartingMeetingRulesComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.group) {
-      this.meetingFrequency = this.group.meeting_settings ? this.group.meeting_settings.meeting_frequency : '';
+      if (this.group.meeting_settings) {
+        const settings = this.group.meeting_settings;
+        this.meetingFrequency = settings.meeting_frequency;
+        if (this.editing) {
+          this.memberMustAttend = settings.must_attend ? 'Yes' : 'No';
+          this.allowFineForLate = settings.allow_late_fine ? 'Yes' : 'No';
+          this.allowFineForNotAttending = settings.allow_not_attending_fine ? 'Yes' : 'No';
+          this.lateFineAmount = settings.late_fine_amount;
+          this.notAttendingFineAmount = settings.not_attending_fine_amount;
+          this.lateFineName = settings.late_fine_name;
+          this.notAttendingFineName = settings.not_attending_fine_name;
+          if (this.fineTypes) {
+            const lateMeetingFine = this.fineTypes.find(i => i.type === 'Meeting' && i.meeting_type === 'late');
+            const notAttendingMeetingFine = this.fineTypes.find(i => i.type === 'Meeting' && i.meeting_type === 'not_attending');
+            this.addLateFineTo = lateMeetingFine.contribution_type_id;
+            this.addNotAttendingFineTo = notAttendingMeetingFine.contribution_type_id;
+
+          }
+        }
+      }
     }
   }
 

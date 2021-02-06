@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {countries} from 'src/app/store/countries';
 import {Group} from '../../../../store/group/group.model';
-import {fadeIn} from '../../../../shared/animations/router-animation';
+import {fadeIn} from '../../../animations/router-animation';
 import {FunctionsService} from '../../../../services/functions.service';
 import {CommonService} from '../../../../services/common.service';
 

@@ -25,10 +25,14 @@ export interface Group {
   contribution_frequency: string;
   meeting_settings: {
     meeting_frequency: string;
-    has_late_fine: boolean;
-    has_miss_fine: boolean;
+    allow_late_fine: boolean;
+    late_fine_amount?: number;
+    late_fine_name?: string;
+    allow_not_attending_fine: boolean;
+    not_attending_fine_amount?: number;
+    not_attending_fine_name?: string;
     must_attend: boolean;
-    maximum_meetings_to_miss: number;
+    maximum_meetings_to_miss?: number;
   };
   fines: {[id: string]: FineType};
   contributions: {[id: string]: ContributionType};

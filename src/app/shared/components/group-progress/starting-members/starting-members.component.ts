@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Group} from '../../../../store/group/group.model';
 import {FunctionsService} from '../../../../services/functions.service';
 import {CommonService} from '../../../../services/common.service';
-import {fadeIn, fadeOut} from '../../../../shared/animations/router-animation';
+import {fadeIn, fadeOut} from '../../../animations/router-animation';
 import {countries, Country} from 'src/app/store/countries';
 import {trimPhoneNumber} from '../../../../store/login-steps/login-steps.selectors';
 

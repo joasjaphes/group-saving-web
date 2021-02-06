@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {fadeIn} from '../../../../shared/animations/router-animation';
+import {fadeIn} from '../../../animations/router-animation';
 import {Group} from '../../../../store/group/group.model';
 import {GroupProgress} from '../../../../store/group/group-progress.model';
 import {FunctionsService} from '../../../../services/functions.service';

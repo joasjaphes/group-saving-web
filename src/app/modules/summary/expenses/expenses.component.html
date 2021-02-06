@@ -12,34 +12,17 @@
   (closeDetails)="closePanel()"
 >
   <ng-container ngProjectAs="table">
-    <p class="registration-title lead mb-3">Some information needed to process expenses have not been defined yet!</p>
-    <app-group-progress
-      *ngIf="(contributionTypes$ | async)?.length == 0"
-    ></app-group-progress>
-    <div class="summary-progress-container content-area mb-5" *ngIf="(expenses$ | async)?.length == 0 && (contributionTypes$ | async)?.length != 0">
-      <div class="progressArea">
-        <img alt="meeting" src="../../../../assets/images/investments.jpg">
-      </div>
-      <div class="textArea">
-        <h1 style="font-size: 40px; line-height: 45px" class="registration-title mt-5 mb-1">
-          No expenses posted
-        </h1>
-        <p style="font-size: 20px; font-weight: 100; color: #9b9b9b; margin-bottom: 20px">
-          You can add new expense for a group or specific member.
-        </p>
-        <button
-          style="font-weight: 900; border-radius: 20px;margin-top: 10px;padding: 5px 25px;font-size: 15px;border: 1px solid #FF7043;"
-          mat-raised-button
-          class="registration-title add-button"
-          (click)="addExpense()"
-        >
+    <app-empty-summary
+      incompleteText="Some information needed to process expenses have not been defined yet!"
+      [infoNotComplete]="(contributionTypes$ | async)?.length == 0"
+      [itemsExists]="(expenses$ | async)?.length > 0"
+      imageSrc="investments.jpg"
+      title="No expenses posted"
+      subTitle="You can add new expense for a group or specific member."
+      addTitle="Create Expense"
+      (addClicked)="addExpense()"
+    ></app-empty-summary>
 
-          <mat-icon>add</mat-icon>&nbsp;
-          Create Expense
-          <mat-icon>arrow_forward</mat-icon>
-        </button>
-      </div>
-    </div>
     <div class="main-expense-grid">
       <div *ngFor="let expense of expenses$ | async" class="expenseGrid">
         <div>

@@ -8,7 +8,7 @@ import * as memberSelector from '../../store/member/member.selectors';
 import * as groupSelector from '../../store/group/group.selectors';
 import * as contributionTypeSelector from '../../store/contribution-type/contribution-type.selectors';
 import {Group} from '../../store/group/group.model';
-import {GroupProgressDialogComponent} from '../dashboard/group-progress/group-progress-dialog/group-progress-dialog.component';
+import {GroupProgressDialogComponent} from '../../shared/components/group-progress/group-progress-dialog/group-progress-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {AddContributionComponent} from './add-contribution/add-contribution.component';
 import {first} from 'rxjs/operators';

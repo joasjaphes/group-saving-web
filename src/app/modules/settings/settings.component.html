@@ -27,8 +27,16 @@
     <app-starting-meeting-rules
       *ngIf="viewType == 'meeting'"
       [group]="group$ | async"
+      [editing]="true"
+      [fineTypes]="fineTypes$ | async"
       (closeForm)="closePanel()"
     ></app-starting-meeting-rules>
+
+    <app-starting-leadership
+      [group]="group$ | async"
+      (closeForm)="closePanel()"
+      *ngIf="viewType == 'leadership'"
+    ></app-starting-leadership>
 
     <app-group-starting-info
       *ngIf="viewType == 'basic'"

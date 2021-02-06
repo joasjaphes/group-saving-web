@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {Group} from '../../../../store/group/group.model';
 import {GroupProgress} from '../../../../store/group/group-progress.model';
-import {fadeIn} from '../../../../shared/animations/router-animation';
+import {fadeIn} from '../../../animations/router-animation';
 import {FunctionsService} from '../../../../services/functions.service';
 import {CommonService} from '../../../../services/common.service';
 import {MatSelectChange} from '@angular/material/select';

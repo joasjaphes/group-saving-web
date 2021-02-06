@@ -42,17 +42,8 @@ import { SettingsComponent } from './modules/settings/settings.component';
 import { SummaryComponent } from './modules/summary/summary.component';
 import { ProfileComponent } from './modules/my-account/profile/profile.component';
 import { ChangePasswordComponent } from './modules/my-account/change-password/change-password.component';
-import { GroupProgressComponent } from './modules/dashboard/group-progress/group-progress.component';
-import { GroupProgressDialogComponent } from './modules/dashboard/group-progress/group-progress-dialog/group-progress-dialog.component';
-import { GroupStartingInfoComponent } from './modules/dashboard/group-progress/group-starting-info/group-starting-info.component';
-import { StartingContributionTypeComponent } from './modules/dashboard/group-progress/starting-contribution-type/starting-contribution-type.component';
-import { StartingLoanTypeComponent } from './modules/dashboard/group-progress/starting-loan-type/starting-loan-type.component';
-import { StartingMeetingRulesComponent } from './modules/dashboard/group-progress/starting-meeting-rules/starting-meeting-rules.component';
-import { StartingMembersComponent } from './modules/dashboard/group-progress/starting-members/starting-members.component';
-import { StartingLeadershipComponent } from './modules/dashboard/group-progress/starting-leadership/starting-leadership.component';
 import { AddContributionComponent } from './modules/members/add-contribution/add-contribution.component';
 import { AssignLoanComponent } from './modules/members/assign-loan/assign-loan.component';
-import { StartingBalancesComponent } from './modules/dashboard/group-progress/starting-balances/starting-balances.component';
 import { SingleMemberComponent } from './modules/members/single-member/single-member.component';
 import { ExpensesComponent } from './modules/summary/expenses/expenses.component';
 import { AddExpenseComponent } from './modules/summary/expenses/add-expense/add-expense.component';
@@ -106,17 +97,8 @@ const firebaseConfig = {
     SummaryComponent,
     ProfileComponent,
     ChangePasswordComponent,
-    GroupProgressComponent,
-    GroupProgressDialogComponent,
-    GroupStartingInfoComponent,
-    StartingContributionTypeComponent,
-    StartingLoanTypeComponent,
-    StartingMeetingRulesComponent,
-    StartingMembersComponent,
-    StartingLeadershipComponent,
     AddContributionComponent,
     AssignLoanComponent,
-    StartingBalancesComponent,
     SingleMemberComponent,
     ExpensesComponent,
     AddExpenseComponent,

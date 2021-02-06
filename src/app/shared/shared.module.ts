@@ -16,6 +16,16 @@ import { CircularProgressComponent } from './components/circular-progress/circul
 import { MenuItemsComponent } from './components/menu-items/menu-items.component';
 import {SaveAreaComponent} from './components/save-area/save-area.component';
 import {LoaderComponent} from './components/loader/loader.component';
+import { EmptySummaryComponent } from './components/empty-summary/empty-summary.component';
+import {GroupProgressComponent} from './components/group-progress/group-progress.component';
+import {GroupProgressDialogComponent} from './components/group-progress/group-progress-dialog/group-progress-dialog.component';
+import {GroupStartingInfoComponent} from './components/group-progress/group-starting-info/group-starting-info.component';
+import {StartingContributionTypeComponent} from './components/group-progress/starting-contribution-type/starting-contribution-type.component';
+import {StartingLoanTypeComponent} from './components/group-progress/starting-loan-type/starting-loan-type.component';
+import {StartingMeetingRulesComponent} from './components/group-progress/starting-meeting-rules/starting-meeting-rules.component';
+import {StartingMembersComponent} from './components/group-progress/starting-members/starting-members.component';
+import {StartingLeadershipComponent} from './components/group-progress/starting-leadership/starting-leadership.component';
+import {StartingBalancesComponent} from './components/group-progress/starting-balances/starting-balances.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +40,16 @@ import {LoaderComponent} from './components/loader/loader.component';
     MenuItemsComponent,
     SaveAreaComponent,
     LoaderComponent,
+    EmptySummaryComponent,
+    GroupProgressComponent,
+    GroupProgressDialogComponent,
+    GroupStartingInfoComponent,
+    StartingContributionTypeComponent,
+    StartingLoanTypeComponent,
+    StartingMeetingRulesComponent,
+    StartingMembersComponent,
+    StartingLeadershipComponent,
+    StartingBalancesComponent,
   ],
   imports: [
     CommonModule,
@@ -48,6 +68,7 @@ import {LoaderComponent} from './components/loader/loader.component';
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
+
     MatSelectSearchComponent,
     SharedLayoutComponent,
     TopBannerComponent,
@@ -56,6 +77,17 @@ import {LoaderComponent} from './components/loader/loader.component';
     MenuItemsComponent,
     SaveAreaComponent,
     LoaderComponent,
+    EmptySummaryComponent,
+    GroupProgressComponent,
+    GroupProgressDialogComponent,
+    GroupStartingInfoComponent,
+    StartingContributionTypeComponent,
+    StartingLoanTypeComponent,
+    StartingMeetingRulesComponent,
+    StartingMembersComponent,
+    StartingLeadershipComponent,
+    StartingBalancesComponent,
+
     SearchPipe,
     FirstUpperCasePipe,
     ToUpperPipe,
