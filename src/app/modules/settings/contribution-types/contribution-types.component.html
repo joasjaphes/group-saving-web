@@ -10,8 +10,40 @@
   [animationSize]="'full'"
   [formTitle]="panelTitle"
   (closeDetails)="closePanel()"
+  urlName="Group Settings"
+  [url]="['', 'settings']"
 >
   <ng-container ngProjectAs="table">
-    <h1>Contribution Types will stay here</h1>
+    <div class="settings-grid">
+      <div [ngClass]="routeAnimationsElements" *ngFor="let contr of contributionTypes$ | async" class="settingGrid content-area">
+        <div class="img-div">
+          <h1 style="font-size: 40px;" class="registration-title">{{contr.name[0].toUpperCase()}}</h1>
+        </div>
+        <div>
+          <h2 class="registration-title mb-1">{{contr.name}}</h2>
+          <p class="name-area">{{contr.textDescription}}</p>
+          <p>
+            <button mat-button class="edit-button zoom-on-hover" (click)="edit(contr)">
+              <mat-icon>mode_edit</mat-icon>
+              <span style="color: #0277bd">Edit</span>
+            </button>
+            <button mat-button (click)="delete(contr)" class="delete-button zoom-on-hover">
+              <mat-icon>delete</mat-icon> remove
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container ngProjectAs="form">
+    <app-starting-contribution-type
+      *ngIf="viewType == 'add'"
+      [group]="group$ | async"
+      [editing]="true"
+      [fineTypes]="fineTypes$ | async"
+      [currentContributionType]="currentContributionType"
+      (closeForm)="closePanel()"
+    ></app-starting-contribution-type>
   </ng-container>
 </app-shared-layout>

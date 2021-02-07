@@ -10,6 +10,8 @@ import * as contributionSelector from '../../../../store/contribution-type/contr
 import {Observable} from 'rxjs';
 import {ContributionType} from '../../../../store/contribution-type/contribution-type.model';
 import {MatSelectChange} from '@angular/material/select';
+import {FineType} from '../../../../store/fine-type/fine-type.model';
+import {LoanType} from '../../../../store/loan-type/loan-type.model';
 
 @Component({
   selector: 'app-starting-loan-type',
@@ -20,6 +22,9 @@ import {MatSelectChange} from '@angular/material/select';
 export class StartingLoanTypeComponent implements OnInit {
   @Input() group: Group;
   @Input() progressDetails: GroupProgress;
+  @Input() editing = false;
+  @Input() fineTypes: FineType[];
+  @Input() currentLoanType: LoanType;
 
   @Output() closeForm = new EventEmitter();
 
@@ -44,13 +49,13 @@ export class StartingLoanTypeComponent implements OnInit {
   insurancePercent: any;
   fineForReturns: string;
   fineForReturnName: string;
-  fineForReturnAmount: string;
-  fineForReturnBalanceFactor: string;
+  fineForReturnAmount: number;
+  fineForReturnBalanceFactor: number;
   fineForReturnType: string;
   fineForCompletes: string;
   fineForCompleteName: string;
-  fineForCompleteAmount: string;
-  fineForCompleteBalanceFactor: string;
+  fineForCompleteAmount: number;
+  fineForCompleteBalanceFactor: number;
   fineForCompleteType: string;
 
   testAmount: any;
@@ -70,10 +75,46 @@ export class StartingLoanTypeComponent implements OnInit {
   ngOnInit(): void {
     if (this.progressDetails) {
       this.contributionType = this.progressDetails.contributionTypeId;
-      console.log(this.contributionType);
       this.name = this.progressDetails.contributionName;
+    } else if (this.currentLoanType) {
+      this.contributionType = this.currentLoanType.contribution_type_id;
+      this.name = this.currentLoanType.name;
+      this.frequency = this.currentLoanType.duration_type;
+      this.minimumDuration = this.currentLoanType.min_duration;
+      this.maximumDuration = this.currentLoanType.max_duration;
+      this.minimumAmount = this.currentLoanType.minimum_amount;
+      this.maximumAmountType = this.currentLoanType.max_amount_type;
+      this.maximumAmount = this.currentLoanType.maximum_amount;
+      this.maximumAmountBalanceFactor = this.currentLoanType.max_amount_balance_base;
+      this.profitCalculationType = this.currentLoanType.profit_type;
+      this.paymentOption = this.currentLoanType.payment_option;
+      this.interestRate = this.currentLoanType.interest_rate;
+      this.samePaymentPerReturn = this.currentLoanType.pay_same_amount_is_must ? 'Yes' : 'No';
+      this.allowLoanTopUp = this.currentLoanType.allow_loan_top_up ? 'Yes' : 'No';
+      this.loanFormular = this.currentLoanType.loan_formular;
+      this.isLoanInsured = this.currentLoanType.is_insured ? 'Yes' : 'No';
+      this.insurancePercent = this.currentLoanType.insurance_percent;
+
+      if (this.fineTypes) {
+        const returnFine = this.fineTypes.find(i => i.type === 'Loan' && i.loan_type_id === this.currentLoanType.id && i.loan_type === 'returns');
+        const completeFine = this.fineTypes.find(i => i.type === 'Loan' && i.loan_type_id === this.currentLoanType.id && i.loan_type === 'completion');
+        this.fineForCompletes = !!completeFine ? 'Yes' : 'No';
+        this.fineForReturns = !!returnFine ? 'Yes' : 'No';
+        if (returnFine) {
+          this.fineForReturnName = returnFine.description;
+          this.fineForReturnAmount = returnFine.fixed_amount;
+          this.fineForReturnBalanceFactor = returnFine.balance_percentage;
+          this.fineForReturnType = returnFine.calculation;
+        }
+        if (completeFine) {
+          this.fineForCompleteName = completeFine.description;
+          this.fineForCompleteAmount = completeFine.fixed_amount;
+          this.fineForCompleteBalanceFactor = completeFine.balance_percentage;
+          this.fineForCompleteType = completeFine.calculation;
+        }
+      }
     }
-    if (this.group) {
+    if (this.group && !this.currentLoanType) {
       this.frequency = this.group.meeting_settings ? this.group.meeting_settings.meeting_frequency : '';
     }
   }

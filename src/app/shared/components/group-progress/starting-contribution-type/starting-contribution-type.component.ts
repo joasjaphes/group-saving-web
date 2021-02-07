@@ -5,6 +5,8 @@ import {fadeIn} from '../../../animations/router-animation';
 import {FunctionsService} from '../../../../services/functions.service';
 import {CommonService} from '../../../../services/common.service';
 import {MatSelectChange} from '@angular/material/select';
+import {ContributionType} from '../../../../store/contribution-type/contribution-type.model';
+import {FineType} from '../../../../store/fine-type/fine-type.model';
 
 @Component({
   selector: 'app-starting-contribution-type',
@@ -16,6 +18,9 @@ export class StartingContributionTypeComponent implements OnInit {
 
   @Input() group: Group;
   @Input() progressDetails: GroupProgress;
+  @Input() editing = false;
+  @Input() currentContributionType: ContributionType;
+  @Input() fineTypes: FineType[];
 
   @Output() closeForm = new EventEmitter();
 
@@ -43,6 +48,27 @@ export class StartingContributionTypeComponent implements OnInit {
     if (this.progressDetails) {
       this.contributionType = this.progressDetails.currentContributionType;
       this.name = this.progressDetails.contributionName;
+    } else if (this.currentContributionType) {
+      this.contributionType = this.currentContributionType.type;
+      this.name = this.currentContributionType.name;
+      this.frequency = this.currentContributionType.collection_frequency;
+      this.pricePerShare = this.currentContributionType.hisa_value;
+      this.isMandatory = this.currentContributionType.is_must ? 'Yes' : 'No';
+      this.isAmountSame = this.currentContributionType.is_fixed ? 'Yes' : 'No';
+      this.amount = this.currentContributionType.fixed_value;
+      this.minimumAmount = this.currentContributionType.minimum_contribution;
+      this.allowFine = this.currentContributionType.allow_late_fine ? 'Yes' : 'No';
+      this.allowLoan = this.currentContributionType.allow_loan ? 'Yes' : 'No';
+      this.trackBalance = this.currentContributionType.track_balance ? 'Yes' : 'No';
+      if (this.fineTypes) {
+        const lateFine = this.fineTypes.find(i => i.type === 'Contribution' && i.contribution_type_id === this.currentContributionType.id);
+        this.allowFine = !!lateFine ? 'Yes' : 'No';
+        if (lateFine) {
+          this.fineCalculationType = lateFine.calculation;
+          this.fineAmount = lateFine.fixed_amount;
+          this.fineName = lateFine.description;
+        }
+      }
     }
     if (this.group) {
       this.frequency = this.group.contribution_frequency;
@@ -58,6 +84,7 @@ export class StartingContributionTypeComponent implements OnInit {
 
   async sendData() {
     const dataToSave = {
+      id: this.currentContributionType ? this.currentContributionType.id : this.commonService.makeid(),
       groupId: this.group.id,
       name: this.name,
       frequency: this.frequency,

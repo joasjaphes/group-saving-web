@@ -27,3 +27,12 @@ export const selectRepeating = createSelector(
   selectAll, (allItems, id) => allItems.filter(i => !i.is_one_time_contribution)
 );
 
+export const selectDetailed = createSelector(
+  selectAll,
+  (allItems) => allItems.map(item => {
+    return {
+      ...item,
+      textDescription: item.description,
+    };
+  })
+);

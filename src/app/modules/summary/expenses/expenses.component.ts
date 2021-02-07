@@ -10,8 +10,6 @@ import {ContributionType} from '../../../store/contribution-type/contribution-ty
 import * as memberSelector from '../../../store/member/member.selectors';
 import * as groupSelector from '../../../store/group/group.selectors';
 import * as contributionTypeSelector from '../../../store/contribution-type/contribution-type.selectors';
-import {first} from 'rxjs/operators';
-import {AddExpenseComponent} from './add-expense/add-expense.component';
 import {Expense} from '../../../store/expense/expense.model';
 import * as expenseSelector from '../../../store/expense/expense.selectors';
 
@@ -41,22 +39,6 @@ export class ExpensesComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  // async addExpense() {
-  //   const group = await this.group$.pipe(first()).toPromise();
-  //   const contributionTypes = await this.contributionTypes$.pipe(first()).toPromise();
-  //   const members = await this.members$.pipe(first()).toPromise();
-  //   const dialogRef = this.dialog.open(AddExpenseComponent, {
-  //     width: '60%',
-  //     minHeight: '60vh',
-  //     data: {
-  //       group,
-  //       contributionTypes,
-  //       members,
-  //     },
-  //     disableClose: true,
-  //   });
-  // }
 
   addExpense() {
     this.viewDetails = true;

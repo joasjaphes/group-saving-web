@@ -64,8 +64,8 @@ export class StartingMeetingRulesComponent implements OnInit {
           if (this.fineTypes) {
             const lateMeetingFine = this.fineTypes.find(i => i.type === 'Meeting' && i.meeting_type === 'late');
             const notAttendingMeetingFine = this.fineTypes.find(i => i.type === 'Meeting' && i.meeting_type === 'not_attending');
-            this.addLateFineTo = lateMeetingFine.contribution_type_id;
-            this.addNotAttendingFineTo = notAttendingMeetingFine.contribution_type_id;
+            this.addLateFineTo = lateMeetingFine ? lateMeetingFine.contribution_type_id : '';
+            this.addNotAttendingFineTo = notAttendingMeetingFine ? notAttendingMeetingFine.contribution_type_id : '';
 
           }
         }

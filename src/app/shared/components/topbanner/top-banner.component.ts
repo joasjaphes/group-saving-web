@@ -14,7 +14,8 @@ export class TopBannerComponent implements OnInit {
   @Input() title = '';
   @Input() image = '';
   @Input() icon = '';
-  @Input() url = '';
+  @Input() url;
+  @Input() urlName = '';
   @Input() showHelp = false;
   @Input() loading = false;
   @Input() menuItems = [];

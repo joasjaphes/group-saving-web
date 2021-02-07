@@ -222,8 +222,17 @@ button:focus {
   background-color: #14142E!important;
 }
 
-.mat-stepper-horizontal, .mat-stepper-vertical {
-  background-color: #1d1d42!important;
+.editing {
+  .mat-stepper-horizontal, .mat-stepper-vertical {
+    //background-color: #1d1d42!important;
+    background-color: #14142E!important;
+  }
+}
+
+.adding {
+  .mat-stepper-horizontal, .mat-stepper-vertical {
+    background-color: #1d1d42!important;
+  }
 }
 
 .mat-select-panel .mat-optgroup-label, .mat-select-panel .mat-option:hover {
@@ -309,6 +318,65 @@ button:focus {
   .textArea {
     height: 300px;
     vertical-align: middle;
+  }
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 20px;
+  //padding-right: 15px;
+  align-content: center;
+  .settingGrid {
+    display: grid;
+    grid-template-columns: 90px auto;
+    padding: 15px;
+    grid-gap: 20px;
+    border: 1px solid #ffffff5e;
+    border-radius: 15px;
+    align-content: center;
+    .name-area {
+      color: #ffffffbf!important;
+      font-size: 16px;
+    }
+    .description-area {
+      color: #ffffffbf!important;
+      font-size: 16px;
+    }
+    .edit-button {
+      border: 1px solid #574c79;
+      border-radius: 25px;
+      color: #0277bd;
+      margin-right: 10px;
+    }
+    .delete-button {
+      border: 1px solid #574c79;
+      border-radius: 25px;
+      color: #d70330
+    }
+    .amount-area {
+      display: grid;
+      align-content: center;
+      justify-content: end;
+
+      h1 {
+        font-size: 38px;
+      }
+    }
+    .img-div {
+      background-color: #ffffff96;
+      width: 85px;
+      height: 83px;
+      padding: 25px;
+      text-align: center;
+      border-radius: 42px;
+      vertical-align: middle;
+
+      img {
+        height: 50px;
+        width: 50px;
+      }
+    }
   }
 }
 

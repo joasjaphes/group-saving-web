@@ -19,6 +19,8 @@ export class SharedLayoutComponent implements OnInit {
   @Input() helpText: string;
   @Input() showHelp = true;
   @Input() menus = [];
+  @Input() url;
+  @Input() urlName = '';
 
   @Input() viewDetails = false;
   @Input() hideAdd = true;

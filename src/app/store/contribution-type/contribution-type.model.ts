@@ -25,8 +25,13 @@ export interface ContributionType {
   is_must: boolean;
   last_month_of_contribution: string;
   name: string;
-  managed_by: string;
+  textDescription?: string;
+  managed_by?: string;
   members_can_see_others: boolean;
   day_of_contribution: string;
   track_balance: boolean;
+  is_fine_allowed?: boolean;
+  fine_period_type?: string;
+  fine_calculation?: string;
+  fine_amount_per_period?: number;
 }
