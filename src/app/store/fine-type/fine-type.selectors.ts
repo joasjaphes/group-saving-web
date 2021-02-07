@@ -18,3 +18,33 @@ export const selectById = (id: string) => createSelector(
 export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
+
+export const selectDetailed = createSelector(
+  selectAll,
+  (allItems) => allItems.map(item => {
+    let textDescription = '';
+    if (item.calculation === 'Fixed') {
+      textDescription += 'Member will pay ' + numberWithCommas(item.fixed_amount);
+    }
+    if (item.calculation === 'Based on current balance') {
+      textDescription += 'Member will pay ' + item.balance_percentage + '% of the amount to return';
+    }
+    if (item.calculation === 'Amount per day') {
+      textDescription += 'Member will pay ' + numberWithCommas(item.fixed_amount) + ' per each day delayed';
+    }
+    if (item.calculation === 'Amount per week') {
+      textDescription += 'Member will pay ' + numberWithCommas(item.fixed_amount) + ' per each week delayed';
+    }
+    if (item.calculation === 'Amount per month') {
+      textDescription += 'Member will pay ' + numberWithCommas(item.fixed_amount) + ' per each month delayed';
+    }
+    return {
+      ...item,
+      textDescription,
+    };
+  })
+);
+
+export function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}

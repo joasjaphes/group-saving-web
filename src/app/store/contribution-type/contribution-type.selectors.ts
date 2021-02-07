@@ -1,5 +1,7 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import {createFeatureSelector, createSelector} from '@ngrx/store';
 import * as fromReducer from './contribution-type.reducer';
+import {numberWithCommas} from '../fine-type/fine-type.selectors';
+import {ContributionTypes} from './contribution-type.enum';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.contributionTypesFeatureKey);
 
@@ -30,9 +32,22 @@ export const selectRepeating = createSelector(
 export const selectDetailed = createSelector(
   selectAll,
   (allItems) => allItems.map(item => {
+    let textDescription = '';
+    if (item.is_must && item.is_fixed) {
+      textDescription = 'Each member will contribute ' + numberWithCommas(item.fixed_value) + ' ' + item.collection_frequency;
+    } else if (item.is_must && !item.is_fixed) {
+      if (item.minimum_contribution) {
+        textDescription = 'Each member will contribute a minimum of ' + numberWithCommas(item.minimum_contribution) + ' ' + item.collection_frequency;
+      } else {
+        textDescription = 'This contribution is optional';
+      }
+    }
+    if (item.type === ContributionTypes.Share) {
+      textDescription += ', Price of a single share is ' + numberWithCommas(item.hisa_value);
+    }
     return {
       ...item,
-      textDescription: item.description,
+      textDescription,
     };
   })
 );

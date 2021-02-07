@@ -1,7 +1,7 @@
 <app-shared-layout
   title="Fine Types"
   image="fine.png"
-  [hideAdd]="false"
+  [hideAdd]="true"
   [addIcon]="'add'"
   (addItem)="addItem()"
   [addText]="'New Fine Type'"
@@ -10,8 +10,24 @@
   [animationSize]="'full'"
   [formTitle]="panelTitle"
   (closeDetails)="closePanel()"
+  urlName="Group Settings"
+  [url]="['', 'settings']"
 >
   <ng-container ngProjectAs="table">
-    <h1>Loan Types will stay here</h1>
+    <div class="settings-grid">
+      <div [ngClass]="routeAnimationsElements" *ngFor="let contr of fineTypes$ | async" class="settingGrid content-area">
+        <div class="img-div">
+          <h1 style="font-size: 40px;" class="registration-title">{{contr.description[0].toUpperCase()}}</h1>
+        </div>
+        <div>
+          <h2 class="registration-title mb-1">{{contr.description}}</h2>
+          <p class="name-area">{{contr.textDescription}}</p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container ngProjectAs="form">
+
   </ng-container>
 </app-shared-layout>

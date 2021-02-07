@@ -38,7 +38,7 @@ export class LoanTypesComponent implements OnInit {
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectDetailed));
     this.fineTypes$ = this.store.pipe(select(fineTypeSelector.selectAll));
-    this.loanTypes$ = this.store.pipe(select(loanTypeSelector.selectAll));
+    this.loanTypes$ = this.store.pipe(select(loanTypeSelector.selectDetailed));
   }
 
   ngOnInit(): void {

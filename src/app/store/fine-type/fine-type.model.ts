@@ -1,4 +1,5 @@
 export interface FineType {
+  textDescription?: any;
   id: string;
   group_id: string;
   is_active: boolean;
