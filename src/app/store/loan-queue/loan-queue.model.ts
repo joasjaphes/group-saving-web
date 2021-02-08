@@ -1,16 +1,17 @@
+import {LoanType} from '../loan-type/loan-type.model';
+import {Member} from '../member/member.model';
+
 export interface LoanQueue {
   id: string;
-  groupId: string;
-  isActive: boolean;
+  group_id: string;
   lastUpdate: number;
-  additionalConfig: any;
-  memberId: string;
-  contributionTypeId: string;
-  loanTypeId: string;
-  expectedLoanDate: string;
-  expectedDuration: number;
-  durationType: string;
-  amountRequested: number;
-  amountTaken: number;
-  dateProvided: string;
+  additional_config: any;
+  member_id: string;
+  loan_type_id: string;
+  date: string;
+  month: string;
+  year: string;
+  amount: number;
+  member?: Member;
+  loanType?: LoanType;
 }

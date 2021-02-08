@@ -61,6 +61,8 @@ import { CashTransfersComponent } from './modules/summary/cash-transfers/cash-tr
 import { LoanTypesComponent } from './modules/settings/loan-types/loan-types.component';
 import { FineTypesComponent } from './modules/settings/fine-types/fine-types.component';
 import { ContributionTypesComponent } from './modules/settings/contribution-types/contribution-types.component';
+import { LoanQueueComponent } from './modules/summary/loan-queue/loan-queue.component';
+import { AddLoanQueueComponent } from './modules/summary/loan-queue/add-loan-queue/add-loan-queue.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -118,7 +120,9 @@ const firebaseConfig = {
     CashTransfersComponent,
     LoanTypesComponent,
     FineTypesComponent,
-    ContributionTypesComponent
+    ContributionTypesComponent,
+    LoanQueueComponent,
+    AddLoanQueueComponent
   ],
   imports: [
     BrowserModule,

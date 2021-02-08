@@ -16,8 +16,10 @@
   <ng-container ngProjectAs="table">
     <div class="settings-grid">
       <div [ngClass]="routeAnimationsElements" *ngFor="let contr of contributionTypes$ | async" class="settingGrid content-area">
-        <div class="img-div">
-          <h1 style="font-size: 40px;" class="registration-title">{{contr.name[0].toUpperCase()}}</h1>
+        <div class="name-area">
+          <div class="img-div">
+            <h1 style="font-size: 40px;" class="registration-title">{{contr.name[0].toUpperCase()}}</h1>
+          </div>
         </div>
         <div>
           <h2 class="registration-title mb-1">{{contr.name}}</h2>

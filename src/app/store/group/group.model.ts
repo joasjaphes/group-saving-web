@@ -1,6 +1,7 @@
 import {FineType} from '../fine-type/fine-type.model';
 import {ContributionType} from '../contribution-type/contribution-type.model';
 import {LoanType} from '../loan-type/loan-type.model';
+import {LoanQueue} from '../loan-queue/loan-queue.model';
 
 export interface Group {
   id: string;
@@ -38,6 +39,7 @@ export interface Group {
   contributions: {[id: string]: ContributionType};
   loanTypes: {[id: string]: LoanType};
   contribution_balances?: {[id: string]: any};
+  loan_queue: LoanQueue[];
   current_balances: any;
   next_meeting: any;
   country: string;

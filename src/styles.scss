@@ -363,6 +363,11 @@ button:focus {
         font-size: 38px;
       }
     }
+    .name-area {
+      display: grid;
+      align-content: center;
+      justify-content: start;
+    }
     .img-div {
       background-color: #ffffff96;
       width: 85px;

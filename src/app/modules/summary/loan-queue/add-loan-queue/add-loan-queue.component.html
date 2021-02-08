@@ -1,0 +1,93 @@
+<div class="container-fluid">
+  <div class="row">
+
+    <!--    Members-->
+    <div class="col-sm-12">
+      <mat-form-field appearance="outline">
+        <mat-label>Select Member</mat-label>
+        <mat-select [(ngModel)]="memberId" (selectionChange)="selectMember($event.value)">
+          <app-mat-select-search [(ngModel)]="memberSearch"></app-mat-select-search>
+          <mat-option [value]="member.id" *ngFor="let member of members | search:'name':memberSearch">
+            {{member.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!--        Type of Loan-->
+    <div class="col-sm-12" *ngIf="memberId" @fadeIn>
+      <mat-form-field appearance="outline">
+        <mat-label>Loan Type</mat-label>
+        <mat-select [(ngModel)]="loanTypeId" placeholder="Loan Type"
+                    (selectionChange)="selectLoanType($event.value)">
+          <mat-option *ngFor="let contr of loanTypes" [value]="contr.id">
+            {{contr.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!--   Loan Taking Date-->
+    <div class="col-sm-12" *ngIf="!group.track_contribution_period && loanTypeId && memberId" @fadeIn>
+      <mat-form-field appearance="outline">
+        <mat-label>Expected Loan date</mat-label>
+        <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="dateToTake" placeholder="Expected Loan date"/>
+        <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
+        <mat-datepicker #endingDate></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+<!--    Loan Taking Year-->
+    <div class="col-sm-6" *ngIf="group.track_contribution_period && loanTypeId && memberId" @fadeIn>
+      <!-- Expected Loan Year-->
+      <mat-form-field appearance="outline">
+        <mat-label>Expected Loan Year</mat-label>
+        <mat-select [(ngModel)]="year">
+          <mat-option *ngFor="let y of years" [value]="y">{{y}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+<!--    Loan Taking Month-->
+    <div class="col-sm-6" *ngIf="group.track_contribution_period && loanTypeId && memberId" @fadeIn>
+      <!-- Expected Loan Month-->
+      <mat-form-field appearance="outline">
+        <mat-label>Expected Loan Month</mat-label>
+        <mat-select [(ngModel)]="month" (selectionChange)="selectMonth($event.value)">
+          <mat-option value="01">Jan {{year}}</mat-option>
+          <mat-option value="02">Feb {{year}}</mat-option>
+          <mat-option value="03">Mar {{year}}</mat-option>
+          <mat-option value="04">Apr {{year}}</mat-option>
+          <mat-option value="05">May {{year}}</mat-option>
+          <mat-option value="06">Jun {{year}}</mat-option>
+          <mat-option value="07">Jul {{year}}</mat-option>
+          <mat-option value="08">Aug {{year}}</mat-option>
+          <mat-option value="09">Sep {{year}}</mat-option>
+          <mat-option value="10">Oct {{year}}</mat-option>
+          <mat-option value="11">Nov {{year}}</mat-option>
+          <mat-option value="12">Dec {{year}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!--        Loan amount-->
+    <div class="col-sm-12" *ngIf="dateToTake || month" @fadeIn>
+      <mat-form-field appearance="outline">
+        <mat-label>Expected Loan amount <span *ngIf="loanAmount">({{loanAmount | number}})</span></mat-label>
+        <input matInput [(ngModel)]="loanAmount" type="number" placeholder="Loan amount">
+        <mat-hint *ngIf="!!maximumAmount">Maximum available amount is <b>{{maximumAmount | number}}</b></mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="col-sm-12 mt-3" *ngIf="loanAmount && memberId && loanTypeId" @fadeIn>
+      <app-save-area
+        [confirmFirst]="true"
+        confirmText="You are about to add {{memberName}} to a loan queue"
+        (cancel)="closeDialog()"
+        (save)="save()"
+        [savingData]="loading"
+      ></app-save-area>
+    </div>
+
+  </div>
+</div>

@@ -23,6 +23,7 @@ import {CashTransfersComponent} from './modules/summary/cash-transfers/cash-tran
 import {LoanTypesComponent} from './modules/settings/loan-types/loan-types.component';
 import {ContributionTypesComponent} from './modules/settings/contribution-types/contribution-types.component';
 import {FineTypesComponent} from './modules/settings/fine-types/fine-types.component';
+import {LoanQueueComponent} from './modules/summary/loan-queue/loan-queue.component';
 
 
 const routes: Routes = [
@@ -97,6 +98,11 @@ const routes: Routes = [
         path: 'summary/cash-transfers',
         component: CashTransfersComponent,
         data: { title: 'Cash Transfers' }
+      },
+      {
+        path: 'summary/loan-queue',
+        component: LoanQueueComponent,
+        data: { title: 'Loan Queue' }
       },
       {
         path: 'settings',

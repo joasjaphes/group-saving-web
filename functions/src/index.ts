@@ -21,6 +21,7 @@ import * as createContributionType from './contribution/create-contribution-type
 import * as createExpense from './contribution/add-expense';
 import * as createLoanType from './loan/create-loan-type';
 import * as assignLoanToMember from './loan/assign_loan';
+import * as createLoanQueue from './loan/add-loan-queue';
 import * as assignPastActiveLoanToMember from './loan/add_previous_loan';
 import * as setMeetingDetails from './meeting/set-meeting-details';
 
@@ -43,6 +44,7 @@ exports.setBasicInfo = setBasicInfo.setBasicInfo;
 exports.setGroupLeadership = setGroupLeadership.setGroupLeadership;
 exports.setMeetingDetails = setMeetingDetails.setMeetingDetails;
 exports.assignLoanToMember = assignLoanToMember.assignLoanToMember;
+exports.createLoanQueue = createLoanQueue.createLoanQueue;
 exports.addNewContribution = addNewContribution.addNewContribution;
 exports.setContributionBalances = setContributionBalances.setContributionBalances;
 exports.createExpense = createExpense.createExpense;

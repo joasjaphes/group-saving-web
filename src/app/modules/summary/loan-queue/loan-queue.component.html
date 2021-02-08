@@ -1,0 +1,57 @@
+<app-shared-layout
+  title="Loan Queue"
+  image="loan-queue.png"
+  [hideAdd]="(loanQueue$ | async).length == 0"
+  [addIcon]="'add'"
+  (addItem)="addLoanType()"
+  [addText]="'Add to queue'"
+  [viewDetails]="viewDetails"
+  [smallForm]="false"
+  [animationSize]="'full'"
+  [formTitle]="panelTitle"
+  (closeDetails)="closePanel()"
+>
+  <ng-container ngProjectAs="table">
+    <app-empty-summary
+      incompleteText="Some information needed to set loan queue have not been defined yet!"
+      [infoNotComplete]="(loanTypes$ | async)?.length == 0"
+      [itemsExists]="(loanQueue$ | async)?.length > 0"
+      imageSrc="share-and-expenses.png"
+      title="No one waiting for loan now"
+      subTitle="You can add members to a waiting list for different types of loans."
+      addTitle="Add member to queue"
+      (addClicked)="addLoanType()"
+    ></app-empty-summary>
+
+    <div class="main-expense-grid">
+      <div *ngFor="let expense of loanQueue$ | async" class="expenseGrid content-area">
+        <div class="img-div">
+          <h1 style="font-size: 40px;" class="registration-title">{{expense.member?.name[0].toUpperCase()}}</h1>
+        </div>
+        <div class="name-area">
+          <p style="color: #ffffff6e" class="lead mb-1"><small>{{ expense.date | date:'MMM yyyy' }}</small></p>
+          <h1 class="mb-1 registration-title">{{ expense.member?.name }}</h1>
+          <p style="color: #ffffffbf" class="mb-0">{{ expense.loanType?.name }}</p>
+        </div>
+        <div class="amount-area">
+          <p class="mb-0"><small class="text-muted">{{(group$ | async)?.currency}}</small> </p>
+          <h1 class="registration-title">{{ expense.amount | number }}</h1>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container ngProjectAs="form">
+    <app-add-loan-queue
+      *ngIf="viewType == 'add'"
+      [loanTypes]="loanTypes$ | async"
+      [group]="group$ | async"
+      [members]="members$ | async"
+      [currentLoanQueue]="currentLoanQueue"
+      [contributionTypes]="contributionTypes$ | async"
+      (closeForm)="closePanel()"
+    ></app-add-loan-queue>
+
+
+  </ng-container>
+</app-shared-layout>

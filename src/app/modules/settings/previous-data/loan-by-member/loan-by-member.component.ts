@@ -122,7 +122,7 @@ export class LoanByMemberComponent implements OnInit {
       }
       this.setEndDate();
       if (this.currentLoanType.is_insured) {
-        this.insuranceAmount = this.loanAmount * this.currentLoanType.insurance_percent;
+        this.insuranceAmount = this.loanAmount * this.currentLoanType.insurance_percent / 100;
       }
     }
   }

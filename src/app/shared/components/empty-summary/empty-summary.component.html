@@ -2,7 +2,7 @@
   {{incompleteText}}
 </p>
 <app-group-progress
-  *ngIf="!itemsExists"
+  *ngIf="infoNotComplete"
 ></app-group-progress>
 <div class="summary-progress-container content-area mb-5" *ngIf="!itemsExists && !infoNotComplete">
   <div class="progressArea">
