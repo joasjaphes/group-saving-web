@@ -1,17 +1,20 @@
+import {FineType} from '../fine-type/fine-type.model';
+
 export interface Fine {
   id: string;
-  groupId: string;
+  group_id: string;
   isActive: boolean;
   lastUpdate: number;
-  additionalConfig: any;
+  additional_config: any;
   date: string;
   month: string;
   week: string;
   year: string;
-  memberId: string;
-  paymentMode: string;
-  paymentType: string;
-  referenceNumber: string;
-  fineTypeId: string;
+  member_id: string;
+  payment_mode: string;
+  payment_type: string;
+  reference_number: string;
+  fine_id: string;
+  fineType?: FineType;
   amount: number;
 }

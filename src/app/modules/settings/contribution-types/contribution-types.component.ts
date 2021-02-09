@@ -10,7 +10,9 @@ import * as groupSelector from '../../../store/group/group.selectors';
 import * as contributionTypeSelector from '../../../store/contribution-type/contribution-type.selectors';
 import {FineType} from '../../../store/fine-type/fine-type.model';
 import * as fineTypeSelector from '../../../store/fine-type/fine-type.selectors';
+import * as fineSelector from '../../../store/fine/fine.selectors';
 import {ROUTE_ANIMATIONS_ELEMENTS} from '../../../shared/animations/router-animation';
+import {Fine} from '../../../store/fine/fine.model';
 
 @Component({
   selector: 'app-contribution-types',
@@ -22,6 +24,7 @@ export class ContributionTypesComponent implements OnInit {
   group$: Observable<Group>;
   contributionTypes$: Observable<ContributionType[]>;
   fineTypes$: Observable<FineType[]>;
+  fines$: Observable<Fine[]>;
   currentContributionType: ContributionType;
   viewDetails = false;
   panelTitle = '';
@@ -34,6 +37,7 @@ export class ContributionTypesComponent implements OnInit {
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectDetailed));
     this.fineTypes$ = this.store.pipe(select(fineTypeSelector.selectAll));
+    this.fines$ = this.store.pipe(select(fineSelector.selectAll));
   }
 
   ngOnInit(): void {

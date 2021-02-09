@@ -36,6 +36,7 @@ export class ContributionByMemberComponent implements OnInit {
   grandTotal = 0;
   contributionTotal = {};
   loading: any;
+  visible = 'enterData';
 
   memberContributions$: Observable<Payment[]>;
 

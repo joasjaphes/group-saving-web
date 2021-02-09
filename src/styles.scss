@@ -425,3 +425,32 @@ button:focus {
     }
   }
 }
+
+.switching-buttons {
+  margin-bottom: 20px;
+  button {
+    border-radius: 15px;
+    margin-right: 8px;
+    background-color: #1d1e42;
+    border: 1px solid #ffffff61;
+    color: #ffffffad;
+  }
+  .active {
+    background-color: #141432;
+    color: white;
+    font-weight: bold;
+  }
+}
+
+/* this removes the spin controls in input fields for numbers */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

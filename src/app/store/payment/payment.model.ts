@@ -1,6 +1,10 @@
+import {Member} from '../member/member.model';
+
 export interface Payment {
+  member?: Member;
   id: string;
   groupId: string;
+  description?: string;
   isActive: boolean;
   last_update: number;
   additionalConfig: any;

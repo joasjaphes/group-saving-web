@@ -79,8 +79,11 @@ export class GroupStartingInfoComponent implements OnInit {
     };
     this.loading = true;
     try {
-      const response: any = await this.functionsService.saveData('setBasicInfo', dataToSave);
-      console.log(JSON.stringify(response));
+      if (this.editing) {
+        await this.functionsService.saveData('updateBasicInfo', dataToSave);
+      } else {
+        await this.functionsService.saveData('setBasicInfo', dataToSave);
+      }
       this.loading = false;
       this.commonService.showSuccess('Group basic information set successful');
       this.onClose();

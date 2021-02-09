@@ -3,7 +3,7 @@
     <div class="col-sm-3" *ngIf="currentMember" style="border-right: 1px solid #ffffff21">
       <p>{{currentMember?.name}} Loans</p>
       <h3 class="registration-title" *ngIf="(memberLoans$ | async).length == 0">
-        There are loan records for {{currentMember?.name}}
+        There are no loan records for {{currentMember?.name}}
       </h3>
       <div *ngFor="let loan of memberLoans$ | async"
            style="margin-bottom: 20px;padding-bottom: 10px; border-bottom: 1px solid white">
@@ -192,9 +192,16 @@
               <td *ngIf="!group.track_contribution_period">
                 <mat-form-field appearance="outline">
                   <mat-label>Date</mat-label>
-                  <input (dateChange)="setDate()" readonly matInput [matDatepicker]="endingDate" [(ngModel)]="paymentDate"/>
-                  <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
-                  <mat-datepicker #endingDate></mat-datepicker>
+                  <input
+                    (dateChange)="setDate()"
+                    readonly
+                    matInput
+                    [min]="contributionDate"
+                    [matDatepicker]="paymentDate1"
+                    [(ngModel)]="paymentDate"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="paymentDate1"></mat-datepicker-toggle>
+                  <mat-datepicker #paymentDate1></mat-datepicker>
                 </mat-form-field>
               </td>
               <td colspan="2"></td>

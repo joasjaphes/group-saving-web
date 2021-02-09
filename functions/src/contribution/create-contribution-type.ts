@@ -49,6 +49,24 @@ export const createContributionType = functions.https.onRequest((request, respon
             groupData.fines = {[fineId]: fine};
           }
           // transaction.set(fineDocRef, prepareFineData(fineId, data, fineToUse, last_update, contributionTypeId), {merge: true});
+        } else {
+          const fineToUse = fine_types.find(i => i.type === 'Contribution' && i.contribution_type_id === contributionTypeId);
+          const fineId = fineToUse ? fineToUse.id : null;
+          if (!!fineToUse) {
+            if (data.fineHasData) {
+              groupData.fines[fineId] = {
+                ...groupData.fines[fineId],
+                is_active: false,
+              };
+            } else {
+              groupData.fines = Object.keys(groupData.fines).reduce((object: any, key: string) => {
+                if (key !== fineId) {
+                  object[key] = groupData.fines[key];
+                }
+                return object;
+              }, {});
+            }
+          }
         }
         const contr = prepareContributionData(data, contributionTypeId, last_update);
         if (groupData.contributions) {

@@ -7,6 +7,7 @@ import {CommonService} from '../../../../services/common.service';
 import {MatSelectChange} from '@angular/material/select';
 import {ContributionType} from '../../../../store/contribution-type/contribution-type.model';
 import {FineType} from '../../../../store/fine-type/fine-type.model';
+import {Fine} from '../../../../store/fine/fine.model';
 
 @Component({
   selector: 'app-starting-contribution-type',
@@ -21,6 +22,7 @@ export class StartingContributionTypeComponent implements OnInit {
   @Input() editing = false;
   @Input() currentContributionType: ContributionType;
   @Input() fineTypes: FineType[];
+  @Input() fines: Fine[];
 
   @Output() closeForm = new EventEmitter();
 
@@ -39,6 +41,7 @@ export class StartingContributionTypeComponent implements OnInit {
   fineName: string;
   trackBalance: string;
   loading;
+  fineHasData =  false;
   constructor(
     private functionsService: FunctionsService,
     private commonService: CommonService,
@@ -67,6 +70,10 @@ export class StartingContributionTypeComponent implements OnInit {
           this.fineCalculationType = lateFine.calculation;
           this.fineAmount = lateFine.fixed_amount;
           this.fineName = lateFine.description;
+          // check if the fine has data already
+          if (this.fines) {
+            this.fineHasData = this.fines.filter(i => i.fine_id === lateFine.id).length > 0;
+          }
         }
       }
     }
@@ -101,6 +108,7 @@ export class StartingContributionTypeComponent implements OnInit {
       fineName: this.fineName,
       isLoanAllowed: this.allowLoan,
       trackBalance: this.trackBalance,
+      fineHasData: this.fineHasData,
     };
     this.loading = true;
     try {
@@ -121,6 +129,10 @@ export class StartingContributionTypeComponent implements OnInit {
   setAllowFine($event: MatSelectChange) {
     if ($event.value === 'Yes') {
       this.fineName = 'Late submission of ' + this.name;
+    } else {
+      this.fineName = '';
+      this.fineCalculationType = '';
+      this.fineAmount = null;
     }
   }
 }

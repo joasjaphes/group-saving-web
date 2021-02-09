@@ -5,6 +5,11 @@ import {Group} from '../../../../store/group/group.model';
 import {fadeIn} from '../../../../shared/animations/router-animation';
 import {CommonService} from '../../../../services/common.service';
 import {FunctionsService} from '../../../../services/functions.service';
+import {Observable} from 'rxjs';
+import {Payment} from '../../../../store/payment/payment.model';
+import {select, Store} from '@ngrx/store';
+import {ApplicationState} from '../../../../store';
+import * as paymentSelector from '../../../../store/payment/payment.selectors';
 
 @Component({
   selector: 'app-contribution-by-period',
@@ -28,11 +33,16 @@ export class ContributionByPeriodComponent implements OnInit {
   memberTotals = {};
   grandTotal = 0;
   loading = false;
+  monthName = '';
+  contributions$: Observable<Payment[]>;
 
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
-  ) { }
+    private store: Store<ApplicationState>,
+  ) {
+    this.contributions$ = this.store.pipe(select(paymentSelector.selectContributionByMonth(this.month, this.year)));
+  }
 
   ngOnInit(): void {
     if (this.contributionTypes && this.contributionTypes.length === 1) {
@@ -118,4 +128,10 @@ export class ContributionByPeriodComponent implements OnInit {
     this.closeForm.emit();
   }
 
+  setMonth(value: any) {
+    const monts = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov',  'Dec'];
+    const monthValue = parseInt(value, 10);
+    this.monthName = monts[monthValue - 1] + ' ' + this.year;
+    this.contributions$ = this.store.pipe(select(paymentSelector.selectContributionByMonth(this.month, this.year)));
+  }
 }

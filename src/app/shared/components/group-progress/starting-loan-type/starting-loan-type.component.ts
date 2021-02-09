@@ -149,6 +149,7 @@ export class StartingLoanTypeComponent implements OnInit {
 
   async sendData() {
     const dataToSave = {
+      id: this.currentLoanType ? this.currentLoanType.id : this.commonService.makeid(),
       groupId: this.group.id,
       contribution_type_id: this.contributionType,
       duration_type: this.frequency,

@@ -14,7 +14,7 @@
     <div class="col-sm-6">
       <mat-form-field appearance="outline">
         <mat-label>Contribution Month</mat-label>
-        <mat-select [(ngModel)]="month">
+        <mat-select [(ngModel)]="month" (selectionChange)="setMonth($event.value)">
           <mat-option value="01">Jan {{year}}</mat-option>
           <mat-option value="02">Feb {{year}}</mat-option>
           <mat-option value="03">Mar {{year}}</mat-option>
@@ -32,36 +32,62 @@
     </div>
 
     <div class="col-sm-12" *ngIf="month" @fadeIn>
-      <table class="table entry-table table-bordered">
-        <tr>
-          <th>Member Name</th>
-          <th *ngFor="let contr of contributionTypes">
-            {{contr.name}}
-          </th>
-          <th>Total</th>
-        </tr>
-        <tr *ngFor="let member of members">
-          <th>{{member.name}}</th>
-          <td *ngFor="let contr of contributionTypes">
-            <mat-form-field appearance="outline">
-              <input
-                [(ngModel)]="membersAmount[member.id][contr.id]"
-                placeholder="{{contr.name}} Amount"
-                type="number"
-                matInput
-                (input)="calculateTotal()"
-              >
-            </mat-form-field>
-          </td>
-          <th>
-            {{memberTotals[member.id] | number}}
-          </th>
-        </tr>
-        <tr>
-          <th style="text-align: right" [colSpan]="1 + contributionTypes.length">Total</th>
-          <th>{{grandTotal | number}}</th>
-        </tr>
-      </table>
+      <mat-tab-group>
+        <mat-tab label="New Contributions">
+          <table class="table entry-table table-bordered">
+            <tr>
+              <th>Member Name</th>
+              <th *ngFor="let contr of contributionTypes">
+                {{contr.name}}
+              </th>
+              <th>Total</th>
+            </tr>
+            <tr *ngFor="let member of members">
+              <th>{{member.name}}</th>
+              <td *ngFor="let contr of contributionTypes">
+                <mat-form-field appearance="outline">
+                  <input
+                    [(ngModel)]="membersAmount[member.id][contr.id]"
+                    placeholder="{{contr.name}} Amount"
+                    type="number"
+                    min="0"
+                    matInput
+                    (input)="calculateTotal()"
+                  >
+                </mat-form-field>
+              </td>
+              <th>
+                {{memberTotals[member.id] | number}}
+              </th>
+            </tr>
+            <tr>
+              <th style="text-align: right" [colSpan]="1 + contributionTypes.length">Total</th>
+              <th>{{grandTotal | number}}</th>
+            </tr>
+          </table>
+        </mat-tab>
+        <mat-tab label="{{monthName}} Contributions ({{(contributions$ | async)?.length}})">
+          <div class="row">
+            <div class="col-sm-12" >
+              <p class="registration-title">Current Contribution</p>
+
+              <p class="lead" *ngIf="(contributions$ | async)?.length == 0">
+                There are no contribution for {{monthName}}
+              </p>
+              <div *ngFor="let contr of contributions$ | async">
+                <h5 class="mb-0"  style="color: #ffffffbf">{{contr.date | date:'MMM yyyy'}}</h5>
+
+                <h2 class="registration-title mb-0">{{contr.totalAmount | number}}</h2>
+                <h4 class="registration-title mb-0">{{contr.member.name}}</h4>
+                <p style="border-bottom: 1px solid white" class="pb-2" ><small  style="color: #ffffff6e">{{contr.description}}</small></p>
+                <hr>
+                <!--           <small  style="color: #ffffff6e">{{contr.description}}</small>-->
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+
     </div>
 
     <div class="col-sm-12 mt-3" *ngIf="grandTotal && month" @fadeIn>

@@ -6,6 +6,11 @@ import {FineType} from '../../../../store/fine-type/fine-type.model';
 import {CommonService} from '../../../../services/common.service';
 import {FunctionsService} from '../../../../services/functions.service';
 import {fadeIn} from '../../../../shared/animations/router-animation';
+import {Observable} from 'rxjs';
+import {Fine} from '../../../../store/fine/fine.model';
+import * as fineSelector from '../../../../store/fine/fine.selectors';
+import {select, Store} from '@ngrx/store';
+import {ApplicationState} from '../../../../store';
 
 @Component({
   selector: 'app-fines-by-member',
@@ -19,6 +24,7 @@ export class FinesByMemberComponent implements OnInit {
   @Input() fineTypes: FineType[];
   @Input() group: Group;
   @Output() closeForm = new EventEmitter();
+  membersFines$: Observable<Fine[]>;
   currentMember: Member;
   years = [];
   memberId;
@@ -36,7 +42,9 @@ export class FinesByMemberComponent implements OnInit {
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
+    private store: Store<ApplicationState>,
   ) {
+    this.membersFines$ = this.store.pipe(select(fineSelector.selectByMember(null)));
   }
 
   ngOnInit(): void {
@@ -155,6 +163,7 @@ export class FinesByMemberComponent implements OnInit {
 
   setMember(value: any) {
     this.currentMember = this.members.find(i => i.id === value);
+    this.membersFines$ = this.store.pipe(select(fineSelector.selectByMember(value)));
   }
 
   onClose() {

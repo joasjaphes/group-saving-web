@@ -1,4 +1,4 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import {createFeatureSelector, createSelector} from '@ngrx/store';
 import * as fromReducer from './loan-queue.reducer';
 import * as fromMembers from '../member/member.selectors';
 import * as fromLoanTypes from '../loan-type/loan-type.selectors';
@@ -25,13 +25,14 @@ export const selectDetailed = createSelector(
   selectAll,
   fromMembers.selectEntities,
   fromLoanTypes.selectEntities,
-  (allItems, members, loanTypes) => allItems.map(
-    item => {
-      return {
-        ...item,
-        member: members[item.member_id],
-        loanType: loanTypes[item.loan_type_id],
-      };
-    }
-  )
+  (allItems, members, loanTypes) => allItems
+    .map(
+      item => {
+        return {
+          ...item,
+          member: members[item.member_id],
+          loanType: loanTypes[item.loan_type_id],
+        };
+      }
+    ).sort((a, b) => a.date > b.date ? 1 : -1)
 );

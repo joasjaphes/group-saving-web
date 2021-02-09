@@ -15,6 +15,7 @@ import {MatSelectChange} from '@angular/material/select';
 import {first} from 'rxjs/operators';
 import {CommonService} from '../../../services/common.service';
 import {FunctionsService} from '../../../services/functions.service';
+import {MatCheckboxChange} from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-add-contribution',
@@ -161,5 +162,12 @@ export class AddContributionComponent implements OnInit {
 
   closeDialog() {
     this.dialogRef.close();
+  }
+
+  setHaveFines($event: MatCheckboxChange) {
+    if (!$event.checked) {
+      this.fineAmounts = {};
+      this.finesToBePaid = [];
+    }
   }
 }

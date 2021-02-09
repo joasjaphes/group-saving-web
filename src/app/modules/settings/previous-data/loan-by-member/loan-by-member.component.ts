@@ -234,6 +234,7 @@ export class LoanByMemberComponent implements OnInit {
       amount
     });
     this.paymentDate = null;
+    this.calculateTotal();
   }
 
   deletePay(payment: any) {

@@ -76,6 +76,7 @@ export class PreviousDataComponent implements OnInit {
   closePanel() {
     this.viewDetails = false;
     this.panelTitle = '';
+    this.viewType = '';
   }
 
 }

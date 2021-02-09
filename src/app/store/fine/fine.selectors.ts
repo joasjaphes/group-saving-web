@@ -1,5 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromReducer from './fine.reducer';
+import * as fromFineTypes from '../fine-type/fine-type.selectors';
+import {findAllSubstringIndices} from '@angular/cdk/schematics';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.finesFeatureKey);
 
@@ -19,6 +21,17 @@ export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
 
+export const selectDetailed = createSelector(
+  selectAll,
+  fromFineTypes.selectEntities,
+  (allItems, fineTypes) => allItems.map(
+    item => ({
+      ...item,
+        fineType: fineTypes[item.fine_id]
+    })
+  )
+);
+
 export const selectTotalByYear = (year) => createSelector(
   selectAll,
   (allItems) => {
@@ -29,4 +42,11 @@ export const selectTotalByYear = (year) => createSelector(
     }
     return sum;
   }
+);
+
+export const selectByMember = (memberId) => createSelector(
+  selectDetailed,
+  (allItems) => allItems.filter(
+    item => item.member_id === memberId
+  )
 );

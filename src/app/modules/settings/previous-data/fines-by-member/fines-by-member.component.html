@@ -13,12 +13,9 @@
       </mat-form-field>
     </div>
 
-    <div class="col-sm-12">
-      <div class="row">
-        <div class="col-sm-2">
-          <p>Current Fines</p>
-        </div>
-        <div class="col-sm-10">
+    <div class="col-sm-12" *ngIf="memberId" @fadeIn>
+      <mat-tab-group>
+        <mat-tab label="New Fines">
           <div class="row">
             <div class="col-sm-12 mt-2" *ngIf="memberId" @fadeIn>
               <table class="table table-bordered entry-table">
@@ -145,8 +142,21 @@
               ></app-save-area>
             </div>
           </div>
-        </div>
-      </div>
+        </mat-tab>
+        <mat-tab label="Current Fines ({{(membersFines$ | async)?.length}})">
+          <div *ngFor="let fine of membersFines$ | async" class="mb-2">
+            <h3 class="registration-title mb-0">
+              {{fine.amount | number}}
+            </h3>
+            <p class="mb-0" style="color: wheat">
+              {{fine.fineType?.description}}
+            </p>
+            <p class="text-muted">
+              {{fine.date | date:'MMM yyyy'}}
+            </p>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
     </div>
 
   </div>

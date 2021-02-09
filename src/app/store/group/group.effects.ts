@@ -36,7 +36,7 @@ export class GroupEffects {
         fromActions.upsertGroups({groups}),
         fromLoanTypeActions.upsertLoanTypes({loanTypes}),
         fromContributionTYpeActions.upsertContributionTypes({contributionTypes}),
-        fromFineTypeActions.upsertFineTypes({fineTypes}),
+        fromFineTypeActions.loadFineTypes({fineTypes}),
         fromLoanQueueActions.upsertLoanQueues({loanQueues}),
         fromActions.doneLoadingGroups()
       ];

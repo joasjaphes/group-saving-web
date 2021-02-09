@@ -2,6 +2,9 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromReducer from './payment.reducer';
 import * as fromContributionTypes from '../contribution-type/contribution-type.selectors';
 import * as fromFineTypes from '../fine-type/fine-type.selectors';
+import * as fromLoanTypes from '../loan-type/loan-type.selectors';
+import * as fromLoan from '../loan/loan.selectors';
+import * as fromMember from '../member/member.selectors';
 import {Payment} from './payment.model';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.paymentsFeatureKey);
@@ -26,22 +29,40 @@ export const selectDetailed = createSelector(
   selectAll,
   fromContributionTypes.selectEntities,
   fromFineTypes.selectEntities,
-  (allItems, contributionTypes, fineTypes) => {
+  fromLoanTypes.selectEntities,
+  fromLoan.selectEntities,
+  fromMember.selectEntities,
+  (
+    allItems,
+    contributionTypes,
+    fineTypes,
+    loanTypes,
+    loans,
+    members
+  ) => {
     return allItems.map(item => {
+      const contrDetails = [];
       const contributionsDetails = Object.keys(item.contributions).map(contrId => ({
         name: contributionTypes[contrId] ? contributionTypes[contrId].name : '',
         amount: item.contributions[contrId],
-        contributionTypeId: contrId,
       }));
       const fineDetails = Object.keys(item.fines).map(contrId => ({
         name: fineTypes[contrId] ? fineTypes[contrId].description : '',
         amount: item.fines[contrId],
-        contributionTypeId: contrId,
       }));
+      const loanDetails = Object.keys(item.loans).map(contrId => ({
+        name: loans[contrId] && loanTypes[loans[contrId].loan_used] ? loanTypes[loans[contrId].loan_used].name : '',
+        amount: item.loans[contrId],
+      }));
+      contrDetails.push(...contributionsDetails.map(i => `${i.name} ${i.amount}`));
+      contrDetails.push(...fineDetails.map(i => `${i.name} ${i.amount}`));
+      contrDetails.push(...loanDetails.map(i => `${i.name} ${i.amount}`));
       return {
         ...item,
         contributionsDetails,
         fineDetails,
+        member: members[item.memberId],
+        description: contrDetails.join(', '),
         totalAmount: findTotal(item)
       };
     });
@@ -118,6 +139,12 @@ export const selectContributionOnlyByMember = (memberId) => createSelector(
   selectDetailed,
   (allItems) => allItems
     .filter(i => memberId === i.memberId && i.contributionsDetails.length > 0)
+);
+
+export const selectContributionByMonth = (month, year) => createSelector(
+  selectDetailed,
+  (allItems) => allItems
+    .filter(i => month === i.month && i.contributionsDetails.length > 0 && year + '' === i.year + '')
 );
 
 export function findTotal(payment: Payment) {

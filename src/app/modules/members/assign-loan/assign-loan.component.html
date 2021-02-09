@@ -31,7 +31,14 @@
         <div class="col-sm-12" *ngIf="loanStartDate && loanType" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Loan amount <span *ngIf="loanAmount">({{loanAmount | number}})</span></mat-label>
-            <input matInput [(ngModel)]="loanAmount" type="number" placeholder="Loan amount" (input)="calculateLoan()">
+            <input
+              matInput
+              [(ngModel)]="loanAmount"
+              type="number"
+              placeholder="Loan amount"
+              min="0"
+              (input)="calculateLoan()"
+            >
             <mat-hint *ngIf="!!maximumAmount">Maximum available amount is <b>{{maximumAmount | number}}</b></mat-hint>
           </mat-form-field>
         </div>

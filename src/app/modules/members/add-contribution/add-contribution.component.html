@@ -34,6 +34,7 @@
               [(ngModel)]="contributionAmount[contr.id]"
               matInput
               type="number"
+              min="0"
               placeholder="Amount for {{contr.name}}"
               (input)="findTotal()"
             >
@@ -52,6 +53,7 @@
               [(ngModel)]="loanAmount[loan.id]"
               matInput
               type="number"
+              min="0"
               placeholder="Amount for {{loan.loanType?.name}}"
               (input)="findTotal()"
             >
@@ -60,7 +62,7 @@
 
         <!--        Fine payments-->
         <div class="col-sm-12">
-          <mat-checkbox [(ngModel)]="haveFines">{{data.member.name}} have any fine?</mat-checkbox>
+          <mat-checkbox (change)="setHaveFines($event)" [(ngModel)]="haveFines">{{data.member.name}} have any fine?</mat-checkbox>
         </div>
 
         <!--        Fine Types selector-->
@@ -83,6 +85,7 @@
               [(ngModel)]="fineAmounts[toBePaid?.id]"
               matInput
               type="number"
+              min="0"
               placeholder="Amount for {{toBePaid?.description}}"
               (input)="findTotal()"
             >

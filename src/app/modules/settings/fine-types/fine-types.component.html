@@ -20,8 +20,9 @@
           <h1 style="font-size: 40px;" class="registration-title">{{contr.description[0].toUpperCase()}}</h1>
         </div>
         <div>
-          <h2 class="registration-title mb-1">{{contr.description}}</h2>
+          <h2 [ngClass]="{'text-muted': !contr.is_active}" class="registration-title mb-1">{{contr.description}}</h2>
           <p class="name-area">{{contr.textDescription}}</p>
+          <p *ngIf="!contr.is_active">Deactivated</p>
         </div>
       </div>
     </div>
