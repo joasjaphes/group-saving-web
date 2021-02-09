@@ -5,7 +5,6 @@ import * as fromLoan from '../loan-type/loan-type.selectors';
 import * as fromContribution from '../contribution-type/contribution-type.selectors';
 import {GroupProgressEnum} from './group-progress.enum';
 import {ContributionTypes} from '../contribution-type/contribution-type.enum';
-import {group} from '@angular/animations';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.groupsFeatureKey);
 
@@ -62,7 +61,6 @@ export const selectProgressPercent = createSelector(
       requiredContributions = selectedGroup.has_other_contribution ? requiredContributions += 1 : requiredContributions;
       if (requiredContributions !== 0) {
         const contrSteps = 16 / requiredContributions;
-        console.log(parseInt(contrSteps + '', 10));
         percent += 16 - parseInt(contrSteps + '', 10) * requiredContributions;
         if (selectedGroup.has_share && share_exist) {
           percent += parseInt(contrSteps + '', 10);
@@ -81,7 +79,6 @@ export const selectProgressPercent = createSelector(
           availableContributions += 1;
         }
       }
-      console.log({availableContributions}, {requiredContributions});
       if (contributionTypes.length > 0 && availableContributions >= requiredContributions) {
         // check for balance issues
         const contr_need_balance = contributionTypes.filter(i => i.track_balance);
@@ -150,8 +147,6 @@ export const selectProgress = createSelector(
       const other_exist = !!contributionTypes.find(i => i.type === 'Other');
       const contributionNeedsBalance = contributionTypes.filter(i => i.track_balance && selectedGroup.contribution_balances && !selectedGroup.contribution_balances[i.id]);
       const contributionHasBalance = contributionTypes.filter(i => i.track_balance && selectedGroup.contribution_balances && selectedGroup.contribution_balances[i.id]);
-      console.log({contributionNeedsBalance});
-      console.log({contributionHasBalance});
       const uncreatedLoans = contributionTypes
         .filter(i => i.allow_loan)
         .filter(i => !loanTypes.find(k => k.contribution_type_id === i.id));
@@ -247,9 +242,9 @@ export const selectProgress = createSelector(
 
 export const selectNeedBalance = createSelector(
   selected,
-  fromContribution.selectAll, (group, allItems, id) => allItems
+  fromContribution.selectAll, (currentGroup, allItems, id) => allItems
     .filter(i => {
-      const hasBalance = group && group.current_balances && !!group.current_balances[i.id];
+      const hasBalance = currentGroup && currentGroup.current_balances && !!currentGroup.current_balances[i.id];
       return i.track_balance && !hasBalance;
     })
 );
