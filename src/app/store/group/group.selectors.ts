@@ -53,13 +53,13 @@ export const selectProgressPercent = createSelector(
         percent += 10;
       }
       const share_exist = !!contributionTypes.find(i => i.type === 'Share');
-      requiredContributions = selectedGroup.has_share ? requiredContributions += 1 :  requiredContributions;
+      requiredContributions = selectedGroup.has_share ? requiredContributions += 1 : requiredContributions;
       const entry_fee_exist = !!contributionTypes.find(i => i.type === 'Entry Fee');
-      requiredContributions = selectedGroup.has_entry_fee ? requiredContributions += 1 :  requiredContributions;
+      requiredContributions = selectedGroup.has_entry_fee ? requiredContributions += 1 : requiredContributions;
       const social_exist = !!contributionTypes.find(i => i.type === 'Social');
-      requiredContributions = selectedGroup.has_social ? requiredContributions += 1 :  requiredContributions;
+      requiredContributions = selectedGroup.has_social ? requiredContributions += 1 : requiredContributions;
       const other_exist = !!contributionTypes.find(i => i.type === 'Other');
-      requiredContributions = selectedGroup.has_other_contribution ? requiredContributions += 1 :  requiredContributions;
+      requiredContributions = selectedGroup.has_other_contribution ? requiredContributions += 1 : requiredContributions;
       if (requiredContributions !== 0) {
         const contrSteps = 16 / requiredContributions;
         console.log(parseInt(contrSteps + '', 10));
@@ -81,7 +81,8 @@ export const selectProgressPercent = createSelector(
           availableContributions += 1;
         }
       }
-      if (contributionTypes.length > 0 && availableContributions === requiredContributions) {
+      console.log({availableContributions}, {requiredContributions});
+      if (contributionTypes.length > 0 && availableContributions >= requiredContributions) {
         // check for balance issues
         const contr_need_balance = contributionTypes.filter(i => i.track_balance);
         const steps1 = contr_need_balance.length === 0 ? 5 : 5 / contr_need_balance.length;
@@ -106,7 +107,7 @@ export const selectProgressPercent = createSelector(
       if (!!selectedGroup.chairperson && !!selectedGroup.treasure && !!selectedGroup.secretary) {
         percent += 5;
       }
-      if (selectedGroup.meeting_settings ) {
+      if (selectedGroup.meeting_settings) {
         if (selectedGroup.meeting_settings.meeting_frequency === 'No Meeting') {
           percent += 5;
         } else {
@@ -147,6 +148,10 @@ export const selectProgress = createSelector(
       const entry_fee_exist = !!contributionTypes.find(i => i.type === 'Entry Fee');
       const social_exist = !!contributionTypes.find(i => i.type === 'Social');
       const other_exist = !!contributionTypes.find(i => i.type === 'Other');
+      const contributionNeedsBalance = contributionTypes.filter(i => i.track_balance && selectedGroup.contribution_balances && !selectedGroup.contribution_balances[i.id]);
+      const contributionHasBalance = contributionTypes.filter(i => i.track_balance && selectedGroup.contribution_balances && selectedGroup.contribution_balances[i.id]);
+      console.log({contributionNeedsBalance});
+      console.log({contributionHasBalance});
       const uncreatedLoans = contributionTypes
         .filter(i => i.allow_loan)
         .filter(i => !loanTypes.find(k => k.contribution_type_id === i.id));
@@ -214,7 +219,7 @@ export const selectProgress = createSelector(
         key = GroupProgressEnum.AddLeadershipInformation;
       } else if (
         contributionTypes.length > 0
-        && contributionTypes.filter(i => i.track_balance && selectedGroup.contribution_balances && selectedGroup.contribution_balances[i.id]).length === 0
+        && contributionNeedsBalance.length !== contributionHasBalance.length
       ) {
         title = 'To help to track group information fill the current balances';
         buttonLabel = 'Add starting balances';

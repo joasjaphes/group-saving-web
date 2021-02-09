@@ -1,15 +1,14 @@
 <div class="container-fluid">
-<!--  <div class="row">-->
-<!--    <div class="col-sm-10">-->
-<!--      <h2 class="registration-title">Assign Loan to {{member.name}}</h2>-->
-<!--    </div>-->
-<!--    <div class="col-sm-2 pr-0" style="text-align: right">-->
-<!--      <button mat-button (click)="closeDialog()">-->
-<!--        <mat-icon>close</mat-icon>-->
-<!--        <span> Close</span>-->
-<!--      </button>-->
-<!--    </div>-->
-<!--  </div>-->
+  <div class="row" *ngIf="membersLoans.length > 0">
+    <div class="col-sm-12 mb-3">
+      <p>This member currently has other loans,
+      <span *ngFor="let loan of membersLoans">
+        {{loan.loanType?.name}} ({{loan.remaining_balance | number}})
+      </span>
+      </p>
+
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-sm-6">
@@ -40,6 +39,7 @@
               (input)="calculateLoan()"
             >
             <mat-hint *ngIf="!!maximumAmount">Maximum available amount is <b>{{maximumAmount | number}}</b></mat-hint>
+            <mat-error *ngIf="!!maximumAmount && maximumAmount < loanAmount">This amount is greater that available amount</mat-error>
           </mat-form-field>
         </div>
 
@@ -60,7 +60,13 @@
               <span *ngIf="!duration">({{currentLoanType.min_duration}} to {{currentLoanType.max_duration}} {{durationTYpe}})</span>
               <span *ngIf="duration">({{duration | number}} {{durationTYpe}})</span>
             </mat-label>
-            <input matInput [(ngModel)]="duration" placeholder="Loan Duration ({{currentLoanType.min_duration}} to {{currentLoanType.max_duration}} {{durationTYpe}})" (input)="calculateLoan()">
+            <input
+              matInput
+              [(ngModel)]="duration"
+              placeholder="Loan Duration ({{currentLoanType.min_duration}} to {{currentLoanType.max_duration}} {{durationTYpe}})"
+              (input)="setDuration($event)"
+              (change)="setMinDuration($event)"
+            >
             <mat-hint>From {{currentLoanType.min_duration}} to {{currentLoanType.max_duration}} {{durationTYpe}}</mat-hint>
           </mat-form-field>
         </div>
@@ -72,6 +78,16 @@
               <span>({{testToReturn | number}})</span>
             </mat-label>
             <input matInput [(ngModel)]="testToReturn" placeholder="Amount to return" (input)="setAmountPerReturn()">
+          </mat-form-field>
+        </div>
+
+        <!--       Insurance Amount-->
+        <div class="col-sm-12 mt-2" *ngIf="loanStartDate && loanType && loanAmount && duration && currentLoanType.is_insured" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Insurance Amount
+              <span>({{insuranceAmount | number}})</span>
+            </mat-label>
+            <input matInput [(ngModel)]="insuranceAmount" placeholder="Insurance Amount" (input)="setAmountPerReturn()">
           </mat-form-field>
         </div>
       </div>
@@ -89,7 +105,7 @@
       <div class="row summary-area">
 
         <div class="col-sm-6" *ngIf="loanAmount" @fadeIn>
-          <p class="text-muted m-0">Amount Taken <b style="color: #ffffffb5;">({{loanStartDate | date:'mediumDate'}})</b></p>
+          <p class="text-muted m-0">Amount Requested <b style="color: #ffffffb5;">({{loanStartDate | date:'mediumDate'}})</b></p>
           <h1 class="registration-title">{{loanAmount | number}}</h1>
         </div>
         <div class="col-sm-6" *ngIf="duration" @fadeIn>
@@ -104,6 +120,18 @@
         <div class="col-sm-6" style="margin-top: 10px" *ngIf="loanAmount && duration" @fadeIn>
           <p class="text-muted m-0">Amount per return</p>
           <h1 class="registration-title">{{testAmountPerReturn | number}}</h1>
+        </div>
+        <div class="col-sm-6" style="margin-top: 10px" *ngIf="loanAmount && duration" @fadeIn>
+          <p class="text-muted m-0">Profit</p>
+          <h1 class="registration-title">{{(testToReturn - loanAmount) | number}}</h1>
+        </div>
+        <div class="col-sm-6" style="margin-top: 10px" *ngIf="loanAmount && duration && currentLoanType.is_insured" @fadeIn>
+          <p class="text-muted m-0">Insurance Amount</p>
+          <h1 class="registration-title">{{insuranceAmount | number}}</h1>
+        </div>
+        <div class="col-sm-6" style="margin-top: 10px" *ngIf="loanAmount && duration" @fadeIn>
+          <p class="text-muted m-0">Amount given to {{member.name.split(' ')[0]}}</p>
+          <h1 class="registration-title">{{amountGiven | number}}</h1>
         </div>
         <div class="col-sm-12 mt-3" *ngIf="loanAmount && duration" @fadeIn>
           <app-save-area

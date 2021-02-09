@@ -13,12 +13,14 @@ import {MatDialog} from '@angular/material/dialog';
 import {first} from 'rxjs/operators';
 import {ContributionType} from '../../store/contribution-type/contribution-type.model';
 import {LoanType} from '../../store/loan-type/loan-type.model';
-import * as loanSelector from '../../store/loan-type/loan-type.selectors';
+import * as loanTypeSelector from '../../store/loan-type/loan-type.selectors';
+import * as loanSelector from '../../store/loan/loan.selectors';
 import * as fineTypeSelector from '../../store/fine-type/fine-type.selectors';
 import {HttpClient} from '@angular/common/http';
 import {GroupProgress} from '../../store/group/group-progress.model';
 import {GroupProgressEnum} from '../../store/group/group-progress.enum';
 import {FineType} from '../../store/fine-type/fine-type.model';
+import {Loan} from '../../store/loan/loan.model';
 
 @Component({
   selector: 'app-members',
@@ -35,6 +37,7 @@ export class MembersComponent implements OnInit {
   memberName$: Observable<string>;
   progress$: Observable<any>;
   progressDetails$: Observable<GroupProgress>;
+  membersLoans$: Observable<Loan[]>;
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   viewDetails = false;
   panelTitle = '';
@@ -52,7 +55,7 @@ export class MembersComponent implements OnInit {
     this.progressDetails$ = this.store.pipe(select(groupSelector.selectProgress));
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectRepeating));
-    this.loanTypes$ = this.store.pipe(select(loanSelector.selectAll));
+    this.loanTypes$ = this.store.pipe(select(loanTypeSelector.selectAll));
     this.fineTypes$ = this.store.pipe(select(fineTypeSelector.selectDetailed));
     this.memberName$ = this.store.pipe(select(memberSelector.selectMemberName));
   }
@@ -62,6 +65,7 @@ export class MembersComponent implements OnInit {
 
   async addContribution(member: Member) {
     this.currentMember = member;
+    this.membersLoans$ = this.store.pipe(select(loanSelector.selectLoanByMember(member.id)));
     this.viewType = 'contribution';
     this.viewDetails = true;
     this.panelTitle = 'Add contribution from ' + member.name;
@@ -69,6 +73,7 @@ export class MembersComponent implements OnInit {
 
   async addLoan(member: Member) {
     this.currentMember = member;
+    this.membersLoans$ = this.store.pipe(select(loanSelector.selectLoanByMember(member.id)));
     this.viewType = 'loan';
     this.viewDetails = true;
     this.panelTitle = 'Assign Loan  to ' + member.name;

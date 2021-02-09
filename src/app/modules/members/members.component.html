@@ -92,6 +92,7 @@
     <app-assign-loan
       *ngIf="viewType === 'loan'"
       [group]="group$ | async"
+      [membersLoans]="membersLoans$ | async"
       [contributionTypes]="contributionTypes$ | async"
       [loanTypes]="loanTypes$ | async"
       [member]="currentMember"

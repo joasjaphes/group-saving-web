@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Group} from '../../../store/group/group.model';
 import {ContributionType} from '../../../store/contribution-type/contribution-type.model';
 import {Member} from '../../../store/member/member.model';
@@ -6,6 +6,7 @@ import {LoanType} from '../../../store/loan-type/loan-type.model';
 import {fadeIn} from '../../../shared/animations/router-animation';
 import {CommonService} from '../../../services/common.service';
 import {FunctionsService} from '../../../services/functions.service';
+import {Loan} from '../../../store/loan/loan.model';
 
 @Component({
   selector: 'app-assign-loan',
@@ -18,6 +19,7 @@ export class AssignLoanComponent implements OnInit {
   @Input() contributionTypes: ContributionType[];
   @Input() loanTypes: LoanType[];
   @Input() member: Member;
+  @Input() membersLoans: Loan[];
 
   @Output() closeForm = new EventEmitter();
   loanType: string;
@@ -32,10 +34,14 @@ export class AssignLoanComponent implements OnInit {
   newDate: any;
   loading = false;
   maximumAmount;
+  loanDescription = '';
+  amountGiven = 0;
+
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     if (this.loanTypes && this.loanTypes.length === 1) {
@@ -47,9 +53,20 @@ export class AssignLoanComponent implements OnInit {
   loanTypeSelected(loanTypeId) {
     this.currentLoanType = this.loanTypes.find(i => i.id === loanTypeId);
     const contributionType = this.contributionTypes.find(i => i.id === this.currentLoanType.contribution_type_id);
+    let contrBalance = null;
+    let loanLimit = null;
+    if (this.currentLoanType.max_amount_type === 'Fixed') {
+      loanLimit = this.currentLoanType.maximum_amount;
+    }
     if (contributionType) {
       if (contributionType.track_balance && this.group.contribution_balances) {
-        this.maximumAmount = this.group.contribution_balances[contributionType.id];
+        contrBalance = this.group.contribution_balances[contributionType.id];
+      }
+    }
+    if (loanLimit) {
+      if (contrBalance) {
+        this.maximumAmount = parseFloat(loanLimit) > parseFloat(contrBalance) ?
+          contrBalance : loanLimit;
       }
     }
     this.calculateLoan();
@@ -77,7 +94,7 @@ export class AssignLoanComponent implements OnInit {
       if (profitCalculationType === 'Fixed Percent') {
         this.testToReturn = (parseInt(this.loanAmount, 10) + (this.loanAmount * (interestRate / 100)));
         this.testAmountPerReturn = this.testToReturn / this.duration;
-      } else if (profitCalculationType  === 'Custom Formula') {
+      } else if (profitCalculationType === 'Custom Formula') {
         // tslint:disable-next-line:no-eval
         const interest = eval(loanFormular.replace('M', this.loanAmount + '').replace('T', this.duration + ''));
         this.testToReturn = parseInt(this.loanAmount, 10) + parseInt(interest, 10);
@@ -106,6 +123,14 @@ export class AssignLoanComponent implements OnInit {
         d.setMonth(d.getMonth() + this.duration);
         this.newDate = d;
       }
+      let amountGiven = this.loanAmount;
+      if (this.currentLoanType.is_insured) {
+        amountGiven -= this.insuranceAmount;
+      }
+      if (this.currentLoanType.payment_option === 'Cut profit from the loan') {
+        amountGiven -= this.totalProfitContribution;
+      }
+      this.amountGiven = amountGiven;
     }
   }
 
@@ -142,5 +167,25 @@ export class AssignLoanComponent implements OnInit {
 
   setAmountPerReturn() {
 
+  }
+
+  setDuration(event: any) {
+    if (event.target.value && this.currentLoanType && this.currentLoanType.max_duration) {
+      if (parseInt(event.target.value, 10) > parseInt(this.currentLoanType.max_duration + '', 10)) {
+        this.duration = this.currentLoanType.max_duration;
+        event.target.value = this.currentLoanType.max_duration;
+      }
+    }
+    this.calculateLoan();
+  }
+
+  setMinDuration(event: any) {
+    if (event.target.value && this.currentLoanType && this.currentLoanType.min_duration) {
+      if (parseInt(event.target.value, 10) < parseInt(this.currentLoanType.min_duration + '', 10)) {
+        this.duration = this.currentLoanType.min_duration;
+        event.target.value = this.currentLoanType.min_duration;
+      }
+    }
+    this.calculateLoan();
   }
 }

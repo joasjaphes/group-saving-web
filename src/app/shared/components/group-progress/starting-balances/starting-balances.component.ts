@@ -27,7 +27,7 @@ export class StartingBalancesComponent implements OnInit {
   ngOnInit(): void {
     if (this.group) {
       if (this.group.contribution_balances) {
-        this.balances = this.group.contribution_balances;
+        this.balances = {...this.group.contribution_balances};
       }
     }
   }
