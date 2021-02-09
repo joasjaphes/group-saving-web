@@ -9,7 +9,7 @@
   (closeDetails)="onClose()"
   [animationSize]="'full'"
   [smallForm]="false"
-  [formTitle]="formTitle"
+  [formTitle]="panelTitle"
 >
   <ng-container ngProjectAs="table">
 <!--    In case there is only one member-->
@@ -89,6 +89,30 @@
   </ng-container>
 
   <ng-container ngProjectAs="form">
-    <app-assign-loan *ngIf="viewDetails" [details]="details"></app-assign-loan>
+    <app-assign-loan
+      *ngIf="viewType === 'loan'"
+      [group]="group$ | async"
+      [contributionTypes]="contributionTypes$ | async"
+      [loanTypes]="loanTypes$ | async"
+      [member]="currentMember"
+      (closeForm)="onClose()"
+    ></app-assign-loan>
+
+    <app-add-contribution
+      *ngIf="viewType == 'contribution'"
+      [group]="group$ | async"
+      [contributionTypes]="contributionTypes$ | async"
+      [fineTypes]="fineTypes$ | async"
+      [member]="currentMember"
+      (closeForm)="onClose()"
+    ></app-add-contribution>
+
+    <app-add-member
+      *ngIf="viewType == 'add'"
+      [group]="group$ | async"
+      [members]="members$ | async"
+      [memberName]="memberName$ | async"
+      (closeForm)="onClose()"
+    ></app-add-member>
   </ng-container>
 </app-shared-layout>

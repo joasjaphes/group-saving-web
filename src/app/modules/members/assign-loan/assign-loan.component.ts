@@ -1,8 +1,6 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Group} from '../../../store/group/group.model';
 import {ContributionType} from '../../../store/contribution-type/contribution-type.model';
-import {FineType} from '../../../store/fine-type/fine-type.model';
 import {Member} from '../../../store/member/member.model';
 import {LoanType} from '../../../store/loan-type/loan-type.model';
 import {fadeIn} from '../../../shared/animations/router-animation';
@@ -16,12 +14,12 @@ import {FunctionsService} from '../../../services/functions.service';
   animations: [fadeIn]
 })
 export class AssignLoanComponent implements OnInit {
-  @Input() details: {
-    group: Group;
-    contributionTypes: ContributionType[];
-    loanTypes: LoanType[];
-    member: Member;
-  };
+  @Input() group: Group;
+  @Input() contributionTypes: ContributionType[];
+  @Input() loanTypes: LoanType[];
+  @Input() member: Member;
+
+  @Output() closeForm = new EventEmitter();
   loanType: string;
   loanStartDate: any = new Date();
   currentLoanType: LoanType;
@@ -35,33 +33,23 @@ export class AssignLoanComponent implements OnInit {
   loading = false;
   maximumAmount;
   constructor(
-    public dialogRef: MatDialogRef<AssignLoanComponent>,
     private commonService: CommonService,
     private functionsService: FunctionsService,
-    @Inject(MAT_DIALOG_DATA) public data: {
-      group: Group;
-      contributionTypes: ContributionType[];
-      loanTypes: LoanType[];
-      member: Member;
-    }
   ) { }
 
   ngOnInit(): void {
-    if (!this.data) {
-      this.data = this.details;
-    }
-    if (this.data.loanTypes && this.data.loanTypes.length === 1) {
-      this.loanType = this.data.loanTypes[0].id;
+    if (this.loanTypes && this.loanTypes.length === 1) {
+      this.loanType = this.loanTypes[0].id;
       this.loanTypeSelected(this.loanType);
     }
   }
 
   loanTypeSelected(loanTypeId) {
-    this.currentLoanType = this.data.loanTypes.find(i => i.id === loanTypeId);
-    const contributionType = this.data.contributionTypes.find(i => i.id === this.currentLoanType.contribution_type_id);
+    this.currentLoanType = this.loanTypes.find(i => i.id === loanTypeId);
+    const contributionType = this.contributionTypes.find(i => i.id === this.currentLoanType.contribution_type_id);
     if (contributionType) {
-      if (contributionType.track_balance && this.data.group.contribution_balances) {
-        this.maximumAmount = this.data.group.contribution_balances[contributionType.id];
+      if (contributionType.track_balance && this.group.contribution_balances) {
+        this.maximumAmount = this.group.contribution_balances[contributionType.id];
       }
     }
     this.calculateLoan();
@@ -123,9 +111,9 @@ export class AssignLoanComponent implements OnInit {
 
   async save() {
     const dataToSave = {
-      groupId: this.data.group.id,
+      groupId: this.group.id,
       loanUsed: this.loanType,
-      memberId: this.data.member.id,
+      memberId: this.member.id,
       amountTaken: this.loanAmount,
       duration: this.duration,
       return_amount: this.testToReturn,
@@ -139,7 +127,7 @@ export class AssignLoanComponent implements OnInit {
     try {
       await this.functionsService.saveData('assignLoanToMember', dataToSave);
       this.loading = false;
-      this.commonService.showSuccess('Loan assigned to ' + this.data.member.name + ' Successful');
+      this.commonService.showSuccess('Loan assigned to ' + this.member.name + ' Successful');
       this.closeDialog();
     } catch (e) {
       this.loading = false;
@@ -149,7 +137,7 @@ export class AssignLoanComponent implements OnInit {
   }
 
   closeDialog() {
-    this.dialogRef.close();
+    this.closeForm.emit();
   }
 
   setAmountPerReturn() {

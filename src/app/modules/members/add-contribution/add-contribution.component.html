@@ -1,29 +1,29 @@
 <div class="container-fluid" style="max-height: 90vh; overflow-y: auto">
-  <div class="row">
-    <div class="col-sm-10">
-      <h2 class="registration-title">
-<!--        <img class="title-img" src="assets/images/icons/contribution1.png">-->
-<!--        <mat-icon>add</mat-icon>-->
-        Add contribution for {{data.member.name}}
-      </h2>
-    </div>
-    <div class="col-sm-2 pr-0" style="text-align: right">
-      <button mat-button (click)="closeDialog()">
-        <mat-icon>close</mat-icon>
-        <span> Close</span>
-      </button>
-    </div>
-  </div>
+<!--  <div class="row">-->
+<!--    <div class="col-sm-10">-->
+<!--      <h2 class="registration-title">-->
+<!--&lt;!&ndash;        <img class="title-img" src="assets/images/icons/contribution1.png">&ndash;&gt;-->
+<!--&lt;!&ndash;        <mat-icon>add</mat-icon>&ndash;&gt;-->
+<!--        Add contribution for {{member.name}}-->
+<!--      </h2>-->
+<!--    </div>-->
+<!--    <div class="col-sm-2 pr-0" style="text-align: right">-->
+<!--      <button mat-button (click)="closeDialog()">-->
+<!--        <mat-icon>close</mat-icon>-->
+<!--        <span> Close</span>-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->
 
   <div class="row">
     <div class="col-sm-7">
       <div class="row">
         <div class="col-sm-12">
           <h4 class="registration-title mb-0">Payment Amounts</h4>
-          <p><small style="color: #ffffffcf">Select contributions that {{data.member.name}} is contributing</small></p>
+          <p><small style="color: #ffffffcf">Select contributions that {{member.name}} is contributing</small></p>
         </div>
         <!--        Contribution Types-->
-        <div class="col-sm-12" *ngFor="let contr of data.contributionTypes">
+        <div class="col-sm-12" *ngFor="let contr of contributionTypes">
           <mat-checkbox [(ngModel)]="contributionSelected[contr.id]"
                         (change)="enableContribution($event.checked, contr)">
             {{contr.name}} <b *ngIf="contributionAmount[contr.id]">({{contributionAmount[contr.id] | number}})</b>
@@ -62,7 +62,7 @@
 
         <!--        Fine payments-->
         <div class="col-sm-12">
-          <mat-checkbox (change)="setHaveFines($event)" [(ngModel)]="haveFines">{{data.member.name}} have any fine?</mat-checkbox>
+          <mat-checkbox (change)="setHaveFines($event)" [(ngModel)]="haveFines">{{member.name}} have any fine?</mat-checkbox>
         </div>
 
         <!--        Fine Types selector-->
@@ -107,11 +107,11 @@
 <!--      <div class="menu-grid">-->
 <!--        <div class="img-div">-->
 <!--          <h1 style="font-size: 40px; color: #0d0d0d"-->
-<!--              class="registration-title">{{data.member.name[0].toUpperCase()}}</h1>-->
+<!--              class="registration-title">{{member.name[0].toUpperCase()}}</h1>-->
 <!--        </div>-->
 <!--        <div>-->
-<!--          <h2 class="registration-title mb-1">{{data.member.name}}</h2>-->
-<!--          <p class="lead">{{data.member.phone_number}}</p>-->
+<!--          <h2 class="registration-title mb-1">{{member.name}}</h2>-->
+<!--          <p class="lead">{{member.phone_number}}</p>-->
 <!--        </div>-->
 <!--      </div>-->
       <div class="row summary-area">
@@ -120,11 +120,11 @@
           <div class="menu-grid">
             <div class="img-div">
               <h1 style="font-size: 40px; color: #0d0d0d"
-                  class="registration-title">{{data.member.name[0].toUpperCase()}}</h1>
+                  class="registration-title">{{member.name[0].toUpperCase()}}</h1>
             </div>
             <div>
-              <h3 class="registration-title mb-1">{{data.member.name}}</h3>
-              <p class="lead">{{data.member.phone_number}}</p>
+              <h3 class="registration-title mb-1">{{member.name}}</h3>
+              <p class="lead">{{member.phone_number}}</p>
             </div>
           </div>
         </div>
@@ -146,7 +146,7 @@
             <mat-datepicker #endingDate></mat-datepicker>
           </mat-form-field>
         </div>
-        <div class="col-sm-6" *ngIf="data.group.track_contribution_period" @fadeIn>
+        <div class="col-sm-6" *ngIf="group.track_contribution_period" @fadeIn>
           <!-- Contribution Year-->
           <mat-form-field appearance="outline">
             <mat-label>Contribution Year</mat-label>
@@ -155,7 +155,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-sm-6" *ngIf="data.group.track_contribution_period" @fadeIn>
+        <div class="col-sm-6" *ngIf="group.track_contribution_period" @fadeIn>
           <!-- Contribution Month-->
           <mat-form-field appearance="outline">
             <mat-label>Contribution Month</mat-label>
@@ -199,8 +199,8 @@
         <div class="col-sm-12 mt-3" *ngIf="total" @fadeIn>
           <app-save-area
             [confirmFirst]="true"
-            confirmText="Are you sure you want to ADD {{total | number}}  as contribution for {{data.member.name}}?"
-            [saveDisabled]="(data.group.track_contribution_period && !month) || !paymentMode"
+            confirmText="Are you sure you want to ADD {{total | number}}  as contribution for {{member.name}}?"
+            [saveDisabled]="(group.track_contribution_period && !month) || !paymentMode"
             (cancel)="closeDialog()"
             (save)="save()"
             [savingData]="loading"

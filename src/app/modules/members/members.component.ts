@@ -10,17 +10,15 @@ import * as contributionTypeSelector from '../../store/contribution-type/contrib
 import {Group} from '../../store/group/group.model';
 import {GroupProgressDialogComponent} from '../../shared/components/group-progress/group-progress-dialog/group-progress-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
-import {AddContributionComponent} from './add-contribution/add-contribution.component';
 import {first} from 'rxjs/operators';
 import {ContributionType} from '../../store/contribution-type/contribution-type.model';
 import {LoanType} from '../../store/loan-type/loan-type.model';
 import * as loanSelector from '../../store/loan-type/loan-type.selectors';
-import {AssignLoanComponent} from './assign-loan/assign-loan.component';
+import * as fineTypeSelector from '../../store/fine-type/fine-type.selectors';
 import {HttpClient} from '@angular/common/http';
-import {AddMemberComponent} from './add-member/add-member.component';
 import {GroupProgress} from '../../store/group/group-progress.model';
 import {GroupProgressEnum} from '../../store/group/group-progress.enum';
-import {ContributionTypes} from '../../store/contribution-type/contribution-type.enum';
+import {FineType} from '../../store/fine-type/fine-type.model';
 
 @Component({
   selector: 'app-members',
@@ -33,13 +31,16 @@ export class MembersComponent implements OnInit {
   group$: Observable<Group>;
   contributionTypes$: Observable<ContributionType[]>;
   loanTypes$: Observable<LoanType[]>;
+  fineTypes$: Observable<FineType[]>;
   memberName$: Observable<string>;
   progress$: Observable<any>;
   progressDetails$: Observable<GroupProgress>;
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   viewDetails = false;
-  formTitle = '';
+  panelTitle = '';
+  viewType = '';
   details;
+  currentMember: Member;
 
   constructor(
     private store: Store<ApplicationState>,
@@ -52,65 +53,31 @@ export class MembersComponent implements OnInit {
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectRepeating));
     this.loanTypes$ = this.store.pipe(select(loanSelector.selectAll));
-    this.memberName$ = this.store.pipe(select(memberSelector.selectFirstNameOnly));
+    this.fineTypes$ = this.store.pipe(select(fineTypeSelector.selectDetailed));
+    this.memberName$ = this.store.pipe(select(memberSelector.selectMemberName));
   }
 
   ngOnInit(): void {
   }
 
   async addContribution(member: Member) {
-    const group = await this.group$.pipe(first()).toPromise();
-    const contributionTypes = await this.contributionTypes$.pipe(first()).toPromise();
-    const dialogRef = this.dialog.open(AddContributionComponent, {
-      width: '80%',
-      minHeight: '60vh',
-      data: {
-        group,
-        contributionTypes,
-        member,
-      },
-      disableClose: true,
-    });
+    this.currentMember = member;
+    this.viewType = 'contribution';
+    this.viewDetails = true;
+    this.panelTitle = 'Add contribution from ' + member.name;
   }
 
   async addLoan(member: Member) {
-    const group = await this.group$.pipe(first()).toPromise();
-    const contributionTypes = await this.contributionTypes$.pipe(first()).toPromise();
-    const loanTypes = await this.loanTypes$.pipe(first()).toPromise();
-    // this.viewDetails = true;
-    // this.details = {
-    //   group,
-    //   contributionTypes,
-    //   loanTypes,
-    //   member,
-    // };
-    const dialogRef = this.dialog.open(AssignLoanComponent, {
-      width: '80%',
-      minHeight: '60vh',
-      data: {
-        group,
-        contributionTypes,
-        loanTypes,
-        member,
-      },
-      disableClose: true,
-    });
+    this.currentMember = member;
+    this.viewType = 'loan';
+    this.viewDetails = true;
+    this.panelTitle = 'Assign Loan  to ' + member.name;
   }
 
   async addMembers() {
-    const group = await this.group$.pipe(first()).toPromise();
-    const members = await this.members$.pipe(first()).toPromise();
-    const memberName = await this.memberName$.pipe(first()).toPromise();
-    const dialogRef = this.dialog.open(AddMemberComponent, {
-      width: '60%',
-      minHeight: '60vh',
-      data: {
-        group,
-        memberName,
-        members,
-      },
-      disableClose: true,
-    });
+    this.viewType = 'add';
+    this.viewDetails = true;
+    this.panelTitle = 'Assign new member';
   }
 
   async openModel() {
@@ -149,6 +116,7 @@ export class MembersComponent implements OnInit {
 
   onClose() {
     this.viewDetails = false;
-    this.formTitle = '';
+    this.panelTitle = '';
+    this.viewType = '';
   }
 }

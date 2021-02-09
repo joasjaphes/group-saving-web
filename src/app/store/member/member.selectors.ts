@@ -25,6 +25,11 @@ export const selectFirstNameOnly = createSelector(
   (member) => member && member.name ? member.name.split(' ')[0] : ''
 );
 
+export const selectMemberName = createSelector(
+  selected,
+  (member) => member ? member.name : ''
+);
+
 export const selectMemberFromRoute = createSelector(
   selectEntities,
   getRouteState,

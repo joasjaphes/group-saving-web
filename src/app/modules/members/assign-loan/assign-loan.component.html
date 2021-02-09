@@ -1,15 +1,15 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-10">
-      <h2 class="registration-title">Assign Loan to {{data.member.name}}</h2>
-    </div>
-    <div class="col-sm-2 pr-0" style="text-align: right">
-      <button mat-button (click)="closeDialog()">
-        <mat-icon>close</mat-icon>
-        <span> Close</span>
-      </button>
-    </div>
-  </div>
+<!--  <div class="row">-->
+<!--    <div class="col-sm-10">-->
+<!--      <h2 class="registration-title">Assign Loan to {{member.name}}</h2>-->
+<!--    </div>-->
+<!--    <div class="col-sm-2 pr-0" style="text-align: right">-->
+<!--      <button mat-button (click)="closeDialog()">-->
+<!--        <mat-icon>close</mat-icon>-->
+<!--        <span> Close</span>-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->
 
   <div class="row">
     <div class="col-sm-6">
@@ -20,7 +20,7 @@
             <mat-label>Loan Type</mat-label>
             <mat-select [(ngModel)]="loanType" placeholder="Loan Type"
                         (selectionChange)="loanTypeSelected($event.value)">
-              <mat-option *ngFor="let contr of data.loanTypes" [value]="contr.id">
+              <mat-option *ngFor="let contr of loanTypes" [value]="contr.id">
                 {{contr.name}}
               </mat-option>
             </mat-select>
@@ -79,11 +79,11 @@
     <div class="col-sm-6" >
       <div class="menu-grid">
         <div class="img-div">
-          <h1 style="font-size: 40px; color: #0d0d0d" class="registration-title">{{data.member.name[0].toUpperCase()}}</h1>
+          <h1 style="font-size: 40px; color: #0d0d0d" class="registration-title">{{member.name[0].toUpperCase()}}</h1>
         </div>
         <div>
-          <h2 class="registration-title mb-1">{{data.member.name}}</h2>
-          <p class="lead">{{data.member.phone_number}}</p>
+          <h2 class="registration-title mb-1">{{member.name}}</h2>
+          <p class="lead">{{member.phone_number}}</p>
         </div>
       </div>
       <div class="row summary-area">

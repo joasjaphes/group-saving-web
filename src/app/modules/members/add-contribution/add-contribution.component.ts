@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Group} from '../../../store/group/group.model';
 import {Member} from '../../../store/member/member.model';
@@ -25,6 +25,11 @@ import {MatCheckboxChange} from '@angular/material/checkbox';
 })
 export class AddContributionComponent implements OnInit {
 
+  @Input() group: Group;
+  @Input() contributionTypes: ContributionType[];
+  @Input() fineTypes: FineType[];
+  @Input() member: Member;
+  @Output() closeForm = new EventEmitter();
   contributionDate = new Date();
   contributionSelected: any = {};
   loanSelected: any = {};
@@ -44,20 +49,13 @@ export class AddContributionComponent implements OnInit {
   paymentMode: string;
   referenceNumber: string;
   constructor(
-    public dialogRef: MatDialogRef<AddContributionComponent>,
     private commonService: CommonService,
     private functionsService: FunctionsService,
-    private store: Store<ApplicationState>,
-    @Inject(MAT_DIALOG_DATA) public data: {
-      group: Group;
-      contributionTypes: ContributionType[];
-      fineTypes: FineType[];
-      member: Member;
-    }
+    private store: Store<ApplicationState>
   ) { }
 
   ngOnInit(): void {
-    this.memberLoans$ = this.store.pipe(select(selectLoanByMember(this.data.member?.id)));
+    this.memberLoans$ = this.store.pipe(select(selectLoanByMember(this.member?.id)));
     this.fineTypes$ = this.store.pipe(select(fineSelector.selectAll));
     this.generateYears();
     // this.memberLoans$.subscribe(i => console.log(i));
@@ -114,8 +112,8 @@ export class AddContributionComponent implements OnInit {
 
   async save() {
     const dataToSave = {
-      groupId: this.data.group.id,
-      memberId: this.data.member.id,
+      groupId: this.group.id,
+      memberId: this.member.id,
       amountTaken: this.loanAmount,
       loans: this.loanAmount,
       fines: this.fineAmounts,
@@ -130,7 +128,7 @@ export class AddContributionComponent implements OnInit {
     try {
       await this.functionsService.saveData('addNewContribution', dataToSave);
       this.loading = false;
-      this.commonService.showSuccess('Contribution from ' + this.data.member.name + ' Submitted Successful');
+      this.commonService.showSuccess('Contribution from ' + this.member.name + ' Submitted Successful');
       this.closeDialog();
     } catch (e) {
       this.loading = false;
@@ -161,7 +159,7 @@ export class AddContributionComponent implements OnInit {
   }
 
   closeDialog() {
-    this.dialogRef.close();
+    this.closeForm.emit();
   }
 
   setHaveFines($event: MatCheckboxChange) {

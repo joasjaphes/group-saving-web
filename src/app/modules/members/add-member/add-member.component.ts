@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {countries, Country} from '../../../store/countries';
 import {trimPhoneNumber} from '../../../store/login-steps/login-steps.selectors';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
@@ -17,30 +17,28 @@ import {Member} from '../../../store/member/member.model';
   animations: [fadeIn]
 })
 export class AddMemberComponent implements OnInit {
+  @Input() group: Group;
+  @Input() memberName: string;
+  @Input() members: Member[];
+  @Output() closeForm = new EventEmitter();
+
   countries = countries;
   selectedCountry: string;
   country: Country;
   phoneNumber: string;
   currentPhoneNumber: string;
-  memberName: string;
-  members = [];
+  name: string;
   loading = false;
   numberTakenMember: Member;
   constructor(
-    public dialogRef: MatDialogRef<AddMemberComponent>,
     private commonService: CommonService,
     private functionsService: FunctionsService,
     private store: Store<ApplicationState>,
-    @Inject(MAT_DIALOG_DATA) public data: {
-      group: Group;
-      memberName: string;
-      members: Member[]
-    }
   ) { }
 
   ngOnInit(): void {
-    if (this.data && this.data.group) {
-      this.country = this.countries.find(i => i.isoCode === this.data.group.country);
+    if (this.group) {
+      this.country = this.countries.find(i => i.isoCode === this.group.country);
       this.selectedCountry = this.country.phoneCode;
     }
   }
@@ -52,7 +50,7 @@ export class AddMemberComponent implements OnInit {
 
   setPhoneNumber(value) {
     const phone = `+${this.country.phoneCode}${trimPhoneNumber(this.phoneNumber)}`;
-    const member = this.data.members.find(i => i.phone_number === phone);
+    const member = this.members.find(i => i.phone_number === phone);
     if (member) {
       this.numberTakenMember = member;
     } else {
@@ -67,16 +65,16 @@ export class AddMemberComponent implements OnInit {
   }
 
   closeDialog() {
-    this.dialogRef.close();
+    this.closeForm.emit();
   }
 
   async save() {
     const dataToSave = {
       name: this.memberName,
       phoneNumber: this.phoneNumber,
-      memberName: this.data.memberName,
-      groupName: this.data.group.group_name,
-      groupId: this.data.group.id,
+      memberName: this.memberName,
+      groupName: this.group.group_name,
+      groupId: this.group.id,
     };
     this.loading = true;
     try {
