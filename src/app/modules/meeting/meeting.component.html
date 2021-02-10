@@ -1,30 +1,54 @@
 <app-shared-layout
   title="Meetings"
   icon="group_work"
+  [hideAdd]="true"
+  [addIcon]="'group_add'"
+  (addItem)="addItem()"
+  [addText]="'New Member'"
+  [viewDetails]="viewDetails"
+  (closeDetails)="closePanel()"
+  [animationSize]="'full'"
+  [smallForm]="false"
+  [formTitle]="panelTitle"
 >
   <ng-container ngProjectAs="table">
-    <div class="progress-container content-area mb-5">
-      <div class="progressArea">
-        <img alt="meeting" src="assets/images/meeting.jpg">
-      </div>
-      <div class="textArea">
-        <h1 style="font-size: 40px; line-height: 45px" class="registration-title mt-5 mb-1">
-          No meetings conducted
-        </h1>
-        <p style="font-size: 20px; font-weight: 100; color: #9b9b9b; margin-bottom: 20px">
-          You can create meeting, record meeting agendas and track attendance
-        </p>
-        <button
-          style="font-weight: 900; border-radius: 20px;margin-top: 10px;padding: 5px 25px;font-size: 15px;border: 1px solid #FF7043;"
-          mat-raised-button
-          class="registration-title add-button"
-        >
 
-          <mat-icon>group_add</mat-icon>&nbsp;
-          Set a meeting &nbsp;
-          <mat-icon>arrow_forward</mat-icon>
-        </button>
-      </div>
-    </div>
+    <app-next-meeting
+      *ngIf="(nextMeeting$ | async)"
+      [nextMeeting]="nextMeeting$ | async"
+      (completeMeeting)="completeMeeting()"
+      (cancelMeeting)="cancelMeeting()"
+    ></app-next-meeting>
+
+    <app-empty-meeting
+      *ngIf="!(nextMeeting$ | async)"
+      (setMeeting)="addItem()"
+    ></app-empty-meeting>
+
+    <h3 class="registration-title">
+      Meetings
+    </h3>
+
+    <p class="registration-title">
+      There are no meeting conducted
+    </p>
+
+  </ng-container>
+
+  <ng-container ngProjectAs="form">
+    <app-set-meeting
+      *ngIf="viewType == 'add'"
+      [group]="group$ | async"
+      [currentMeeting]="currentMeeting"
+      (closeForm)="closePanel()"
+    ></app-set-meeting>
+
+    <app-complete-meeting
+      *ngIf="viewType == 'complete'"
+      [group]="group$ | async"
+      [currentMeeting]="currentMeeting"
+      [members]="members$ | async"
+      (closeForm)="closePanel()"
+    ></app-complete-meeting>
   </ng-container>
 </app-shared-layout>

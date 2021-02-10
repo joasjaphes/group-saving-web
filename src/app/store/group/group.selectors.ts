@@ -24,6 +24,11 @@ export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
 
+export const nextMeeting = createSelector(
+  selected,
+  (group) => group && group.next_meeting && group.next_meeting.meeting_date ? group.next_meeting : null
+);
+
 export const selectProgressPercent = createSelector(
   selected,
   fromLoan.selectAll,

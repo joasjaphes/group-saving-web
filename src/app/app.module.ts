@@ -63,6 +63,11 @@ import { FineTypesComponent } from './modules/settings/fine-types/fine-types.com
 import { ContributionTypesComponent } from './modules/settings/contribution-types/contribution-types.component';
 import { LoanQueueComponent } from './modules/summary/loan-queue/loan-queue.component';
 import { AddLoanQueueComponent } from './modules/summary/loan-queue/add-loan-queue/add-loan-queue.component';
+import { SetMeetingComponent } from './modules/meeting/set-meeting/set-meeting.component';
+import { CompleteMeetingComponent } from './modules/meeting/complete-meeting/complete-meeting.component';
+import { CancelMeetingComponent } from './modules/meeting/cancel-meeting/cancel-meeting.component';
+import { EmptyMeetingComponent } from './modules/meeting/empty-meeting/empty-meeting.component';
+import { NextMeetingComponent } from './modules/meeting/next-meeting/next-meeting.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -122,7 +127,12 @@ const firebaseConfig = {
     FineTypesComponent,
     ContributionTypesComponent,
     LoanQueueComponent,
-    AddLoanQueueComponent
+    AddLoanQueueComponent,
+    SetMeetingComponent,
+    CompleteMeetingComponent,
+    CancelMeetingComponent,
+    EmptyMeetingComponent,
+    NextMeetingComponent
   ],
   imports: [
     BrowserModule,

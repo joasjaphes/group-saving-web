@@ -41,7 +41,6 @@ export interface Group {
   contribution_balances?: {[id: string]: any};
   loan_queue: LoanQueue[];
   current_balances: any;
-  next_meeting: any;
   country: string;
   currency: string;
   currency_name: string;
@@ -60,4 +59,8 @@ export interface Group {
   start_month: string;
   start_year: string;
   track_contribution_period: boolean;
+  next_meeting?: {
+    meeting_date: any;
+    meeting_place: string;
+  };
 }

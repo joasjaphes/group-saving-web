@@ -26,6 +26,7 @@ import {StartingMeetingRulesComponent} from './components/group-progress/startin
 import {StartingMembersComponent} from './components/group-progress/starting-members/starting-members.component';
 import {StartingLeadershipComponent} from './components/group-progress/starting-leadership/starting-leadership.component';
 import {StartingBalancesComponent} from './components/group-progress/starting-balances/starting-balances.component';
+import { HalfProgressComponent } from './components/half-progress/half-progress.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {StartingBalancesComponent} from './components/group-progress/starting-ba
     StartingMembersComponent,
     StartingLeadershipComponent,
     StartingBalancesComponent,
+    HalfProgressComponent,
   ],
   imports: [
     CommonModule,
@@ -60,37 +62,38 @@ import {StartingBalancesComponent} from './components/group-progress/starting-ba
     HttpClientModule,
     RouterModule
   ],
-  exports: [
-    CommonModule,
-    BrowserAnimationsModule,
-    MaterialModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    RouterModule,
+    exports: [
+        CommonModule,
+        BrowserAnimationsModule,
+        MaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        RouterModule,
 
-    MatSelectSearchComponent,
-    SharedLayoutComponent,
-    TopBannerComponent,
-    ViewHelpComponent,
-    CircularProgressComponent,
-    MenuItemsComponent,
-    SaveAreaComponent,
-    LoaderComponent,
-    EmptySummaryComponent,
-    GroupProgressComponent,
-    GroupProgressDialogComponent,
-    GroupStartingInfoComponent,
-    StartingContributionTypeComponent,
-    StartingLoanTypeComponent,
-    StartingMeetingRulesComponent,
-    StartingMembersComponent,
-    StartingLeadershipComponent,
-    StartingBalancesComponent,
+        MatSelectSearchComponent,
+        SharedLayoutComponent,
+        TopBannerComponent,
+        ViewHelpComponent,
+        CircularProgressComponent,
+        MenuItemsComponent,
+        SaveAreaComponent,
+        LoaderComponent,
+        EmptySummaryComponent,
+        GroupProgressComponent,
+        GroupProgressDialogComponent,
+        GroupStartingInfoComponent,
+        StartingContributionTypeComponent,
+        StartingLoanTypeComponent,
+        StartingMeetingRulesComponent,
+        StartingMembersComponent,
+        StartingLeadershipComponent,
+        StartingBalancesComponent,
 
-    SearchPipe,
-    FirstUpperCasePipe,
-    ToUpperPipe,
-  ]
+        SearchPipe,
+        FirstUpperCasePipe,
+        ToUpperPipe,
+        HalfProgressComponent,
+    ]
 })
 export class SharedModule { }

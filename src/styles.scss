@@ -198,6 +198,21 @@ button:focus {
   transform: scale(1.1);
 }
 
+.add-button1 {
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
+  background-color: #1d1d42;
+  border: 1px solid rgba(255, 255, 255, 0.1)!important;
+  font-weight: 200!important;
+  //color: #f15a28;
+  mat-icon {
+    //font-weight: bold;
+  }
+}
+
+.add-button1:hover {
+  transform: scale(1.1);
+}
+
 .zoom-on-hover {
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
 }

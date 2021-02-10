@@ -1,0 +1,45 @@
+<div class="progress-container content-area mb-5">
+  <div class="progressArea">
+    <img alt="meeting" src="assets/images/meetings.jpg">
+  </div>
+  <div class="textArea">
+    <p class="text-muted mb-1" >Next meeting on</p>
+    <h1 style="font-size: 40px; line-height: 45px"
+        class="registration-title mb-1">
+          <span>
+            {{nextMeeting.meeting_date | date}}
+          </span>
+    </h1>
+    <p style="font-size: 20px; font-weight: 100; color: #9b9b9b; margin-bottom: 20px">
+          <span>
+            {{nextMeeting.meeting_place}}
+          </span>
+
+    </p>
+    <div>
+
+      <button
+        (click)="onComplete()"
+        style="font-weight: 900; border-radius: 20px;margin-top: 10px;padding: 5px 25px;font-size: 15px;border: 1px solid #FF7043;"
+        mat-raised-button
+        class="add-button"
+      >
+        <mat-icon>playlist_add_check</mat-icon>&nbsp;
+        Complete Meeting&nbsp;
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+
+      <button
+        (click)="onCancel()"
+        style="font-weight: 900; border-radius: 20px;margin-top: 10px;padding: 5px 25px;font-size: 15px;border: 1px solid #FF7043;"
+        mat-raised-button
+        class="add-button1"
+      >
+        <mat-icon>close</mat-icon>&nbsp;
+        Cancel Meeting&nbsp;
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+
+    </div>
+  </div>
+</div>

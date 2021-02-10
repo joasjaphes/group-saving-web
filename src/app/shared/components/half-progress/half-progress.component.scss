@@ -1,0 +1,22 @@
+//body {
+//  display: grid;
+//  justify-content: center;
+//  align-items: center;
+//  height: 100vh;
+//}
+
+svg path {
+  will-change: auto;
+  stroke-width: 20px;
+  stroke-miterlimit: 40;
+  stroke: #F15A28;
+  transition: stroke-dashoffset 850ms ease-in-out;
+}
+
+svg path.meter {
+  will-change: auto;
+  stroke-width: 20px;
+  stroke-miterlimit: 40;
+  stroke: #cbbdb8;
+  transition: stroke-dashoffset 850ms ease-in-out;
+}
