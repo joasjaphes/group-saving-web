@@ -1,7 +1,7 @@
 <app-shared-layout
   title="Contributions"
   image="money.png"
-  [hideAdd]="false"
+  [hideAdd]="true"
   [addIcon]="'add'"
   (addItem)="addItem()"
   [addText]="'Add Contributions'"
@@ -12,6 +12,76 @@
   (closeDetails)="closePanel()"
 >
   <ng-container ngProjectAs="table">
-    <h1>Contributions will stay here</h1>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="top-grid">
+          <div>
+            <button
+              class="zoom-on-hover selector"
+              mat-flat-button
+              (click)="currentView = 'members'; getData()"
+              [ngClass]="{'active': currentView == 'members'}"
+            >Members </button>
+            <button
+              class="zoom-on-hover selector"
+              mat-flat-button
+              (click)="currentView = 'months'; getData()"
+              [ngClass]="{'active': currentView == 'months'}"
+            >Months </button>
+          </div>
+          <div style="text-align: end">
+
+            <mat-menu #yearMenu="matMenu">
+              <button mat-menu-item (click)="setYear(2021)">2021</button>
+              <button mat-menu-item (click)="setYear(2022)">2022</button>
+              <button mat-menu-item (click)="setYear(2023)">2023</button>
+              <button mat-menu-item (click)="setYear(2024)">2024</button>
+              <button mat-menu-item (click)="setYear(2025)">2025</button>
+            </mat-menu>
+
+            <small class="text-muted">For</small>
+            <button mat-button [matMenuTriggerFor]="yearMenu" class="cursor">
+              <mat-icon>date_range</mat-icon> &nbsp;
+              <span>{{year}}</span> &nbsp;
+              <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+            </button>
+
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="contr-grid">
+          <div *ngFor="let contr of contributionTypes$ | async" class="zoom-on-hover content-area">
+            <p style="color: #ffffff6e; text-align: end" class="mb-1">{{contr.name}}</p>
+            <h1 class="registration-title mb-1" style=" text-align: end">{{contr.total | number}}</h1>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-sm-12">
+        <div class="payment-grid">
+          <div class="one-payment" *ngFor="let payment of contributions$ | async">
+            <div class="img-div">
+              <h1 style="font-size: 40px;" class="registration-title">{{payment.name[0].toUpperCase()}}</h1>
+            </div>
+            <div class="name-area">
+<!--              <p style="color: #ffffff6e" class="lead mb-1"><small>{{ payment.date | date:'MMM yyyy' }}</small></p>-->
+              <h1 class="mb-1 registration-title">{{ payment.name }}</h1>
+              <p style="color: #ffffffbf" class="mb-0">{{ payment.description }}</p>
+<!--              <p *ngFor="let item of payment.items">-->
+<!--                {{item.name}}: <b>{{item.amount}}</b>-->
+<!--              </p>-->
+            </div>
+            <div class="amount-area">
+              <p class="mb-0"><small class="text-muted">{{(group$ | async)?.currency}}</small> </p>
+              <h1 class="registration-title">{{ payment.total | number }}</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </ng-container>
 </app-shared-layout>

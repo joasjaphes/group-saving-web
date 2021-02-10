@@ -23,4 +23,9 @@ export interface Payment {
   loans: any;
   isPending: boolean;
   totalAmount?: number;
+  paymentItems?: {
+    id: string;
+    name: string;
+    amount: number;
+  }[];
 }
