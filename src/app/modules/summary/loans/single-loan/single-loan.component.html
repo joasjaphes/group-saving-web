@@ -1,24 +1,25 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-12">
-      <h2>
-        {{loan.member?.name}}
-        <small class="text-muted">({{loan.loanType?.name}})</small>
-      </h2>
+
     </div>
     <div class="col-sm-12 mb-4">
       <div class="loan-title-grid">
         <div>
-          <p style="color: #ffffffb3;">Remaining to be paid</p>
-          <h1 style="color: #ffffff; font-size: 40px" class="mb-0 registration-title">
-            {{loan.remaining_balance | number}}
-          </h1>
+          <app-small-circular-progress
+            [value]="loan.percentPaid"
+            [titleText]="loan.member?.name[0].toUpperCase()"
+          ></app-small-circular-progress>
         </div>
         <div>
-<!--          <app-small-circular-progress-->
-<!--            [value]="loan.percentPaid"-->
-<!--            [titleText]="loan.member?.name[0].toUpperCase()"-->
-<!--          ></app-small-circular-progress>-->
+          <h2 class="mb-0" style="color: #ffffffb3;">
+            {{loan.member?.name}}
+            <small class="text-muted">({{loan.loanType?.name}})</small>
+          </h2>
+          <p style="color: #ffffffb3;">Remaining to be paid <small class="text-muted">({{group.currency}})</small></p>
+          <h1 style="color: #ffffff; font-size: 40px; letter-spacing: 4px" class="mb-0 registration-title">
+            {{loan.remaining_balance | number}}
+          </h1>
         </div>
       </div>
     </div>
@@ -93,7 +94,7 @@
       </div>
     </div>
     <div class="col-sm-5">
-      <h3 class="registration-title">Payments</h3>
+      <h3 class="registration-title" style="color: #ffffffb3;">Loan Payments</h3>
       <h2 *ngIf="loan.payments.length == 0" class="mt-3" style="color: #ffffffb3;">There are no payments made yet</h2>
       <table class="table table-bordered" style="color: white; font-size: 12px" *ngIf="loan.payments.length > 0">
         <tr>

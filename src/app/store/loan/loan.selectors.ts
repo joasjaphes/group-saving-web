@@ -61,6 +61,12 @@ export const selectActiveLoans = createSelector(
     .filter(i => parseFloat(i.remaining_balance + '') > 0)
 );
 
+export const selectCompletedLoans = createSelector(
+  selectDetailed,
+  (allItems) => allItems
+    .filter(i => parseFloat(i.remaining_balance + '') <= 0)
+);
+
 
 export const selectTotalByYear = (year) => createSelector(
   selectAll,

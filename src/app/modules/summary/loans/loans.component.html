@@ -33,14 +33,20 @@
               [ngClass]="{'active': currentView == 'completed'}"
             >
               <mat-icon>check</mat-icon>
-              Completed
+              Paid Loans
             </button>
           </div>
         </div>
       </div>
 
       <div class="col-sm-12">
-        <div class="loan-grid">
+        <h2 *ngIf="(activeLoans$ | async)?.length == 0" class="registration-title">
+          There are no
+          <span *ngIf="currentView == 'completed'" class="registration-title"> paid loan</span>
+          <span *ngIf="currentView == 'current'" class="registration-title"> active Loans</span>
+        </h2>
+
+        <div class="loan-grid" *ngIf="(activeLoans$ | async)?.length > 0">
           <div
             (click)="viewItem(loan)"
             title="Click to view more details"

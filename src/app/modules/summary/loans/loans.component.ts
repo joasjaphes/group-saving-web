@@ -60,6 +60,11 @@ export class LoansComponent implements OnInit {
   }
 
   getData() {
+    if (this.currentView === 'current') {
+      this.activeLoans$ = this.store.pipe(select(loanSelector.selectActiveLoans));
+    } else {
+      this.activeLoans$ = this.store.pipe(select(loanSelector.selectCompletedLoans));
+    }
 
   }
 }

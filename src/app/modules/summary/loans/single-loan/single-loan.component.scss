@@ -1,7 +1,8 @@
 .loan-title-grid {
   display: grid;
-  grid-template-columns: auto 90px;
+  grid-template-columns: 120px auto;
   margin-bottom: 15px;
+  grid-gap: 15px;
 }
 
 .details-grid {
