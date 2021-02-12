@@ -27,6 +27,7 @@ export class LoansComponent implements OnInit {
   viewDetails = false;
   panelTitle = '';
   viewType = '';
+  memberSearch = '';
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   constructor(
     private store: Store<ApplicationState>

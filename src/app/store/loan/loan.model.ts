@@ -10,6 +10,7 @@ export interface Loan {
   date: string;
   member_id: string;
   member?: Member;
+  memberName?: string;
   account_used: string;
   loanType?: LoanType;
   loan_used: string;

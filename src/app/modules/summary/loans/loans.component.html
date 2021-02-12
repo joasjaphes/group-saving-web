@@ -36,14 +36,21 @@
               Paid Loans
             </button>
           </div>
+          <div>
+            <mat-form-field>
+              <mat-icon matSuffix>search </mat-icon>
+              <input [(ngModel)]="memberSearch" matInput placeholder=" Type member name to search">
+            </mat-form-field>
+          </div>
         </div>
       </div>
 
       <div class="col-sm-12">
-        <h2 *ngIf="(activeLoans$ | async)?.length == 0" class="registration-title">
+        <h2 *ngIf="(activeLoans$ | async | search:'memberName': memberSearch)?.length == 0" class="registration-title">
           There are no
           <span *ngIf="currentView == 'completed'" class="registration-title"> paid loan</span>
           <span *ngIf="currentView == 'current'" class="registration-title"> active Loans</span>
+          <span *ngIf="!!memberSearch" class="registration-title"> for {{memberSearch}}</span>
         </h2>
 
         <div class="loan-grid" *ngIf="(activeLoans$ | async)?.length > 0">
@@ -52,7 +59,7 @@
             title="Click to view more details"
             class="single-loan content-area-shadow zoom-on-hover cursor"
             [ngClass]="routeAnimationsElements"
-            *ngFor="let loan of activeLoans$ | async"
+            *ngFor="let loan of activeLoans$ | async | search:'memberName': memberSearch"
           >
             <div class="gauge">
               <app-small-circular-progress

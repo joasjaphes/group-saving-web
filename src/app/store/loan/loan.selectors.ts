@@ -32,6 +32,7 @@ export const selectDetailed = createSelector(
         percentPaid: parseInt(((i.amount_paid_to_date / i.total_amount_to_pay) * 100) + '', 10),
         durationName: durationTYpe(i.duration_type),
         member: members[i.member_id],
+        memberName: members[i.member_id] ? members[i.member_id].name : '',
         loanType: {
           ...loanTypes[i.loan_used]
         }
