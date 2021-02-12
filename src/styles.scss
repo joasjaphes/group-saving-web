@@ -138,6 +138,11 @@ button.add-item:hover {
   background-color: #141432;
 }
 
+.content-area-shadow {
+  background-color: #141432;
+  box-shadow: 0 0 1em #00000096;
+}
+
 button:focus {
   outline: none;
   outline: 0;
@@ -222,9 +227,12 @@ button:focus {
 }
 
 .zoom-on-hover:hover {
-  transform: scale(1.1);
+  transform: scale(1.03);
 }
 
+.cursor {
+  cursor: pointer;
+}
 
 .mat-dialog-container {
   background-color: #1d1d42;
@@ -468,4 +476,28 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+//this is the grid used for top selections
+.top-grid {
+  display: grid;
+  grid-template-columns: auto 200px;
+  margin-bottom: 30px;
+
+  button.selector {
+    font-weight: normal;
+    background-color: transparent;
+    border-bottom: 2px solid rgba(248, 87, 34, 0.4)!important;
+    border-radius: 0;
+    margin-right: 20px;
+    color: #ffffffb0;
+    mat-icon {
+      font-size: 20px;
+    }
+  }
+  .selector.active {
+    color: white;
+    border-bottom: 2px solid #F15A28!important;
+
+  }
 }

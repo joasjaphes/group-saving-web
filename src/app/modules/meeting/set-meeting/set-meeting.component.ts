@@ -16,6 +16,7 @@ export class SetMeetingComponent implements OnInit {
   @Input() group: Group;
   @Input() currentMeeting: Meeting;
   @Output() closeForm = new EventEmitter();
+  today = new Date();
   meetingDate: any;
   meetingPlace: any;
   loading = false;

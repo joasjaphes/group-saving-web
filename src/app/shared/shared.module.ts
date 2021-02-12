@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from './material-module/material.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -10,13 +10,13 @@ import {SearchPipe} from './pipes/search.pipe';
 import {SharedLayoutComponent} from './components/shared-layout/shared-layout.component';
 import {TopBannerComponent} from './components/topbanner/top-banner.component';
 import {ViewHelpComponent} from './components/view-help/view-help.component';
-import { FirstUpperCasePipe } from './pipes/first-upper-case.pipe';
+import {FirstUpperCasePipe} from './pipes/first-upper-case.pipe';
 import {ToUpperPipe} from './pipes/to-upper.pipe';
-import { CircularProgressComponent } from './components/circular-progress/circular-progress.component';
-import { MenuItemsComponent } from './components/menu-items/menu-items.component';
+import {CircularProgressComponent} from './components/circular-progress/circular-progress.component';
+import {MenuItemsComponent} from './components/menu-items/menu-items.component';
 import {SaveAreaComponent} from './components/save-area/save-area.component';
 import {LoaderComponent} from './components/loader/loader.component';
-import { EmptySummaryComponent } from './components/empty-summary/empty-summary.component';
+import {EmptySummaryComponent} from './components/empty-summary/empty-summary.component';
 import {GroupProgressComponent} from './components/group-progress/group-progress.component';
 import {GroupProgressDialogComponent} from './components/group-progress/group-progress-dialog/group-progress-dialog.component';
 import {GroupStartingInfoComponent} from './components/group-progress/group-starting-info/group-starting-info.component';
@@ -26,7 +26,8 @@ import {StartingMeetingRulesComponent} from './components/group-progress/startin
 import {StartingMembersComponent} from './components/group-progress/starting-members/starting-members.component';
 import {StartingLeadershipComponent} from './components/group-progress/starting-leadership/starting-leadership.component';
 import {StartingBalancesComponent} from './components/group-progress/starting-balances/starting-balances.component';
-import { HalfProgressComponent } from './components/half-progress/half-progress.component';
+import {HalfProgressComponent} from './components/half-progress/half-progress.component';
+import {SmallCircularProgressComponent} from './components/small-circular-progress/small-circular-progress.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { HalfProgressComponent } from './components/half-progress/half-progress.
     StartingLeadershipComponent,
     StartingBalancesComponent,
     HalfProgressComponent,
+    SmallCircularProgressComponent,
   ],
   imports: [
     CommonModule,
@@ -62,38 +64,40 @@ import { HalfProgressComponent } from './components/half-progress/half-progress.
     HttpClientModule,
     RouterModule
   ],
-    exports: [
-        CommonModule,
-        BrowserAnimationsModule,
-        MaterialModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        RouterModule,
+  exports: [
+    CommonModule,
+    BrowserAnimationsModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    RouterModule,
 
-        MatSelectSearchComponent,
-        SharedLayoutComponent,
-        TopBannerComponent,
-        ViewHelpComponent,
-        CircularProgressComponent,
-        MenuItemsComponent,
-        SaveAreaComponent,
-        LoaderComponent,
-        EmptySummaryComponent,
-        GroupProgressComponent,
-        GroupProgressDialogComponent,
-        GroupStartingInfoComponent,
-        StartingContributionTypeComponent,
-        StartingLoanTypeComponent,
-        StartingMeetingRulesComponent,
-        StartingMembersComponent,
-        StartingLeadershipComponent,
-        StartingBalancesComponent,
+    MatSelectSearchComponent,
+    SharedLayoutComponent,
+    TopBannerComponent,
+    ViewHelpComponent,
+    CircularProgressComponent,
+    MenuItemsComponent,
+    SaveAreaComponent,
+    LoaderComponent,
+    EmptySummaryComponent,
+    GroupProgressComponent,
+    GroupProgressDialogComponent,
+    GroupStartingInfoComponent,
+    StartingContributionTypeComponent,
+    StartingLoanTypeComponent,
+    StartingMeetingRulesComponent,
+    StartingMembersComponent,
+    StartingLeadershipComponent,
+    StartingBalancesComponent,
+    SmallCircularProgressComponent,
 
-        SearchPipe,
-        FirstUpperCasePipe,
-        ToUpperPipe,
-        HalfProgressComponent,
-    ]
+    SearchPipe,
+    FirstUpperCasePipe,
+    ToUpperPipe,
+    HalfProgressComponent,
+  ]
 })
-export class SharedModule { }
+export class SharedModule {
+}

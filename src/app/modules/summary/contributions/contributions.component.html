@@ -21,22 +21,24 @@
               mat-flat-button
               (click)="currentView = 'members'; getData()"
               [ngClass]="{'active': currentView == 'members'}"
-            >Members </button>
+            >
+              <mat-icon>person_outline</mat-icon>
+              Members
+            </button>
             <button
               class="zoom-on-hover selector"
               mat-flat-button
               (click)="currentView = 'months'; getData()"
               [ngClass]="{'active': currentView == 'months'}"
-            >Months </button>
+            >
+              <mat-icon>today</mat-icon>
+              Months
+            </button>
           </div>
           <div style="text-align: end">
 
             <mat-menu #yearMenu="matMenu">
-              <button mat-menu-item (click)="setYear(2021)">2021</button>
-              <button mat-menu-item (click)="setYear(2022)">2022</button>
-              <button mat-menu-item (click)="setYear(2023)">2023</button>
-              <button mat-menu-item (click)="setYear(2024)">2024</button>
-              <button mat-menu-item (click)="setYear(2025)">2025</button>
+              <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setYear(yr)">{{yr}}</button>
             </mat-menu>
 
             <small class="text-muted">For</small>
@@ -53,9 +55,18 @@
 
       <div class="col-sm-12">
         <div class="contr-grid">
-          <div *ngFor="let contr of contributionTypes$ | async" class="zoom-on-hover content-area">
-            <p style="color: #ffffff6e; text-align: end" class="mb-1">{{contr.name}}</p>
-            <h1 class="registration-title mb-1" style=" text-align: end">{{contr.total | number}}</h1>
+          <div
+            *ngFor="let contr of contributionTypes$ | async"
+            (click)="viewByType(contr)"
+            title="Click to view list of transactions"
+            class="zoom-on-hover content-area cursor"
+          >
+            <p style="color: #ffffff9e; text-align: start" class="mb-1">{{contr.name}}</p>
+            <div style="display: grid; grid-template-columns: 1fr 3fr; padding: 0">
+              <h4 class="registration-title text-muted mb-1" style=" text-align: start">{{(group$ | async)?.currency}}</h4>
+              <h1 class="registration-title mb-1" style=" text-align: end">{{contr.total | number}}</h1>
+            </div>
+
           </div>
         </div>
       </div>
@@ -63,9 +74,18 @@
 
       <div class="col-sm-12">
         <div class="payment-grid">
-          <div class="one-payment" *ngFor="let payment of contributions$ | async">
-            <div class="img-div">
-              <h1 style="font-size: 40px;" class="registration-title">{{payment.name[0].toUpperCase()}}</h1>
+          <div
+            class="one-payment content-area-shadow cursor"
+            title="click to view list of transactions for {{payment.name}}"
+            *ngFor="let payment of contributions$ | async"
+            (mouseover)="hover[payment.id] = true"
+            (mouseout)="hover[payment.id] = false"
+          >
+            <div style="display: grid; align-content: center">
+              <div class="img-div">
+                <h1 *ngIf="currentView == 'members'" style="font-size: 40px;" class="registration-title">{{payment.name[0].toUpperCase()}}</h1>
+                <h1 *ngIf="currentView == 'months'" style="font-size: 38px;" class="registration-title">{{payment.key}}</h1>
+              </div>
             </div>
             <div class="name-area">
 <!--              <p style="color: #ffffff6e" class="lead mb-1"><small>{{ payment.date | date:'MMM yyyy' }}</small></p>-->
@@ -74,6 +94,11 @@
 <!--              <p *ngFor="let item of payment.items">-->
 <!--                {{item.name}}: <b>{{item.amount}}</b>-->
 <!--              </p>-->
+              <p class="mb-0 mt-2">
+                <button (click)="viewContributions(payment)" mat-button> <mat-icon>list</mat-icon>
+                  View Transactions
+                </button>
+              </p>
             </div>
             <div class="amount-area">
               <p class="mb-0"><small class="text-muted">{{(group$ | async)?.currency}}</small> </p>
@@ -83,5 +108,13 @@
         </div>
       </div>
     </div>
+  </ng-container>
+
+  <ng-container ngProjectAs="form">
+    <app-list-contributions
+      *ngIf="viewType == 'view'"
+      [contributions]="currentPayments$ | async"
+      [group]="group$ | async"
+    ></app-list-contributions>
   </ng-container>
 </app-shared-layout>

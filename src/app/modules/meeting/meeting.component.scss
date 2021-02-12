@@ -70,3 +70,27 @@
     }
   }
 }
+
+.meeting-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 30px;
+
+  .single-meeting {
+    display: grid;
+    grid-template-columns: 70px auto;
+    border: 1px solid #ffffff5e;
+    padding: 15px;
+    border-radius: 15px;
+
+    .icon-area {
+      display: grid;
+      align-content: center;
+
+      mat-icon {
+        color: #ffffffb3;
+        font-size: 30px;
+      }
+    }
+  }
+}

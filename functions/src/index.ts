@@ -26,6 +26,8 @@ import * as createLoanQueue from './loan/add-loan-queue';
 import * as assignPastActiveLoanToMember from './loan/add_previous_loan';
 import * as setMeetingDetails from './meeting/set-meeting-details';
 import * as setNextMeeting from './meeting/set-next-meeting-details';
+import * as completeMeeting from './meeting/complete-meeting-details';
+import * as cancelNextMeeting from './meeting/cancel-next-meeting-details';
 
 exports.getUserByPhoneNumber = getUserByPhoneNumber.getUserByPhoneNumber;
 
@@ -47,6 +49,8 @@ exports.updateBasicInfo = updateBasicInfo.updateBasicInfo;
 exports.setGroupLeadership = setGroupLeadership.setGroupLeadership;
 exports.setMeetingDetails = setMeetingDetails.setMeetingDetails;
 exports.setNextMeeting = setNextMeeting.setNextMeeting;
+exports.cancelNextMeeting = cancelNextMeeting.cancelNextMeeting;
+exports.completeMeeting = completeMeeting.completeMeeting;
 exports.assignLoanToMember = assignLoanToMember.assignLoanToMember;
 exports.createLoanQueue = createLoanQueue.createLoanQueue;
 exports.addNewContribution = addNewContribution.addNewContribution;

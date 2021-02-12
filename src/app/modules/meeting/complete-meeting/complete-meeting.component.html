@@ -19,28 +19,36 @@
     </div>
 
     <div class="col-sm-12 mt-2">
-      <h3 class="registration-title">
+      <h3 class="registration-title mb-0">
         Attendance
       </h3>
+      <p class="mb-1" style="color: #ffffffa8; font-size: 12px">Select members present in this meeting</p>
     </div>
 
-    <div class="col-sm-12 mt-1 zoom-on-hover1 cursor" >
+    <div class="col-sm-12 mt-1 cursor" >
         <div class="members-grid">
-          <div class="member-grid content-area" *ngFor="let member of members">
+          <div [ngClass]="{'active': attendance[member.id]}" class="member-grid" *ngFor="let member of members"  (click)="selectMember(member)">
             <div class="img-div">
               <h1 style="font-size: 20px; color: white" class="registration-title">{{member.name[0].toUpperCase()}}</h1>
             </div>
             <div>
-              <h2 class="registration-title mb-1">{{member.name}}</h2>
+              <h2 class="registration-title mb-1" style="font-size: 17px">{{member.name}}</h2>
               <p class="lead">{{member.phone_number}}</p>
             </div>
-            <div>
-              <mat-checkbox></mat-checkbox>
+            <div style="display: grid; align-content: center">
+              <mat-checkbox [(ngModel)]="attendance[member.id]"></mat-checkbox>
             </div>
           </div>
 
         </div>
 
+    </div>
+
+    <div class="col-sm-12 mt-4">
+      <mat-form-field appearance="outline">
+        <mat-label>Meeting Notes <small class="text-muted">(Optional)</small> </mat-label>
+        <textarea matInput rows="4" placeholder="Meeting Notes" [(ngModel)]="notes"></textarea>
+      </mat-form-field>
     </div>
 
     <!--    Save Area-->
@@ -49,6 +57,8 @@
         [confirmFirst]="true"
         confirmText="Confirm setting next meeting to be held on {{meetingDate | date}} at {{meetingPlace}}"
         (cancel)="onClose()"
+        [saveText]="'Complete Meeting'"
+        saveIcon="check"
         (save)="save()"
         [savingData]="loading"
       ></app-save-area>

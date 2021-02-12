@@ -1,6 +1,7 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 import * as fromReducer from './loan.reducer';
 import * as fromLoanTypes from '../loan-type/loan-type.selectors';
+import * as fromMember from '../member/member.selectors';
 import {getRouteState} from '../index';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.loansFeatureKey);
@@ -24,10 +25,13 @@ export const selected = createSelector(
 export const selectDetailed = createSelector(
   selectAll,
   fromLoanTypes.selectEntities,
-  (allItems, loanTypes) => allItems
+  fromMember.selectEntities,
+  (allItems, loanTypes, members) => allItems
     .map(i => ({
         ...i,
+        percentPaid: parseInt(((i.amount_paid_to_date / i.total_amount_to_pay) * 100) + '', 10),
         durationName: durationTYpe(i.duration_type),
+        member: members[i.member_id],
         loanType: {
           ...loanTypes[i.loan_used]
         }
@@ -49,6 +53,12 @@ export const selectLoanByMemberFromRoute = createSelector(
     return allItems
       .filter(i => i.member_id === memberId);
   }
+);
+
+export const selectActiveLoans = createSelector(
+  selectDetailed,
+  (allItems) => allItems
+    .filter(i => parseFloat(i.remaining_balance + '') > 0)
 );
 
 

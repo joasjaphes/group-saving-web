@@ -7,6 +7,7 @@ import * as fromLoan from '../loan/loan.selectors';
 import * as fromMember from '../member/member.selectors';
 import {Payment} from './payment.model';
 import {findAllSubstringIndices} from '@angular/cdk/schematics';
+import {numberWithCommas} from '../fine-type/fine-type.selectors';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.paymentsFeatureKey);
 
@@ -84,12 +85,12 @@ export const selectDetailedGroupByMember = (year) => createSelector(
   (allItems, members) => {
     const memberData = {};
     for (const member of members) {
-      memberData[member.id] = {id: member.id, name: member.name, total: 0, totals: {}, items: []};
+      memberData[member.id] = {type: 'member', id: member.id, name: member.name, total: 0, totals: {}, items: []};
       allItems.filter(i => i.year + '' === year + '')
         .forEach(item => {
         if (item.memberId === member.id) {
           memberData[member.id].total += parseFloat(item.totalContributions + '');
-          for (const contr of item.paymentItems) {
+          for (const contr of item.contributionsDetails) {
             if (memberData[member.id].totals[contr.id]) {
               memberData[member.id].totals[contr.id]['amount'] += parseFloat(contr.amount);
             } else {
@@ -104,7 +105,7 @@ export const selectDetailedGroupByMember = (year) => createSelector(
       .keys(memberData)
       .map(i => ({
         ...memberData[i],
-        description: memberData[i].items.map(k => `${k.name} ${k.amount}`)
+        description: memberData[i].items.map(k => `${k.name} ${numberWithCommas(k.amount)}`).join(', ')
       }))
       .filter(i => !!i.total);
   }
@@ -113,11 +114,11 @@ export const selectDetailedGroupByMember = (year) => createSelector(
 export const selectDetailedGroupByMonth = (year) => createSelector(
   selectDetailed,
   (allItems) => {
-    const monthNames = [{name: 'Jan ' + year, key: '01'}, {name: 'Feb ' + year, key: '01'}, {name: 'Mar ' + year, key: '01'}, {name: 'Apr ' + year, key: '01'}, {name: 'May ' + year, key: '01'}, {name: 'Jun ' + year, key: '01'}, {name: 'Jul ' + year, key: '01'}, {name: 'Aug ' + year, key: '01'}, {name: 'Sep ' + year, key: '01'}, {name: 'Oct ' + year, key: '01'}, {name: 'Nov ' + year, key: '01'},  {name: 'Dec ' + year, key: '01'}];
+    const monthNames = [{name: 'Jan ' + year, key: '01'}, {name: 'Feb ' + year, key: '02'}, {name: 'Mar ' + year, key: '03'}, {name: 'Apr ' + year, key: '04'}, {name: 'May ' + year, key: '05'}, {name: 'Jun ' + year, key: '06'}, {name: 'Jul ' + year, key: '07'}, {name: 'Aug ' + year, key: '08'}, {name: 'Sep ' + year, key: '09'}, {name: 'Oct ' + year, key: '10'}, {name: 'Nov ' + year, key: '11'},  {name: 'Dec ' + year, key: '12'}];
     const months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11',  '12'];
     const monthData = {};
     for (const month of monthNames) {
-      monthData[month.key] = {id: month.key + year, name: month.name, total: 0, totals: {}, items: []};
+      monthData[month.key] = {type: 'month', id: month.key + year, key: month.key, name: month.name, total: 0, totals: {}, items: []};
       allItems
         .filter(item => item.month + '' === month.key && item.year + '' === year + '')
         .forEach(item => {
@@ -138,10 +139,53 @@ export const selectDetailedGroupByMonth = (year) => createSelector(
       .keys(monthData)
       .map(i => ({
         ...monthData[i],
-        description: monthData[i].items.map(k => `${k.name} ${k.amount}`)
+        description: monthData[i].items.map(k => `${k.name} ${numberWithCommas(k.amount)}`).join(', ')
       }))
       .filter(i => !!i.total);
   }
+);
+
+export const selectYearsWithPayment = createSelector(
+  selectAll,
+  (allItems) => {
+    const years = [];
+    allItems.forEach(item => {
+      if (years.indexOf(item.year + '') === -1) {
+        years.push(item.year + '');
+      }
+    });
+    return years.length > 0 ? years : [new Date().getFullYear() + ''];
+  }
+);
+
+export const selectContributionByMemberByYear = (year, memberId) => createSelector(
+  selectDetailed,
+  (allItems) => allItems
+    .filter(i => i.year + '' === year + '' && i.memberId === memberId)
+    .map(i => ({
+      ...i,
+      description: i.contributionsDetails.map(k => `${k.name} ${numberWithCommas(k.amount)}`).join(', ')
+    }))
+);
+
+export const selectContributionByTypeByYear = (year, typeId) => createSelector(
+  selectDetailed,
+  (allItems) => allItems
+    .filter(i => i.year + '' === year + '' && !!i.contributionsDetails.find(k => k.id === typeId))
+    .map(i => ({
+      ...i,
+      description: i.contributionsDetails.map(k => `${k.name} ${numberWithCommas(k.amount)}`).join(', ')
+    }))
+);
+
+export const selectContributionByMonthByYear = (year, month) => createSelector(
+  selectDetailed,
+  (allItems) => allItems
+    .filter(item => item.month + '' === month + '' && item.year + '' === year + '')
+    .map(i => ({
+      ...i,
+      description: i.contributionsDetails.map(k => `${k.name} ${numberWithCommas(k.amount)}`).join(', ')
+    }))
 );
 
 export const selectContributionTypeSummary = (year) => createSelector(
@@ -150,7 +194,7 @@ export const selectContributionTypeSummary = (year) => createSelector(
   (allItems, contributionTypes) => {
     const summary = {};
     for (const contr of contributionTypes) {
-      summary[contr.id] = {name: contr.name, total: 0};
+      summary[contr.id] = {name: contr.name, total: 0, id: contr.id};
       allItems
         .filter(i => i.year + '' === year + '')
         .forEach(item => {

@@ -19,6 +19,7 @@ import {ContributionType} from '../../store/contribution-type/contribution-type.
 })
 export class MeetingComponent implements OnInit {
   members$: Observable<Member[]>;
+  membersEntities$: Observable<{[id: string]: Member}>;
   group$: Observable<Group>;
   nextMeeting$: Observable<{
     meeting_date: any;
@@ -34,9 +35,10 @@ export class MeetingComponent implements OnInit {
     private store: Store<ApplicationState>,
   ) {
     this.members$ = this.store.pipe(select(memberSelector.selectAll));
+    this.membersEntities$ = this.store.pipe(select(memberSelector.selectEntities));
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.nextMeeting$ = this.store.pipe(select(groupSelector.nextMeeting));
-    this.meetings$ = this.store.pipe(select(meetingSelector.selectAll));
+    this.meetings$ = this.store.pipe(select(meetingSelector.selectDetailed));
   }
 
   ngOnInit(): void {
@@ -70,7 +72,7 @@ export class MeetingComponent implements OnInit {
 
   cancelMeeting() {
     this.viewDetails = true;
-    this.panelTitle = 'Complete meeting';
+    this.panelTitle = 'Cancel meeting';
     this.viewType = 'cancel';
   }
 

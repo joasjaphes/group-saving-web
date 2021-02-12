@@ -1,4 +1,5 @@
 import {LoanType} from '../loan-type/loan-type.model';
+import {Member} from '../member/member.model';
 
 export interface Loan {
   id: string;
@@ -8,6 +9,7 @@ export interface Loan {
   additional_config: any;
   date: string;
   member_id: string;
+  member?: Member;
   account_used: string;
   loanType?: LoanType;
   loan_used: string;
@@ -30,5 +32,6 @@ export interface Loan {
   payments: any;
   fines: any;
   durationName?: any;
+  percentPaid?: any;
 
 }

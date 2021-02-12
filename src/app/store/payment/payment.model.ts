@@ -28,4 +28,7 @@ export interface Payment {
     name: string;
     amount: number;
   }[];
+  totalContributions?: number;
+  totalFines?: number;
+  totalLoans?: number;
 }

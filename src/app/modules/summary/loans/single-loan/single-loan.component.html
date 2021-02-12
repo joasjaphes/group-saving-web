@@ -1,0 +1,121 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>
+        {{loan.member?.name}}
+        <small class="text-muted">({{loan.loanType?.name}})</small>
+      </h2>
+    </div>
+    <div class="col-sm-12 mb-4">
+      <div class="loan-title-grid">
+        <div>
+          <p style="color: #ffffffb3;">Remaining to be paid</p>
+          <h1 style="color: #ffffff; font-size: 40px" class="mb-0 registration-title">
+            {{loan.remaining_balance | number}}
+          </h1>
+        </div>
+        <div>
+<!--          <app-small-circular-progress-->
+<!--            [value]="loan.percentPaid"-->
+<!--            [titleText]="loan.member?.name[0].toUpperCase()"-->
+<!--          ></app-small-circular-progress>-->
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-7 mb-4">
+      <div class="details-grid">
+<!--        Amount Paid to date-->
+        <div>
+          <div style="color: #ffffff6e;">Already Paid</div>
+          <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
+            {{loan.amount_paid_to_date | number}}
+          </h1>
+        </div>
+
+<!--        Amount to be paid-->
+        <div>
+          <div style="color: #ffffff6e;">Amount to be paid</div>
+          <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
+            {{loan.total_amount_to_pay | number}}
+          </h1>
+        </div>
+
+
+<!--        Loan Amount-->
+        <div>
+          <div style="color: #ffffff6e;">Loan Amount</div>
+          <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
+            {{loan.amount_taken | number}}
+          </h1>
+        </div>
+
+<!--       Total Interest-->
+        <div>
+          <div style="color: #ffffff6e;">Total Interest</div>
+          <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
+            {{loan.total_profit_contribution | number}}
+          </h1>
+        </div>
+
+
+<!--       Amount per pay-->
+        <div>
+          <div style="color: #ffffff6e;">Amount per pay</div>
+          <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
+            {{loan.amount_per_return | number}}
+          </h1>
+        </div>
+
+<!--       Loan Duration-->
+        <div>
+          <div style="color: #ffffff6e;">Duration</div>
+          <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
+            {{loan.duration }} {{loan.durationName}}
+          </h1>
+        </div>
+
+<!--       Start Date-->
+        <div>
+          <div style="color: #ffffff6e;">Start Date</div>
+          <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
+            {{loan.date | date:'MMM yyyy'}}
+          </h1>
+        </div>
+
+<!--       End Date-->
+        <div>
+          <div style="color: #ffffff6e;">Due Date</div>
+          <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
+            {{loan.expected_date_of_payment | date:'MMM yyyy'}}
+          </h1>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <h3 class="registration-title">Payments</h3>
+      <h2 *ngIf="loan.payments.length == 0" class="mt-3" style="color: #ffffffb3;">There are no payments made yet</h2>
+      <table class="table table-bordered" style="color: white; font-size: 12px" *ngIf="loan.payments.length > 0">
+        <tr>
+          <th>#</th>
+          <th>Payment Date</th>
+          <th>Amount <small class="text-muted">({{group.currency}})</small></th>
+        </tr>
+        <tr *ngFor="let payment of loan.payments; let i = index">
+          <td>{{i + 1}}</td>
+          <td>{{payment.date_of_payment | date:'MMM yyyy'}}</td>
+          <th>{{payment.amount | number}}</th>
+        </tr>
+      </table>
+    </div>
+
+    <div class="col-sm-12">
+      <app-save-area
+        [showCancel]="false"
+        saveIcon="close"
+        saveText="Close"
+        (save)="onCLose()"
+      ></app-save-area>
+    </div>
+  </div>
+</div>

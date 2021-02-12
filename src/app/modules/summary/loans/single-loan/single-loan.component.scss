@@ -1,0 +1,15 @@
+.loan-title-grid {
+  display: grid;
+  grid-template-columns: auto 90px;
+  margin-bottom: 15px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 30px;
+
+  .registration-title {
+    font-size: 25px!important;
+  }
+}

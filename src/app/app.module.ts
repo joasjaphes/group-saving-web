@@ -68,6 +68,8 @@ import { CompleteMeetingComponent } from './modules/meeting/complete-meeting/com
 import { CancelMeetingComponent } from './modules/meeting/cancel-meeting/cancel-meeting.component';
 import { EmptyMeetingComponent } from './modules/meeting/empty-meeting/empty-meeting.component';
 import { NextMeetingComponent } from './modules/meeting/next-meeting/next-meeting.component';
+import { ListContributionsComponent } from './modules/summary/contributions/list-contributions/list-contributions.component';
+import { SingleLoanComponent } from './modules/summary/loans/single-loan/single-loan.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -132,7 +134,9 @@ const firebaseConfig = {
     CompleteMeetingComponent,
     CancelMeetingComponent,
     EmptyMeetingComponent,
-    NextMeetingComponent
+    NextMeetingComponent,
+    ListContributionsComponent,
+    SingleLoanComponent
   ],
   imports: [
     BrowserModule,
