@@ -27,7 +27,16 @@ export class StartingBalancesComponent implements OnInit {
   ngOnInit(): void {
     if (this.group) {
       if (this.group.contribution_balances) {
-        this.balances = {...this.group.contribution_balances};
+        const balances = Object
+          .keys(this.group.contribution_balances)
+          .map(i => ({
+            amount: parseFloat(this.group.contribution_balances[i] + ''),
+            id: i,
+          })
+      );
+        balances.forEach(bal => {
+          this.balances[bal.id] = bal.amount;
+        });
       }
     }
   }
