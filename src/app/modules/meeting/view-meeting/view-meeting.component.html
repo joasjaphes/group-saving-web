@@ -1,0 +1,96 @@
+<div class="container-fluid">
+  <div class="row">
+    <!--    Meeting Date-->
+    <div class="col-sm-12 mb-3">
+      <div class="meeting-title-grid">
+        <div class="icon-div">
+          <mat-icon>date_range</mat-icon>
+        </div>
+        <div >
+          <h1 class="mb-0 registration-title">{{currentMeeting.date | date}}</h1>
+          <h3 class="mb-1">{{ currentMeeting.place }}</h3>
+          <p class="mb-1" style="color: #ffffffa8; font-size: 14px" *ngIf="currentMeeting.notes">
+            {{currentMeeting.notes}}
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-sm-12 mt-2">
+      <h3 class="registration-title mb-0">
+        Attended
+      </h3>
+      <p class="mb-1" style="color: #ffffffa8; font-size: 12px">
+        <b>{{currentMeeting.attendance.length}}</b> of  <b>{{members.length}}</b> Attended this meeting
+      </p>
+    </div>
+
+    <div class="col-sm-12 mt-1 cursor" >
+      <div class="members-grid">
+        <ng-container *ngFor="let member of members">
+          <div  *ngIf="attendance[member.id]" [ngClass]="{'active': attendance[member.id]}" class="member-grid">
+            <div class="img-div">
+              <h1 style="font-size: 20px; color: white" class="registration-title">{{member.name[0].toUpperCase()}}</h1>
+            </div>
+            <div>
+              <h2 class="registration-title mb-1" style="font-size: 17px">{{member.name}}</h2>
+              <p class="lead">{{member.phone_number}}</p>
+            </div>
+            <div style="display: grid; align-content: center">
+              <mat-icon style="color: #F15A28">check_box</mat-icon>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="col-sm-12 mt-3">
+      <h3 class="registration-title mb-0">
+        Missed
+      </h3>
+      <p class="mb-1" style="color: #ffffffa8; font-size: 12px">
+        <b>{{members.length - currentMeeting.attendance.length}}</b> Missed this meeting
+      </p>
+    </div>
+
+    <div class="col-sm-12 mt-1 cursor" >
+      <div class="members-grid">
+        <ng-container *ngFor="let member of members">
+          <div *ngIf="!attendance[member.id]" [ngClass]="{'active': attendance[member.id]}" class="member-grid">
+            <div class="img-div">
+              <h1 style="font-size: 20px; color: white" class="registration-title">{{member.name[0].toUpperCase()}}</h1>
+            </div>
+            <div>
+              <h2 class="registration-title mb-1" style="font-size: 17px">{{member.name}}</h2>
+              <p class="lead">{{member.phone_number}}</p>
+            </div>
+            <div style="display: grid; align-content: center">
+              <mat-icon>check_box_outline_blank</mat-icon>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+
+    </div>
+
+
+    <!--    Save Area-->
+<!--    <div class="col-sm-12 mt-3" *ngIf="meetingPlace && meetingPlace.length > 2" @fadeIn>-->
+<!--      <app-save-area-->
+<!--        [confirmFirst]="true"-->
+<!--        confirmText="Confirm setting next meeting to be held on {{meetingDate | date}} at {{meetingPlace}}"-->
+<!--        (cancel)="onClose()"-->
+<!--        [saveText]="'Complete Meeting'"-->
+<!--        saveIcon="check"-->
+<!--        (save)="save()"-->
+<!--        [savingData]="loading"-->
+<!--      ></app-save-area>-->
+<!--    </div>-->
+  </div>
+</div>

@@ -77,6 +77,7 @@
           <div
             class="one-payment content-area-shadow cursor"
             title="click to view list of transactions for {{payment.name}}"
+            [ngClass]="routeAnimationsElements"
             *ngFor="let payment of contributions$ | async"
             (mouseover)="hover[payment.id] = true"
             (mouseout)="hover[payment.id] = false"

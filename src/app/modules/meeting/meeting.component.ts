@@ -9,7 +9,6 @@ import * as memberSelector from '../../store/member/member.selectors';
 import * as groupSelector from '../../store/group/group.selectors';
 import * as meetingSelector from '../../store/meeting/meeting.selectors';
 import {Meeting} from '../../store/meeting/meeting.model';
-import {ContributionType} from '../../store/contribution-type/contribution-type.model';
 
 @Component({
   selector: 'app-meeting',
@@ -57,11 +56,11 @@ export class MeetingComponent implements OnInit {
     this.viewType = '';
   }
 
-  edit(contr: Meeting) {
+  viewMeeting(contr: Meeting) {
     this.currentMeeting = contr;
     this.viewDetails = true;
-    this.panelTitle = 'Update next meeting';
-    this.viewType = 'add';
+    this.panelTitle = 'Meeting Details';
+    this.viewType = 'view';
   }
 
   completeMeeting() {

@@ -12,6 +12,7 @@ import * as loanQueueSelector from '../../../store/loan-queue/loan-queue.selecto
 import {LoanQueue} from '../../../store/loan-queue/loan-queue.model';
 import {ContributionType} from '../../../store/contribution-type/contribution-type.model';
 import * as contributionTypeSelector from '../../../store/contribution-type/contribution-type.selectors';
+import {ROUTE_ANIMATIONS_ELEMENTS} from '../../../shared/animations/router-animation';
 
 @Component({
   selector: 'app-loan-queue',
@@ -28,6 +29,7 @@ export class LoanQueueComponent implements OnInit {
   viewDetails = false;
   panelTitle = '';
   viewType = '';
+  routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   constructor(
     private store: Store<ApplicationState>,
   ) {

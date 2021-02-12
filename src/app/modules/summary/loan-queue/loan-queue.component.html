@@ -24,7 +24,7 @@
     ></app-empty-summary>
 
     <div class="main-expense-grid">
-      <div *ngFor="let expense of loanQueue$ | async" class="expenseGrid content-area">
+      <div [ngClass]="routeAnimationsElements" *ngFor="let expense of loanQueue$ | async" class="expenseGrid content-area">
         <div class="img-div">
           <h1 style="font-size: 40px;" class="registration-title">{{expense.member?.name[0].toUpperCase()}}</h1>
         </div>

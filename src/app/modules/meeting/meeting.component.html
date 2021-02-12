@@ -26,7 +26,7 @@
     ></app-empty-meeting>
 
     <h3 class="registration-title">
-      Meetings
+      Previous Meetings
     </h3>
 
     <p class="registration-title" *ngIf="(meetings$ | async)?.length == 0">
@@ -35,14 +35,22 @@
 
     <div *ngIf="(meetings$ | async)?.length > 0">
       <div class="meeting-grid">
-        <div class="single-meeting content-area-shadow zoom-on-hover cursor" *ngFor="let meeting of meetings$ | async">
+        <div
+          class="single-meeting content-area-shadow zoom-on-hover cursor"
+          [ngClass]="routeAnimationsElements"
+          (click)="viewMeeting(meeting)"
+          *ngFor="let meeting of meetings$ | async"
+        >
           <div class="icon-area">
             <mat-icon>date_range</mat-icon>
           </div>
           <div>
             <div style="color: #ffffffb3; font-size: 15px">{{meeting.place}}</div>
             <h1 class="registration-title mb-1">{{meeting.date | date}}</h1>
-            <small style="color: #ffffff9e;font-size: 13px">
+            <p style="color: #ffffffb3; font-size: 14px" *ngIf="meeting.notes">
+              {{meeting.notes}}
+            </p>
+            <small style="color: #ffffff9e;font-size: 12px">
               <span *ngIf="meeting.memberAttended"><b>You</b> and</span>
               {{meeting.members}}
             </small>
@@ -62,6 +70,13 @@
       (closeForm)="closePanel()"
     ></app-set-meeting>
 
+    <app-view-meeting
+      *ngIf="viewType == 'view'"
+      [group]="group$ | async"
+      [members]="members$ | async"
+      [currentMeeting]="currentMeeting"
+    ></app-view-meeting>
+
     <app-complete-meeting
       *ngIf="viewType == 'complete'"
       [group]="group$ | async"
@@ -77,5 +92,7 @@
       [currentMeeting]="currentMeeting"
       (closeForm)="closePanel()"
     ></app-cancel-meeting>
+
+
   </ng-container>
 </app-shared-layout>

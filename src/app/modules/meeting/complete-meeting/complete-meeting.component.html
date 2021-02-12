@@ -25,28 +25,35 @@
       <p class="mb-1" style="color: #ffffffa8; font-size: 12px">Select members present in this meeting</p>
     </div>
 
-    <div class="col-sm-12 mt-1 cursor" >
-        <div class="members-grid">
-          <div [ngClass]="{'active': attendance[member.id]}" class="member-grid" *ngFor="let member of members"  (click)="selectMember(member)">
-            <div class="img-div">
-              <h1 style="font-size: 20px; color: white" class="registration-title">{{member.name[0].toUpperCase()}}</h1>
-            </div>
-            <div>
-              <h2 class="registration-title mb-1" style="font-size: 17px">{{member.name}}</h2>
-              <p class="lead">{{member.phone_number}}</p>
-            </div>
-            <div style="display: grid; align-content: center">
-              <mat-checkbox [(ngModel)]="attendance[member.id]"></mat-checkbox>
-            </div>
+    <div class="col-sm-12 mt-1 cursor">
+      <div class="members-grid">
+        <div
+          [ngClass]="{'active': attendance[member.id]}"
+          class="member-grid"
+          *ngFor="let member of members"
+          (click)="selectMember(member)"
+        >
+          <div class="img-div">
+            <h1 style="font-size: 20px; color: white" class="registration-title">{{member.name[0].toUpperCase()}}</h1>
           </div>
-
+          <div>
+            <h2 class="registration-title mb-1" style="font-size: 17px">{{member.name}}</h2>
+            <p class="lead">{{member.phone_number}}</p>
+          </div>
+          <div style="display: grid; align-content: center">
+            <!--              <mat-checkbox [(ngModel)]="attendance[member.id]"></mat-checkbox>-->
+            <mat-icon *ngIf="attendance[member.id]" style="color: #F15A28">check_box</mat-icon>
+            <mat-icon *ngIf="!attendance[member.id]">check_box_outline_blank</mat-icon>
+          </div>
         </div>
+
+      </div>
 
     </div>
 
     <div class="col-sm-12 mt-4">
       <mat-form-field appearance="outline">
-        <mat-label>Meeting Notes <small class="text-muted">(Optional)</small> </mat-label>
+        <mat-label>Meeting Notes <small class="text-muted">(Optional)</small></mat-label>
         <textarea matInput rows="4" placeholder="Meeting Notes" [(ngModel)]="notes"></textarea>
       </mat-form-field>
     </div>

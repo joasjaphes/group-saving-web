@@ -7,7 +7,7 @@ import {Member} from '../../../store/member/member.model';
 import {Group} from '../../../store/group/group.model';
 import * as memberSelector from '../../../store/member/member.selectors';
 import * as groupSelector from '../../../store/group/group.selectors';
-import {fadeIn} from '../../../shared/animations/router-animation';
+import {fadeIn, ROUTE_ANIMATIONS_ELEMENTS} from '../../../shared/animations/router-animation';
 import {Payment} from '../../../store/payment/payment.model';
 import { formatNumber } from '@angular/common';
 @Component({
@@ -29,6 +29,7 @@ export class ContributionsComponent implements OnInit {
   hover = {};
   currentPayments$: Observable<Payment[]>;
   years$: Observable<string[]>;
+  routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   constructor(
     private store: Store<ApplicationState>
   ) {

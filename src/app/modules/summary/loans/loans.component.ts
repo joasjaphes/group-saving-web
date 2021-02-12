@@ -8,6 +8,7 @@ import {Member} from '../../../store/member/member.model';
 import {Group} from '../../../store/group/group.model';
 import * as memberSelector from '../../../store/member/member.selectors';
 import * as groupSelector from '../../../store/group/group.selectors';
+import {ROUTE_ANIMATIONS_ELEMENTS} from '../../../shared/animations/router-animation';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class LoansComponent implements OnInit {
   viewDetails = false;
   panelTitle = '';
   viewType = '';
+  routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   constructor(
     private store: Store<ApplicationState>
   ) {

@@ -45,6 +45,7 @@
             (click)="viewItem(loan)"
             title="Click to view more details"
             class="single-loan content-area-shadow zoom-on-hover cursor"
+            [ngClass]="routeAnimationsElements"
             *ngFor="let loan of activeLoans$ | async"
           >
             <div class="gauge">
