@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-sm-12 inner-grid" [ngClass]="{'justify-end': justifyRight}">
+    <div class="icon-area">
+      <mat-icon [ngClass]="iconClass">{{icon}}</mat-icon>
+    </div>
+    <div>
+      <p class="text-muted">{{amountTitle}}
+        <span class="currency-area">({{group?.currency}})</span>
+      </p>
+      <h1 class="registration-title big-amount">{{amount | number}}</h1>
+    </div>
+  </div>
+
+  <div class="col-sm-12 progress-block-parent">
+    <div class="in progress-block"  style="width: 70%;"></div>
+    <div class="out progress-block" style="width: 30%;"></div>
+  </div>
+  <!--            Sub summary area-->
+  <div class="col-sm-12 inner1-grid">
+    <div class="inner1-item-grid" [ngClass]="{'justify-end': justifyRight}">
+      <div class="img-area in">
+        <!--              <img src="assets/images/icons/cash-in-hand.png">-->
+      </div>
+      <div>
+        <p class="text-muted">Contribution & fines</p>
+        <h1 class="registration-title down-amount"> {{leftAmount | number}}</h1>
+      </div>
+    </div>
+    <div class="inner1-item-grid" [ngClass]="{'justify-end': justifyRight}">
+      <div class="img-area out">
+        <!--              <img src="assets/images/icons/request-money.png">-->
+      </div>
+      <div>
+        <p class="text-muted">Loan Payments</p>
+        <h1 class="registration-title down-amount"> {{rightAmount | number}}</h1>
+      </div>
+    </div>
+  </div>
+</div>

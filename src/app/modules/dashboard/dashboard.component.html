@@ -6,92 +6,21 @@
 
 <!--    <app-half-progress></app-half-progress>-->
 
-    <div class="mb-4">
+    <div class="mb-4" *ngIf="(progress$ | async) != 100">
       <app-group-progress
-        *ngIf="(progress$ | async) != 100"
+
       ></app-group-progress>
     </div>
 
 
     <div class="row">
-      <div class="col-sm-12 top-grid">
-        <div class="content-area">
-          <div class="row">
-            <div class="col-sm-7 inner-grid">
-              <div class="icon-area">
-                <mat-icon>arrow_upward</mat-icon>
-              </div>
-              <div>
-                <p class="text-muted">Total in</p>
-                <h1 class="registration-title">{{totalIn$ | async | number}}</h1>
-              </div>
-            </div>
-            <!--            Sub summary area-->
-            <div class="col-sm-5 inner1-grid">
-              <div class="inner1-item-grid">
-                <div class="img-area"><img src="assets/images/icons/cash-in-hand.png"></div>
-                <div>
-                  <p class="text-muted">Contribution & fines</p>
-                  <h1 class="registration-title"> {{totalContributions$ | async | number}}</h1>
-                </div>
-              </div>
-              <div class="inner1-item-grid">
-                <div class="img-area"><img src="assets/images/icons/request-money.png"></div>
-                <div>
-                  <p class="text-muted">Loan Payments</p>
-                  <h1 class="registration-title"> {{totalLoanReturns$ | async | number}}</h1>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-7 inner-grid">
-              <div class="icon-area">
-                <mat-icon>arrow_downward</mat-icon>
-              </div>
-              <div>
-                <p class="text-muted">Total out</p>
-                <h1 class="registration-title">{{totalOut$ | async | number}}</h1>
-              </div>
-            </div>
-            <!--            Sub summary area-->
-            <div class="col-sm-5 inner1-grid">
-              <div class="inner1-item-grid">
-                <div class="img-area"><img src="assets/images/icons/bank.png"></div>
-                <div>
-                  <p class="text-muted">Loan Out</p>
-                  <h1 class="registration-title"> {{totalLoanOut$ | async | number}}</h1>
-                </div>
-              </div>
-              <div class="inner1-item-grid">
-                <div class="img-area"><img src="assets/images/icons/expense.png"></div>
-                <div>
-                  <p class="text-muted">Expenses</p>
-                  <h1 class="registration-title"> {{totalExpenses$ | async | number}}</h1>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="content-area" >
-          <div class="inner1-grid">
-            <div class="inner1-item-grid">
-              <div class="img-area"><img src="assets/images/icons/cash-in-hand.png"></div>
-              <div>
-                <p class="text-muted">Contribution</p>
-                <h1 class="registration-title"> {{totalContributionOnly$ | async | number}}</h1>
-              </div>
-            </div>
-            <div class="inner1-item-grid">
-              <div class="img-area"><img src="assets/images/icons/request-money.png"></div>
-              <div>
-                <p class="text-muted">Fines</p>
-                <h1 class="registration-title"> {{totalFinesPaid$ | async | number}}</h1>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="col-sm-12 mb-4">
+        <app-collection-summary></app-collection-summary>
       </div>
+      <div class="col-sm-8">
+        <app-loan-summary></app-loan-summary>
+      </div>
+      <div class="col-sm-4"></div>
     </div>
 
   </ng-container>

@@ -1,0 +1,71 @@
+<div class="row content-area-shadow">
+  <div class="col-sm-12">
+    <h3 class="registration-title">Contribution Summary</h3>
+  </div>
+
+  <div class="col-sm-12">
+    <div class="filter-grid">
+      <div>
+        <button
+          class="zoom-on-hover selector"
+          mat-flat-button
+          (click)="currentContr = 'All'; getData()"
+          [ngClass]="{'active': currentContr == 'All'}"
+        >
+          All
+        </button>
+        <button
+          class="zoom-on-hover selector"
+          mat-flat-button
+          *ngFor="let contr of contributionTypes$ | async"
+          (click)="currentContr = contr.id; getData()"
+          [ngClass]="{'active': currentContr == contr.id}"
+        >
+          {{contr.name}}
+        </button>
+      </div>
+
+      <div style="text-align: end">
+
+        <mat-menu #yearMenu="matMenu">
+          <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setYear(yr)">{{yr}}</button>
+        </mat-menu>
+
+        <small class="text-muted">For</small>
+        <button mat-button [matMenuTriggerFor]="yearMenu" class="cursor">
+          <mat-icon>date_range</mat-icon> &nbsp;
+          <span>{{year}}</span> &nbsp;
+          <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+        </button>
+
+
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 summary-grid">
+    <div class="content-area1">
+      <app-collection-card
+        [group]="group$ | async"
+        [amount]="totalIn$ | async"
+        amountTitle="Total In"
+        leftTitle="Contribution & fines"
+        [leftAmount]="totalContributions$ | async"
+        rightTitle="Loan Payments"
+        [rightAmount]="totalLoanReturns$ | async"
+      ></app-collection-card>
+
+      <app-collection-card
+        [group]="group$ | async"
+        [amount]="totalOut$ | async"
+        amountTitle="Total Out"
+        leftTitle="Expenses"
+        [leftAmount]="totalExpenses$ | async"
+        rightTitle="Loan Out"
+        [rightAmount]="totalLoanOut$ | async"
+        icon="arrow_upward"
+        iconClass="normal"
+        [justifyRight]="true"
+      ></app-collection-card>
+    </div>
+  </div>
+</div>

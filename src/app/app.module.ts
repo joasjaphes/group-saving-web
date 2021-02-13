@@ -72,6 +72,10 @@ import { ListContributionsComponent } from './modules/summary/contributions/list
 import { SingleLoanComponent } from './modules/summary/loans/single-loan/single-loan.component';
 import { ViewMeetingComponent } from './modules/meeting/view-meeting/view-meeting.component';
 import { DeleteMeetingComponent } from './modules/meeting/delete-meeting/delete-meeting.component';
+import { CollectionSummaryComponent } from './modules/dashboard/collection-summary/collection-summary.component';
+import { CollectionCardComponent } from './modules/dashboard/collection-summary/collection-card/collection-card.component';
+import { LoanSummaryComponent } from './modules/dashboard/loan-summary/loan-summary.component';
+import { OtherSummaryComponent } from './modules/dashboard/other-summary/other-summary.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -140,7 +144,11 @@ const firebaseConfig = {
     ListContributionsComponent,
     SingleLoanComponent,
     ViewMeetingComponent,
-    DeleteMeetingComponent
+    DeleteMeetingComponent,
+    CollectionSummaryComponent,
+    CollectionCardComponent,
+    LoanSummaryComponent,
+    OtherSummaryComponent
   ],
   imports: [
     BrowserModule,
