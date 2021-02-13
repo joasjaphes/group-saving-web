@@ -20,4 +20,6 @@ export interface Meeting {
   latitude: string;
   longitude: string;
   notes: string;
+  truncatedNotes?: string;
+  deleted?: boolean;
 }

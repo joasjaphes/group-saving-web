@@ -68,7 +68,7 @@
               <button (click)="editMeeting(meeting)" mat-menu-item >
                 <mat-icon style="color: #0277bd">mode_edit</mat-icon> Update Meeting
               </button>
-              <button mat-menu-item >
+              <button (click)="deleteMeeting(meeting)" mat-menu-item >
                 <mat-icon style="color: red">delete</mat-icon> Remove Meeting
               </button>
             </mat-menu>
@@ -93,6 +93,14 @@
       [members]="members$ | async"
       [currentMeeting]="currentMeeting"
     ></app-view-meeting>
+
+    <app-delete-meeting
+      *ngIf="viewType == 'delete'"
+      [group]="group$ | async"
+      [members]="members$ | async"
+      [currentMeeting]="currentMeeting"
+      (closeForm)="closePanel()"
+    ></app-delete-meeting>
 
     <app-complete-meeting
       *ngIf="viewType == 'complete' || viewType == 'edit'"
