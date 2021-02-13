@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Group} from '../../../store/group/group.model';
 
 @Component({
   selector: 'app-loan-summary',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoanSummaryComponent implements OnInit {
 
+  @Input() group: Group;
   constructor() { }
 
   ngOnInit(): void {

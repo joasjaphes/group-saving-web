@@ -18,9 +18,15 @@
         <app-collection-summary></app-collection-summary>
       </div>
       <div class="col-sm-8">
-        <app-loan-summary></app-loan-summary>
+        <app-loan-summary
+         [group]="group$ | async"
+        ></app-loan-summary>
       </div>
-      <div class="col-sm-4"></div>
+      <div class="col-sm-4">
+        <app-other-summary
+
+        ></app-other-summary>
+      </div>
     </div>
 
   </ng-container>
