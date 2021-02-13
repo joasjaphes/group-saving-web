@@ -36,25 +36,42 @@
     <div *ngIf="(meetings$ | async)?.length > 0">
       <div class="meeting-grid">
         <div
-          class="single-meeting content-area-shadow zoom-on-hover cursor"
+          class="single-meeting content-area-shadow"
           [ngClass]="routeAnimationsElements"
-          (click)="viewMeeting(meeting)"
           *ngFor="let meeting of meetings$ | async"
         >
           <div class="icon-area">
             <mat-icon>date_range</mat-icon>
           </div>
-          <div>
+          <div class="cursor" (click)="viewMeeting(meeting)">
             <div style="color: #ffffffb3; font-size: 15px">{{meeting.place}}</div>
             <h1 class="registration-title mb-1">{{meeting.date | date}}</h1>
-            <p style="color: #ffffffb3; font-size: 14px" *ngIf="meeting.notes">
+            <p style="color: #ffffffb3; font-size: 14px" *ngIf="meeting.notes" class="mb-1">
               {{meeting.notes}}
             </p>
-            <small style="color: #ffffff9e;font-size: 12px">
+            <small style="color: #ffffff75;font-size: 12px">
               <span *ngIf="meeting.memberAttended"><b>You</b> and</span>
               {{meeting.members}}
             </small>
             <small  style="display: block;color: #ffffff61;" *ngIf="!meeting.memberAttended">You missed this meeting</small>
+          </div>
+
+          <div class="menu">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon style="color: white">more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <mat-divider></mat-divider>
+              <button (click)="viewMeeting(meeting)" mat-menu-item>
+                <mat-icon>remove_red_eye</mat-icon> View Details
+              </button>
+              <button (click)="editMeeting(meeting)" mat-menu-item >
+                <mat-icon style="color: #0277bd">mode_edit</mat-icon> Update Meeting
+              </button>
+              <button mat-menu-item >
+                <mat-icon style="color: red">delete</mat-icon> Remove Meeting
+              </button>
+            </mat-menu>
           </div>
         </div>
       </div>
@@ -78,10 +95,11 @@
     ></app-view-meeting>
 
     <app-complete-meeting
-      *ngIf="viewType == 'complete'"
+      *ngIf="viewType == 'complete' || viewType == 'edit'"
       [group]="group$ | async"
       [currentMeeting]="currentMeeting"
       [members]="members$ | async"
+      [editing]="viewType == 'edit'"
       [membersEntities]="membersEntities$ | async"
       (closeForm)="closePanel()"
     ></app-complete-meeting>

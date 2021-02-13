@@ -78,10 +78,15 @@
 
   .single-meeting {
     display: grid;
-    grid-template-columns: 70px auto;
+    grid-template-columns: 70px auto 30px;
     border: 1px solid #ffffff5e;
     padding: 20px;
     border-radius: 15px;
+
+    .menu {
+      display: grid;
+      align-content: center;
+    }
 
     .icon-area {
       display: grid;

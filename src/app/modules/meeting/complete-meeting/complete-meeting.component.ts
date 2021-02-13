@@ -18,6 +18,7 @@ export class CompleteMeetingComponent implements OnInit {
   @Input() group: Group;
   @Input() currentMeeting: Meeting;
   @Input() members: Member[];
+  @Input() editing = false;
   @Input() membersEntities: { [id: string]: Member };
   @Output() closeForm = new EventEmitter();
   meetingDate: any;
@@ -32,9 +33,18 @@ export class CompleteMeetingComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.group && this.group.next_meeting) {
-      this.meetingDate = this.group.next_meeting.meeting_date;
-      this.meetingPlace = this.group.next_meeting.meeting_place;
+    if (this.editing && this.currentMeeting) {
+      this.meetingDate = this.currentMeeting.date;
+      this.meetingPlace = this.currentMeeting.place;
+      this.notes = this.currentMeeting.notes;
+      this.currentMeeting.attendance.forEach(item => {
+        this.attendance[item.member_id] = true;
+      });
+    } else {
+      if (this.group && this.group.next_meeting) {
+        this.meetingDate = this.group.next_meeting.meeting_date;
+        this.meetingPlace = this.group.next_meeting.meeting_place;
+      }
     }
   }
 
@@ -44,6 +54,7 @@ export class CompleteMeetingComponent implements OnInit {
 
   async save() {
     const dataToSave = {
+      id: this.currentMeeting ? this.currentMeeting.id : this.commonService.makeid(),
       groupId: this.group.id,
       date: this.commonService.formatDate(this.meetingDate),
       place: this.meetingPlace,
@@ -57,7 +68,11 @@ export class CompleteMeetingComponent implements OnInit {
     };
     this.loading = true;
     try {
-      await this.functionsService.saveData('completeMeeting', dataToSave);
+      if (this.editing) {
+        await this.functionsService.saveData('updateMeeting', dataToSave);
+      } else {
+        await this.functionsService.saveData('completeMeeting', dataToSave);
+      }
       this.loading = false;
       this.commonService.showSuccess('Meeting information Submitted Successful');
       this.onClose();

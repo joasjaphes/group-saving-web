@@ -63,6 +63,20 @@ export class MeetingComponent implements OnInit {
     this.viewType = 'view';
   }
 
+  editMeeting(contr: Meeting) {
+    this.currentMeeting = contr;
+    this.viewDetails = true;
+    this.panelTitle = 'Update Meeting Details';
+    this.viewType = 'edit';
+  }
+
+  deleteMeeting(contr: Meeting) {
+    this.currentMeeting = contr;
+    this.viewDetails = true;
+    this.panelTitle = 'Remove Meeting Details';
+    this.viewType = 'delete';
+  }
+
   completeMeeting() {
     this.viewDetails = true;
     this.panelTitle = 'Complete meeting';

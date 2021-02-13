@@ -64,7 +64,7 @@
         [confirmFirst]="true"
         confirmText="Confirm setting next meeting to be held on {{meetingDate | date}} at {{meetingPlace}}"
         (cancel)="onClose()"
-        [saveText]="'Complete Meeting'"
+        [saveText]="editing ? 'Update Meeting' : 'Complete Meeting'"
         saveIcon="check"
         (save)="save()"
         [savingData]="loading"
