@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {Group} from '../../store/group/group.model';
 import * as groupSelector from '../../store/group/group.selectors';
 import * as memberSelector from '../../store/member/member.selectors';
+import {ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +17,7 @@ export class DashboardComponent implements OnInit {
   group$: Observable<Group>;
   progress$: Observable<any>;
   memberName$: Observable<string>;
+  routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   constructor(
     private store: Store<ApplicationState>,
   ) {

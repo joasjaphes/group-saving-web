@@ -14,15 +14,15 @@
 
 
     <div class="row">
-      <div class="col-sm-12 mb-4">
+      <div class="col-sm-12 mb-4" [ngClass]="routeAnimationsElements">
         <app-collection-summary></app-collection-summary>
       </div>
-      <div class="col-sm-8">
+      <div class="col-sm-8 mt-2" [ngClass]="routeAnimationsElements">
         <app-loan-summary
          [group]="group$ | async"
         ></app-loan-summary>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-4 mt-2" [ngClass]="routeAnimationsElements">
         <app-other-summary
 
         ></app-other-summary>

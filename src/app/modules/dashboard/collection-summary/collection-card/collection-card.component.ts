@@ -19,10 +19,18 @@ export class CollectionCardComponent implements OnInit {
   @Input() rightTitle = 0;
   @Input() rightAmount = 0;
   @Input() justifyRight = false;
+  leftPercent = 100;
+  rightPercent = 0;
   constructor() { }
 
   ngOnInit(): void {
-    const sum = parseFloat(this.leftAmount + '') + parseFloat(this.rightAmount + '')
+    if (parseFloat(this.amount + '') > 0) {
+      // console.log('hapa naingia');
+      // this.leftPercent = (this.leftAmount / this.amount) * 100;
+      // this.rightPercent = (this.rightAmount / this.amount) * 100;
+      // console.log('leftPercent', this.leftPercent);
+      // console.log('rightPercent', this.rightPercent);
+    }
   }
 
 }
