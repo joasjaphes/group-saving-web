@@ -1,4 +1,4 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import {createFeatureSelector, createSelector} from '@ngrx/store';
 import * as fromReducer from './meeting.reducer';
 import * as fromMember from '../member/member.selectors';
 
@@ -28,16 +28,17 @@ export const selectDetailed = createSelector(
     const memberAttended = member ? item.attendance.find(i => i.member_id === member.id) : null;
     const attending = item.attendance.length < 4 ? item.attendance : item.attendance.slice(0, 3);
     let membersNames = attending
-        .filter(i => member && i.member_id !== member.id)
-        .map(i => i.member_name)
-        .join(', ');
+      .filter(i => member && i.member_id !== member.id)
+      .map(i => i.member_name)
+      .join(', ');
     if (item.attendance.length > 3) {
       const remainingMembers = item.attendance.length - 3;
       membersNames += ' and ' + remainingMembers + ' more';
     }
-    return  {
-      ... item,
-        members: membersNames,
+    return {
+      ...item,
+      members: membersNames,
+      truncatedNotes: item.notes.length > 40 ? item.notes.substr(0, 40) + '...' : item.notes,
       memberAttended,
     };
   })

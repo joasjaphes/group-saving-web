@@ -43,11 +43,11 @@
           <div class="icon-area">
             <mat-icon>date_range</mat-icon>
           </div>
-          <div class="cursor" (click)="viewMeeting(meeting)">
+          <div class="cursor" (click)="viewMeeting(meeting)" title="Click to view meeting details">
             <div style="color: #ffffffb3; font-size: 15px">{{meeting.place}}</div>
             <h1 class="registration-title mb-1">{{meeting.date | date}}</h1>
             <p style="color: #ffffffb3; font-size: 14px" *ngIf="meeting.notes" class="mb-1">
-              {{meeting.notes}}
+              {{meeting.truncatedNotes}}
             </p>
             <small style="color: #ffffff75;font-size: 12px">
               <span *ngIf="meeting.memberAttended"><b>You</b> and</span>
