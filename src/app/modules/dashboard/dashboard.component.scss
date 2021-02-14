@@ -1,3 +1,14 @@
+
+.dashboard-grid {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: 8fr 4fr;
+  grid-template-rows: auto auto;
+
+  .other-summary {
+    grid-row: span 2;
+  }
+}
 .top-grid {
   display: grid;
   grid-template-columns: 3fr 1fr;

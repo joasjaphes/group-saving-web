@@ -29,10 +29,12 @@ export const selectDetailed = createSelector(
   }))
 );
 
-export const selectTotalByYear = (year) => createSelector(
+export const selectTotalByYear = (year, contributionType) => createSelector(
   selectAll,
   (allItems) => {
-    const items = allItems.filter(i => i.year + '' === year + '');
+    const items = allItems
+      .filter(i => i.year + '' === year + '')
+      .filter(i => contributionType === 'All' || i.associated_account === contributionType);
     let sum = 0;
     for (const item of items) {
       sum += parseFloat(item.amount + '');

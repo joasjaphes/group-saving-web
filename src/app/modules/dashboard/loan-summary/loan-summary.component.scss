@@ -1,8 +1,8 @@
-.content-area-shadow {
+.content-area {
   padding: 20px;
   border-radius: 20px;
   margin-right: 10px;
-  border: 1px solid #ffffff5e;
+  //border: 1px solid #ffffff5e;
 }
 
 .loan-grid {
@@ -10,7 +10,7 @@
   grid-template-columns: 250px auto;
 
   h1 {
-    font-size: 35px;
+    font-size: 25px;
   }
 }
 
@@ -34,11 +34,11 @@
     align-content: center;
 
     p {
-      margin-bottom: 10px;
-      font-size: 15px;
+      margin-bottom: 0px;
+      font-size: 12px;
     }
     h1 {
-      font-size: 30px;
+      font-size: 20px;
     }
 
     .img-area {
@@ -52,6 +52,7 @@
 
 .big-amount {
   letter-spacing: 2px;
+
 }
 
 .currency-area {

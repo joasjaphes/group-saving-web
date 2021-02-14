@@ -32,6 +32,7 @@ export class CollectionSummaryComponent implements OnInit {
   currentContr = 'All';
   years$: Observable<string[]>;
   year = new Date().getFullYear();
+  typeName = 'All';
   constructor(
     private store: Store<ApplicationState>,
   ) {
@@ -52,13 +53,13 @@ export class CollectionSummaryComponent implements OnInit {
   }
 
   getData() {
-    this.totalContributions$ = this.store.pipe(select(paymentSelector.selectTotalContributions(this.year)));
-    this.totalContributionOnly$ = this.store.pipe(select(paymentSelector.selectTotalPaymentByYear(this.year)));
-    this.totalLoanReturns$ = this.store.pipe(select(paymentSelector.selectTotalLoanPaymentByYear(this.year)));
-    this.totalFinesPaid$ = this.store.pipe(select(paymentSelector.selectTotalFinePaymentByYear(this.year)));
-    this.totalExpenses$ = this.store.pipe(select(expenseSelector.selectTotalByYear(this.year)));
-    this.totalLoanOut$ = this.store.pipe(select(loanSelector.selectTotalByYear(this.year)));
-    this.totalIn$ = this.store.pipe(select(paymentSelector.selectTotalIn(this.year)));
-    this.totalOut$ = this.store.pipe(select(loanSelector.selectTotalByYear(this.year)));
+    this.totalContributions$ = this.store.pipe(select(paymentSelector.selectTotalContributions(this.year, this.currentContr)));
+    this.totalContributionOnly$ = this.store.pipe(select(paymentSelector.selectTotalPaymentByYear(this.year, this.currentContr)));
+    this.totalLoanReturns$ = this.store.pipe(select(paymentSelector.selectTotalLoanPaymentByYear(this.year, this.currentContr)));
+    this.totalFinesPaid$ = this.store.pipe(select(paymentSelector.selectTotalFinePaymentByYear(this.year, this.currentContr)));
+    this.totalExpenses$ = this.store.pipe(select(expenseSelector.selectTotalByYear(this.year, this.currentContr)));
+    this.totalLoanOut$ = this.store.pipe(select(loanSelector.selectTotalByYear(this.year, this.currentContr)));
+    this.totalIn$ = this.store.pipe(select(paymentSelector.selectTotalIn(this.year, this.currentContr)));
+    this.totalOut$ = this.store.pipe(select(loanSelector.selectTotalByYear(this.year, this.currentContr)));
   }
 }

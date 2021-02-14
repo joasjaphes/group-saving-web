@@ -12,22 +12,30 @@
       ></app-group-progress>
     </div>
 
-
-    <div class="row">
-      <div class="col-sm-12 mb-4" [ngClass]="routeAnimationsElements">
+    <div class="dashboard-grid">
+      <div [ngClass]="routeAnimationsElements">
         <app-collection-summary></app-collection-summary>
       </div>
-      <div class="col-sm-8 mt-2" [ngClass]="routeAnimationsElements">
-        <app-loan-summary
-         [group]="group$ | async"
-        ></app-loan-summary>
+      <div [ngClass]="routeAnimationsElements" class="other-summary">
+        <app-other-summary></app-other-summary>
       </div>
-      <div class="col-sm-4 mt-2" [ngClass]="routeAnimationsElements">
-        <app-other-summary
-
-        ></app-other-summary>
+      <div [ngClass]="routeAnimationsElements">
+        <app-loan-summary [group]="group$ | async"></app-loan-summary>
       </div>
     </div>
+
+
+<!--    <div class="row">-->
+<!--      <div class="col-sm-8 mb-4" [ngClass]="routeAnimationsElements">-->
+<!--        -->
+<!--      </div>-->
+<!--      <div class="col-sm-8 mt-2" [ngClass]="routeAnimationsElements">-->
+<!--        -->
+<!--      </div>-->
+<!--      <div class="col-sm-4 mt-2" [ngClass]="routeAnimationsElements">-->
+<!--        -->
+<!--      </div>-->
+<!--    </div>-->
 
   </ng-container>
 </app-shared-layout>

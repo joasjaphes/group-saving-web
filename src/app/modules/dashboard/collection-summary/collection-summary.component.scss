@@ -3,6 +3,14 @@
   grid-template-columns: auto 280px;
   margin-bottom: 30px;
 
+  .selection-area {
+    button {
+      border-bottom: 2px solid #F15A28;
+      border-radius: 0;
+      font-size: 12px;
+    }
+  }
+
   button.selector {
     font-weight: normal;
     background-color: transparent;
@@ -22,11 +30,11 @@
   }
 }
 
-.content-area-shadow {
+.content-area {
   padding: 20px;
   border-radius: 20px;
   margin-right: 10px;
-  border: 1px solid #ffffff5e;
+  //border: 1px solid #ffffff5e;
 }
 
 .content-area1 {

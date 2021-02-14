@@ -69,11 +69,13 @@ export const selectCompletedLoans = createSelector(
 );
 
 
-export const selectTotalByYear = (year) => createSelector(
-  selectAll,
+export const selectTotalByYear = (year, contributionType) => createSelector(
+  selectDetailed,
   (allItems) => {
-    // const items = allItems.filter(i => i.start_year + '' === year + '');
-    const items = allItems;
+    const items = allItems
+      .filter(i => i.start_year + '' === year + '')
+      .filter(i => contributionType === 'All' || (i.loanType && i.loanType.contribution_type_id === contributionType));
+    // const items = allItems;
     let sum = 0;
     for (const item of items) {
       sum += parseFloat(item.amount_taken + '');
