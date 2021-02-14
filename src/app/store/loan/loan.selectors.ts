@@ -62,12 +62,13 @@ export const selectActiveLoans = createSelector(
     .filter(i => parseFloat(i.remaining_balance + '') > 0)
 );
 
-export const selectActiveLoansSummary = createSelector(
+export const selectActiveLoansSummary = (loanType) => createSelector(
   selectDetailed,
   (allItems) => {
     const totals = { totalOut: 0, paid: 0, unpaid: 0, percent: 0 };
     const activeLoans = allItems
-      .filter(i => parseFloat(i.remaining_balance + '') > 0);
+      .filter(i => parseFloat(i.remaining_balance + '') > 0)
+      .filter(i => i.loan_used === loanType || loanType === 'All');
     activeLoans.forEach(item => {
       totals.totalOut += parseFloat(item.total_amount_to_pay + '');
       totals.paid += parseFloat(item.amount_paid_to_date + '');

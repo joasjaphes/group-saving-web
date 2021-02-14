@@ -17,14 +17,19 @@ export class LoanSummaryComponent implements OnInit {
   @Input() group: Group;
   loanSummary$: Observable<{ totalOut: number, paid: number, unpaid: number, percent: number }>;
   loanTypes$: Observable<LoanType[]>;
+  typeName = 'All';
+  currentLoan = 'All';
   constructor(
     private store: Store<ApplicationState>
   ) {
     this.loanTypes$ = this.store.pipe(select(loanTypeSelector.selectAll));
-    this.loanSummary$ = this.store.pipe(select(loanSelector.selectActiveLoansSummary));
+    this.loanSummary$ = this.store.pipe(select(loanSelector.selectActiveLoansSummary(this.currentLoan)));
   }
 
   ngOnInit(): void {
   }
 
+  getData() {
+    this.loanSummary$ = this.store.pipe(select(loanSelector.selectActiveLoansSummary(this.currentLoan)));
+  }
 }

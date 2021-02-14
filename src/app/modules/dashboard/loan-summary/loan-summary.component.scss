@@ -67,3 +67,16 @@
   color: #ffffffc7;
   margin-bottom: 0;
 }
+
+.title-grid {
+  display: grid;
+  grid-template-columns: auto 250px;
+
+  .selection-area {
+    button {
+      border-bottom: 2px solid #F15A28;
+      border-radius: 0;
+      font-size: 12px;
+    }
+  }
+}

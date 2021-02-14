@@ -1,6 +1,31 @@
 <div class="row content-area">
-  <div class="col-sm-12">
-    <h3 class="registration-title mb-1">Loan Summary</h3>
+  <div class="col-sm-12 title-grid">
+    <div style="display: grid;align-content: center">
+
+      <h3 class="registration-title mb-1">Active Loans</h3>
+    </div>
+    <div class="selection-area" style="text-align: end">
+      <mat-menu #fineTypeMenu="matMenu">
+        <button
+          mat-menu-item
+          (click)="currentLoan = 'All';typeName = 'All'; getData()">
+          All
+        </button>
+        <button
+          *ngFor="let contr of loanTypes$ | async"
+          (click)="currentLoan = contr.id;typeName = contr.name;  getData()"
+          mat-menu-item>
+          {{contr.name}}
+        </button>
+      </mat-menu>
+
+      <button mat-button [matMenuTriggerFor]="fineTypeMenu" class="cursor">
+        <!--              <mat-icon>date_range</mat-icon> &nbsp;-->
+        <span>{{typeName}}</span> &nbsp;
+        <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+      </button>
+
+    </div>
   </div>
 
   <div class="col-sm-12 p-0">
