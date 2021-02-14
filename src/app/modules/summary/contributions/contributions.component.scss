@@ -60,4 +60,26 @@
   }
 }
 
+.top-grid1 {
+  display: grid;
+  grid-template-columns: auto  230px 200px;
+  margin-bottom: 30px;
+
+  button.selector {
+    font-weight: normal;
+    background-color: transparent;
+    border-bottom: 2px solid rgba(248, 87, 34, 0.4)!important;
+    border-radius: 0;
+    margin-right: 20px;
+    color: #ffffffb0;
+    mat-icon {
+      font-size: 20px;
+    }
+  }
+  .selector.active {
+    color: white;
+    border-bottom: 2px solid #F15A28!important;
+  }
+}
+
 

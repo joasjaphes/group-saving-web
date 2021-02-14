@@ -30,6 +30,7 @@ export class ContributionsComponent implements OnInit {
   currentPayments$: Observable<Payment[]>;
   years$: Observable<string[]>;
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
+  memberSearch: any;
   constructor(
     private store: Store<ApplicationState>
   ) {

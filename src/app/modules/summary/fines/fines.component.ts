@@ -97,6 +97,7 @@ export class FinesComponent implements OnInit {
   }
 
   setType(param) {
+    this.memberSearch = '';
     this.currentView = param;
     this.getData();
   }

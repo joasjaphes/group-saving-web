@@ -10,11 +10,13 @@
   [animationSize]="'full'"
   [formTitle]="panelTitle"
   (closeDetails)="closePanel()"
+  urlName="Summary"
+  [url]="['', 'summary']"
 >
   <ng-container ngProjectAs="table">
     <div class="row">
       <div class="col-sm-12">
-        <div class="top-grid">
+        <div class="top-grid1">
           <div>
             <button
               class="zoom-on-hover selector"
@@ -28,12 +30,18 @@
             <button
               class="zoom-on-hover selector"
               mat-flat-button
-              (click)="currentView = 'months'; getData()"
+              (click)="currentView = 'months'; memberSearch = ''; getData()"
               [ngClass]="{'active': currentView == 'months'}"
             >
               <mat-icon>today</mat-icon>
               Months
             </button>
+          </div>
+          <div class="search-area">
+            <mat-form-field *ngIf="currentView == 'members'" @fadeIn>
+              <mat-icon matSuffix>search </mat-icon>
+              <input [(ngModel)]="memberSearch" matInput placeholder=" Type member name to search">
+            </mat-form-field>
           </div>
           <div style="text-align: end">
 
@@ -78,9 +86,7 @@
             class="one-payment content-area-shadow cursor"
             title="click to view list of transactions for {{payment.name}}"
             [ngClass]="routeAnimationsElements"
-            *ngFor="let payment of contributions$ | async"
-            (mouseover)="hover[payment.id] = true"
-            (mouseout)="hover[payment.id] = false"
+            *ngFor="let payment of contributions$ | async | search:'name': memberSearch"
           >
             <div style="display: grid; align-content: center">
               <div class="img-div">
