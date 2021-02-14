@@ -4,6 +4,7 @@ import * as fromContributionTypes from '../contribution-type/contribution-type.s
 import * as fromFineTypes from '../fine-type/fine-type.selectors';
 import * as fromLoanTypes from '../loan-type/loan-type.selectors';
 import * as fromLoan from '../loan/loan.selectors';
+import * as fromExpense from '../expense/expense.selectors';
 import * as fromMember from '../member/member.selectors';
 import {Payment} from './payment.model';
 import {findAllSubstringIndices} from '@angular/cdk/schematics';
@@ -343,17 +344,21 @@ export const selectTotalPaymentByYear = (year, contributionType) => createSelect
 );
 
 export const selectTotalLoanPaymentByYear = (year, contributionType) => createSelector(
-  selectAll,
-  (allItems) => {
+  selectDetailed,
+  fromLoanTypes.selectEntities,
+  fromLoan.selectEntities,
+  (allItems, loanTypes, loans) => {
     const items = allItems
-      .filter(i => i.year + '' === year + '')
-      .filter(i => !!i.contributionsDetails.find(k => (k.id === contributionType || contributionType === 'All')));
+      .filter(i => i.year + '' === year + '');
     // const items = allItems;/
     let sum = 0;
     for (const item of items) {
-      const contr = Object.keys(item.loans).map(i => item.loans[i]);
+      const contr = Object.keys(item.loans)
+        .map(i => ({loanUsed: loans[i] ? loanTypes[loans[i].loan_used] : null, amount: item.loans[i]}))
+        .filter(i => contributionType === 'All' || (i.loanUsed && i.loanUsed.contribution_type_id === contributionType));
+      console.log({contr});
       for (const amount of contr) {
-        sum += !!(amount + '') ? parseFloat(amount + '') : 0;
+        sum += !!(amount.amount + '') ? parseFloat(amount.amount + '') : 0;
       }
     }
     return sum;
@@ -361,17 +366,21 @@ export const selectTotalLoanPaymentByYear = (year, contributionType) => createSe
 );
 
 export const selectTotalFinePaymentByYear = (year, contributionType) => createSelector(
-  selectAll,
-  (allItems) => {
+  selectDetailed,
+  fromFineTypes.selectEntities,
+  (allItems, fineTypes) => {
     const items = allItems
       .filter(i => i.year + '' === year + '')
       .filter(i => !!i.contributionsDetails.find(k => (k.id === contributionType || contributionType === 'All')));
     // const items = allItems;
     let sum = 0;
     for (const item of items) {
-      const contr = Object.keys(item.fines).map(i => item.fines[i]);
+      const contr = Object.keys(item.fines)
+        .map(i => ({fineType: fineTypes[i], amount: item.fines[i]}))
+        .filter(i => contributionType === 'All' || (i.fineType && i.fineType.contribution_type_id === contributionType))
+      ;
       for (const amount of contr) {
-        sum += !!(amount + '') ? parseFloat(amount + '') : 0;
+        sum += !!(amount.amount + '') ? parseFloat(amount.amount + '') : 0;
       }
     }
     return sum;
@@ -384,6 +393,14 @@ export const selectTotalIn = (year, contributionType) => createSelector(
   selectTotalFinePaymentByYear (year, contributionType),
   (payments, loans, fines) => {
     return payments + loans + fines;
+  }
+);
+
+export const selectTotalByYear = (year, contributionType) => createSelector(
+  fromExpense.selectTotalByYear(year, contributionType),
+  fromLoan.selectTotalByYear(year, contributionType),
+  (fines, loans) => {
+    return loans + fines;
   }
 );
 

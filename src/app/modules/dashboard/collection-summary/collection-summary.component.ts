@@ -60,6 +60,6 @@ export class CollectionSummaryComponent implements OnInit {
     this.totalExpenses$ = this.store.pipe(select(expenseSelector.selectTotalByYear(this.year, this.currentContr)));
     this.totalLoanOut$ = this.store.pipe(select(loanSelector.selectTotalByYear(this.year, this.currentContr)));
     this.totalIn$ = this.store.pipe(select(paymentSelector.selectTotalIn(this.year, this.currentContr)));
-    this.totalOut$ = this.store.pipe(select(loanSelector.selectTotalByYear(this.year, this.currentContr)));
+    this.totalOut$ = this.store.pipe(select(paymentSelector.selectTotalByYear(this.year, this.currentContr)));
   }
 }
