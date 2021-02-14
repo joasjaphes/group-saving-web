@@ -4,6 +4,11 @@
   grid-gap: 20px;
 }
 
+.search-grid {
+  display: grid;
+  grid-template-columns: auto 450px auto;
+}
+
 .menu-grid {
   display: grid;
   grid-template-columns: 120px auto 40px;

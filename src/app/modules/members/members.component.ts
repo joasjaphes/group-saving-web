@@ -44,6 +44,7 @@ export class MembersComponent implements OnInit {
   viewType = '';
   details;
   currentMember: Member;
+  memberSearch: any;
 
   constructor(
     private store: Store<ApplicationState>,

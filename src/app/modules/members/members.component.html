@@ -36,12 +36,28 @@
         </button>
       </div>
     </div>
-<!--    List of Members-->
+
+<!--    Member Search-->
+    <div *ngIf="(members$ | async).length > 1" class="search-grid">
+      <div></div>
+      <div>
+        <mat-form-field>
+          <mat-icon matSuffix>search </mat-icon>
+          <input [(ngModel)]="memberSearch" matInput placeholder=" Type member name to search">
+        </mat-form-field>
+      </div>
+      <div></div>
+    </div>
+
+    <div *ngIf="(members$ | async).length > 1 && (members$ | async | search:'name':memberSearch) == 0">
+      <h3 class="registration-title text-center mt-3">There is no member named {{memberSearch}}</h3>
+    </div>
+    <!--    List of Members-->
     <div *ngIf="(members$ | async).length > 1" class="main-menu-container">
       <div
         [ngClass]="routeAnimationsElements"
         class="menu-grid content-area"
-        *ngFor="let member of members$ | async"
+        *ngFor="let member of members$ | async | search:'name':memberSearch"
       >
         <div class="img-div">
           <h1 style="font-size: 40px; color: white" class="registration-title">{{member.name[0].toUpperCase()}}</h1>
