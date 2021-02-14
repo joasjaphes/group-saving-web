@@ -4,29 +4,29 @@
   </div>
 
   <div class="col-sm-12 p-0">
-    <div class="loan-grid">
+    <div class="loan-grid" *ngIf="loanSummary$ | async">
       <div>
-        <app-circular-progress [value]="60"></app-circular-progress>
+        <app-circular-progress [value]="(loanSummary$ | async).percent"></app-circular-progress>
       </div>
       <div style="display: grid; align-content: center">
         <p style="font-size: 20px;" class="text-muted m-0">
           Total Unpaid Loan
           <span class="currency-area">({{group?.currency}})</span>
         </p>
-        <h1 class="registration-title big-amount mb-0">6,324,909</h1>
+        <h1 class="registration-title big-amount mb-0">{{(loanSummary$ | async).unpaid | number}}</h1>
         <div class="inner1-grid">
           <div class="inner1-item-grid">
             <div class="img-area in"></div>
             <div>
               <p class="text-muted">Paid Amount</p>
-              <h1 class="registration-title down-amount">5,004,900</h1>
+              <h1 class="registration-title down-amount">{{(loanSummary$ | async).paid | number}}</h1>
             </div>
           </div>
           <div class="inner1-item-grid">
             <div class="img-area out"></div>
             <div>
               <p class="text-muted">Total Loan Out</p>
-              <h1 class="registration-title down-amount">9,554,900</h1>
+              <h1 class="registration-title down-amount">{{(loanSummary$ | async).totalOut | number}}</h1>
             </div>
           </div>
         </div>

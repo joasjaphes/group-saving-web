@@ -62,6 +62,25 @@ export const selectActiveLoans = createSelector(
     .filter(i => parseFloat(i.remaining_balance + '') > 0)
 );
 
+export const selectActiveLoansSummary = createSelector(
+  selectDetailed,
+  (allItems) => {
+    const totals = { totalOut: 0, paid: 0, unpaid: 0, percent: 0 };
+    const activeLoans = allItems
+      .filter(i => parseFloat(i.remaining_balance + '') > 0);
+    activeLoans.forEach(item => {
+      totals.totalOut += parseFloat(item.total_amount_to_pay + '');
+      totals.paid += parseFloat(item.amount_paid_to_date + '');
+      totals.unpaid += parseFloat(item.remaining_balance + '');
+    });
+    if (totals.totalOut) {
+      const percent =  (totals.paid / totals.totalOut) * 100;
+      totals.percent = parseInt(percent + '', 10);
+    }
+    return totals;
+  }
+);
+
 export const selectCompletedLoans = createSelector(
   selectDetailed,
   (allItems) => allItems
