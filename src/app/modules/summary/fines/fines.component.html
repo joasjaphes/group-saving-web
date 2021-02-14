@@ -12,6 +12,107 @@
   (closeDetails)="closePanel()"
 >
   <ng-container ngProjectAs="table">
-    <h1>Fines will stay here</h1>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="top-grid1">
+          <div class="selection-area">
+            <mat-menu #typeMenu="matMenu">
+              <button
+                mat-menu-item (click)="setType('Members')">
+                Members
+              </button>
+              <button
+                mat-menu-item (click)="setType('Months')">
+                Months
+              </button>
+            </mat-menu>
+
+            <button mat-button [matMenuTriggerFor]="typeMenu" class="cursor">
+<!--              <mat-icon>date_range</mat-icon> &nbsp;-->
+              <span>{{currentView}}</span> &nbsp;
+              <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+            </button>
+          </div>
+          <div class="selection-area">
+            <mat-menu #fineTypeMenu="matMenu">
+              <button
+                *ngFor="let fine of finesSummary$ | async"
+                mat-menu-item (click)="setFineType(fine)">
+                {{fine.name}} ({{fine.total | number}})
+              </button>
+            </mat-menu>
+
+            <button mat-button [matMenuTriggerFor]="fineTypeMenu" class="cursor">
+              <!--              <mat-icon>date_range</mat-icon> &nbsp;-->
+              <span>{{fineTypeName}} ({{fineTypeTotal | number}})</span> &nbsp;
+              <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+            </button>
+          </div>
+
+          <div class="search-area">
+            <mat-form-field *ngIf="currentView == 'Members'" @fadeIn>
+              <mat-icon matSuffix>search </mat-icon>
+              <input [(ngModel)]="memberSearch" matInput placeholder=" Type member name to search">
+            </mat-form-field>
+          </div>
+
+          <div style="text-align: end">
+            <mat-menu #yearMenu="matMenu">
+              <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setYear(yr)">{{yr}}</button>
+            </mat-menu>
+
+            <small class="text-muted">For</small>
+            <button mat-button [matMenuTriggerFor]="yearMenu" class="cursor">
+              <mat-icon>date_range</mat-icon> &nbsp;
+              <span>{{year}}</span> &nbsp;
+              <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="payment-grid">
+          <div
+            class="one-payment content-area-shadow cursor"
+            title="click to view list of transactions for {{payment.name}}"
+            [ngClass]="routeAnimationsElements"
+            *ngFor="let payment of fines$ | async | search:'name': memberSearch"
+          >
+            <div style="display: grid; align-content: center">
+              <div class="img-div">
+                <h1 *ngIf="currentView == 'Members'" style="font-size: 40px;" class="registration-title">{{payment.name[0].toUpperCase()}}</h1>
+                <h1 *ngIf="currentView == 'Months'" style="font-size: 38px;" class="registration-title">{{payment.key}}</h1>
+              </div>
+            </div>
+            <div class="name-area">
+              <!--              <p style="color: #ffffff6e" class="lead mb-1"><small>{{ payment.date | date:'MMM yyyy' }}</small></p>-->
+              <h1 style="color: #ffffffb3;" class="mb-1 registration-title">{{ payment.name }}</h1>
+              <p style="color: #ffffffbf; font-size: 11px" class="mb-0">{{ payment.description }}</p>
+              <!--              <p *ngFor="let item of payment.items">-->
+              <!--                {{item.name}}: <b>{{item.amount}}</b>-->
+              <!--              </p>-->
+              <p class="mb-0 mt-2">
+                <button (click)="viewFines(payment)" mat-button> <mat-icon>list</mat-icon>
+                  View Transactions
+                </button>
+              </p>
+            </div>
+            <div class="amount-area">
+              <p class="mb-0"><small class="text-muted">{{(group$ | async)?.currency}}</small> </p>
+              <h1 class="registration-title">{{ payment.total | number }}</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container ngProjectAs="form">
+    <app-list-fines
+      *ngIf="viewType == 'view'"
+      [contributions]="currentFines$ | async"
+      [group]="group$ | async"
+    ></app-list-fines>
   </ng-container>
 </app-shared-layout>

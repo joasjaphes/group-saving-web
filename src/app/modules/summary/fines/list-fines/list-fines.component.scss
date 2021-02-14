@@ -1,16 +1,3 @@
-.top-grid1 {
-  display: grid;
-  grid-template-columns: 150px auto  230px 200px;
-  margin-bottom: 30px;
-  .selection-area {
-    button {
-      border-bottom: 1px solid #F15A28;
-      border-radius: 0;
-      font-size: 12px;
-    }
-  }
-}
-
 .payment-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -21,14 +8,9 @@
     grid-template-columns: 90px auto 200px;
     padding: 15px;
     grid-gap: 20px;
-    border: 1px solid #ffffff5e;
+    border-bottom: 1px solid #ffffff29;
     align-content: center;
-    border-radius: 15px;
-
-    button {
-      border: 1px solid chocolate;
-      border-radius: 15px;
-    }
+    //border-radius: 15px;
 
     .name-area {
       display: grid;

@@ -76,6 +76,7 @@ import { CollectionSummaryComponent } from './modules/dashboard/collection-summa
 import { CollectionCardComponent } from './modules/dashboard/collection-summary/collection-card/collection-card.component';
 import { LoanSummaryComponent } from './modules/dashboard/loan-summary/loan-summary.component';
 import { OtherSummaryComponent } from './modules/dashboard/other-summary/other-summary.component';
+import { ListFinesComponent } from './modules/summary/fines/list-fines/list-fines.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -148,7 +149,8 @@ const firebaseConfig = {
     CollectionSummaryComponent,
     CollectionCardComponent,
     LoanSummaryComponent,
-    OtherSummaryComponent
+    OtherSummaryComponent,
+    ListFinesComponent
   ],
   imports: [
     BrowserModule,
