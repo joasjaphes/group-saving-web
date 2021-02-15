@@ -77,6 +77,7 @@ import { CollectionCardComponent } from './modules/dashboard/collection-summary/
 import { LoanSummaryComponent } from './modules/dashboard/loan-summary/loan-summary.component';
 import { OtherSummaryComponent } from './modules/dashboard/other-summary/other-summary.component';
 import { ListFinesComponent } from './modules/summary/fines/list-fines/list-fines.component';
+import { HisaPeriodComponent } from './modules/settings/hisa-period/hisa-period.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -150,7 +151,8 @@ const firebaseConfig = {
     CollectionCardComponent,
     LoanSummaryComponent,
     OtherSummaryComponent,
-    ListFinesComponent
+    ListFinesComponent,
+    HisaPeriodComponent
   ],
   imports: [
     BrowserModule,

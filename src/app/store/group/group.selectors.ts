@@ -166,8 +166,6 @@ export const selectProgress = createSelector(
       const other_exist = !!contributionTypes.find(i => i.type === 'Other');
       const contributionNeedsBalance = contributionTypes.filter(i => i.track_balance);
       const contributionHasBalance = contributionTypes.filter(i => i.track_balance && selectedGroup.contribution_balances && selectedGroup.contribution_balances[i.id]);
-      console.log({contributionNeedsBalance});
-      console.log({contributionHasBalance});
       const uncreatedLoans = contributionTypes
         .filter(i => i.allow_loan)
         .filter(i => !loanTypes.find(k => k.contribution_type_id === i.id));

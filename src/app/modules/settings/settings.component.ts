@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {fadeIn, ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
 import {select, Store} from '@ngrx/store';
 import {ApplicationState} from '../../store';
@@ -11,6 +11,7 @@ import {ContributionType} from '../../store/contribution-type/contribution-type.
 import {selectNeedBalance} from '../../store/group/group.selectors';
 import {FineType} from '../../store/fine-type/fine-type.model';
 import * as fineTypeSelector from '../../store/fine-type/fine-type.selectors';
+import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-settings',
@@ -79,6 +80,7 @@ export class SettingsComponent implements OnInit {
   viewDetails = false;
   panelTitle = '';
   viewType = '';
+
   constructor(
     private store: Store<ApplicationState>,
   ) {
@@ -91,6 +93,20 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.checkIfGroupHasShare().then();
+  }
+
+  async checkIfGroupHasShare() {
+    const group = await this.group$.pipe(first(i => !!i && !!i.group_name)).toPromise();
+    console.log({group});
+    if (group && group.has_share) {
+      this.menus.push({
+        name: 'Share Timeline',
+        route: '',
+        description: 'Update group share collection start date and date of share distribution',
+        image: 'timeline.png'
+      });
+    }
   }
 
   menuClicked(clickedMenu) {
@@ -113,6 +129,11 @@ export class SettingsComponent implements OnInit {
       this.panelTitle = 'Update contribution type balances';
       this.viewDetails = true;
       this.viewType = 'balance';
+    }
+    if (clickedMenu.name === 'Share Timeline') {
+      this.panelTitle = 'Set Share Timeline';
+      this.viewDetails = true;
+      this.viewType = 'shareTimeline';
     }
   }
 

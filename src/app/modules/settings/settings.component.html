@@ -53,5 +53,11 @@
       [editing]="true"
       (closeForm)="closePanel()"
     ></app-group-starting-info>
+
+    <app-hisa-period
+      *ngIf="viewType == 'shareTimeline'"
+      [group]="group$ | async"
+      (closeForm)="closePanel()"
+    ></app-hisa-period>
   </ng-container>
 </app-shared-layout>

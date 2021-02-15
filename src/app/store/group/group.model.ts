@@ -67,4 +67,6 @@ export interface Group {
   chairpersonDetails?: Member;
   secretaryDetails?: Member;
   treasuryDetails?: Member;
+  share_start_date: any;
+  share_end_date: any;
 }
