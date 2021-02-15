@@ -2,6 +2,7 @@ import {FineType} from '../fine-type/fine-type.model';
 import {ContributionType} from '../contribution-type/contribution-type.model';
 import {LoanType} from '../loan-type/loan-type.model';
 import {LoanQueue} from '../loan-queue/loan-queue.model';
+import {Member} from '../member/member.model';
 
 export interface Group {
   id: string;
@@ -63,4 +64,7 @@ export interface Group {
     meeting_date: any;
     meeting_place: string;
   };
+  chairpersonDetails?: Member;
+  secretaryDetails?: Member;
+  treasuryDetails?: Member;
 }

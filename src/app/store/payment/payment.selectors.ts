@@ -356,7 +356,6 @@ export const selectTotalLoanPaymentByYear = (year, contributionType) => createSe
       const contr = Object.keys(item.loans)
         .map(i => ({loanUsed: loans[i] ? loanTypes[loans[i].loan_used] : null, amount: item.loans[i]}))
         .filter(i => contributionType === 'All' || (i.loanUsed && i.loanUsed.contribution_type_id === contributionType));
-      console.log({contr});
       for (const amount of contr) {
         sum += !!(amount.amount + '') ? parseFloat(amount.amount + '') : 0;
       }

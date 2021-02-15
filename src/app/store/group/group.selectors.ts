@@ -21,7 +21,21 @@ export const selectById = (id: string) => createSelector(
 );
 
 export const selected = createSelector(
-  selectEntities, selectCurrentId, (entities, id) => entities[id]
+  selectEntities,
+  selectCurrentId,
+  fromMember.selectEntities,
+  (entities, id, members) => {
+    const group = entities[id];
+    const chairpersonDetails = group ? members[group.chairperson] : null;
+    const secretaryDetails = group ? members[group.secretary] : null;
+    const treasuryDetails = group ? members[group.treasure] : null;
+    return {
+      ...group,
+      chairpersonDetails,
+      secretaryDetails,
+      treasuryDetails,
+    };
+  }
 );
 
 export const nextMeeting = createSelector(

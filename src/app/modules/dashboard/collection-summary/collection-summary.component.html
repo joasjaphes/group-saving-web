@@ -1,50 +1,107 @@
 <div class="row content-area">
-  <div class="col-sm-12">
-    <h3 class="registration-title mb-1">Contribution Summary</h3>
-  </div>
+  <div class="col-sm-12 title-grid">
+    <div style="display: grid;align-content: center">
+      <h3 class="registration-title mb-1">Contribution Summary</h3>
+    </div>
 
-  <div class="col-sm-12">
-    <div class="filter-grid">
-      <div class="selection-area">
-        <mat-menu #fineTypeMenu="matMenu">
-          <button
-            mat-menu-item
-            (click)="currentContr = 'All';typeName = 'All'; getData()">
-            All
-          </button>
-          <button
-            *ngFor="let contr of contributionTypes$ | async"
-            (click)="currentContr = contr.id;typeName = contr.name;  getData()"
-            mat-menu-item>
-            {{contr.name}}
-          </button>
-        </mat-menu>
-
-        <button mat-button [matMenuTriggerFor]="fineTypeMenu" class="cursor">
-          <!--              <mat-icon>date_range</mat-icon> &nbsp;-->
-          <span>{{typeName}}</span> &nbsp;
-          <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+    <div class="selection-area" style="text-align: end">
+      <mat-menu #fineTypeMenu="matMenu">
+        <button
+          mat-menu-item
+          (click)="currentContr = 'All';typeName = 'All'; getData()">
+          All
         </button>
-
-      </div>
-
-      <div style="text-align: end">
-
-        <mat-menu #yearMenu="matMenu">
-          <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setYear(yr)">{{yr}}</button>
-        </mat-menu>
-
-        <small class="text-muted">For</small>
-        <button mat-button [matMenuTriggerFor]="yearMenu" class="cursor">
-          <mat-icon>date_range</mat-icon> &nbsp;
-          <span>{{year}}</span> &nbsp;
-          <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+        <button
+          *ngFor="let contr of contributionTypes$ | async"
+          (click)="currentContr = contr.id;typeName = contr.name;  getData()"
+          mat-menu-item>
+          {{contr.name}}
         </button>
+      </mat-menu>
+
+              <button mat-button [matMenuTriggerFor]="fineTypeMenu" class="cursor">
+                <!--              <mat-icon>date_range</mat-icon> &nbsp;-->
+                <span>{{typeName}}</span> &nbsp;
+                <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+              </button>
+    </div>
+
+    <div style="text-align: end">
+
+      <mat-menu #yearMenu="matMenu">
+        <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setYear(yr)">{{yr}}</button>
+      </mat-menu>
+
+      <small class="text-muted">For</small>
+      <button mat-button [matMenuTriggerFor]="yearMenu" class="cursor">
+        <mat-icon>date_range</mat-icon> &nbsp;
+        <span>{{year}}</span> &nbsp;
+        <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+      </button>
 
 
-      </div>
     </div>
   </div>
+
+<!--  <div class="col-sm-12">-->
+<!--    <div class="filter-grid">-->
+<!--      <div class="selection-area">-->
+<!--        <mat-menu #fineTypeMenu="matMenu">-->
+<!--          <button-->
+<!--            mat-menu-item-->
+<!--            (click)="currentContr = 'All';typeName = 'All'; getData()">-->
+<!--            All-->
+<!--          </button>-->
+<!--          <button-->
+<!--            *ngFor="let contr of contributionTypes$ | async"-->
+<!--            (click)="currentContr = contr.id;typeName = contr.name;  getData()"-->
+<!--            mat-menu-item>-->
+<!--            {{contr.name}}-->
+<!--          </button>-->
+<!--        </mat-menu>-->
+
+<!--&lt;!&ndash;        <button mat-button [matMenuTriggerFor]="fineTypeMenu" class="cursor">&ndash;&gt;-->
+<!--&lt;!&ndash;          &lt;!&ndash;              <mat-icon>date_range</mat-icon> &nbsp;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;          <span>{{typeName}}</span> &nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-icon style="color: white;">arrow_drop_down</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;        </button>&ndash;&gt;-->
+
+<!--        <button-->
+<!--          class="zoom-on-hover selector"-->
+<!--          mat-flat-button-->
+<!--          (click)="currentContr = 'All'; getData()"-->
+<!--          [ngClass]="{'active': currentContr == 'All'}"-->
+<!--        >-->
+<!--          All-->
+<!--        </button>-->
+<!--        <button-->
+<!--          class="zoom-on-hover selector"-->
+<!--          mat-flat-button-->
+<!--          *ngFor="let contr of contributionTypes$ | async"-->
+<!--          (click)="currentContr = contr.id; getData()"-->
+<!--          [ngClass]="{'active': currentContr == contr.id}"-->
+<!--        >-->
+<!--          {{contr.name}}-->
+<!--        </button>-->
+<!--      </div>-->
+
+<!--&lt;!&ndash;      <div style="text-align: end">&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <mat-menu #yearMenu="matMenu">&ndash;&gt;-->
+<!--&lt;!&ndash;          <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setYear(yr)">{{yr}}</button>&ndash;&gt;-->
+<!--&lt;!&ndash;        </mat-menu>&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <small class="text-muted">For</small>&ndash;&gt;-->
+<!--&lt;!&ndash;        <button mat-button [matMenuTriggerFor]="yearMenu" class="cursor">&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-icon>date_range</mat-icon> &nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;          <span>{{year}}</span> &nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-icon style="color: white;">arrow_drop_down</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;        </button>&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--    </div>-->
+<!--  </div>-->
   <div class="col-sm-12 summary-grid">
     <div class="content-area1">
       <app-collection-card

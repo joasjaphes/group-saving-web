@@ -1,6 +1,47 @@
 .content-area {
-  padding: 20px;
+  padding-top: 20px;
   border-radius: 20px;
   margin-right: 10px;
   //border: 1px solid #ffffff5e;
+  //box-shadow: 0 0 1em #00000096;
+}
+
+.title-grid {
+  display: grid;
+  padding-right: 0;
+  grid-template-columns: auto 150px;
+}
+
+
+.leader-grid {
+  display: grid;
+  grid-template-columns: 70px auto;
+  padding: 5px 5px 5px 5px;
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
+  cursor: pointer;
+
+  h3 {
+    color: #cccccc;
+  }
+
+  p {
+    font-size: 15px;
+    color: #8e8e8e;
+    margin-bottom: 0;
+  }
+
+  .img-div {
+    background-color: #ffffff2e;
+    width: 47px;
+    height: 47px;
+    padding: 8px;
+    text-align: center;
+    border-radius: 27px;
+    vertical-align: middle;
+
+    img {
+      height: 50px;
+      width: 50px;
+    }
+  }
 }

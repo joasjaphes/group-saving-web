@@ -1,6 +1,20 @@
+.title-grid {
+  display: grid;
+  grid-template-columns: auto 200px 150px;
+  grid-gap: 30px;
+  padding-bottom: 30px ;
+
+  .selection-area {
+    //button {
+    //  border-bottom: 2px solid #F15A28;
+    //  border-radius: 0;
+    //  font-size: 12px;
+    //}
+  }
+}
 .filter-grid {
   display: grid;
-  grid-template-columns: auto 280px;
+  grid-template-columns: auto;
   margin-bottom: 30px;
 
   .selection-area {
@@ -35,6 +49,7 @@
   border-radius: 20px;
   margin-right: 10px;
   //border: 1px solid #ffffff5e;
+  //box-shadow: 0 0 1em #00000096;
 }
 
 .content-area1 {

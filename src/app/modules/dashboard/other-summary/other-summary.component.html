@@ -1,5 +1,95 @@
-<div class="row content-area" style="height: 100%">
-  <div class="col-sm-12">
-    <h3 class="registration-title">Other Summary</h3>
+<div class="container-fluid pr-0 pl-1">
+
+  <div class="row content-area">
+    <div class="col-sm-12 title-grid">
+      <div style="display: grid; align-content: center">
+        <h3 class="registration-title" style="color: #ffffffc7;">Expenses</h3>
+      </div>
+      <div style="text-align: end;color: #ffffffc7;">
+
+        <mat-menu #yearMenu="matMenu">
+          <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setYear(yr)">{{yr}}</button>
+        </mat-menu>
+
+        <!--        <small class="text-muted">For</small>-->
+        <button mat-button [matMenuTriggerFor]="yearMenu" class="cursor">
+          <!--          <mat-icon>date_range</mat-icon> &nbsp;-->
+          <span>{{year}}</span> &nbsp;
+          <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+        </button>
+      </div>
+
+    </div>
+    <div class="col-sm-12" style="height: 130px; display: grid;align-content: center">
+<!--      <h1 class="registration-title" style="color: #ffffffc7;">712,300</h1>-->
+    </div>
+
+    <div class="col-sm-12 title-grid">
+      <div style="display: grid; align-content: center">
+        <h3 class="registration-title" style="color: #ffffffc7;">Fines</h3>
+      </div>
+      <div style="text-align: end;color: #ffffffc7;">
+
+        <mat-menu #yearMenu="matMenu">
+          <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setYear(yr)">{{yr}}</button>
+        </mat-menu>
+
+        <!--        <small class="text-muted">For</small>-->
+        <button mat-button [matMenuTriggerFor]="yearMenu" class="cursor">
+          <!--          <mat-icon>date_range</mat-icon> &nbsp;-->
+          <span>{{year}}</span> &nbsp;
+          <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+        </button>
+      </div>
+
+    </div>
+    <div class="col-sm-12" style="height: 130px">
+
+    </div>
+    <div class="col-sm-12 title-grid">
+      <div style="display: grid; align-content: center">
+        <h3 class="registration-title" style="color: #ffffffc7;">Leadership</h3>
+      </div>
+      <div style="text-align: end">
+
+      </div>
+
+    </div>
+    <div class="col-sm-12" style="height: 230px" *ngIf="group">
+      <!--      Chairperson-->
+      <div class="leader-grid" *ngIf="group.chairpersonDetails">
+        <div class="img-div">
+          <h1>{{group.chairpersonDetails.name[0]}}</h1>
+        </div>
+        <div style="display: grid;align-content: center">
+          <p>Chairperson</p>
+          <h3 class="registration-title">{{group.chairpersonDetails.name}}</h3>
+        </div>
+      </div>
+
+      <!--      Secretary-->
+      <div class="leader-grid" *ngIf="group.secretaryDetails">
+        <div class="img-div">
+          <h1>{{group.secretaryDetails.name[0]}}</h1>
+        </div>
+        <div style="display: grid;align-content: center">
+          <p>Secretary</p>
+          <h3 class="registration-title">{{group.secretaryDetails.name}}</h3>
+        </div>
+      </div>
+
+      <!--      Treasury-->
+      <div class="leader-grid" *ngIf="group.treasuryDetails">
+        <div class="img-div">
+          <h1>{{group.treasuryDetails.name[0]}}</h1>
+        </div>
+        <div style="display: grid;align-content: center">
+          <p>Chairperson</p>
+          <h3 class="registration-title">{{group.treasuryDetails.name}}</h3>
+        </div>
+      </div>
+    </div>
+
   </div>
+
 </div>

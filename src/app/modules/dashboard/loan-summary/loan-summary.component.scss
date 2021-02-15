@@ -3,6 +3,7 @@
   border-radius: 20px;
   margin-right: 10px;
   //border: 1px solid #ffffff5e;
+  //box-shadow: 0 0 1em #00000096;
 }
 
 .loan-grid {
@@ -71,12 +72,4 @@
 .title-grid {
   display: grid;
   grid-template-columns: auto 250px;
-
-  .selection-area {
-    button {
-      border-bottom: 2px solid #F15A28;
-      border-radius: 0;
-      font-size: 12px;
-    }
-  }
 }

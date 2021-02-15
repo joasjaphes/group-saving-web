@@ -17,7 +17,7 @@
         <app-collection-summary></app-collection-summary>
       </div>
       <div [ngClass]="routeAnimationsElements" class="other-summary">
-        <app-other-summary></app-other-summary>
+        <app-other-summary [group]="group$ | async"></app-other-summary>
       </div>
       <div [ngClass]="routeAnimationsElements">
         <app-loan-summary [group]="group$ | async"></app-loan-summary>
