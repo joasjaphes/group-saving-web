@@ -19,7 +19,11 @@ export class AssignLoanComponent implements OnInit {
   @Input() contributionTypes: ContributionType[];
   @Input() loanTypes: LoanType[];
   @Input() member: Member;
-  @Input() membersLoans: Loan[];
+  @Input() membersLoans: Loan[] = [];
+
+  @Input() initialLoanType: string;
+  @Input() initialAmount: number;
+  @Input() initialDate: any;
 
   @Output() closeForm = new EventEmitter();
   loanType: string;
@@ -44,9 +48,22 @@ export class AssignLoanComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.loanTypes && this.loanTypes.length === 1) {
-      this.loanType = this.loanTypes[0].id;
+    if (this.initialLoanType) {
+      this.loanType = this.initialLoanType;
       this.loanTypeSelected(this.loanType);
+    } else {
+      if (this.loanTypes && this.loanTypes.length === 1) {
+        this.loanType = this.loanTypes[0].id;
+        this.loanTypeSelected(this.loanType);
+      }
+    }
+    if (this.initialAmount) {
+      this.loanAmount = this.initialAmount;
+      this.calculateLoan();
+    }
+    if (this.initialDate) {
+      this.loanStartDate = this.initialDate;
+      this.calculateLoan();
     }
   }
 
@@ -109,20 +126,9 @@ export class AssignLoanComponent implements OnInit {
       }
       this.totalProfitContribution = this.testToReturn - this.loanAmount;
 
-      if (this.currentLoanType.duration_type === 'Monthly') {
-        const d = new Date(this.loanStartDate);
-        d.setMonth(d.getMonth() + this.duration);
-        this.newDate = d;
-      }
-      if (this.currentLoanType.duration_type === 'Weekly') {
-        const d = new Date(this.loanStartDate);
-        d.setMonth(d.getDate() + (this.duration * 7));
-        this.newDate = d;
-      } else {
-        const d = new Date(this.loanStartDate);
-        d.setMonth(d.getMonth() + this.duration);
-        this.newDate = d;
-      }
+
+      const d = new Date(this.loanStartDate);
+      this.newDate = this.commonService.getDateFromToday(d, this.currentLoanType.duration_type, this.duration);
       let amountGiven = this.loanAmount;
       if (this.currentLoanType.is_insured) {
         amountGiven -= this.insuranceAmount;

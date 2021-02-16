@@ -13,6 +13,9 @@ import {LoanQueue} from '../../../store/loan-queue/loan-queue.model';
 import {ContributionType} from '../../../store/contribution-type/contribution-type.model';
 import * as contributionTypeSelector from '../../../store/contribution-type/contribution-type.selectors';
 import {ROUTE_ANIMATIONS_ELEMENTS} from '../../../shared/animations/router-animation';
+import {Loan} from '../../../store/loan/loan.model';
+import {first} from 'rxjs/operators';
+import * as loanSelector from '../../../store/loan/loan.selectors';
 
 @Component({
   selector: 'app-loan-queue',
@@ -30,6 +33,11 @@ export class LoanQueueComponent implements OnInit {
   panelTitle = '';
   viewType = '';
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
+  currentMember: Member;
+  membersLoans$: Observable<Loan[]>;
+  initialDate: any;
+  initialAmount: number;
+  initialLoanType: string;
   constructor(
     private store: Store<ApplicationState>,
   ) {
@@ -54,6 +62,20 @@ export class LoanQueueComponent implements OnInit {
     this.viewDetails = false;
     this.panelTitle = '';
     this.viewType = '';
+    this.initialAmount = null;
+    this.initialDate = null;
+    this.initialLoanType = '';
   }
 
+  async addLoan(expense: LoanQueue) {
+    this.currentMember = expense.member;
+    this.viewDetails = true;
+    this.panelTitle = 'Assign Loan to member';
+    this.membersLoans$ = this.store.pipe(select(loanSelector.selectLoanByMember(expense.member_id)));
+    this.initialAmount = expense.amount;
+    this.initialDate = expense.date;
+    this.initialLoanType = expense.loan_type_id;
+
+    this.viewType = 'loan';
+  }
 }

@@ -2,7 +2,7 @@ export interface Meeting {
   id: string;
   group_id: string;
   isActive: boolean;
-  lastUpdate: number;
+  last_update: number;
   additional_config: any;
   date: string;
   month: string;

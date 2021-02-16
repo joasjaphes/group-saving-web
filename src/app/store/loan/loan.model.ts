@@ -30,8 +30,31 @@ export interface Loan {
   start_month: string;
   start_year: string;
   start_week: string;
-  payments: any;
-  fines: any;
+  payments: {
+    amount: number;
+    date_of_payment: string;
+    date: string;
+    from_previous_loan: boolean;
+    id: string;
+    member_id: string;
+    month: any;
+    week: any;
+    paid_on_time: boolean;
+    payment_mode: string;
+    payment_type: string;
+    period: string;
+    reference_number: string;
+    year: any
+  }[];
+  fines: {
+    amount: number;
+    date: string;
+    fine_id: string;
+    id: string;
+    member_id: string;
+    month: any;
+    year: any;
+  }[];
   durationName?: any;
   percentPaid?: any;
 

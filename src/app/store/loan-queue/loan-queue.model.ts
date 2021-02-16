@@ -8,6 +8,7 @@ export interface LoanQueue {
   additional_config: any;
   member_id: string;
   loan_type_id: string;
+  date_provided: string;
   date: string;
   month: string;
   year: string;

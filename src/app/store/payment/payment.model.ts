@@ -21,7 +21,7 @@ export interface Payment {
   fineDetails?: any[];
   fines: any;
   loans: any;
-  isPending: boolean;
+  is_pending: boolean;
   totalAmount?: number;
   paymentItems?: {
     id: string;

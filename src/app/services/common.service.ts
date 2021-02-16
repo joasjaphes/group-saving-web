@@ -333,4 +333,14 @@ export class CommonService {
     return dateReceived ? moment(dateReceived).format('YYYY-MM-DD') : '';
   }
 
+  getDateFromToday(date: Date, type, amount) {
+    if (type === 'Monthly') {
+      return moment(date).add(amount, 'months').format();
+    } else if (type === 'Weekly') {
+      return moment(date).add(amount, 'weeks').format();
+    } else {
+      return moment(date).add(amount, 'months').format();
+    }
+  }
+
 }
