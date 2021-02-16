@@ -6,6 +6,7 @@ import {ApplicationState} from '../../../store';
 import * as loanSelector from '../../../store/loan/loan.selectors';
 import * as loanTypeSelector from '../../../store/loan-type/loan-type.selectors';
 import {LoanType} from '../../../store/loan-type/loan-type.model';
+import {Member} from '../../../store/member/member.model';
 
 @Component({
   selector: 'app-loan-summary',
@@ -15,6 +16,8 @@ import {LoanType} from '../../../store/loan-type/loan-type.model';
 export class LoanSummaryComponent implements OnInit {
 
   @Input() group: Group;
+  @Input() member: Member;
+  @Input() showTitle = true;
   loanSummary$: Observable<{ totalOut: number, paid: number, unpaid: number, percent: number }>;
   loanTypes$: Observable<LoanType[]>;
   typeName = 'All';
@@ -23,13 +26,14 @@ export class LoanSummaryComponent implements OnInit {
     private store: Store<ApplicationState>
   ) {
     this.loanTypes$ = this.store.pipe(select(loanTypeSelector.selectAll));
-    this.loanSummary$ = this.store.pipe(select(loanSelector.selectActiveLoansSummary(this.currentLoan)));
   }
 
   ngOnInit(): void {
+    this.getData();
   }
 
   getData() {
-    this.loanSummary$ = this.store.pipe(select(loanSelector.selectActiveLoansSummary(this.currentLoan)));
+    const memberId = this.member ? this.member.id : 'All';
+    this.loanSummary$ = this.store.pipe(select(loanSelector.selectActiveLoansSummary(this.currentLoan, memberId)));
   }
 }

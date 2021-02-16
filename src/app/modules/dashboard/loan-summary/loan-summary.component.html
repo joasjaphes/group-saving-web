@@ -2,7 +2,7 @@
   <div class="col-sm-12 title-grid">
     <div style="display: grid;align-content: center">
 
-      <h3 class="registration-title mb-1">Active Loans</h3>
+      <h3 *ngIf="showTitle" class="registration-title mb-1">Active Loans</h3>
     </div>
     <div class="selection-area" style="text-align: end">
       <mat-menu #fineTypeMenu="matMenu">

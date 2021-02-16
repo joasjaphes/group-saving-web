@@ -3,15 +3,22 @@
   grid-template-columns: auto 200px 150px;
   grid-gap: 30px;
   padding-bottom: 30px ;
-
-  .selection-area {
-    //button {
-    //  border-bottom: 2px solid #F15A28;
-    //  border-radius: 0;
-    //  font-size: 12px;
-    //}
-  }
 }
+.title-grid1 {
+  display: grid;
+  grid-template-columns: auto 150px;
+  grid-gap: 30px;
+  padding-bottom: 30px ;
+}
+
+.pull-right {
+  text-align: end;
+}
+
+.pull-left {
+  text-align: start;
+}
+
 .filter-grid {
   display: grid;
   grid-template-columns: auto;

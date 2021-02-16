@@ -10,6 +10,7 @@ import * as loanSelector from '../../../store/loan/loan.selectors';
 import {ApplicationState} from '../../../store';
 import {ContributionType} from '../../../store/contribution-type/contribution-type.model';
 import * as contributionTypeSelector from '../../../store/contribution-type/contribution-type.selectors';
+import {Member} from '../../../store/member/member.model';
 
 @Component({
   selector: 'app-collection-summary',
@@ -17,6 +18,8 @@ import * as contributionTypeSelector from '../../../store/contribution-type/cont
   styleUrls: ['./collection-summary.component.scss']
 })
 export class CollectionSummaryComponent implements OnInit {
+  @Input() showTitle = true;
+  @Input() member: Member;
   group$: Observable<Group>;
   contributionTypes$: Observable<ContributionType[]>;
   progress$: Observable<any>;
@@ -53,13 +56,14 @@ export class CollectionSummaryComponent implements OnInit {
   }
 
   getData() {
-    this.totalContributions$ = this.store.pipe(select(paymentSelector.selectTotalContributions(this.year, this.currentContr)));
-    this.totalContributionOnly$ = this.store.pipe(select(paymentSelector.selectTotalPaymentByYear(this.year, this.currentContr)));
-    this.totalLoanReturns$ = this.store.pipe(select(paymentSelector.selectTotalLoanPaymentByYear(this.year, this.currentContr)));
-    this.totalFinesPaid$ = this.store.pipe(select(paymentSelector.selectTotalFinePaymentByYear(this.year, this.currentContr)));
-    this.totalExpenses$ = this.store.pipe(select(expenseSelector.selectTotalByYear(this.year, this.currentContr)));
-    this.totalLoanOut$ = this.store.pipe(select(loanSelector.selectTotalByYear(this.year, this.currentContr)));
-    this.totalIn$ = this.store.pipe(select(paymentSelector.selectTotalIn(this.year, this.currentContr)));
-    this.totalOut$ = this.store.pipe(select(paymentSelector.selectTotalByYear(this.year, this.currentContr)));
+    const memberId = this.member ? this.member.id : 'All';
+    this.totalContributions$ = this.store.pipe(select(paymentSelector.selectTotalContributions(this.year, this.currentContr, memberId)));
+    this.totalContributionOnly$ = this.store.pipe(select(paymentSelector.selectTotalPaymentByYear(this.year, this.currentContr, memberId)));
+    this.totalLoanReturns$ = this.store.pipe(select(paymentSelector.selectTotalLoanPaymentByYear(this.year, this.currentContr, memberId)));
+    this.totalFinesPaid$ = this.store.pipe(select(paymentSelector.selectTotalFinePaymentByYear(this.year, this.currentContr, memberId)));
+    this.totalExpenses$ = this.store.pipe(select(expenseSelector.selectTotalByYear(this.year, this.currentContr, memberId)));
+    this.totalLoanOut$ = this.store.pipe(select(loanSelector.selectTotalByYear(this.year, this.currentContr, memberId)));
+    this.totalIn$ = this.store.pipe(select(paymentSelector.selectTotalIn(this.year, this.currentContr, memberId)));
+    this.totalOut$ = this.store.pipe(select(paymentSelector.selectTotalByYear(this.year, this.currentContr, memberId)));
   }
 }

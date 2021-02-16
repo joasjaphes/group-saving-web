@@ -3,45 +3,9 @@
   icon="account_circle"
 >
   <ng-container ngProjectAs="table">
-
-    <div class="row content-area p-3" *ngFor="let loan of loans$ | async">
-      <div class="col-sm-4">
-        <div class="row">
-          <div class="col-sm-12"><h2 class="registration-title">Loan Details</h2></div>
-          <div class="col-sm-12">
-            <p class="text-muted mb-0">Loan Type</p>
-            <h1 class="registration-title">{{loan.loanType.name}}</h1>
-          </div>
-          <div class="col-sm-12">
-            <p class="text-muted mb-0">Amount Requested</p>
-            <h1 class="registration-title">{{loan.amount_taken | number}}</h1>
-          </div>
-          <div class="col-sm-12">
-            <p class="text-muted mb-0">Amount Returned</p>
-            <h1 class="registration-title">{{loan.amount_paid_to_date | number}}</h1>
-          </div>
-          <div class="col-sm-12">
-            <p class="text-muted mb-0">Amount Remained</p>
-            <h1 class="registration-title">{{loan.remaining_balance | number}}</h1>
-          </div>
-          <div class="col-sm-12">
-            <p class="text-muted mb-0">Loan Due Date</p>
-            <h1 class="registration-title">{{loan.expected_date_of_payment | date:'MMM yyyy'}}</h1>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-8">
-        <div class="row">
-          <div class="col-sm-12">
-            <h2>Payments</h2>
-            <div *ngFor="let payment of loan.payments">
-              <p class="text-muted mb-1">{{payment.date_of_payment | date}}</p>
-              <h3 class="registration-title">{{payment.amount | number}}</h3>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <app-view-member
+      [member]="member$ | async"
+      [group]="group$ | async"
+    ></app-view-member>
   </ng-container>
 </app-shared-layout>

@@ -46,7 +46,7 @@
     <div class="col-sm-12" style="height: 130px">
 
     </div>
-    <div class="col-sm-12 title-grid">
+    <div class="col-sm-12 title-grid" *ngIf="!member">
       <div style="display: grid; align-content: center">
         <h3 class="registration-title" style="color: #ffffffc7;">Leadership</h3>
       </div>
@@ -55,7 +55,7 @@
       </div>
 
     </div>
-    <div class="col-sm-12" style="height: 230px" *ngIf="group">
+    <div class="col-sm-12" style="height: 230px" *ngIf="group && !member">
       <!--      Chairperson-->
       <div class="leader-grid" *ngIf="group.chairpersonDetails">
         <div class="img-div">
@@ -90,6 +90,18 @@
       </div>
     </div>
 
+<!--    Meeting attendance if view is for member-->
+    <div class="col-sm-12 title-grid" *ngIf="member">
+      <div style="display: grid; align-content: center">
+        <h3 class="registration-title" style="color: #ffffffc7;">Meetings</h3>
+      </div>
+      <div style="text-align: end">
+
+      </div>
+
+    </div>
+   <div class="col-sm-12" style="height: 230px" *ngIf="member">
+   </div>
   </div>
 
 </div>

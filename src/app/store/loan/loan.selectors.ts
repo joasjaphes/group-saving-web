@@ -62,11 +62,12 @@ export const selectActiveLoans = createSelector(
     .filter(i => parseFloat(i.remaining_balance + '') > 0)
 );
 
-export const selectActiveLoansSummary = (loanType) => createSelector(
+export const selectActiveLoansSummary = (loanType, memberId) => createSelector(
   selectDetailed,
   (allItems) => {
     const totals = { totalOut: 0, paid: 0, unpaid: 0, percent: 0 };
     const activeLoans = allItems
+      .filter(i => memberId === 'All' || i.member_id === memberId)
       .filter(i => parseFloat(i.remaining_balance + '') > 0)
       .filter(i => i.loan_used === loanType || loanType === 'All');
     activeLoans.forEach(item => {
@@ -89,11 +90,12 @@ export const selectCompletedLoans = createSelector(
 );
 
 
-export const selectTotalByYear = (year, contributionType) => createSelector(
+export const selectTotalByYear = (year, contributionType, memberId) => createSelector(
   selectDetailed,
   (allItems) => {
     const items = allItems
       .filter(i => i.start_year + '' === year + '')
+      .filter(i => i.member_id === memberId || memberId === 'All')
       .filter(i => contributionType === 'All' || (i.loanType && i.loanType.contribution_type_id === contributionType));
     // const items = allItems;
     let sum = 0;

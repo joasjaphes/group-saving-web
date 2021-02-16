@@ -3,6 +3,9 @@
   icon="account_circle"
 >
   <ng-container ngProjectAs="table">
-    <h1>Account Information will be here</h1>
+    <app-view-member
+      [member]="member$ | async"
+      [group]="group$ | async"
+    ></app-view-member>
   </ng-container>
 </app-shared-layout>

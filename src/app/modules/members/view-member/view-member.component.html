@@ -1,0 +1,28 @@
+<!--<div class="row" *ngIf="false">-->
+<!--  <div class="col-sm-12 menu-grid">-->
+<!--    <div class="img-div">-->
+<!--      <h1 style="font-size: 40px; color: white" class="registration-title">-->
+<!--        {{member?.name[0]}}-->
+<!--      </h1>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <h2 class="registration-title mb-1">{{member?.name}}</h2>-->
+<!--      <p class="lead">{{member?.phone_number}}</p>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<div class="dashboard-grid">
+  <div [ngClass]="routeAnimationsElements">
+    <!--        <h3 class="registration-title">Contributions</h3>-->
+    <app-collection-summary [member]="member" ></app-collection-summary>
+  </div>
+  <div [ngClass]="routeAnimationsElements" class="other-summary">
+    <!--        <h3 class="registration-title">More</h3>-->
+    <app-other-summary [member]="member" [group]="group"></app-other-summary>
+  </div>
+  <div [ngClass]="routeAnimationsElements">
+    <!--        <h3 class="registration-title">Active loans</h3>-->
+    <app-loan-summary [member]="member"  [group]="group"></app-loan-summary>
+  </div>
+</div>

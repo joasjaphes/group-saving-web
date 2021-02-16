@@ -4,6 +4,7 @@ import {select, Store} from '@ngrx/store';
 import * as paymentSelector from '../../../store/payment/payment.selectors';
 import {ApplicationState} from '../../../store';
 import {Group} from '../../../store/group/group.model';
+import {Member} from '../../../store/member/member.model';
 
 @Component({
   selector: 'app-other-summary',
@@ -15,6 +16,7 @@ export class OtherSummaryComponent implements OnInit {
   years$: Observable<string[]>;
   @Input() group: Group;
   year = new Date().getFullYear();
+  @Input() member: Member;
   constructor(
     private store: Store<ApplicationState>,
   ) {

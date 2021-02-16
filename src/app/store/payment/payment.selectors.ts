@@ -325,12 +325,13 @@ export const selectFIneTypesSummary = (year) => createSelector(
   }
 );
 
-export const selectTotalPaymentByYear = (year, contributionType) => createSelector(
+export const selectTotalPaymentByYear = (year, contributionType, memberId?) => createSelector(
   selectDetailed,
   (allItems) => {
     const items = allItems
       .filter(i => i.year + '' === year + '')
-      .filter(i => !!i.contributionsDetails.find(k => (k.id === contributionType || contributionType === 'All')));
+      .filter(i => !!i.contributionsDetails.find(k => (k.id === contributionType || contributionType === 'All')))
+      .filter(i => memberId === 'All' || i.memberId === memberId);
     // const items = allItems;
     let sum = 0;
     for (const item of items) {
@@ -343,13 +344,14 @@ export const selectTotalPaymentByYear = (year, contributionType) => createSelect
   }
 );
 
-export const selectTotalLoanPaymentByYear = (year, contributionType) => createSelector(
+export const selectTotalLoanPaymentByYear = (year, contributionType, memberId?) => createSelector(
   selectDetailed,
   fromLoanTypes.selectEntities,
   fromLoan.selectEntities,
   (allItems, loanTypes, loans) => {
     const items = allItems
-      .filter(i => i.year + '' === year + '');
+      .filter(i => i.year + '' === year + '')
+      .filter(i => memberId === 'All' || i.memberId === memberId);
     // const items = allItems;/
     let sum = 0;
     for (const item of items) {
@@ -364,12 +366,13 @@ export const selectTotalLoanPaymentByYear = (year, contributionType) => createSe
   }
 );
 
-export const selectTotalFinePaymentByYear = (year, contributionType) => createSelector(
+export const selectTotalFinePaymentByYear = (year, contributionType, memberId?) => createSelector(
   selectDetailed,
   fromFineTypes.selectEntities,
   (allItems, fineTypes) => {
     const items = allItems
       .filter(i => i.year + '' === year + '')
+      .filter(i => memberId === 'All' || i.memberId === memberId)
       .filter(i => !!i.contributionsDetails.find(k => (k.id === contributionType || contributionType === 'All')));
     // const items = allItems;
     let sum = 0;
@@ -386,27 +389,27 @@ export const selectTotalFinePaymentByYear = (year, contributionType) => createSe
   }
 );
 
-export const selectTotalIn = (year, contributionType) => createSelector(
-  selectTotalPaymentByYear(year, contributionType),
-  selectTotalLoanPaymentByYear(year, contributionType),
-  selectTotalFinePaymentByYear (year, contributionType),
+export const selectTotalIn = (year, contributionType, memberId?) => createSelector(
+  selectTotalPaymentByYear(year, contributionType, memberId),
+  selectTotalLoanPaymentByYear(year, contributionType, memberId),
+  selectTotalFinePaymentByYear (year, contributionType, memberId),
   (payments, loans, fines) => {
     return payments + loans + fines;
   }
 );
 
-export const selectTotalByYear = (year, contributionType) => createSelector(
-  fromExpense.selectTotalByYear(year, contributionType),
-  fromLoan.selectTotalByYear(year, contributionType),
+export const selectTotalByYear = (year, contributionType, memberId?) => createSelector(
+  fromExpense.selectTotalByYear(year, contributionType, memberId),
+  fromLoan.selectTotalByYear(year, contributionType, memberId),
   (fines, loans) => {
     return loans + fines;
   }
 );
 
-export const selectTotalContributions = (year, contributionType) => createSelector(
-  selectTotalPaymentByYear(year, contributionType),
-  selectTotalLoanPaymentByYear(year, contributionType),
-  selectTotalFinePaymentByYear (year, contributionType),
+export const selectTotalContributions = (year, contributionType, memberId) => createSelector(
+  selectTotalPaymentByYear(year, contributionType, memberId),
+  selectTotalLoanPaymentByYear(year, contributionType, memberId),
+  selectTotalFinePaymentByYear (year, contributionType, memberId),
   (payments, loans, fines) => {
     return payments + fines;
   }
