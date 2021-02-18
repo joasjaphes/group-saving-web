@@ -5,7 +5,33 @@
   grid-template-columns: 1fr 290px;
   grid-template-rows: auto auto;
 
-  .other-summary {
-    grid-row: span 2;
+  //.other-summary {
+  //  grid-row: span 2;
+  //}
+}
+
+.img-area {
+  width: 200px;
+  background-color: #141432;
+  border-radius: 50%;
+  height: 200px;
+  display: grid;
+  align-content: center;
+  justify-content: center;
+  box-shadow: 0 0 1em #00000096;
+  border: 1px solid #ffffff5e;
+
+
+  h1 {
+    font-size: 7em;
+    margin: 0;
   }
+}
+
+.content-area {
+  padding: 20px;
+  border-radius: 20px;
+  margin-right: 10px;
+  //border: 1px solid #ffffff5e;
+  //box-shadow: 0 0 1em #00000096;
 }

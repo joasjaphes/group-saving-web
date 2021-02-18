@@ -18,11 +18,29 @@
     <app-collection-summary [member]="member" ></app-collection-summary>
   </div>
   <div [ngClass]="routeAnimationsElements" class="other-summary">
+    <div style="display: grid;justify-content: center">
+      <div class="img-area mb-4">
+        <h1 class="registration-title">{{member?.name[0]}}</h1>
+      </div>
+      <h3 class="registration-title" style="text-align: center; font-size: 30px">{{member?.name}}</h3>
+      <h5 class="registration-title" style="text-align: center; font-size:  20px; color: #ffffffba">{{member?.phone_number}}</h5>
+    </div>
+
     <!--        <h3 class="registration-title">More</h3>-->
-    <app-other-summary [member]="member" [group]="group"></app-other-summary>
+<!--    <app-other-summary [member]="member" [group]="group"></app-other-summary>-->
   </div>
   <div [ngClass]="routeAnimationsElements">
     <!--        <h3 class="registration-title">Active loans</h3>-->
     <app-loan-summary [member]="member"  [group]="group"></app-loan-summary>
+  </div>
+
+  <div [ngClass]="routeAnimationsElements" class="content-area">
+    <h3 class="registration-title">Contribution</h3>
+    <div *ngIf="payments$ | async">
+      <div *ngFor="let contr of (payments$ | async).items">
+        <p class="mb-0" style="color: #ffffff8a">{{contr.name}}</p>
+        <h1 class="registration-title">{{contr.amount | number}}</h1>
+      </div>
+    </div>
   </div>
 </div>

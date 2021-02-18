@@ -24,7 +24,7 @@
       <div class="some-grid">
         <div class="amount-area">
           <p>Total Expenses</p>
-          <h1 class="registration-title" style="color: #ffffffc7;">712,300</h1>
+          <h1 class="registration-title" style="color: #ffffffc7;">{{totalExpenses$ | async | number}}</h1>
         </div>
         <div class="image-area">
           <img src="assets/images/icons/money1.png">
@@ -40,23 +40,23 @@
       <div style="text-align: end;color: #ffffffc7;">
 
         <mat-menu #yearMenu="matMenu">
-          <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setYear(yr)">{{yr}}</button>
+          <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setFineYear(yr)">{{yr}}</button>
         </mat-menu>
 
         <!--        <small class="text-muted">For</small>-->
         <button mat-button [matMenuTriggerFor]="yearMenu" class="cursor">
           <!--          <mat-icon>date_range</mat-icon> &nbsp;-->
-          <span>{{year}}</span> &nbsp;
+          <span>{{fineYear}}</span> &nbsp;
           <mat-icon style="color: white;">arrow_drop_down</mat-icon>
         </button>
       </div>
 
     </div>
-    <div class="col-sm-12" style="height: 130px">
+    <div class="col-sm-12" style="height: 130px; display: grid;align-content: center">
       <div class="some-grid">
         <div class="amount-area">
-          <p>Total Expenses</p>
-          <h1 class="registration-title" style="color: #ffffffc7;">712,300</h1>
+          <p>Total Fines</p>
+          <h1 class="registration-title" style="color: #ffffffc7;">{{totalFinesPaid$ | async | number}}</h1>
         </div>
         <div class="image-area">
           <img src="assets/images/icons/fine.png">

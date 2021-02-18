@@ -4,6 +4,7 @@
 >
   <ng-container ngProjectAs="table">
     <app-view-member
+      *ngIf="member$ | async"
       [member]="member$ | async"
       [group]="group$ | async"
     ></app-view-member>

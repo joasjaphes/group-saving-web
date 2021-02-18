@@ -112,6 +112,13 @@ export const selectDetailedGroupByMember = (year) => createSelector(
   }
 );
 
+export const selectDetailedGroupBySingleMember = (year, memberId) => createSelector(
+  selectDetailedGroupByMember(year),
+  (items) => {
+    return items.filter(i => i.id === memberId)[0];
+  }
+);
+
 export const selectDetailedGroupByMonth = (year) => createSelector(
   selectDetailed,
   (allItems) => {
