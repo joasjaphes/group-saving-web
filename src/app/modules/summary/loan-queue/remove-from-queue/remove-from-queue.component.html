@@ -1,1 +1,33 @@
-<p>remove-from-queue works!</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="expenseGrid content-area">
+        <div class="img-div">
+          <h1 style="font-size: 40px;" class="registration-title">{{currentLoanQueue.member?.name[0].toUpperCase()}}</h1>
+        </div>
+        <div class="name-area">
+          <p style="color: #ffffff6e" class="lead mb-1"><small>{{ currentLoanQueue.date | date:'MMM yyyy' }}</small></p>
+          <h1 class="mb-1 registration-title">{{ currentLoanQueue.member?.name }}</h1>
+          <p style="color: #ffffffbf" class="mb-0">{{ currentLoanQueue.loanType?.name }}</p>
+        </div>
+        <div class="amount-area">
+          <p class="mb-0"><small class="text-muted">{{group?.currency}}</small> </p>
+          <h1 class="registration-title">{{ currentLoanQueue.amount | number }}</h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 mt-3" *ngIf="loanAmount && memberId && loanTypeId" @fadeIn>
+      <app-save-area
+        [confirmFirst]="true"
+        confirmText="You are about to remove {{memberName}} to a loan queue"
+        (cancel)="closeDialog()"
+        (save)="save()"
+        saveText="Remove from queue"
+        saveIcon="delete"
+        [savingData]="loading"
+      ></app-save-area>
+    </div>
+
+  </div>
+</div>

@@ -58,6 +58,13 @@ export class LoanQueueComponent implements OnInit {
     this.viewType = 'add';
   }
 
+  removeFromQueue(loanQueue: LoanQueue) {
+    this.currentLoanQueue = loanQueue;
+    this.viewDetails = true;
+    this.panelTitle = 'Add member to loan waiting list';
+    this.viewType = 'remove';
+  }
+
   closePanel() {
     this.viewDetails = false;
     this.panelTitle = '';
@@ -65,16 +72,17 @@ export class LoanQueueComponent implements OnInit {
     this.initialAmount = null;
     this.initialDate = null;
     this.initialLoanType = '';
+    this.currentLoanQueue = null;
   }
 
-  async addLoan(expense: LoanQueue) {
-    this.currentMember = expense.member;
+  async addLoan(loanQueue: LoanQueue) {
+    this.currentMember = loanQueue.member;
     this.viewDetails = true;
     this.panelTitle = 'Assign Loan to member';
-    this.membersLoans$ = this.store.pipe(select(loanSelector.selectLoanByMember(expense.member_id)));
-    this.initialAmount = expense.amount;
-    this.initialDate = expense.date;
-    this.initialLoanType = expense.loan_type_id;
+    this.membersLoans$ = this.store.pipe(select(loanSelector.selectLoanByMember(loanQueue.member_id)));
+    this.initialAmount = loanQueue.amount;
+    this.initialDate = loanQueue.date;
+    this.initialLoanType = loanQueue.loan_type_id;
 
     this.viewType = 'loan';
   }

@@ -1,11 +1,26 @@
+.cont-type-grid {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-gap: 20px;
+  padding-bottom: 25px;
+}
+
 .cont-type {
   cursor: pointer;
   display: grid;
   grid-template-columns: 50px auto;
+  box-shadow: 0 0 1em #00000096;
+  border: 1px solid #ffffff5e;
+  border-radius: 15px;
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
   div {
-    padding: 5px;
+    padding: 15px;
   }
+
+  //.icon-area {
+  //  display: grid;
+  //  align-content: center;
+  //}
 
   .cont-title {
     font-size: 15px;

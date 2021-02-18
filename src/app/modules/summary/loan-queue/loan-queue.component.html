@@ -26,28 +26,28 @@
     ></app-empty-summary>
 
     <div class="main-expense-grid">
-      <div [ngClass]="routeAnimationsElements" *ngFor="let expense of loanQueue$ | async" class="expenseGrid content-area">
+      <div [ngClass]="routeAnimationsElements" *ngFor="let loanQueue of loanQueue$ | async" class="expenseGrid content-area">
         <div class="img-div">
-          <h1 style="font-size: 40px;" class="registration-title">{{expense.member?.name[0].toUpperCase()}}</h1>
+          <h1 style="font-size: 40px;" class="registration-title">{{loanQueue.member?.name[0].toUpperCase()}}</h1>
         </div>
         <div class="name-area">
-          <p style="color: #ffffff6e" class="lead mb-1"><small>{{ expense.date | date:'MMM yyyy' }}</small></p>
-          <h1 class="mb-1 registration-title">{{ expense.member?.name }}</h1>
-          <p style="color: #ffffffbf" class="mb-0">{{ expense.loanType?.name }}</p>
+          <p style="color: #ffffff6e" class="lead mb-1"><small>{{ loanQueue.date | date:'MMM yyyy' }}</small></p>
+          <h1 class="mb-1 registration-title">{{ loanQueue.member?.name }}</h1>
+          <p style="color: #ffffffbf" class="mb-0">{{ loanQueue.loanType?.name }}</p>
         </div>
         <div class="amount-area">
           <p class="mb-0"><small class="text-muted">{{(group$ | async)?.currency}}</small> </p>
-          <h1 class="registration-title">{{ expense.amount | number }}</h1>
+          <h1 class="registration-title">{{ loanQueue.amount | number }}</h1>
         </div>
         <div class="menu">
           <button mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon style="color: white">more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item >
+            <button (click)="removeFromQueue(loanQueue)" mat-menu-item >
               <mat-icon style="color: red">delete</mat-icon> Remove from queue
             </button>
-            <button mat-menu-item (click)="addLoan(expense)">
+            <button mat-menu-item (click)="addLoan(loanQueue)">
               <mat-icon>money</mat-icon> Assign Loan
             </button>
           </mat-menu>
@@ -66,6 +66,16 @@
       [contributionTypes]="contributionTypes$ | async"
       (closeForm)="closePanel()"
     ></app-add-loan-queue>
+
+    <app-remove-from-queue
+      *ngIf="viewType == 'remove'"
+      [loanTypes]="loanTypes$ | async"
+      [group]="group$ | async"
+      [members]="members$ | async"
+      [currentLoanQueue]="currentLoanQueue"
+      [contributionTypes]="contributionTypes$ | async"
+      (closeForm)="closePanel()"
+    ></app-remove-from-queue>
 
     <app-assign-loan
       *ngIf="viewType === 'loan'"

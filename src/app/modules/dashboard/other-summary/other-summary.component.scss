@@ -45,3 +45,30 @@
     }
   }
 }
+
+.some-grid {
+  display: grid;
+  grid-template-columns: auto 100px;
+
+  .amount-area {
+    p {
+      text-align: end;
+      color: #ffffff7a
+    }
+    h1 {
+      text-align: end;
+      color: #ffffffc7
+    }
+  }
+
+  .image-area {
+    text-align: end;
+    img {
+      height: 60px;
+      width: 60px;
+      border-radius: 50%;
+      opacity: 0.5;
+      background-color: #cccccc;
+    }
+  }
+}
