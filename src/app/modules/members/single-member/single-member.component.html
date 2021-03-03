@@ -1,6 +1,8 @@
 <app-shared-layout
   title="{{(member$ | async)?.name}}"
   icon="account_circle"
+  urlName="Members"
+  [url]="['', 'members']"
 >
   <ng-container ngProjectAs="table">
     <app-view-member

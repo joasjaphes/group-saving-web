@@ -11,21 +11,26 @@
     </div>
 
     <!--    Expense for-->
-    <div [ngClass]="expenseFor == 'MEMBER' ? 'col-sm-6' : 'col-sm-12'" class="" *ngIf="expenseDate" @fadeIn>
+    <div class="mt-2" [ngClass]="expenseFor == 'MEMBER' ? 'col-sm-6' : 'col-sm-12'" *ngIf="expenseDate" @fadeIn>
       <mat-form-field appearance="outline">
         <mat-label>Expense For</mat-label>
+        <mat-icon matPrefix>people_outline</mat-icon>
         <mat-select [(ngModel)]="expenseFor">
-          <mat-option value="GROUP">Group</mat-option>
-          <mat-option value="MEMBER">Specific Member <small>(The amount was given to a specific member)</small>
+          <mat-option value="GROUP">
+             Group
+          </mat-option>
+          <mat-option value="MEMBER">
+            Specific Member <small>(The amount was given to a specific member)</small>
           </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
 
     <!--    Members-->
-    <div class="col-sm-6" *ngIf="expenseFor == 'MEMBER'" @fadeIn>
+    <div class="col-sm-6 mt-2" *ngIf="expenseFor == 'MEMBER'" @fadeIn>
       <mat-form-field appearance="outline">
         <mat-label>Amount will be given to</mat-label>
+        <mat-icon matPrefix>person_outline</mat-icon>
         <mat-select [(ngModel)]="memberId" (selectionChange)="selectMember($event.value)">
           <app-mat-select-search [(ngModel)]="memberSearch"></app-mat-select-search>
           <mat-option [value]="member.id" *ngFor="let member of members | search:'name':memberSearch">
@@ -37,7 +42,7 @@
     </div>
 
     <!--    Contribution Types-->
-    <div class="col-sm-12" *ngIf="expenseFor" @fadeIn>
+    <div class="col-sm-12 mt-2" *ngIf="expenseFor" @fadeIn>
       <mat-form-field appearance="outline">
         <mat-label>Contribution Type</mat-label>
         <mat-select [(ngModel)]="contributionType" (selectionChange)="selectContributionType($event.value)">

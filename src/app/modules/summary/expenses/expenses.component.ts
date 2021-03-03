@@ -27,6 +27,7 @@ export class ExpensesComponent implements OnInit {
   viewDetails = false;
   panelTitle = '';
   viewType = '';
+  currentExpense: Expense;
   constructor(
     private store: Store<ApplicationState>,
     public dialog: MatDialog,
@@ -44,6 +45,20 @@ export class ExpensesComponent implements OnInit {
     this.viewDetails = true;
     this.panelTitle = 'Add new expense';
     this.viewType = 'add';
+  }
+
+  updateExpense(expense: Expense) {
+    this.currentExpense = {...expense};
+    this.viewDetails = true;
+    this.panelTitle = 'Update expense';
+    this.viewType = 'add';
+  }
+
+  deleteExpense(expense: Expense) {
+    this.currentExpense = {...expense};
+    this.viewDetails = true;
+    this.panelTitle = 'Delete expense';
+    this.viewType = 'delete';
   }
 
   closePanel() {

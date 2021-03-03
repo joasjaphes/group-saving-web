@@ -1,0 +1,29 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <p class="text-muted mb-0">Expense date</p>
+      <h3 class="registration-title">{{currentExpense.date | date}}</h3>
+
+      <p class="text-muted mb-0">Amount</p>
+      <h1 class="registration-title">{{currentExpense.amount | number}}</h1>
+
+      <p class="text-muted mb-0">Given to</p>
+      <h3 class="registration-title" *ngIf="currentExpense.member">{{currentExpense.member?.name}}</h3>
+      <h3 class="registration-title" *ngIf="!currentExpense.member">Group Expense</h3>
+
+      <p class="text-muted mb-0">Reason</p>
+      <h3 class="registration-title">{{currentExpense.reason}}</h3>
+    </div>
+    <div class="col-sm-12 mt-3">
+      <app-save-area
+        [confirmFirst]="true"
+        saveIcon="delete"
+        saveText="Delete"
+        cancelText="Close"
+        (cancel)="closeDialog()"
+        (save)="save()"
+        [savingData]="loading"
+      ></app-save-area>
+    </div>
+  </div>
+</div>

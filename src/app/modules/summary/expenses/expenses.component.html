@@ -40,15 +40,38 @@
           <p class="mb-0"><small class="text-muted">{{(group$ | async)?.currency}}</small> </p>
           <h1 class="registration-title">{{ expense.amount | number }}</h1>
         </div>
+        <div class="menu">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon style="color: white">more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="updateExpense(expense)">
+              <mat-icon style="color: #0277bd">mode_edit</mat-icon> Edit
+            </button>
+            <button mat-menu-item (click)="deleteExpense(expense)">
+              <mat-icon style="color: red">delete</mat-icon> Delete
+            </button>
+          </mat-menu>
+        </div>
       </div>
     </div>
   </ng-container>
 
   <ng-container ngProjectAs="form">
     <app-add-expense
+      *ngIf="viewType == 'add'"
       [group]="group$ | async"
       [members]="members$ | async"
       [contributionTypes]="contributionTypes$ | async"
+      (closeForm)="closePanel()"
+      [currentExpense]="currentExpense"
     ></app-add-expense>
+
+    <app-delete-expense
+      *ngIf="viewType == 'delete'"
+      [group]="group$ | async"
+      [currentExpense]="currentExpense"
+      (closeForm)="closePanel()"
+    ></app-delete-expense>
   </ng-container>
 </app-shared-layout>

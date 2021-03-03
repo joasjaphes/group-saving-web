@@ -25,6 +25,7 @@ export class GroupStartingInfoComponent implements OnInit {
   entryChecked = false;
   otherChecked = false;
   entryFeeAmount;
+  groupName;
   loading;
 
   constructor(
@@ -35,6 +36,7 @@ export class GroupStartingInfoComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.group) {
+      this.groupName = this.group.group_name;
       this.currency = this.group.currency;
       this.currencyName = this.group.currency_name;
       this.meetingFrequency = this.group.meeting_settings ? this.group.meeting_settings.meeting_frequency : '';
@@ -70,6 +72,7 @@ export class GroupStartingInfoComponent implements OnInit {
       frequency: this.meetingFrequency,
       currency: this.currency,
       currency_name: this.currencyName,
+      group_name: this.groupName,
       has_share: this.shareChecked,
       has_social: this.socialChecked,
       has_entry_fee: this.entryChecked,

@@ -1,33 +1,44 @@
 <app-loader *ngIf="savingData" [message]="loadingMessage" @fadeIn></app-loader>
-<div style="text-align: right" class="button-div" *ngIf="!savingData" @fadeIn>
-  <p @fadeIn *ngIf="showConfirm" class="fa-pull-right text-right">
-      {{ confirmText }}
-      <button mat-mini-fab style="color: white; background-color: red; border-radius: 50%!important;" @fadeIn (click)="onCancelShowConfirm()">
-        <mat-icon>clear</mat-icon>
-      </button> &nbsp;
-      <button mat-mini-fab style="color: white; background-color: green; border-radius: 50%!important;" @fadeIn (click)="onSave(false)">
-        <mat-icon>done</mat-icon>
-      </button>
-    </p>
+<div style="text-align: right" class="button-div" *ngIf="!savingData && !showConfirm" @fadeIn>
+
   <button
     @fadeIn
-    *ngIf="!showConfirm && showCancel"
+    *ngIf="showCancel"
     class="zoom-on-hover"
     mat-button
     style="color: rgba(255, 255, 255, 0.7)"
     (click)="onClose()">
-    <mat-icon>close</mat-icon> {{ cancelText }}
+    <mat-icon>close</mat-icon>
+    {{ cancelText }}
   </button>
 
   <button
     @fadeIn
-    *ngIf="!showConfirm && !hideSave"
+    *ngIf="!hideSave"
     [disabled]="saveDisabled"
     class="zoom-on-hover"
     mat-raised-button color="primary"
     style="border-radius: 20px"
     (click)="onSave(true)">
-    <mat-icon>{{saveIcon}}</mat-icon> {{ saveText }}
+    <mat-icon>{{saveIcon}}</mat-icon>
+    {{ saveText }}
   </button>
   <!--<p class="text-right">Your About Save Data, Confirm</p>-->
+</div>
+
+<div style="text-align: center" *ngIf="showConfirm" @fadeIn>
+  <div class="">
+    <p class="lead">{{ confirmText }}</p>
+    <p class="confirm-div">
+      <button mat-raised-button style="background-color: red; " @fadeIn
+              (click)="onCancelShowConfirm()">
+        <mat-icon>clear</mat-icon> No
+      </button> &nbsp;
+      <button mat-raised-button style="background-color: green;" @fadeIn
+              (click)="onSave(false)">
+        <mat-icon>done</mat-icon> Yes
+      </button>
+    </p>
+
+  </div>
 </div>

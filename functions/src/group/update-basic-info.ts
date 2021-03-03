@@ -31,6 +31,22 @@ export const updateBasicInfo = functions.https.onRequest((request, response) => 
       await admin.firestore().runTransaction(async (transaction) => {
         const groupDoc = await transaction.get(groupDocRef);
         const groupData: any = {...groupDoc.data()};
+        // If the name of the group has been updated change the group name in all members
+        if (groupData.group_name !== data.group_name) {
+          const groupMemberRef = await admin.firestore()
+            .collection('member_group')
+            .where('group_id', '==', groupId)
+            .get();
+          if (groupMemberRef && groupMemberRef.docs) {
+            groupMemberRef.docs.forEach(doc => {
+              const memberGroupData = doc.data();
+              if (doc.data()) {
+                const groupMemberDocRef = admin.firestore().collection('member_group').doc(memberGroupData.id);
+                transaction.update(groupMemberDocRef, {last_update, group_name: data.group_name});
+              }
+            });
+          }
+        }
         const meeting_settings = groupData.meeting_settings
           ? {...groupData.meeting_settings, meeting_frequency: data.frequency}
           : {meeting_frequency: data.frequency};
@@ -38,6 +54,7 @@ export const updateBasicInfo = functions.https.onRequest((request, response) => 
           ...groupData,
           last_update,
           meeting_settings,
+          group_name: data.group_name,
           currency: data.currency,
           contribution_frequency: data.frequency,
           currency_name: data.currency_name,

@@ -80,6 +80,7 @@ import { ListFinesComponent } from './modules/summary/fines/list-fines/list-fine
 import { HisaPeriodComponent } from './modules/settings/hisa-period/hisa-period.component';
 import { ViewMemberComponent } from './modules/members/view-member/view-member.component';
 import { RemoveFromQueueComponent } from './modules/summary/loan-queue/remove-from-queue/remove-from-queue.component';
+import { DeleteExpenseComponent } from './modules/summary/expenses/delete-expense/delete-expense.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -156,7 +157,8 @@ const firebaseConfig = {
     ListFinesComponent,
     HisaPeriodComponent,
     ViewMemberComponent,
-    RemoveFromQueueComponent
+    RemoveFromQueueComponent,
+    DeleteExpenseComponent
   ],
   imports: [
     BrowserModule,

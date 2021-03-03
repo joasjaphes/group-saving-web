@@ -1,0 +1,16 @@
+<div class="loader-grid">
+  <div class="img-div">
+    <img alt="computer" src="assets/images/computer.png">
+  </div>
+  <div >
+    <div class="other-div">
+      <div [@letterPosition]="position" (@letterPosition.done)="animEnd($event)">
+        <img src="assets/images/send.png">
+      </div>
+      <app-loader></app-loader>
+    </div>
+  </div>
+  <div class="img-div">
+    <img alt="server" src="assets/images/server1.png">
+  </div>
+</div>

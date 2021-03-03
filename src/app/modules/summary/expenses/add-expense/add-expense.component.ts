@@ -5,6 +5,7 @@ import {ContributionType} from '../../../../store/contribution-type/contribution
 import {Member} from '../../../../store/member/member.model';
 import {CommonService} from '../../../../services/common.service';
 import {FunctionsService} from '../../../../services/functions.service';
+import {Expense} from '../../../../store/expense/expense.model';
 
 @Component({
   selector: 'app-add-expense',
@@ -17,11 +18,12 @@ export class AddExpenseComponent implements OnInit {
   @Input() contributionTypes: ContributionType[];
   @Input() members: Member[];
   @Input() member?: Member;
+  @Input() currentExpense?: Expense;
   @Output() closeForm = new EventEmitter();
 
   expenseFor: string;
   contributionType: string;
-  expenseDate = new Date();
+  expenseDate: any = new Date();
   memberId: string;
   description: string;
   amount: any;
@@ -35,10 +37,19 @@ export class AddExpenseComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (this.currentExpense) {
+      this.memberId = this.currentExpense.associated_member_id;
+      this.contributionType = this.currentExpense.associated_account;
+      this.amount = this.currentExpense.amount;
+      this.description = this.currentExpense.reason;
+      this.expenseDate = this.currentExpense.date;
+      this.expenseFor = !!this.currentExpense.associated_member_id ? 'MEMBER' : 'GROUP';
+    }
   }
 
   async save() {
     const dataToSave = {
+      id: this.currentExpense ? this.currentExpense.id : this.commonService.makeid(),
       groupId: this.group.id,
       memberId: this.memberId,
       amount: this.amount,
@@ -48,13 +59,14 @@ export class AddExpenseComponent implements OnInit {
     };
     this.loading = true;
     try {
-      await this.functionsService.saveData('createExpense', dataToSave);
+      const saveFunction = this.currentExpense ? 'updateExpense' : 'createExpense';
+      await this.functionsService.saveData(saveFunction, dataToSave);
       this.loading = false;
-      this.commonService.showSuccess('Expense added Successful');
+      this.commonService.showSuccess('Expense saved Successful');
       this.closeDialog();
     } catch (e) {
       this.loading = false;
-      this.commonService.showError('Expense was not assigned successful');
+      this.commonService.showError('Expense was not saved successful');
       console.error(e);
     }
   }

@@ -1,0 +1,29 @@
+.loader-grid {
+  display: grid;
+  grid-template-columns: 150px auto 150px;
+
+  .other-div {
+    position: relative;
+    width: 100%;
+    div {
+      height: 50px;
+      width: 10%;
+
+      img {
+        height: 90px;
+        width: 80px;
+        border-radius: 50%;
+        opacity: 0.9;
+      }
+    }
+  }
+
+  .img-div {
+    img {
+      height: 90px;
+      width: 130px;
+      opacity: 0.8;
+      border-radius: 10px;
+    }
+  }
+}

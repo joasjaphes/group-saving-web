@@ -497,6 +497,7 @@ input[type=number] {
   }
   .selector.active {
     color: white;
-    border-bottom: 2px solid #F15A28!important;
+    border-bottom: 3px solid #F15A28!important;
+    font-weight: bold;
   }
 }

@@ -6,10 +6,15 @@
   padding-right: 15px;
   .expenseGrid {
     display: grid;
-    grid-template-columns: 70px auto 200px;
+    grid-gap: 15px;
+    grid-template-columns: 70px auto 200px 40px;
     padding: 15px;
     border: 1px solid #ffffff5e;
     border-radius: 15px;
+    .menu {
+      display: grid;
+      align-content: center;
+    }
     .name-area {
       color: #ffffffbf!important;
       font-size: 16px;

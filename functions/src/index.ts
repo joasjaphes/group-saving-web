@@ -21,6 +21,8 @@ import * as addPastContributions from './contribution/add_past_contribution_by_m
 import * as setContributionBalances from './contribution/group-starting-balances';
 import * as createContributionType from './contribution/create-contribution-type';
 import * as createExpense from './contribution/add-expense';
+import * as updateExpense from './contribution/update-expense';
+import * as deleteExpense from './contribution/delete-expense';
 import * as createLoanType from './loan/create-loan-type';
 import * as assignLoanToMember from './loan/assign_loan';
 import * as createLoanQueue from './loan/add-loan-queue';
@@ -64,5 +66,7 @@ exports.removeMemberFromLoanQueue = removeMemberFromLoanQueue.removeMemberFromLo
 exports.addNewContribution = addNewContribution.addNewContribution;
 exports.setContributionBalances = setContributionBalances.setContributionBalances;
 exports.createExpense = createExpense.createExpense;
+exports.updateExpense = updateExpense.updateExpense;
+exports.deleteExpense = deleteExpense.deleteExpense;
 exports.addPastContributions = addPastContributions.addPastContributions;
 exports.assignPastActiveLoanToMember = assignPastActiveLoanToMember.assignPastActiveLoanToMember;

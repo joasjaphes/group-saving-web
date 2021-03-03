@@ -1,4 +1,11 @@
 <div class="row">
+  <div class="col-sm-12" *ngIf="editing">
+    <mat-form-field appearance="outline">
+      <mat-label>Group Name</mat-label>
+      <input matInput [(ngModel)]="groupName" placeholder="Group Name">
+    </mat-form-field>
+  </div>
+
   <div class="col-md-6">
     <mat-form-field appearance="outline">
       <mat-label>Contribution Frequency</mat-label>
@@ -29,8 +36,8 @@
       Select contribution types applicable to {{group.group_name}}
     </p>
   </div>
-  <div class="col-sm-12 cont-type-grid">
-    <div class="cont-type" *ngIf="meetingFrequency && currency && !editing" @fadeIn [ngClass]="{'cont-active content-area': shareChecked}"
+  <div class="col-sm-12 cont-type-grid" *ngIf="meetingFrequency && currency && !editing" @fadeIn>
+    <div class="cont-type" [ngClass]="{'cont-active content-area': shareChecked}"
          (click)="shareChecked = !shareChecked">
       <div class="icon-area">
         <mat-icon *ngIf="shareChecked" @fadeIn>check_box_outline</mat-icon>
@@ -41,7 +48,7 @@
         <p class="cont-description">Buying of shares, which may be divided as dividends after some time</p>
       </div>
     </div>
-    <div class="cont-type" *ngIf="meetingFrequency && currency && !editing" @fadeIn
+    <div class="cont-type"
          [ngClass]="{'cont-active content-area': socialChecked}" (click)="socialChecked = !socialChecked">
       <div class="icon-area">
         <mat-icon *ngIf="socialChecked" @fadeIn>check_box_outline</mat-icon>
@@ -52,7 +59,7 @@
         <p class="cont-description">Covers social needs of members like, sickness, funerals, etc</p>
       </div>
     </div>
-    <div class="cont-type" *ngIf="meetingFrequency && currency && !editing" @fadeIn [ngClass]="{'cont-active content-area': entryChecked}"
+    <div class="cont-type" [ngClass]="{'cont-active content-area': entryChecked}"
          >
       <div class="icon-area" (click)="entryChecked = !entryChecked">
         <mat-icon *ngIf="entryChecked" @fadeIn>check_box_outline</mat-icon>
@@ -74,7 +81,7 @@
         </p>
       </div>
     </div>
-    <div class="cont-type" *ngIf="meetingFrequency && currency && !editing" @fadeIn [ngClass]="{'cont-active content-area': otherChecked}"
+    <div class="cont-type" [ngClass]="{'cont-active content-area': otherChecked}"
          (click)="otherChecked = !otherChecked">
       <div class="icon-area">
         <mat-icon *ngIf="otherChecked" @fadeIn>check_box_outline</mat-icon>

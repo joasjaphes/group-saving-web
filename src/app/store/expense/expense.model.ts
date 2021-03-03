@@ -10,6 +10,7 @@ export interface Expense {
   month: string;
   week: string;
   year: string;
+  deleted: boolean;
   associated_member_id: string;
   member?: Member;
   associated_account: string;

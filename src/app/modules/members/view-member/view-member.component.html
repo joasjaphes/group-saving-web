@@ -41,6 +41,9 @@
         <p class="mb-0" style="color: #ffffff8a">{{contr.name}}</p>
         <h1 class="registration-title">{{contr.amount | number}}</h1>
       </div>
+
     </div>
+    <h1 class="text-muted text-center mt-4" *ngIf="!(payments$ | async)">There are contributions</h1>
+
   </div>
 </div>
