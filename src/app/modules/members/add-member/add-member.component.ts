@@ -69,9 +69,10 @@ export class AddMemberComponent implements OnInit {
   }
 
   async save() {
+    const phoneNumber = `+${this.country.phoneCode}${trimPhoneNumber(this.phoneNumber)}`;
     const dataToSave = {
-      name: this.memberName,
-      phoneNumber: this.phoneNumber,
+      name: this.name,
+      phoneNumber,
       memberName: this.memberName,
       groupName: this.group.group_name,
       groupId: this.group.id,
