@@ -31,7 +31,7 @@
     "@ngrx/store-devtools": "^11.0.1",
     "bootstrap": "^4.4.1",
     "moment": "^2.29.1",
-    "rxjs": "~6.6.3",
+    "rxjs": "~6.6.6",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2",
     "firebase": "^7.0 || ^8.0"
