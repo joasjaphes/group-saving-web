@@ -28,6 +28,7 @@ export class FirestoreService {
       .pipe(map(i => i.docs))
       .pipe(map(i => i.map(k => k.data() as any))
       ).toPromise();
+    console.log({collection});
     for (const item of collection) {
       if (item.deleted) {
         await currentClass.offlineService.removeItem(dataKey, item.id);
@@ -65,6 +66,7 @@ export class FirestoreService {
       const local_time = (localTimes ? localTimes[updatedKey] : 0) || 0;
       const online_time = (onlineTimes ? onlineTimes[updatedKey] : 0) || 0;
       if (local_time !== online_time) {
+        console.log('naitwa ' + dbKey);
         await dataGetter(local_time, this, dbKey, group_id);
         this.store.dispatch(dispatcher);
       }

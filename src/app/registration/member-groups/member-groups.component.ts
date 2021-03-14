@@ -10,6 +10,7 @@ import {RegistrationSteps} from '../registration-steps';
 export class MemberGroupsComponent implements OnInit {
 
   @Input() memberGroups: MemberGroup[];
+  @Input() memberName: string;
   @Output() nextStep = new EventEmitter< {currentStep: string, previousStep: string}>();
   constructor() { }
 

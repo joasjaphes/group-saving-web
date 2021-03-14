@@ -87,7 +87,7 @@
         </div>
 
         <!--     Same Payment Per Return-->
-        <div class="col-sm-6">
+        <div class="col-sm-6" *ngIf="profitCalculationType" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Same Payment Per Return</mat-label>
             <mat-select [(ngModel)]="samePaymentPerReturn">
@@ -98,7 +98,7 @@
         </div>
 
         <!--      Payment Option-->
-        <div class="col-sm-6">
+        <div class="col-sm-6" *ngIf="samePaymentPerReturn" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Loan Option</mat-label>
             <mat-select [(ngModel)]="paymentOption" placeholder="Payment Option">
@@ -109,7 +109,7 @@
         </div>
 
         <!--      Is Loan Insured-->
-        <div class="transition-element"
+        <div class="transition-element" *ngIf="paymentOption" @fadeIn
              [ngClass]="{'col-sm-6': isLoanInsured == 'Yes', 'col-sm-12': isLoanInsured != 'Yes'}">
           <mat-form-field appearance="outline">
             <mat-label>Is Loan Insured</mat-label>

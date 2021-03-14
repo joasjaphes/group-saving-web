@@ -24,7 +24,7 @@ export class LocalStorageService {
     group: DataKeys.Group,
     loan_payment: DataKeys.LoanPayment,
     loan_queue: DataKeys.LoanQueue,
-    loan: DataKeys.Loan,
+    loans: DataKeys.Loan,
     loan_type: DataKeys.LoanType,
     long_term_investment_item: DataKeys.LongTermInvestmentItem,
     long_term_investment_type: DataKeys.LongTermInvestmentType,

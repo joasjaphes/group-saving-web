@@ -37,12 +37,12 @@ export class LoanByMemberComponent implements OnInit {
   duration: any;
   loanDuration: any;
   endDate: any;
-  returnedAmount: any;
+  returnedAmount: any = 0;
   lastReturnDate: any;
   loading: any;
   insuranceAmount = 0;
   amountPerReturn = 0;
-  remainingBalance: any;
+  remainingBalance = 0;
   memberLoans$: Observable<Loan[]>;
   year = new Date().getFullYear();
   years = [];
@@ -50,6 +50,7 @@ export class LoanByMemberComponent implements OnInit {
   payments = [];
   recordByDate = false;
   paymentDate = null;
+  loanId;
 
   constructor(
     private commonService: CommonService,
@@ -66,7 +67,7 @@ export class LoanByMemberComponent implements OnInit {
   generateYears(year?: number) {
     this.years = [];
     const currentYear = year ? year : new Date().getFullYear();
-    if (year){
+    if (year) {
       for (let i = 0; i < 10; i++) {
         this.years.push(currentYear + i);
       }
@@ -148,6 +149,7 @@ export class LoanByMemberComponent implements OnInit {
 
   async save() {
     const savedValues = {
+      loanId: this.loanId ? this.loanId : this.commonService.makeid(),
       groupId: this.group.id,
       memberId: this.memberId,
       return_amount: this.returnAmount,
@@ -158,7 +160,7 @@ export class LoanByMemberComponent implements OnInit {
       date: this.commonService.formatDate(this.contributionDate),
       end_date: this.commonService.formatDate(this.endDate),
       total_profit_contribution: parseFloat(this.returnAmount + '') - parseFloat(this.loanAmount + ''),
-      remaining_balance: this.remainingBalance,
+      remaining_balance: this.payments.length === 0 ? this.returnAmount : this.remainingBalance,
       amount_returned: this.returnedAmount,
       last_return_date: this.commonService.formatDate(this.lastReturnDate),
       payments: this.payments
@@ -240,5 +242,23 @@ export class LoanByMemberComponent implements OnInit {
   deletePay(payment: any) {
     this.payments = this.payments.filter(i => i.id !== payment.id);
     this.calculateTotal();
+  }
+
+  editLoan(loan: Loan) {
+    this.setLoanType(loan.loan_used);
+    this.loanId = loan.id;
+    this.returnAmount = loan.total_amount_to_pay;
+    this.loanTypeId = loan.loan_used;
+    this.duration = loan.duration;
+    this.endDate = loan.expected_date_of_payment;
+    this.contributionDate = loan.date;
+    this.returnedAmount = loan.amount_paid_to_date;
+    this.loanAmount = loan.amount_taken;
+    this.insuranceAmount = loan.insurance_amount;
+    this.remainingBalance = loan.remaining_balance;
+
+    this.payments = loan.payments.map(i => ({
+      ...i
+    }));
   }
 }

@@ -31,13 +31,23 @@ export const assignPastActiveLoanToMember = functions.https.onRequest((request, 
         const groupData: any = {...groupDoc.data()};
         const memberDoc = await transaction.get(memberRef);
         const memberData: any = {...memberDoc.data()};
-        const loanId = helpers.makeid();
+        const loanId = data.loanId ? data.loanId : helpers.makeid();
         const loanTypeData: any = groupData.loanTypes[data.loanUsed];
         const loanDetails = prepareLoan(loanId, data, loanTypeData, last_update);
         if (parseInt(data.remaining_balance + '', 10) === 0) {
           const loanRef = admin.firestore().doc(`groups/${data.groupId}/loans/${loanDetails.id}`);
           transaction.set(loanRef, {...loanDetails, last_update }, {merge: true});
           transaction.set(otherUpdateAtRef, {  loan_updated: last_update }, {merge: true});
+          if (memberData.active_loans && memberData.active_loans[loanDetails.id]) {
+            memberData.active_loans = Object.keys(memberData.active_loans).reduce((object: any, key: string) => {
+              if (key !== loanDetails.id) {
+                object[key] = memberData.active_loans[key];
+              }
+              return object;
+            }, {});
+            transaction.update(memberRef, {...memberData, last_update});
+            transaction.set(otherUpdateAtRef, {  member_updated: last_update }, {merge: true});
+          }
         } else {
           if (memberData.active_loans) {
             memberData.active_loans[loanDetails.id] = loanDetails;
@@ -45,6 +55,7 @@ export const assignPastActiveLoanToMember = functions.https.onRequest((request, 
             memberData.active_loans = {};
             memberData.active_loans[loanDetails.id] = loanDetails;
           }
+          console.log('hapa napo nafika mwee...');
           transaction.update(memberRef, {...memberData, last_update});
           transaction.set(otherUpdateAtRef, {  member_updated: last_update }, {merge: true});
         }

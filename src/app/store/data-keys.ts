@@ -43,7 +43,7 @@ export enum DataKeys {
   Group = 'groups',
   LoanPayment = 'loan_payment',
   LoanQueue = 'loan_queue',
-  Loan = 'loan',
+  Loan = 'loans',
   LoanType = 'loan_type',
   LongTermInvestmentItem = 'long_term_investment_item',
   LongTermInvestmentType = 'long_term_investment_type',

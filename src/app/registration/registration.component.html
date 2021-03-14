@@ -46,6 +46,7 @@
    *ngIf="(currentStep$ | async) == registrationSteps.MemberGroup"
    @fadeIn
    [memberGroups]="memberGroups$ | async"
+   [memberName]="memberName$ | async"
    (nextStep)="goNextStep($event)"
  ></app-member-groups>
 <!--  Password Registration-->

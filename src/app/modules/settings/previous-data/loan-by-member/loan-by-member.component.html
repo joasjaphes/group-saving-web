@@ -5,21 +5,32 @@
       <h3 class="registration-title" *ngIf="(memberLoans$ | async).length == 0">
         There are no loan records for {{currentMember?.name}}
       </h3>
-      <div *ngFor="let loan of memberLoans$ | async"
+      <div *ngFor="let loan of memberLoans$ | async" class="item-grid"
            style="margin-bottom: 20px;padding-bottom: 10px; border-bottom: 1px solid white">
-        <h3 class="registration-title mb-1">
-          <small class="text-muted">{{group.currency}}</small>
-          {{loan.remaining_balance | number}}
-        </h3>
-        <p class="secondary-text mb-0">
-          <b>{{loan.amount_paid_to_date | number}}</b> Paid of <b>{{loan.total_amount_to_pay | number}}</b>
-        </p>
-        <p class="secondary-text">
-          <small>
-            <b>{{loan.duration }}</b> {{ loan.durationName}}
-            ({{loan.date | date:'MMM YYYY'}} to {{loan.expected_date_of_payment | date| date:'MMM YYYY'}})
-          </small>
-        </p>
+       <div>
+         <h3 class="registration-title mb-1" *ngIf="loan.remaining_balance > 0">
+           <small class="text-muted">{{group.currency}}</small>
+           {{loan.remaining_balance | number}}
+         </h3>
+         <h3 class="registration-title mb-1" *ngIf="loan.remaining_balance <= 0">
+           Paid
+         </h3>
+         <p class="secondary-text mb-0">
+           <b>{{loan.amount_paid_to_date | number}}</b> Paid of <b>{{loan.total_amount_to_pay | number}}</b>
+         </p>
+         <p class="secondary-text">
+           <small>
+             <b>{{loan.duration }}</b> {{ loan.durationName}}
+             ({{loan.date | date:'MMM YYYY'}} to {{loan.expected_date_of_payment | date| date:'MMM YYYY'}})
+           </small>
+         </p>
+       </div>
+       <div>
+         <button mat-icon-button (click)="editLoan(loan)">
+           <mat-icon style="color: white">edit</mat-icon>
+         </button>
+       </div>
+
       </div>
     </div>
     <div [ngClass]="currentMember ? 'col-sm-9 left-bordered': 'col-sm-12'">
@@ -226,7 +237,7 @@
         <div class="col-sm-12 mt-3" *ngIf="returnAmount" @fadeIn>
           <app-save-area
             [confirmFirst]="true"
-            confirmText="Are you sure you want to ADD {{returnAmount}} as a loan to {{currentMember.name}}?"
+            confirmText="Are you sure you want to assign a loan of {{returnAmount | number}} to {{currentMember.name}}?"
             [saveDisabled]="!returnAmount"
             (cancel)="onClose()"
             (save)="save()"
