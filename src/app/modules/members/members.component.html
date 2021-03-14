@@ -93,7 +93,10 @@
               <mat-icon>remove_red_eye</mat-icon> View Details
             </button>
             <button mat-menu-item (click)="edit(member)">
-              <mat-icon style="color: #0277bd">mode_edit</mat-icon> Edit
+              <mat-icon style="color: #0277bd">mode_edit</mat-icon> Update Basics
+            </button>
+            <button mat-menu-item (click)="editPhone(member)">
+              <mat-icon style="color: #0277bd">phone</mat-icon> Update Phone
             </button>
             <button mat-menu-item >
               <mat-icon style="color: red">delete</mat-icon> Delete
@@ -140,5 +143,14 @@
       [memberName]="memberName$ | async"
       (closeForm)="onClose()"
     ></app-update-member-basics>
+
+    <app-update-member-phone
+      *ngIf="viewType == 'updatePhone'"
+      [group]="group$ | async"
+      [member]="currentMember"
+      [members]="members$ | async"
+      [memberName]="memberName$ | async"
+      (closeForm)="onClose()"
+    ></app-update-member-phone>
   </ng-container>
 </app-shared-layout>

@@ -25,7 +25,6 @@ export const updateSingleMember = functions.https.onRequest((request, response) 
     }
     try {
       const groupId = data.groupId;
-      const batch = admin.firestore().batch();
       const last_update = new Date().getTime();
       const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
       const memberId = data.memberId;
@@ -47,10 +46,9 @@ export const updateSingleMember = functions.https.onRequest((request, response) 
           });
         }
         transaction.update(memberDocRef, {...memberData, last_update, name: data.name, email: data.email });
-        transaction.set(otherUpdateAtRef, { group_updated: last_update }, {merge: true});
+        transaction.set(otherUpdateAtRef, { member_updated: last_update }, {merge: true});
       });
       response.status(200).send({data: 'Success'});
-      batch.update(otherUpdateAtRef, {member_group: last_update, member_updated: last_update});
     } catch (e) {
       console.log('Error fetching user data:', e);
       response.status(500).send({data: 'Fail'});

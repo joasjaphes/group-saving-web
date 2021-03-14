@@ -6,11 +6,13 @@ import {CommonService} from '../../../services/common.service';
 import {FunctionsService} from '../../../services/functions.service';
 import {Store} from '@ngrx/store';
 import {ApplicationState} from '../../../store';
+import {fadeIn} from '../../../shared/animations/router-animation';
 
 @Component({
   selector: 'app-update-member-basics',
   templateUrl: './update-member-basics.component.html',
-  styleUrls: ['./update-member-basics.component.scss']
+  styleUrls: ['./update-member-basics.component.scss'],
+  animations: [fadeIn]
 })
 export class UpdateMemberBasicsComponent implements OnInit {
   @Input() group: Group;

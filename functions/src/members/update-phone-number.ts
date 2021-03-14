@@ -25,7 +25,6 @@ export const updatePhoneNumber = functions.https.onRequest((request, response) =
     }
     try {
       const groupId = data.groupId;
-      const batch = admin.firestore().batch();
       const last_update = new Date().getTime();
       const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
       const memberId = data.memberId;
@@ -34,12 +33,6 @@ export const updatePhoneNumber = functions.https.onRequest((request, response) =
       await admin.firestore().runTransaction(async (transaction) => {
         const memberDoc = await transaction.get(memberDocRef);
         const memberData: any = {...memberDoc.data()};
-        const userRecords =  await admin.auth().getUserByPhoneNumber(data.phoneNumber);
-        await admin.auth().updateUser(userRecords.uid, {
-          email: userRecords.email,
-          emailVerified: userRecords.emailVerified,
-          phoneNumber: data.updated_phone,
-        });
         const groupMemberRef = await admin.firestore()
           .collection('member_group')
           .where('phone_number', '==', data.phoneNumber)
@@ -52,11 +45,20 @@ export const updatePhoneNumber = functions.https.onRequest((request, response) =
             }
           });
         }
-        transaction.update(memberDocRef, {...memberData, last_update, name: data.name, email: data.email });
-        transaction.set(otherUpdateAtRef, { group_updated: last_update }, {merge: true});
+        transaction.update(memberDocRef, {...memberData, last_update, phone_number: data.updated_phone });
+        transaction.set(otherUpdateAtRef, { member_updated: last_update }, {merge: true});
+        try {
+          const userRecords =  await admin.auth().getUserByPhoneNumber(data.phoneNumber);
+          await admin.auth().updateUser(userRecords.uid, {
+            email: userRecords.email,
+            emailVerified: userRecords.emailVerified,
+            phoneNumber: data.updated_phone,
+          });
+        } catch (e) {
+          console.log('There is no user with this phone number');
+        }
       });
       response.status(200).send({data: 'Success'});
-      batch.update(otherUpdateAtRef, {member_group: last_update, member_updated: last_update});
     } catch (e) {
       console.log('Error fetching user data:', e);
       response.status(500).send({data: 'Fail'});
