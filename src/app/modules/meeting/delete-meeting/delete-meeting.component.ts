@@ -4,6 +4,9 @@ import {Meeting} from '../../../store/meeting/meeting.model';
 import {Member} from '../../../store/member/member.model';
 import {CommonService} from '../../../services/common.service';
 import {FunctionsService} from '../../../services/functions.service';
+import {Store} from '@ngrx/store';
+import {ApplicationState} from '../../../store';
+import {deleteMeeting} from '../../../store/meeting/meeting.actions';
 
 @Component({
   selector: 'app-delete-meeting',
@@ -20,6 +23,7 @@ export class DeleteMeetingComponent implements OnInit {
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
+    private store: Store<ApplicationState>
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +43,7 @@ export class DeleteMeetingComponent implements OnInit {
       await this.functionsService.saveData('deleteMeeting', dataToSave);
       this.loading = false;
       this.commonService.showSuccess('Meeting information Removed Successful');
+      this.store.dispatch(deleteMeeting({id: this.currentMeeting.id}));
       this.onClose();
     } catch (e) {
       this.loading = false;

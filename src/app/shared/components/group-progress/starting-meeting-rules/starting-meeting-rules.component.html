@@ -118,6 +118,7 @@
       || (memberMustAttend == 'Yes' && allowFineForLate == 'Yes' && !lateFineAmount)
       || (memberMustAttend == 'Yes' && (!allowFineForNotAttending && !allowFineForLate))"
       [confirmFirst]="true"
+      confirmText="Are you sure you want to save meeting details?"
       (cancel)="close()"
       (save)="save()"
       [savingData]="loading"

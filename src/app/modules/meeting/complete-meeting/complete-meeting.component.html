@@ -62,7 +62,7 @@
     <div class="col-sm-12 mt-3" *ngIf="meetingPlace && meetingPlace.length > 2" @fadeIn>
       <app-save-area
         [confirmFirst]="true"
-        confirmText="Confirm setting next meeting to be held on {{meetingDate | date}} at {{meetingPlace}}"
+        confirmText="Confirm conducting a meeting on {{meetingDate | date}} at {{meetingPlace}}"
         (cancel)="onClose()"
         [saveText]="editing ? 'Update Meeting' : 'Complete Meeting'"
         saveIcon="check"
