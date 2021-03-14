@@ -1,7 +1,17 @@
 <div class="row content-area">
   <div class="col-sm-12" [ngClass]="showTitle ? 'title-grid' : 'title-grid1'">
     <div *ngIf="showTitle" style="display: grid;align-content: center">
-      <h3 class="registration-title mb-1">Contribution Summary</h3>
+      <h3 class="registration-title mb-1" *ngIf="group$ | async">
+        Contribution Summary
+        <span *ngIf="currentContr != 'All' && (group$ | async).contribution_balances && (group$ | async).contribution_balances[currentContr]" @fadeIn>
+          (Balance
+          <small style="color: white">{{(group$ | async)?.currency}}</small>&nbsp;
+          <span class="registration-title">
+            {{(group$ | async).contribution_balances[currentContr] | number}}
+          </span>
+          )
+        </span>
+      </h3>
     </div>
 
     <div class="selection-area" [ngClass]="showTitle ? 'pull-right' : 'pull-left'">

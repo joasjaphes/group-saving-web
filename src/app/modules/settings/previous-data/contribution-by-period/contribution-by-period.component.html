@@ -34,6 +34,11 @@
     <div class="col-sm-12" *ngIf="month" @fadeIn>
       <mat-tab-group>
         <mat-tab label="New Contributions">
+          <mat-form-field appearance="legacy">
+            <mat-icon matPrefix>search</mat-icon>
+            <mat-label>Search</mat-label>
+            <input matInput [(ngModel)]="memberSearch">
+          </mat-form-field>
           <table class="table entry-table table-bordered">
             <tr>
               <th>Member Name</th>
@@ -42,7 +47,7 @@
               </th>
               <th>Total</th>
             </tr>
-            <tr *ngFor="let member of members">
+            <tr *ngFor="let member of members | search:'name':memberSearch">
               <th>{{member.name}}</th>
               <td *ngFor="let contr of contributionTypes">
                 <mat-form-field appearance="outline">

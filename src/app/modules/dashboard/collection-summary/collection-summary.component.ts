@@ -11,11 +11,13 @@ import {ApplicationState} from '../../../store';
 import {ContributionType} from '../../../store/contribution-type/contribution-type.model';
 import * as contributionTypeSelector from '../../../store/contribution-type/contribution-type.selectors';
 import {Member} from '../../../store/member/member.model';
+import {fadeIn} from '../../../shared/animations/router-animation';
 
 @Component({
   selector: 'app-collection-summary',
   templateUrl: './collection-summary.component.html',
-  styleUrls: ['./collection-summary.component.scss']
+  styleUrls: ['./collection-summary.component.scss'],
+  animations: [fadeIn]
 })
 export class CollectionSummaryComponent implements OnInit {
   @Input() showTitle = true;

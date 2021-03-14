@@ -35,6 +35,7 @@ export class ContributionByPeriodComponent implements OnInit {
   loading = false;
   monthName = '';
   contributions$: Observable<Payment[]>;
+  memberSearch;
 
   constructor(
     private commonService: CommonService,
