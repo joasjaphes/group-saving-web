@@ -137,7 +137,7 @@
           || !isLoanInsured
           || !paymentOption
           || (isLoanInsured === 'Yes' && !insurancePercent)
-          || ((profitCalculationType == 'Fixed Percent' || profitCalculationType == 'Reducing Balance') && !interestRate)
+          || ((profitCalculationType == 'Fixed Percent' || profitCalculationType == 'Reducing Balance') && !(interestRate + ''))
           || (profitCalculationType == 'Custom Formula' && !loanFormular)
 "
             class="next-btn zoom-on-hover" style="float: right" mat-button matStepperNext>
