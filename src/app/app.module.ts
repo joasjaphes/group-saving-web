@@ -81,6 +81,9 @@ import { HisaPeriodComponent } from './modules/settings/hisa-period/hisa-period.
 import { ViewMemberComponent } from './modules/members/view-member/view-member.component';
 import { RemoveFromQueueComponent } from './modules/summary/loan-queue/remove-from-queue/remove-from-queue.component';
 import { DeleteExpenseComponent } from './modules/summary/expenses/delete-expense/delete-expense.component';
+import { UpdateMemberBasicsComponent } from './modules/members/update-member-basics/update-member-basics.component';
+import { UpdateMemberPhoneComponent } from './modules/members/update-member-phone/update-member-phone.component';
+import { UpdateMemberEmailComponent } from './modules/members/update-member-email/update-member-email.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -158,7 +161,10 @@ const firebaseConfig = {
     HisaPeriodComponent,
     ViewMemberComponent,
     RemoveFromQueueComponent,
-    DeleteExpenseComponent
+    DeleteExpenseComponent,
+    UpdateMemberBasicsComponent,
+    UpdateMemberPhoneComponent,
+    UpdateMemberEmailComponent
   ],
   imports: [
     BrowserModule,

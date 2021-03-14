@@ -67,7 +67,7 @@
           <h2 class="registration-title mb-1">{{member.name}}</h2>
           <p class="lead">{{member.phone_number}}</p>
           <p>
-            <button mat-button class="edit-button" (click)="edit()">
+            <button mat-button class="edit-button" (click)="edit(member)">
               <mat-icon style="color: #0277bd">mode_edit</mat-icon>
               <span style="color: #0277bd">Edit</span>
             </button>&nbsp;
@@ -92,7 +92,7 @@
             <button mat-menu-item>
               <mat-icon>remove_red_eye</mat-icon> View Details
             </button>
-            <button mat-menu-item >
+            <button mat-menu-item (click)="edit(member)">
               <mat-icon style="color: #0277bd">mode_edit</mat-icon> Edit
             </button>
             <button mat-menu-item >
@@ -131,5 +131,14 @@
       [memberName]="memberName$ | async"
       (closeForm)="onClose()"
     ></app-add-member>
+
+    <app-update-member-basics
+      *ngIf="viewType == 'update'"
+      [group]="group$ | async"
+      [member]="currentMember"
+      [members]="members$ | async"
+      [memberName]="memberName$ | async"
+      (closeForm)="onClose()"
+    ></app-update-member-basics>
   </ng-container>
 </app-shared-layout>

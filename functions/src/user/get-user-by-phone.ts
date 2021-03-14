@@ -13,7 +13,6 @@ export const getUserByPhoneNumber = functions.https.onRequest((request, response
   }
   return cors(request, response, async () => {
     const data = request.body;
-    console.log(request.get('Authorization'));
     const tokenId = request.get('Authorization')?.split('Bearer ')[1];
     if ( tokenId !== helpers.token) {
       response.status(400).send('Invalid token please send a valid token');

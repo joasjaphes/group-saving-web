@@ -39,9 +39,8 @@ export const updateBasicInfo = functions.https.onRequest((request, response) => 
             .get();
           if (groupMemberRef && groupMemberRef.docs) {
             groupMemberRef.docs.forEach(doc => {
-              const memberGroupData = doc.data();
               if (doc.data()) {
-                const groupMemberDocRef = admin.firestore().collection('member_group').doc(memberGroupData.id);
+                const groupMemberDocRef = admin.firestore().collection('member_group').doc(doc.id);
                 transaction.update(groupMemberDocRef, {last_update, group_name: data.group_name});
               }
             });

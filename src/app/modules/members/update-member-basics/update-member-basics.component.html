@@ -1,0 +1,49 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-10">
+      <h2 class="registration-title">Update Member Information</h2>
+    </div>
+    <div class="col-sm-2 pr-0" style="text-align: right">
+      <button mat-button (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+        <span> Close</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <mat-form-field appearance="outline">
+        <mat-label>Phone Number</mat-label>
+        <mat-icon matPrefix>phone</mat-icon>
+        <input disabled matInput [(ngModel)]="phone">
+      </mat-form-field>
+    </div>
+
+    <div class="col-sm-12">
+      <mat-form-field appearance="outline">
+        <mat-label>Member name</mat-label>
+        <mat-icon matPrefix>person_outline</mat-icon>
+        <input matInput [(ngModel)]="name">
+      </mat-form-field>
+    </div>
+
+    <div class="col-sm-12">
+      <mat-form-field appearance="outline">
+        <mat-label>Email <small class="text-muted">(Optional)</small></mat-label>
+        <mat-icon matPrefix>email</mat-icon>
+        <input matInput [(ngModel)]="email">
+      </mat-form-field>
+    </div>
+
+    <div class="col-sm-12 mt-3" @fadeIn>
+      <app-save-area
+        [saveDisabled]="!name"
+        [confirmFirst]="true"
+        (cancel)="closeDialog()"
+        (save)="save()"
+        [savingData]="loading"
+      ></app-save-area>
+    </div>
+  </div>
+</div>

@@ -110,19 +110,17 @@ export class MembersComponent implements OnInit {
     });
   }
 
-  async edit() {
-    try {
-      const url = 'https://demo.shulesoft.com/api/mobile?method=getParent&phone=+255624076248';
-      const response = await this.httpClient.post(url, {}).toPromise();
-      console.log(JSON.stringify(response));
-    } catch (e) {
-      console.error(e);
-    }
+  async edit(member: Member) {
+    this.currentMember = member;
+    this.viewDetails = true;
+    this.panelTitle = 'Update Member Details';
+    this.viewType = 'update';
   }
 
   onClose() {
     this.viewDetails = false;
     this.panelTitle = '';
     this.viewType = '';
+    this.currentMember = null;
   }
 }
