@@ -85,17 +85,6 @@ import { UpdateMemberBasicsComponent } from './modules/members/update-member-bas
 import { UpdateMemberPhoneComponent } from './modules/members/update-member-phone/update-member-phone.component';
 import { UpdateMemberEmailComponent } from './modules/members/update-member-email/update-member-email.component';
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
-  authDomain: 'group-saving.firebaseapp.com',
-  databaseURL: 'https://group-saving.firebaseio.com',
-  projectId: 'group-saving',
-  storageBucket: 'group-saving.appspot.com',
-  messagingSenderId: '444964071176',
-  appId: '1:444964071176:web:732f9c6071c5a461b5eebd',
-  measurementId: 'G-JC2DKTVF1V'
-};
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -169,7 +158,7 @@ const firebaseConfig = {
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, // firestore
     AngularFireAuthModule, // auth
     AngularFireStorageModule, // storage
