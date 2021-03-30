@@ -1,6 +1,6 @@
 .title-grid {
   display: grid;
-  grid-template-columns: auto 200px 150px;
+  grid-template-columns: auto 200px minmax(120px, 200px);
   grid-gap: 30px;
   padding-bottom: 30px ;
 }

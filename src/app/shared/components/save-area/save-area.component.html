@@ -30,14 +30,14 @@
   <div class="">
     <p class="lead">{{ confirmText }}</p>
     <p class="confirm-div">
-      <button mat-raised-button style="background-color: red; " @fadeIn
-              (click)="onCancelShowConfirm()">
-        <mat-icon>clear</mat-icon> No
-      </button> &nbsp;
-      <button mat-raised-button style="background-color: green;" @fadeIn
+      <button mat-raised-button class="yes-button zoom-on-hover"  @fadeIn
               (click)="onSave(false)">
         <mat-icon>done</mat-icon> Yes
       </button>
+      <button mat-raised-button class="no-button zoom-on-hover" @fadeIn
+              (click)="onCancelShowConfirm()">
+        <mat-icon>clear</mat-icon> No
+      </button> &nbsp;
     </p>
 
   </div>

@@ -3,6 +3,9 @@ import {Group} from '../../../../store/group/group.model';
 import {Expense} from '../../../../store/expense/expense.model';
 import {CommonService} from '../../../../services/common.service';
 import {FunctionsService} from '../../../../services/functions.service';
+import {Store} from '@ngrx/store';
+import {ApplicationState} from '../../../../store';
+import {deleteExpense} from '../../../../store/expense/expense.actions';
 
 @Component({
   selector: 'app-delete-expense',
@@ -18,6 +21,7 @@ export class DeleteExpenseComponent implements OnInit {
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
+    private store: Store<ApplicationState>
   ) { }
 
   ngOnInit(): void {
@@ -34,6 +38,7 @@ export class DeleteExpenseComponent implements OnInit {
       await this.functionsService.saveData(saveFunction, dataToSave);
       this.loading = false;
       this.commonService.showSuccess('Expense saved Successful');
+      this.store.dispatch(deleteExpense({id: this.currentExpense.id}));
       this.closeDialog();
     } catch (e) {
       this.loading = false;

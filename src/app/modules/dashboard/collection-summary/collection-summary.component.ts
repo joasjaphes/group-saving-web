@@ -36,7 +36,7 @@ export class CollectionSummaryComponent implements OnInit {
   totalExpenses$: Observable<number>;
   currentContr = 'All';
   years$: Observable<string[]>;
-  year = new Date().getFullYear();
+  year: any = new Date().getFullYear();
   typeName = 'All';
   constructor(
     private store: Store<ApplicationState>,
@@ -49,6 +49,7 @@ export class CollectionSummaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.year = this.member ? 'All' : this.year;
     this.getData();
   }
 

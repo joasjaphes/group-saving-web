@@ -37,12 +37,13 @@
     <div style="text-align: end">
 
       <mat-menu #yearMenu="matMenu">
+        <button mat-menu-item (click)="setYear('All')">All Years</button>
         <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setYear(yr)">{{yr}}</button>
       </mat-menu>
       <small class="text-muted">For</small>
       <button mat-button [matMenuTriggerFor]="yearMenu" class="cursor">
         <mat-icon>date_range</mat-icon> &nbsp;
-        <span>{{year}}</span> &nbsp;
+        <span>{{year === 'All' ? 'All Years' : year}}</span> &nbsp;
         <mat-icon style="color: white;">arrow_drop_down</mat-icon>
       </button>
     </div>
@@ -114,7 +115,7 @@
         [amount]="totalIn$ | async"
         amountTitle="Total In"
         leftTitle="Contributions"
-        [leftAmount]="totalContributions$ | async"
+        [leftAmount]="totalContributionOnly$ | async"
         rightTitle="Loan Payments"
         [rightAmount]="totalLoanReturns$ | async"
       ></app-collection-card>

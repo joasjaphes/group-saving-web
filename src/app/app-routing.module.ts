@@ -24,6 +24,7 @@ import {LoanTypesComponent} from './modules/settings/loan-types/loan-types.compo
 import {ContributionTypesComponent} from './modules/settings/contribution-types/contribution-types.component';
 import {FineTypesComponent} from './modules/settings/fine-types/fine-types.component';
 import {LoanQueueComponent} from './modules/summary/loan-queue/loan-queue.component';
+import {ExportDataComponent} from './modules/summary/export-data/export-data.component';
 
 
 const routes: Routes = [
@@ -103,6 +104,11 @@ const routes: Routes = [
         path: 'summary/loan-queue',
         component: LoanQueueComponent,
         data: { title: 'Loan Queue' }
+      },
+      {
+        path: 'summary/export',
+        component: ExportDataComponent,
+        data: { title: 'Data Export' }
       },
       {
         path: 'settings',

@@ -17,11 +17,13 @@
   transform: scale(1.03);
   font-weight: bold;
 }
+
 .member-grid {
   display: grid;
   grid-template-columns: 60px auto 40px;
   padding: 10px 5px 5px 5px;
   border-radius: 20px;
+  border: 1px solid #ffffff29;
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
   cursor: pointer;
   align-content: center;
