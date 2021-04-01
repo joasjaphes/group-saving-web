@@ -51,7 +51,7 @@ export class MembersComponent implements OnInit {
     private httpClient: HttpClient,
     public dialog: MatDialog,
   ) {
-    this.members$ = this.store.pipe(select(memberSelector.selectAll));
+    this.members$ = this.store.pipe(select(memberSelector.selectMembersSorted));
     this.progress$ = this.store.pipe(select(groupSelector.selectProgressPercent));
     this.progressDetails$ = this.store.pipe(select(groupSelector.selectProgress));
     this.group$ = this.store.pipe(select(groupSelector.selected));

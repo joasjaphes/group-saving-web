@@ -23,6 +23,12 @@
         Attendance
       </h3>
       <p class="mb-1" style="color: #ffffffa8; font-size: 12px">Select members present in this meeting</p>
+      <p>
+        <mat-checkbox [(ngModel)]="allSelected" (change)="setAllAttended($event)">
+          <span *ngIf="!allSelected">Select All</span>
+          <span *ngIf="allSelected">Unselect All</span>
+        </mat-checkbox>
+      </p>
     </div>
 
     <div class="col-sm-12 mt-1 cursor">

@@ -40,7 +40,7 @@ export class LocalStorageService {
     user: DataKeys.User,
   };
   constructor() {
-    this.db = new AngularIndexedDB('group_savings_metadata', 1);
+    this.db = new AngularIndexedDB('group_saving_metadata', 1);
   }
 
   /**

@@ -239,7 +239,8 @@ export const selectYearsWithPayment = createSelector(
 export const selectContributionByMemberByYear = (year, memberId) => createSelector(
   selectDetailed,
   (allItems) => allItems
-    .filter(i => i.year + '' === year + '' && i.memberId === memberId)
+    .filter(i => i.memberId === memberId)
+    .filter(i => year === 'All' || i.year + '' === year + '')
     .map(i => ({
       ...i,
       description: i.contributionsDetails.map(k => `${k.name} ${numberWithCommas(k.amount)}`).join(', ')
@@ -249,7 +250,8 @@ export const selectContributionByMemberByYear = (year, memberId) => createSelect
 export const selectFinesByMemberByYear = (year, memberId, fineType) => createSelector(
   selectDetailed,
   (allItems) => allItems
-    .filter(i => i.year + '' === year + '' && i.memberId === memberId)
+    .filter(i => i.memberId === memberId)
+    .filter(i => year === 'All' || i.year + '' === year + '')
     .filter(i => !!i.fineDetails.find(k => (k.id === fineType || fineType === 'All')))
     .map(i => ({
       ...i,
@@ -296,7 +298,7 @@ export const selectContributionTypeSummary = (year) => createSelector(
     for (const contr of contributionTypes) {
       summary[contr.id] = {name: contr.name, total: 0, id: contr.id};
       allItems
-        .filter(i => i.year + '' === year + '')
+        .filter(i => year === 'All' || i.year + '' === year + '')
         .forEach(item => {
         if (item.contributions) {
           if (Object.keys(item.contributions).indexOf(contr.id) !== -1) {
@@ -309,7 +311,7 @@ export const selectContributionTypeSummary = (year) => createSelector(
   }
 );
 
-export const selectFIneTypesSummary = (year) => createSelector(
+export const selectFineTypesSummary = (year) => createSelector(
   selectDetailed,
   fromFineTypes.selectAll,
   (allItems, contributionTypes) => {
@@ -318,7 +320,7 @@ export const selectFIneTypesSummary = (year) => createSelector(
     for (const contr of contributionTypes) {
       summary[contr.id] = {name: contr.description, total: 0, id: contr.id};
       allItems
-        .filter(i => i.year + '' === year + '')
+        .filter(i => year === 'All' || i.year + '' === year + '')
         .forEach(item => {
         if (item.fines) {
           if (Object.keys(item.fines).indexOf(contr.id) !== -1) {
@@ -336,7 +338,7 @@ export const selectTotalPaymentByYear = (year, contributionType, memberId?) => c
   selectDetailed,
   (allItems) => {
     const items = allItems
-      .filter(i => i.year + '' === year + '')
+      .filter(i => year === 'All' || i.year + '' === year + '')
       .filter(i => !!i.contributionsDetails.find(k => (k.id === contributionType || contributionType === 'All')))
       .filter(i => memberId === 'All' || i.memberId === memberId);
     // const items = allItems;
@@ -357,7 +359,7 @@ export const selectTotalLoanPaymentByYear = (year, contributionType, memberId?) 
   fromLoan.selectEntities,
   (allItems, loanTypes, loans) => {
     const items = allItems
-      .filter(i => i.year + '' === year + '')
+      .filter(i => year === 'All' || i.year + '' === year + '')
       .filter(i => memberId === 'All' || i.memberId === memberId);
     // const items = allItems;/
     let sum = 0;
@@ -378,9 +380,9 @@ export const selectTotalFinePaymentByYear = (year, contributionType, memberId?) 
   fromFineTypes.selectEntities,
   (allItems, fineTypes) => {
     const items = allItems
-      .filter(i => i.year + '' === year + '')
+      .filter(i => year === 'All' || i.year + '' === year + '')
       .filter(i => memberId === 'All' || i.memberId === memberId)
-      .filter(i => !!i.contributionsDetails.find(k => (k.id === contributionType || contributionType === 'All')));
+      .filter(i => Object.keys(i.fines).length > 0);
     // const items = allItems;
     let sum = 0;
     for (const item of items) {

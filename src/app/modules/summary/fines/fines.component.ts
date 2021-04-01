@@ -45,7 +45,7 @@ export class FinesComponent implements OnInit {
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.years$ = this.store.pipe(select(paymentSelector.selectYearsWithPayment));
     this.fines$ = this.store.pipe(select(paymentSelector.selectFinesDetailedGroupByMember(this.year, this.fineType)));
-    this.finesSummary$ = this.store.pipe(select(paymentSelector.selectFIneTypesSummary(this.year)));
+    this.finesSummary$ = this.store.pipe(select(paymentSelector.selectFineTypesSummary(this.year)));
   }
 
   ngOnInit(): void {
@@ -85,7 +85,7 @@ export class FinesComponent implements OnInit {
     } else {
       this.fines$ = this.store.pipe(select(paymentSelector.selectFineDetailedGroupByMonth(this.year, this.fineType)));
     }
-    this.finesSummary$ = this.store.pipe(select(paymentSelector.selectFIneTypesSummary(this.year)));
+    this.finesSummary$ = this.store.pipe(select(paymentSelector.selectFineTypesSummary(this.year)));
 
   }
 

@@ -94,7 +94,7 @@ export const selectTotalByYear = (year, contributionType, memberId) => createSel
   selectDetailed,
   (allItems) => {
     const items = allItems
-      .filter(i => i.start_year + '' === year + '')
+      .filter(i => year === 'All' || i.start_year + '' === year + '')
       .filter(i => i.member_id === memberId || memberId === 'All')
       .filter(i => contributionType === 'All' || (i.loanType && i.loanType.contribution_type_id === contributionType));
     // const items = allItems;

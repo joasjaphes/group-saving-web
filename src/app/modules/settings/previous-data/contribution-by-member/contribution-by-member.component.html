@@ -132,7 +132,7 @@
                   </tr>
                 </table>
               </div>
-              <div class="col-sm-12 mt-3" *ngIf="grandTotal" @fadeIn>
+              <div class="col-sm-12 mt-3 mr-1" *ngIf="grandTotal" @fadeIn>
                 <app-save-area
                   [confirmFirst]="true"
                   confirmText="Are you sure you want to ADD {{grandTotal | number}}  as contribution for {{currentMember.name}}?"

@@ -7,6 +7,7 @@ import {FunctionsService} from '../../../services/functions.service';
 import {fadeIn} from '../../../shared/animations/router-animation';
 import {Observable} from 'rxjs';
 import {Payment} from '../../../store/payment/payment.model';
+import {MatCheckboxChange} from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-complete-meeting',
@@ -26,6 +27,7 @@ export class CompleteMeetingComponent implements OnInit {
   notes: any;
   loading = false;
   attendance = {};
+  allSelected = false;
 
   constructor(
     private commonService: CommonService,
@@ -85,5 +87,20 @@ export class CompleteMeetingComponent implements OnInit {
 
   selectMember(member: Member) {
     this.attendance[member.id] = !this.attendance[member.id];
+    let allSelected = true;
+    this.members.forEach(i => {
+      if (!this.attendance[i.id]) {
+        allSelected = false;
+      }
+    });
+    this.allSelected = allSelected;
+  }
+
+  setAllAttended($event: MatCheckboxChange) {
+    if ($event.checked) {
+      this.members.forEach(member => this.attendance[member.id] = true);
+    } else {
+      this.members.forEach(member => this.attendance[member.id] = false);
+    }
   }
 }

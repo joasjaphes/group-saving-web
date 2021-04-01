@@ -38,3 +38,15 @@ export const selectMemberFromRoute = createSelector(
     return entities[memberId];
   }
 );
+
+export const selectMembersSorted = createSelector(
+  selectAll,
+  selectCurrentId,
+  (allMembers, currentMemberId) => {
+    const member = allMembers.find(i => i.id === currentMemberId);
+    const otherMembers = allMembers
+      .filter(i => i.id !== currentMemberId)
+      .sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+    return [member, ...otherMembers];
+  }
+);

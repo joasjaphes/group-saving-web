@@ -84,6 +84,7 @@ import { DeleteExpenseComponent } from './modules/summary/expenses/delete-expens
 import { UpdateMemberBasicsComponent } from './modules/members/update-member-basics/update-member-basics.component';
 import { UpdateMemberPhoneComponent } from './modules/members/update-member-phone/update-member-phone.component';
 import { UpdateMemberEmailComponent } from './modules/members/update-member-email/update-member-email.component';
+import { ExportDataComponent } from './modules/summary/export-data/export-data.component';
 
 @NgModule({
   declarations: [
@@ -153,7 +154,8 @@ import { UpdateMemberEmailComponent } from './modules/members/update-member-emai
     DeleteExpenseComponent,
     UpdateMemberBasicsComponent,
     UpdateMemberPhoneComponent,
-    UpdateMemberEmailComponent
+    UpdateMemberEmailComponent,
+    ExportDataComponent
   ],
   imports: [
     BrowserModule,

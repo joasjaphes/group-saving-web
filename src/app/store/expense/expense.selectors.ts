@@ -33,7 +33,7 @@ export const selectTotalByYear = (year, contributionType, memberId) => createSel
   selectAll,
   (allItems) => {
     const items = allItems
-      .filter(i => i.year + '' === year + '')
+      .filter(i => year === 'All' || i.year + '' === year + '')
       .filter(i => i.associated_member_id === memberId || memberId === 'All')
       .filter(i => contributionType === 'All' || i.associated_account === contributionType);
     let sum = 0;

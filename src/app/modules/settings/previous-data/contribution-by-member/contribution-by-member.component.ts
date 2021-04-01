@@ -28,7 +28,7 @@ export class ContributionByMemberComponent implements OnInit {
   memberId;
   searchMembers;
   monthsDatas = [];
-  memberAmounts = {};
+  memberTotals = {};
   month;
   year;
   totals = {};
@@ -109,19 +109,25 @@ export class ContributionByMemberComponent implements OnInit {
 
   calculateTotal() {
     this.grandTotal = 0;
+    this.monthsDatas.forEach(i => {
+      i.total = 0;
+      this.memberTotals[i.id] = 0;
+      Object.keys(i.contributions).forEach(contr => {
+        i.total += !!(i.contributions[contr] + '') ? parseFloat(i.contributions[contr] + '') : 0;
+      });
+    });
     this.contributionTypes.forEach(contr => {
       this.contributionTotal[contr.id] = 0;
       this.monthsDatas.forEach(data => {
-        data.total = 0;
         const amount = data.contributions[contr.id] ? data.contributions[contr.id] + '' : '0';
         if (!!amount) {
-          data.total += parseFloat(amount);
           this.contributionTotal[contr.id] += parseFloat(amount);
+          this.memberTotals[data.id] += parseFloat(amount);
           this.grandTotal += parseFloat(amount);
         } else {
-          data.total += 0;
           this.contributionTotal[contr.id] += 0;
           this.grandTotal += 0;
+          this.memberTotals[data.id] += 0;
         }
       });
     });
