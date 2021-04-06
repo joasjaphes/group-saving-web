@@ -5,6 +5,107 @@
   [url]="['', 'summary']"
 >
   <ng-container ngProjectAs="table">
-    <h1>Exported data will stay here</h1>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6">
+          <mat-form-field appearance="outline">
+            <mat-label>From</mat-label>
+            <input readonly matInput [matDatepicker]="startingDate" [(ngModel)]="startDate"/>
+            <mat-datepicker-toggle matSuffix [for]="startingDate"></mat-datepicker-toggle>
+            <mat-datepicker #startingDate></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6" *ngIf="startDate" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>To</mat-label>
+            <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="endDate"/>
+            <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
+            <mat-datepicker #endingDate></mat-datepicker>
+          </mat-form-field>
+
+        </div>
+
+        <div class="col-sm-5" *ngIf="endDate" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-select [(ngModel)]="type">
+              <mat-option value="Contribution">Contribution</mat-option>
+              <mat-option value="Loan">Loan</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-5" *ngIf="type == 'Loan'" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-select [(ngModel)]="loanType" (selectionChange)="setLoanType($event)">
+              <mat-option value="All">All</mat-option>
+              <mat-option *ngFor="let loan of loanTypes$ | async" [value]="loan.id">{{loan.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-5" *ngIf="type == 'Contribution'" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-select [(ngModel)]="contributionType" (selectionChange)="setContributionType($event)">
+              <mat-option value="All">All</mat-option>
+              <mat-option *ngFor="let contr of contributionTypes$ | async"
+                          [value]="contr.id">{{contr.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+
+        <div class="col-sm-2" *ngIf="(type == 'Loan' && loanType) || (type == 'Contribution' && contributionType)"
+             @fadeIn>
+          <button
+            style="height: 44px; margin-top: 3px; width: 100%;background-color: #141432; border: 1px solid #ffffff52;"
+            mat-raised-button
+            class="zoom-on-hover"
+            (click)="getData()"
+          >
+            <mat-icon>refresh</mat-icon>
+            Get Data
+          </button>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="dateReady" @fadeIn>
+        <div class="col-sm-12 mb-1" style="text-align: right">
+          <button class="zoom-on-hover no-print" (click)="downloadExcel()" mat-raised-button style="background-color: #141432; border: 1px solid #ffffff52;">
+            <img src="assets/images/csv.png" style="height: 26px"> &nbsp; Download
+          </button>
+        </div>
+        <div class="col-sm-12">
+          <table  #dataTable class="table table-bordered" style="color: white">
+            <tr>
+              <th [attr.colspan]="months.length + 2" style="text-align: center">
+                {{title}}
+              </th>
+            </tr>
+            <tr>
+              <th>Members</th>
+              <th *ngFor="let month of months">{{month.name}}</th>
+              <th>Total</th>
+            </tr>
+            <ng-container *ngFor="let member of memberData$ | async">
+              <tr>
+                <th>{{member.name}}</th>
+                <td *ngFor="let month of months">
+                  <span *ngIf="member.memberMonth[month.id]">
+                    {{member.memberMonth[month.id] | number}}
+                  </span>
+                </td>
+                <th>{{member.total | number}}</th>
+              </tr>
+
+            </ng-container>
+            <tr>
+              <th>Total</th>
+              <th *ngFor="let month of months">{{monthTotals[month.id] | number}}</th>
+              <th>{{overAllTotals | number}}</th>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
   </ng-container>
 </app-shared-layout>

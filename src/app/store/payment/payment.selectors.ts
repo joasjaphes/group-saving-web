@@ -1,4 +1,4 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import {createFeatureSelector, createSelector} from '@ngrx/store';
 import * as fromReducer from './payment.reducer';
 import * as fromContributionTypes from '../contribution-type/contribution-type.selectors';
 import * as fromFineTypes from '../fine-type/fine-type.selectors';
@@ -89,17 +89,17 @@ export const selectDetailedGroupByMember = (year) => createSelector(
       memberData[member.id] = {type: 'member', id: member.id, name: member.name, total: 0, totals: {}, items: []};
       allItems.filter(i => i.year + '' === year + '')
         .forEach(item => {
-        if (item.memberId === member.id) {
-          memberData[member.id].total += parseFloat(item.totalContributions + '');
-          for (const contr of item.contributionsDetails) {
-            if (memberData[member.id].totals[contr.id]) {
-              memberData[member.id].totals[contr.id]['amount'] += parseFloat(contr.amount);
-            } else {
-              memberData[member.id].totals[contr.id] = contr;
+          if (item.memberId === member.id) {
+            memberData[member.id].total += parseFloat(item.totalContributions + '');
+            for (const contr of item.contributionsDetails) {
+              if (memberData[member.id].totals[contr.id]) {
+                memberData[member.id].totals[contr.id]['amount'] += parseFloat(contr.amount);
+              } else {
+                memberData[member.id].totals[contr.id] = contr;
+              }
             }
           }
-        }
-      });
+        });
       memberData[member.id].items = Object.keys(memberData[member.id].totals).map(i => memberData[member.id].totals[i]);
     }
     return Object
@@ -122,25 +122,34 @@ export const selectDetailedGroupBySingleMember = (year, memberId) => createSelec
 export const selectDetailedGroupByMonth = (year) => createSelector(
   selectDetailed,
   (allItems) => {
-    const monthNames = [{name: 'Jan ' + year, key: '01'}, {name: 'Feb ' + year, key: '02'}, {name: 'Mar ' + year, key: '03'}, {name: 'Apr ' + year, key: '04'}, {name: 'May ' + year, key: '05'}, {name: 'Jun ' + year, key: '06'}, {name: 'Jul ' + year, key: '07'}, {name: 'Aug ' + year, key: '08'}, {name: 'Sep ' + year, key: '09'}, {name: 'Oct ' + year, key: '10'}, {name: 'Nov ' + year, key: '11'},  {name: 'Dec ' + year, key: '12'}];
-    const months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11',  '12'];
+    const monthNames = [{name: 'Jan ' + year, key: '01'}, {name: 'Feb ' + year, key: '02'}, {
+      name: 'Mar ' + year,
+      key: '03'
+    }, {name: 'Apr ' + year, key: '04'}, {name: 'May ' + year, key: '05'}, {name: 'Jun ' + year, key: '06'}, {
+      name: 'Jul ' + year,
+      key: '07'
+    }, {name: 'Aug ' + year, key: '08'}, {name: 'Sep ' + year, key: '09'}, {name: 'Oct ' + year, key: '10'}, {
+      name: 'Nov ' + year,
+      key: '11'
+    }, {name: 'Dec ' + year, key: '12'}];
+    const months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
     const monthData = {};
     for (const month of monthNames) {
       monthData[month.key] = {type: 'month', id: month.key + year, key: month.key, name: month.name, total: 0, totals: {}, items: []};
       allItems
         .filter(item => item.month + '' === month.key && item.year + '' === year + '')
         .forEach(item => {
-        if (item.month === month.key && item.year + '' === year + '') {
-          monthData[month.key].total += parseFloat(item.totalContributions + '');
-          for (const contr of item.contributionsDetails) {
-            if (monthData[month.key].totals[contr.id]) {
-              monthData[month.key].totals[contr.id]['amount'] += parseFloat(contr.amount);
-            } else {
-              monthData[month.key].totals[contr.id] = contr;
+          if (item.month === month.key && item.year + '' === year + '') {
+            monthData[month.key].total += parseFloat(item.totalContributions + '');
+            for (const contr of item.contributionsDetails) {
+              if (monthData[month.key].totals[contr.id]) {
+                monthData[month.key].totals[contr.id]['amount'] += parseFloat(contr.amount);
+              } else {
+                monthData[month.key].totals[contr.id] = contr;
+              }
             }
           }
-        }
-      });
+        });
       monthData[month.key].items = Object.keys(monthData[month.key].totals).map(i => monthData[month.key].totals[i]);
     }
     return Object
@@ -162,19 +171,19 @@ export const selectFinesDetailedGroupByMember = (year, fineType) => createSelect
       memberData[member.id] = {type: 'member', id: member.id, name: member.name, total: 0, totals: {}, items: []};
       allItems.filter(i => i.year + '' === year + '')
         .forEach(item => {
-        if (item.memberId === member.id) {
-          for (const contr of item.fineDetails) {
-            if (fineType === 'All' || fineType === contr.id) {
-              if (memberData[member.id].totals[contr.id]) {
-                memberData[member.id].totals[contr.id]['amount'] += parseFloat(contr.amount);
-              } else {
-                memberData[member.id].totals[contr.id] = contr;
+          if (item.memberId === member.id) {
+            for (const contr of item.fineDetails) {
+              if (fineType === 'All' || fineType === contr.id) {
+                if (memberData[member.id].totals[contr.id]) {
+                  memberData[member.id].totals[contr.id]['amount'] += parseFloat(contr.amount);
+                } else {
+                  memberData[member.id].totals[contr.id] = contr;
+                }
+                memberData[member.id].total += parseFloat(contr.amount);
               }
-              memberData[member.id].total += parseFloat(contr.amount);
             }
           }
-        }
-      });
+        });
       memberData[member.id].items = Object.keys(memberData[member.id].totals).map(i => memberData[member.id].totals[i]);
     }
     return Object
@@ -190,27 +199,36 @@ export const selectFinesDetailedGroupByMember = (year, fineType) => createSelect
 export const selectFineDetailedGroupByMonth = (year, fineType) => createSelector(
   selectDetailed,
   (allItems) => {
-    const monthNames = [{name: 'Jan ' + year, key: '01'}, {name: 'Feb ' + year, key: '02'}, {name: 'Mar ' + year, key: '03'}, {name: 'Apr ' + year, key: '04'}, {name: 'May ' + year, key: '05'}, {name: 'Jun ' + year, key: '06'}, {name: 'Jul ' + year, key: '07'}, {name: 'Aug ' + year, key: '08'}, {name: 'Sep ' + year, key: '09'}, {name: 'Oct ' + year, key: '10'}, {name: 'Nov ' + year, key: '11'},  {name: 'Dec ' + year, key: '12'}];
-    const months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11',  '12'];
+    const monthNames = [{name: 'Jan ' + year, key: '01'}, {name: 'Feb ' + year, key: '02'}, {
+      name: 'Mar ' + year,
+      key: '03'
+    }, {name: 'Apr ' + year, key: '04'}, {name: 'May ' + year, key: '05'}, {name: 'Jun ' + year, key: '06'}, {
+      name: 'Jul ' + year,
+      key: '07'
+    }, {name: 'Aug ' + year, key: '08'}, {name: 'Sep ' + year, key: '09'}, {name: 'Oct ' + year, key: '10'}, {
+      name: 'Nov ' + year,
+      key: '11'
+    }, {name: 'Dec ' + year, key: '12'}];
+    const months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
     const monthData = {};
     for (const month of monthNames) {
       monthData[month.key] = {type: 'month', id: month.key + year, key: month.key, name: month.name, total: 0, totals: {}, items: []};
       allItems
         .filter(item => item.month + '' === month.key && item.year + '' === year + '')
         .forEach(item => {
-        if (item.month === month.key && item.year + '' === year + '') {
-          for (const contr of item.fineDetails) {
-            if (fineType === 'All' || fineType === contr.id) {
-              if (monthData[month.key].totals[contr.id]) {
-                monthData[month.key].totals[contr.id]['amount'] += parseFloat(contr.amount);
-              } else {
-                monthData[month.key].totals[contr.id] = contr;
+          if (item.month === month.key && item.year + '' === year + '') {
+            for (const contr of item.fineDetails) {
+              if (fineType === 'All' || fineType === contr.id) {
+                if (monthData[month.key].totals[contr.id]) {
+                  monthData[month.key].totals[contr.id]['amount'] += parseFloat(contr.amount);
+                } else {
+                  monthData[month.key].totals[contr.id] = contr;
+                }
+                monthData[month.key].total += parseFloat(contr.amount);
               }
-              monthData[month.key].total += parseFloat(contr.amount);
             }
           }
-        }
-      });
+        });
       monthData[month.key].items = Object.keys(monthData[month.key].totals).map(i => monthData[month.key].totals[i]);
     }
     return Object
@@ -300,12 +318,12 @@ export const selectContributionTypeSummary = (year) => createSelector(
       allItems
         .filter(i => year === 'All' || i.year + '' === year + '')
         .forEach(item => {
-        if (item.contributions) {
-          if (Object.keys(item.contributions).indexOf(contr.id) !== -1) {
-            summary[contr.id].total += parseFloat(item.contributions[contr.id] + '');
+          if (item.contributions) {
+            if (Object.keys(item.contributions).indexOf(contr.id) !== -1) {
+              summary[contr.id].total += parseFloat(item.contributions[contr.id] + '');
+            }
           }
-        }
-      });
+        });
     }
     return Object.keys(summary).map(i => summary[i]);
   }
@@ -322,13 +340,13 @@ export const selectFineTypesSummary = (year) => createSelector(
       allItems
         .filter(i => year === 'All' || i.year + '' === year + '')
         .forEach(item => {
-        if (item.fines) {
-          if (Object.keys(item.fines).indexOf(contr.id) !== -1) {
-            summary[contr.id].total += parseFloat(item.fines[contr.id] + '');
-            summary['All'].total += parseFloat(item.fines[contr.id] + '');
+          if (item.fines) {
+            if (Object.keys(item.fines).indexOf(contr.id) !== -1) {
+              summary[contr.id].total += parseFloat(item.fines[contr.id] + '');
+              summary['All'].total += parseFloat(item.fines[contr.id] + '');
+            }
           }
-        }
-      });
+        });
     }
     return Object.keys(summary).map(i => summary[i]);
   }
@@ -401,7 +419,7 @@ export const selectTotalFinePaymentByYear = (year, contributionType, memberId?) 
 export const selectTotalIn = (year, contributionType, memberId?) => createSelector(
   selectTotalPaymentByYear(year, contributionType, memberId),
   selectTotalLoanPaymentByYear(year, contributionType, memberId),
-  selectTotalFinePaymentByYear (year, contributionType, memberId),
+  selectTotalFinePaymentByYear(year, contributionType, memberId),
   (payments, loans, fines) => {
     return payments + loans + fines;
   }
@@ -418,7 +436,7 @@ export const selectTotalByYear = (year, contributionType, memberId?) => createSe
 export const selectTotalContributions = (year, contributionType, memberId) => createSelector(
   selectTotalPaymentByYear(year, contributionType, memberId),
   selectTotalLoanPaymentByYear(year, contributionType, memberId),
-  selectTotalFinePaymentByYear (year, contributionType, memberId),
+  selectTotalFinePaymentByYear(year, contributionType, memberId),
   (payments, loans, fines) => {
     return payments + fines;
   }
@@ -434,6 +452,69 @@ export const selectContributionByMonth = (month, year) => createSelector(
   selectDetailed,
   (allItems) => allItems
     .filter(i => month === i.month && i.contributionsDetails.length > 0 && year + '' === i.year + '')
+);
+
+export const selectMemberMonthSummary = (months: string[]) => createSelector(
+  selectDetailed,
+  fromMember.selectAll,
+  (allItems, members) => {
+    return members.map(member => {
+      const memberMonth = {};
+      months.forEach(month => {
+        const date = month.split('-');
+        const year = date[0];
+        const mon = date[1];
+        const key = `${year}${mon}`;
+        const memberContr = allItems
+          .filter(i => i.memberId === member.id)
+          .filter(i => i.year + '' === year + '' && i.month + '' === mon + '');
+        memberMonth[key] = memberContr.map(i => i.totalLoans).join(', ');
+      });
+      return {
+        name: member.name,
+        phoneNumber: member.phone_number,
+        email: member.email,
+        memberMonth,
+      };
+    });
+  }
+);
+
+export const selectContributionMemberMonthSummary = (months: string[], contributionTypeId) => createSelector(
+  selectDetailed,
+  fromMember.selectAll,
+  (allItems, members) => {
+    return members.map(member => {
+      const memberMonth = {};
+      let total = 0;
+      months.forEach(month => {
+        const date = month.split('-');
+        const year = date[0];
+        const mon = date[1];
+        const key = `${year}${mon}`;
+        const memberContr = allItems
+          .filter(i => i.memberId === member.id)
+          .filter(i => !!i.contributionsDetails.find(k => (k.id === contributionTypeId || contributionTypeId === 'All')))
+          .filter(i => i.year + '' === year + '' && i.month + '' === mon + '');
+        memberMonth[key] = 0;
+        memberContr.forEach(item => {
+          for (const contr of item.contributionsDetails) {
+            if (contributionTypeId === 'All' || contr.id === contributionTypeId) {
+              memberMonth[key] += parseFloat(contr.amount + '');
+              total += parseFloat(contr.amount + '');
+            }
+          }
+        });
+      });
+      return {
+        name: member.name,
+        phoneNumber: member.phone_number,
+        email: member.email,
+        memberMonth,
+        total,
+      };
+    });
+  }
 );
 
 export function findTotal(payment: Payment) {
