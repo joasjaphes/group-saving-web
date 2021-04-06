@@ -106,6 +106,36 @@ export const selectTotalByYear = (year, contributionType, memberId) => createSel
   }
 );
 
+export const selectLoansActiveBetweenDates = (startDate, endDate, months: string[], loanType: string) => createSelector(
+  selectDetailed,
+  (allItems) => allItems
+    .filter(i => i.loan_used === loanType || loanType === 'All')
+    .map(
+    item => {
+      const monthData = {};
+      for (const month of months) {
+        const date = month.split('-');
+        const year = date[0];
+        const mon = date[1];
+        const key = `${year}${mon}`;
+        monthData[key] = 0;
+        for (const pay of item.payments) {
+          const useKey = `${pay.year}${pay.month}`;
+          if (useKey === key) {
+            monthData[key] += parseFloat(pay.amount + '');
+          }
+        }
+      }
+      const loanStartDate = `${item.start_year}-${item.start_month}-01`;
+      const loanEndDate = `${item.end_year}-${item.end_month}-01`;
+      return {
+        ...item,
+        monthData
+      };
+    }
+  )
+);
+
 export function durationTYpe(frequency) {
   switch (frequency) {
     case 'Monthly':

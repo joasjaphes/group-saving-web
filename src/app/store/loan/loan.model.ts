@@ -57,5 +57,6 @@ export interface Loan {
   }[];
   durationName?: any;
   percentPaid?: any;
+  monthData?: any;
 
 }

@@ -13,6 +13,7 @@ import {ExcelDownloadService} from '../../../services/excel-download.service';
 import {Loan} from '../../../store/loan/loan.model';
 import {MatSelectChange} from '@angular/material/select';
 import {first} from 'rxjs/operators';
+import {selectLoansActiveBetweenDates} from '../../../store/loan/loan.selectors';
 
 @Component({
   selector: 'app-export-data',
@@ -31,13 +32,19 @@ export class ExportDataComponent implements OnInit {
   selectedContributionType: ContributionType;
   months: { id: string, name: string }[] = [];
   memberData$: Observable<any[]>;
+  loanData$: Observable<Loan[]>;
   contributionTypes$: Observable<ContributionType[]>;
   loanTypes$: Observable<LoanType[]>;
   dateReady = false;
   monthTotals = {};
+  loanMonthTotals = {};
   overAllTotals = 0;
+  loanOverAllTotals = 0;
+  basicTotals = 0;
+  interestTotals = 0;
   title = 'Summary';
   @ViewChild('dataTable') dataTable: ElementRef;
+  showPhoneNumber = false;
 
   constructor(
     private commonService: CommonService,
@@ -105,6 +112,27 @@ export class ExportDataComponent implements OnInit {
     this.monthTotals = monthTotals;
   }
 
+  calculateLoanMonthTotal(memberData: Loan[]) {
+    this.loanOverAllTotals = 0;
+    this.basicTotals = 0;
+    this.interestTotals = 0;
+    const monthTotals = {};
+    for (const member of memberData) {
+      this.loanOverAllTotals += member.remaining_balance;
+      this.basicTotals += member.amount_taken;
+      this.interestTotals += member.total_profit_contribution;
+    }
+    for (const month of this.months) {
+      monthTotals[month.id] = 0;
+      for (const member of memberData) {
+        if (member.monthData && member.monthData[month.id]) {
+          monthTotals[month.id] += member.monthData[month.id];
+        }
+      }
+    }
+    this.loanMonthTotals = monthTotals;
+  }
+
   setTitle() {
     if (this.type === 'Contribution') {
       const contrName = this.selectedContributionType ? ' - ' + this.selectedContributionType.name : '';
@@ -133,6 +161,8 @@ export class ExportDataComponent implements OnInit {
         name: monthName
       };
     });
+    this.loanData$ = this.store.pipe(select(selectLoansActiveBetweenDates(startDate, endDate, months, this.loanType)));
+    this.loanData$.subscribe(i => this.calculateLoanMonthTotal(i));
     this.setTitle();
     this.memberData$ = this.store.pipe(select(selectContributionMemberMonthSummary(months, this.contributionType)));
     this.memberData$.subscribe(i => this.calculateMonthTotal(i));
