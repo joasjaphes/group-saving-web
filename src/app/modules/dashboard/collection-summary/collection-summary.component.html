@@ -115,7 +115,7 @@
         [amount]="totalIn$ | async"
         amountTitle="Total In"
         leftTitle="Contributions"
-        [leftAmount]="totalContributionOnly$ | async"
+        [leftAmount]="(totalContributionOnly$ | async) + (totalFinesPaid$ | async)"
         rightTitle="Loan Payments"
         [rightAmount]="totalLoanReturns$ | async"
       ></app-collection-card>

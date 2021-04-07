@@ -3,7 +3,6 @@ import {CommonService} from '../../../services/common.service';
 import {select, Store} from '@ngrx/store';
 import {ApplicationState} from '../../../store';
 import {Observable} from 'rxjs';
-import {selectContributionMemberMonthSummary, selectMemberMonthSummary} from '../../../store/payment/payment.selectors';
 import {ContributionType} from '../../../store/contribution-type/contribution-type.model';
 import * as contributionTypeSelector from '../../../store/contribution-type/contribution-type.selectors';
 import {LoanType} from '../../../store/loan-type/loan-type.model';
@@ -14,6 +13,7 @@ import {Loan} from '../../../store/loan/loan.model';
 import {MatSelectChange} from '@angular/material/select';
 import {first} from 'rxjs/operators';
 import {selectLoansActiveBetweenDates} from '../../../store/loan/loan.selectors';
+import {selectContributionMemberMonthSummary} from '../../../store/payment/payment.selectors';
 
 @Component({
   selector: 'app-export-data',
