@@ -12,6 +12,9 @@ import {ContributionType} from '../../../store/contribution-type/contribution-ty
 import * as contributionTypeSelector from '../../../store/contribution-type/contribution-type.selectors';
 import {Member} from '../../../store/member/member.model';
 import {fadeIn} from '../../../shared/animations/router-animation';
+import {GroupProgressDialogComponent} from '../../../shared/components/group-progress/group-progress-dialog/group-progress-dialog.component';
+import {SummaryModelComponent} from '../summary-model/summary-model.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-collection-summary',
@@ -40,6 +43,7 @@ export class CollectionSummaryComponent implements OnInit {
   typeName = 'All';
   constructor(
     private store: Store<ApplicationState>,
+    public dialog: MatDialog,
   ) {
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.progress$ = this.store.pipe(select(groupSelector.selectProgressPercent));
@@ -68,5 +72,17 @@ export class CollectionSummaryComponent implements OnInit {
     this.totalLoanOut$ = this.store.pipe(select(loanSelector.selectTotalByYear(this.year, this.currentContr, memberId)));
     this.totalIn$ = this.store.pipe(select(paymentSelector.selectTotalIn(this.year, this.currentContr, memberId)));
     this.totalOut$ = this.store.pipe(select(paymentSelector.selectTotalByYear(this.year, this.currentContr, memberId)));
+  }
+
+  openSummary(title: string, type: string) {
+    const dialogRef = this.dialog.open(SummaryModelComponent, {
+      width: '80%',
+      minHeight: '60vh',
+      data: {
+        title,
+        type
+      },
+      disableClose: true,
+    });
   }
 }

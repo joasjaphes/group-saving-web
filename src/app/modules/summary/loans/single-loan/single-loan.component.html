@@ -1,8 +1,5 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-12">
-
-    </div>
     <div class="col-sm-12 mb-4">
       <div class="loan-title-grid">
         <div>
@@ -27,69 +24,93 @@
     <div class="col-sm-7 mb-4">
       <div class="details-grid">
 <!--        Amount Paid to date-->
-        <div>
-          <div style="color: #ffffff6e;">Already Paid</div>
-          <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
-            {{loan.amount_paid_to_date | number}}
-          </h1>
+        <div class="details-grid-item">
+          <div class="shade"></div>
+          <div>
+            <div style="color: #ffffff6e;">Already Paid</div>
+            <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
+              {{loan.amount_paid_to_date | number}}
+            </h1>
+          </div>
         </div>
 
 <!--        Amount to be paid-->
-        <div>
+        <div class="details-grid-item">
+          <div class="shade"></div>
+          <div>
           <div style="color: #ffffff6e;">Amount to be paid</div>
           <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
             {{loan.total_amount_to_pay | number}}
           </h1>
+          </div>
         </div>
 
 
 <!--        Loan Amount-->
-        <div>
+        <div class="details-grid-item">
+          <div class="shade"></div>
+          <div>
           <div style="color: #ffffff6e;">Loan Amount</div>
           <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
             {{loan.amount_taken | number}}
           </h1>
+          </div>
         </div>
 
 <!--       Total Interest-->
-        <div>
+        <div class="details-grid-item">
+          <div class="shade"></div>
+          <div>
           <div style="color: #ffffff6e;">Total Interest</div>
           <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
             {{loan.total_profit_contribution | number}}
           </h1>
+          </div>
         </div>
 
 
 <!--       Amount per pay-->
-        <div>
+        <div class="details-grid-item">
+          <div class="shade"></div>
+          <div>
           <div style="color: #ffffff6e;">Amount per pay</div>
           <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
             {{loan.amount_per_return | number}}
           </h1>
+          </div>
         </div>
 
 <!--       Loan Duration-->
-        <div>
+        <div class="details-grid-item">
+          <div class="shade"></div>
+          <div>
           <div style="color: #ffffff6e;">Duration</div>
           <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
             {{loan.duration }} {{loan.durationName}}
           </h1>
+          </div>
         </div>
 
 <!--       Start Date-->
-        <div>
+        <div class="details-grid-item">
+          <div class="shade"></div>
+          <div>
           <div style="color: #ffffff6e;">Start Date</div>
           <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
             {{loan.date | date:'MMM yyyy'}}
           </h1>
+          </div>
         </div>
 
 <!--       End Date-->
-        <div>
+        <div class="details-grid-item">
+          <div class="shade"></div>
+          <div>
           <div style="color: #ffffff6e;">Due Date</div>
           <h1 style="color: #ffffffb3;" class="mb-0 registration-title">
             {{loan.expected_date_of_payment | date:'MMM yyyy'}}
           </h1>
+          </div>
         </div>
       </div>
     </div>
@@ -104,7 +125,8 @@
         </tr>
         <tr *ngFor="let payment of loan.payments; let i = index">
           <td>{{i + 1}}</td>
-          <td>{{payment.date_of_payment | date:'MMM yyyy'}}</td>
+          <td>
+            <span *ngIf="payment.date_of_payment">{{payment.date_of_payment | date:'MMM yyyy'}}</span></td>
           <th>{{payment.amount | number}}</th>
         </tr>
       </table>

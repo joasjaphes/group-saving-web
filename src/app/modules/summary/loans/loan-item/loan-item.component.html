@@ -1,0 +1,43 @@
+<div class="single-loan content-area-shadow">
+  <div class="gauge">
+    <app-small-circular-progress
+      [value]="loan.percentPaid"
+      [titleText]="loan.member?.name[0].toUpperCase()"
+    ></app-small-circular-progress>
+  </div>
+  <div class="textArea">
+    <h1 style="color: #ffffffb3; font-size: 25px" class="mb-0 registration-title">{{ loan.member?.name }}</h1>
+    <h1 class="registration-title mb-1" style="letter-spacing: 3px" *ngIf="loan.remaining_balance <= 0">{{ loan.total_amount_to_pay | number }}</h1>
+    <h1 class="registration-title mb-1" style="letter-spacing: 3px" *ngIf="loan.remaining_balance > 0">{{ loan.remaining_balance | number }}</h1>
+    <div class="balances" style="display: grid; grid-template-columns: 100px 100px auto">
+      <div class="some-amount-grid">
+        <div class="block-grid orange"></div>
+        <div>
+          <div style="color: #ffffff6e; font-size: 11px">Paid Amount</div>
+          <div class="registration-title" style="color: #ffffffb3">
+            {{loan.amount_paid_to_date | number}}
+          </div>
+        </div>
+      </div>
+      <div class="some-amount-grid">
+        <div class="block-grid white"></div>
+        <div>
+          <div style="color: #ffffff6e; font-size: 11px">Loan Amount</div>
+          <div class="registration-title" style="color: #ffffffb3">
+            {{loan.total_amount_to_pay | number}}
+          </div>
+        </div>
+      </div>
+      <div class="some-amount-grid">
+        <div class="block-grid transparent"></div>
+        <div>
+          <div style="color: #ffffff6e; font-size: 11px">Due Date</div>
+          <div class="registration-title" style="color: #ffffffb3">
+            {{loan.expected_date_of_payment | date: 'MMM yyyy'}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

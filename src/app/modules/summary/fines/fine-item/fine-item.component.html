@@ -1,0 +1,25 @@
+<div
+  class="one-payment"
+>
+  <div style="display: grid; align-content: center">
+    <div class="img-div">
+      <h1 style="font-size: 40px;" class="registration-title">{{fine.member?.name[0].toUpperCase()}}</h1>
+    </div>
+  </div>
+  <div class="name-area">
+    <h1 style="color: #ffffffb3;" class="mb-1 registration-title">{{fine.member.name}}</h1>
+    <h1 class="registration-title mb-0 amount-title">
+      {{fine.totalFines | number}}
+      <span class="text-muted" style="font-size: 12px!important;">{{group?.currency}}</span>
+    </h1>
+    <p style="color: #ffffff6e" class="lead mb-1"><small>
+      {{ fine.date | date:'MMM yyyy' }}
+      <span style="color: #ffffffbf; font-size: 11px"> ({{fine.description}})</span>
+    </small></p>
+
+  </div>
+  <div class="amount-area">
+    <p class="mb-0"><small class="text-muted">{{group?.currency}}</small></p>
+    <h1 class="registration-title">{{fine.totalFines | number}}</h1>
+  </div>
+</div>

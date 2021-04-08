@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-12 inner-grid" [ngClass]="{'justify-end': justifyRight}">
+  <div class="col-sm-12 inner-grid zoom-on-hover cursor" (click)="onAmountClick()" [ngClass]="{'justify-end': justifyRight}">
     <div class="icon-area">
       <mat-icon [ngClass]="iconClass">{{icon}}</mat-icon>
     </div>
@@ -11,22 +11,17 @@
     </div>
   </div>
 
-<!--  <div class="col-sm-12 progress-block-parent">-->
-<!--    <div class="in progress-block"  style="width: {{leftPercent}}%;"></div>-->
-<!--    <div class="out progress-block" style="width: {{rightPercent}}%;"></div>-->
-<!--  </div>-->
   <!--            Sub summary area-->
   <div class="col-sm-12 inner1-grid">
-    <div class="inner1-item-grid" [ngClass]="{'justify-end': justifyRight}">
+    <div class="inner1-item-grid zoom-on-hover cursor" (click)="onLeftClick()" [ngClass]="{'justify-end': justifyRight}">
       <div class="img-area in">
-        <!--              <img src="assets/images/icons/cash-in-hand.png">-->
       </div>
       <div>
         <p class="text-muted">{{leftTitle}}</p>
         <h1 class="registration-title down-amount"> {{leftAmount | number}}</h1>
       </div>
     </div>
-    <div class="inner1-item-grid" [ngClass]="{'justify-end': justifyRight}">
+    <div class="inner1-item-grid zoom-on-hover cursor" (click)="onRightClicked()" [ngClass]="{'justify-end': justifyRight}">
       <div class="img-area out"></div>
       <div>
         <p class="text-muted">{{rightTitle}}</p>

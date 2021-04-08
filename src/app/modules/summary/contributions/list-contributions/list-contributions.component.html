@@ -1,28 +1,8 @@
 <div class="payment-grid">
-  <div
-    class="one-payment"
+  <app-contribution-item
     *ngFor="let contr of contributions"
-  >
-    <div style="display: grid; align-content: center">
-      <div class="img-div">
-        <h1 style="font-size: 40px;" class="registration-title">{{contr.member?.name[0].toUpperCase()}}</h1>
-      </div>
-    </div>
-    <div class="name-area">
-      <h2 style="color: #ffffffb3;" class="mb-1 registration-title">{{contr.member.name}}</h2>
-      <h1 class="registration-title mb-0 amount-name-area">
-        {{contr.totalContributions | number}}
-        <span class="text-muted" style="font-size: 12px!important;">{{group?.currency}}</span>
-      </h1>
-      <p style="color: #ffffff6e" class="lead mb-1">
-        <small>{{ contr.date | date:'MMM yyyy' }}</small>
-        <span style="color: #ffffffbf; font-size: 11px"> ({{contr.description}})</span>
-      </p>
-    </div>
-    <!--    <div class="amount-area">-->
-    <!--      <p class="mb-0"><small class="text-muted">{{group?.currency}}</small></p>-->
-    <!--      <h1 class="registration-title">{{contr.totalContributions | number}}</h1>-->
-    <!--    </div>-->
-  </div>
+    [group]="group"
+    [payment]="contr"
+  ></app-contribution-item>
 </div>
 

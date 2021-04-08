@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {Group} from '../../../../store/group/group.model';
 
 @Component({
@@ -19,18 +19,27 @@ export class CollectionCardComponent implements OnInit {
   @Input() rightTitle = 0;
   @Input() rightAmount = 0;
   @Input() justifyRight = false;
+
+  @Output() amountClicked = new EventEmitter();
+  @Output() rightClicked = new EventEmitter();
+  @Output() leftClicked = new EventEmitter();
   leftPercent = 100;
   rightPercent = 0;
   constructor() { }
 
   ngOnInit(): void {
-    if (parseFloat(this.amount + '') > 0) {
-      // console.log('hapa naingia');
-      // this.leftPercent = (this.leftAmount / this.amount) * 100;
-      // this.rightPercent = (this.rightAmount / this.amount) * 100;
-      // console.log('leftPercent', this.leftPercent);
-      // console.log('rightPercent', this.rightPercent);
-    }
+  }
+
+  onAmountClick() {
+    this.amountClicked.emit();
+  }
+
+  onLeftClick() {
+    this.leftClicked.emit();
+  }
+
+  onRightClicked() {
+    this.rightClicked.emit();
   }
 
 }
