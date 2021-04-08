@@ -1,9 +1,33 @@
+import { USE_EMULATOR as AUTH_EMULATOR } from '@angular/fire/auth';
+import { USE_EMULATOR as FIRESTORE_EMULATOR } from '@angular/fire/firestore';
+import { USE_EMULATOR as DATABASE_EMULATOR } from '@angular/fire/database';
+import { USE_EMULATOR as FUNCTIONS_EMULATOR } from '@angular/fire/functions';
+
 export const environment = {
   production: true,
+  useEmulator: [{
+    provide: AUTH_EMULATOR,
+    useValue: ['localhost', 9099],
+  },
+  {
+    provide: FIRESTORE_EMULATOR,
+    useValue: ['localhost', 8080],
+  },
+  {
+    provide: DATABASE_EMULATOR,
+    useValue: ['localhost', 9000],
+  },
+  {
+    provide: FUNCTIONS_EMULATOR,
+    useValue: ['localhost', 5001],
+  }],
   functionURL:'http://localhost:5001/group-saving-test/us-central1/',
   firebase: {
-    apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
-    authDomain: 'http://localhost:9099',
+    host: 'localhost:5000',
+    ssl: false,
+    //apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
+    apiKey: '444964071176',
+    authDomain: 'localhost:9099',
     databaseURL: 'http://localhost:9000',
     projectId: 'group-saving-test',
     //storageBucket: 'group-saving.appspot.com',

@@ -188,7 +188,10 @@ import { SummaryModelComponent } from './modules/dashboard/summary-model/summary
     SharedModule,
     BrowserAnimationsModule,
   ],
-  providers: [{ provide: RouterStateSerializer, useClass: CustomSerializer }],
+  providers: [
+    { provide: RouterStateSerializer, useClass: CustomSerializer },
+    ...environment.useEmulator
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -44,5 +44,13 @@ context('SETTINGS', () => {
   })
   it('NEXT', () => {
     cy.visit('http://localhost:4200');
+    cy.contains("Start Here").click();
+    cy.contains("Select country").click();
+    cy.contains("Tanzania").click();
+    cy.contains("Phone Number").click();
+    cy.get('input[data-placeholder="OXXXXXXXXX"]').type("0718026490")
+    cy.contains("Verify Phone Number").click();
+    cy.get('input[data-placeholder="Enter Your Password"]').type("P@ssword123");
+    cy.contains("Login").click();
   })
 })

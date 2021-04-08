@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  useEmulator: [],
   functionURL:'https://us-central1-group-saving.cloudfunctions.net/',
   firebase: {
     apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
