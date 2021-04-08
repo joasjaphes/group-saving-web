@@ -124,7 +124,7 @@
         <div class="col-sm-6" *ngIf="isLoanInsured == 'Yes'" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Insurance Percent <span>({{insurancePercent}}%)</span></mat-label>
-            <input matInput type="number" placeholder="Interest Rate" [(ngModel)]="insurancePercent">
+            <input matInput type="number" placeholder="Insurance Percent" [(ngModel)]="insurancePercent">
             <mat-hint>This amount will be reduced from the loan amount</mat-hint>
           </mat-form-field>
         </div>

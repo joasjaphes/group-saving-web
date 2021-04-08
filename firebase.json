@@ -4,10 +4,18 @@
       "port": 9000
     },
     "firestore": {
+      "host": "0.0.0.0",
       "port": 8080
     },
     "auth": {
      "port": 9099
+    },
+    "ui": {
+      "enabled": true,
+      "port": 4001
+    },
+    "functions": {
+      "port": 5001
     }
   },
   "hosting": [

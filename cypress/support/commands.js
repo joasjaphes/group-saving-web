@@ -26,3 +26,23 @@
 Cypress.Commands.add("loadfixtures", () => {
     cy.intercept('POST', '/getUserByPhoneNumber', { fixture: 'getUserByPhoneNumber.json' }).as('getUserByPhoneNumber');
 })
+
+Cypress.Commands.add("login", (phoneNumber,password) => {
+    cy.visit('http://localhost:4200');
+    cy.contains("Start Here").click();
+    cy.contains("Select country").click();
+    cy.contains("Tanzania").click();
+    cy.contains("Phone Number").click();
+    cy.get('input[data-placeholder="OXXXXXXXXX"]').type(phoneNumber)
+    cy.contains("Verify Phone Number").click();
+    cy.get('input[data-placeholder="Enter Your Password"]').type(password);
+    cy.contains("Login").click();
+})
+Cypress.Commands.add("clearStorage", () => {
+    indexedDB.deleteDatabase("group_saving_metadata");
+    indexedDB.deleteDatabase("firebaseLocalStorageDb");
+    localStorage.removeItem('group-saving-user');
+    localStorage.removeItem('group_savings_active_group');
+    localStorage.removeItem('group_savings_current_member');
+    localStorage.removeItem('group-saving-user');
+})
