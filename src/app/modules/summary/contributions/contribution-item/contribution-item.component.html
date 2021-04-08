@@ -1,0 +1,18 @@
+<div class="one-payment">
+  <div style="display: grid; align-content: center">
+    <div class="img-div">
+      <h1 style="font-size: 40px;" class="registration-title">{{payment.member?.name[0].toUpperCase()}}</h1>
+    </div>
+  </div>
+  <div class="name-area">
+    <h2 style="color: #ffffffb3;" class="mb-1 registration-title">{{payment.member.name}}</h2>
+    <h1 class="registration-title mb-0 amount-name-area">
+      {{payment.totalContributions | number}}
+      <span class="text-muted" style="font-size: 12px!important;">{{group?.currency}}</span>
+    </h1>
+    <p style="color: #ffffff6e" class="lead mb-1">
+      <small>{{ payment.date | date:'MMM yyyy' }}</small>
+      <span style="color: #ffffffbf; font-size: 11px"> ({{payment.description}})</span>
+    </p>
+  </div>
+</div>

@@ -3,6 +3,7 @@ import {select, Store} from '@ngrx/store';
 import {ApplicationState} from '../../../store';
 import {Observable} from 'rxjs';
 import * as paymentSelector from '../../../store/payment/payment.selectors';
+import * as newPaymentSelector from '../../../store/payment/new-payment.selector';
 import {Member} from '../../../store/member/member.model';
 import {Group} from '../../../store/group/group.model';
 import * as memberSelector from '../../../store/member/member.selectors';

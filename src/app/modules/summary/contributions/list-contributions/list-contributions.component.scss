@@ -1,45 +1,7 @@
 .payment-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
   padding-right: 15px;
-  .one-payment {
-    display: grid;
-    grid-template-columns: 90px auto 200px;
-    padding: 15px;
-    grid-gap: 20px;
-    border-bottom: 1px solid #ffffff29;
-    align-content: center;
-    //border-radius: 15px;
 
-    .name-area {
-      display: grid;
-      align-content: center;
-      justify-content: start;
-    }
-    .amount-area {
-      display: grid;
-      align-content: center;
-      justify-content: end;
-
-      h1 {
-        font-size: 38px;
-      }
-    }
-
-    .img-div {
-      background-color: #ffffff2e;
-      width: 85px;
-      height: 83px;
-      padding: 25px;
-      text-align: center;
-      border-radius: 42px;
-      vertical-align: middle;
-
-      img {
-        height: 50px;
-        width: 50px;
-      }
-    }
-  }
 }

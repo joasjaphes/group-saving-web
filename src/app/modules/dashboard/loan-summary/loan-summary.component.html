@@ -1,5 +1,5 @@
 <div class="row content-area ml-0">
-  <div class="col-sm-12 title-grid">
+  <div class="col-sm-12 pr-0 title-grid">
     <div style="display: grid;align-content: center">
 
       <h3 *ngIf="showTitle" class="registration-title mb-1">Active Loans</h3>
@@ -19,7 +19,7 @@
         </button>
       </mat-menu>
 
-      <button mat-button [matMenuTriggerFor]="fineTypeMenu" class="cursor">
+      <button style="padding-right: 0" mat-button [matMenuTriggerFor]="fineTypeMenu" class="cursor">
         <!--              <mat-icon>date_range</mat-icon> &nbsp;-->
         <span>{{typeName}}</span> &nbsp;
         <mat-icon style="color: white;">arrow_drop_down</mat-icon>
@@ -34,11 +34,13 @@
         <app-circular-progress [value]="(loanSummary$ | async).percent"></app-circular-progress>
       </div>
       <div style="display: grid; align-content: center">
-        <p style="font-size: 20px;" class="text-muted m-0">
-          Total Unpaid Loan
-          <span class="currency-area">({{group?.currency}})</span>
-        </p>
-        <h1 class="registration-title big-amount mb-0">{{(loanSummary$ | async).unpaid | number}}</h1>
+        <div class="zoom-on-hover cursor">
+          <p style="font-size: 20px;" class="text-muted m-0">
+            Total Unpaid Loan
+            <span class="currency-area">({{group?.currency}})</span>
+          </p>
+          <h1 class="registration-title big-amount mb-0">{{(loanSummary$ | async).unpaid | number}}</h1>
+        </div>
         <div class="inner1-grid">
           <div class="inner1-item-grid">
             <div class="img-area in"></div>

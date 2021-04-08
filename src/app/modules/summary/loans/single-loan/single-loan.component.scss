@@ -10,6 +10,19 @@
   grid-template-columns: auto auto;
   grid-gap: 30px;
 
+  .details-grid-item {
+    display: grid;
+    grid-template-columns: 10px auto;
+    grid-gap: 10px;
+
+    .shade {
+      background-color: #ffffff52;
+      width: 9px;
+      height: 40px;
+      margin-top: 6px;
+    }
+  }
+
   .registration-title {
     font-size: 25px!important;
   }

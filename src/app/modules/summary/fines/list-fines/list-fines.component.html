@@ -9,9 +9,15 @@
       </div>
     </div>
     <div class="name-area">
-      <p style="color: #ffffff6e" class="lead mb-1"><small>{{ contr.date | date:'MMM yyyy' }}</small></p>
       <h1 style="color: #ffffffb3;" class="mb-1 registration-title">{{contr.member.name}}</h1>
-      <p style="color: #ffffffbf; font-size: 11px" class="mb-0">{{contr.description}}</p>
+      <h1 class="registration-title mb-0 amount-title">
+        {{contr.totalFines | number}}
+        <span class="text-muted" style="font-size: 12px!important;">{{group?.currency}}</span>
+      </h1>
+      <p style="color: #ffffff6e" class="lead mb-1"><small>
+        {{ contr.date | date:'MMM yyyy' }}
+        <span style="color: #ffffffbf; font-size: 11px"> ({{contr.description}})</span>
+      </small></p>
 
     </div>
     <div class="amount-area">

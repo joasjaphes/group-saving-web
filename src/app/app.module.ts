@@ -85,6 +85,10 @@ import { UpdateMemberBasicsComponent } from './modules/members/update-member-bas
 import { UpdateMemberPhoneComponent } from './modules/members/update-member-phone/update-member-phone.component';
 import { UpdateMemberEmailComponent } from './modules/members/update-member-email/update-member-email.component';
 import { ExportDataComponent } from './modules/summary/export-data/export-data.component';
+import { LoanItemComponent } from './modules/summary/loans/loan-item/loan-item.component';
+import { ContributionItemComponent } from './modules/summary/contributions/contribution-item/contribution-item.component';
+import { FineItemComponent } from './modules/summary/fines/fine-item/fine-item.component';
+import { SummaryModelComponent } from './modules/dashboard/summary-model/summary-model.component';
 
 @NgModule({
   declarations: [
@@ -155,7 +159,11 @@ import { ExportDataComponent } from './modules/summary/export-data/export-data.c
     UpdateMemberBasicsComponent,
     UpdateMemberPhoneComponent,
     UpdateMemberEmailComponent,
-    ExportDataComponent
+    ExportDataComponent,
+    LoanItemComponent,
+    ContributionItemComponent,
+    FineItemComponent,
+    SummaryModelComponent
   ],
   imports: [
     BrowserModule,

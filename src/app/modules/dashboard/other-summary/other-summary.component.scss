@@ -48,21 +48,21 @@
 
 .some-grid {
   display: grid;
-  grid-template-columns: auto 100px;
+  grid-template-columns: 70px auto;
 
   .amount-area {
     p {
-      text-align: end;
+      text-align: start;
       color: #ffffff7a
     }
     h1 {
-      text-align: end;
+      text-align: start;
       color: #ffffffc7
     }
   }
 
   .image-area {
-    text-align: end;
+    text-align: start;
     img {
       height: 60px;
       width: 60px;

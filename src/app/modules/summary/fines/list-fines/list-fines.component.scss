@@ -1,6 +1,6 @@
 .payment-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
   padding-right: 15px;
   .one-payment {
@@ -8,7 +8,8 @@
     grid-template-columns: 90px auto 200px;
     padding: 15px;
     grid-gap: 20px;
-    border-bottom: 1px solid #ffffff29;
+    border: 1px solid #ffffff29;
+    border-radius: 15px;
     align-content: center;
     //border-radius: 15px;
 
@@ -16,6 +17,10 @@
       display: grid;
       align-content: center;
       justify-content: start;
+
+      .amount-title {
+        font-size: 34px;
+      }
     }
     .amount-area {
       display: grid;

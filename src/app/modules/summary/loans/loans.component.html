@@ -56,72 +56,15 @@
         </h2>
 
         <div class="loan-grid" *ngIf="(activeLoans$ | async)?.length > 0">
-          <div
-            (click)="viewItem(loan)"
-            title="Click to view more details"
-            class="single-loan content-area-shadow zoom-on-hover cursor"
-            [ngClass]="routeAnimationsElements"
+          <app-loan-item
             *ngFor="let loan of activeLoans$ | async | search:'memberName': memberSearch"
-          >
-            <div class="gauge">
-              <app-small-circular-progress
-                [value]="loan.percentPaid"
-                [titleText]="loan.member?.name[0].toUpperCase()"
-              ></app-small-circular-progress>
-            </div>
-            <div class="textArea">
-<!--              <div style="color: #ffffff6e; font-size: 13px">{{loan.loanType?.name}}</div>-->
-              <h1 style="color: #ffffffb3; font-size: 25px" class="mb-0 registration-title">{{ loan.member?.name }}</h1>
-<!--              <p class="mb-0" style="text-align: start;color: #ffffff6e;"><small>Remaining amount ({{(group$ | async)?.currency}})</small> </p>-->
-              <h1 class="registration-title mb-1" style="letter-spacing: 3px" *ngIf="loan.remaining_balance <= 0">{{ loan.total_amount_to_pay | number }}</h1>
-              <h1 class="registration-title mb-1" style="letter-spacing: 3px" *ngIf="loan.remaining_balance > 0">{{ loan.remaining_balance | number }}</h1>
-<!--              <div-->
-<!--                style="color: #ffffffb3; text-align: start; font-size: 13px"-->
-<!--                class="mb-1 registration-title"-->
-<!--              >-->
-<!--                To be paid by <b>{{loan.expected_date_of_payment | date:'MMM yyyy'}}</b>-->
-<!--              </div>-->
-              <div class="balances" style="display: grid; grid-template-columns: 100px 100px auto">
-                <div class="some-amount-grid">
-                  <div class="block-grid orange"></div>
-                  <div>
-                    <div style="color: #ffffff6e; font-size: 11px">Paid Amount</div>
-                    <div class="registration-title" style="color: #ffffffb3">{{loan.amount_paid_to_date | number}}</div>
-                  </div>
-                </div>
-                <div class="some-amount-grid">
-                  <div class="block-grid white"></div>
-                  <div>
-                    <div style="color: #ffffff6e; font-size: 11px">Loan Amount</div>
-                    <div class="registration-title" style="color: #ffffffb3">{{loan.total_amount_to_pay | number}}</div>
-                  </div>
-                </div>
-                <div class="some-amount-grid">
-                  <div class="block-grid transparent"></div>
-                  <div>
-                    <div style="color: #ffffff6e; font-size: 11px">Due Date</div>
-                    <div class="registration-title" style="color: #ffffffb3">{{loan.expected_date_of_payment | date: 'MMM yyyy'}}</div>
-                  </div>
-                </div>
-              </div>
-<!--              <div style="color: #ffffffbf; font-size: 11px" class="mb-0 registration-title">-->
-<!--                {{loan.amount_paid_to_date | number}} paid of {{ loan.total_amount_to_pay | number}}-->
-<!--              </div>-->
-            </div>
-
-<!--            <div class="amount-area">-->
-<!--              <p class="mb-0" style="text-align: end;color: #ffffff6e;"><small>Remaining amount ({{(group$ | async)?.currency}})</small> </p>-->
-<!--              <h1 class="registration-title mb-1" style="letter-spacing: 3px">{{ loan.remaining_balance | number }}</h1>-->
-<!--              <div-->
-<!--                style="color: #ffffffb3; text-align: end; font-size: 13px"-->
-<!--                class="mb-1 registration-title">-->
-<!--                To be paid by <b>{{loan.expected_date_of_payment | date:'MMM yyyy'}}</b>-->
-<!--              </div>-->
-<!--            </div>-->
-          </div>
+            [loan]="loan"
+            class="zoom-on-hover cursor"
+            [ngClass]="routeAnimationsElements"
+            (click)="viewItem(loan)"
+          ></app-loan-item>
         </div>
       </div>
-
 
     </div>
   </ng-container>
