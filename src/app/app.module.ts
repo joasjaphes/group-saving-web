@@ -84,6 +84,7 @@ import { DeleteExpenseComponent } from './modules/summary/expenses/delete-expens
 import { UpdateMemberBasicsComponent } from './modules/members/update-member-basics/update-member-basics.component';
 import { UpdateMemberPhoneComponent } from './modules/members/update-member-phone/update-member-phone.component';
 import { UpdateMemberEmailComponent } from './modules/members/update-member-email/update-member-email.component';
+
 import { ExportDataComponent } from './modules/summary/export-data/export-data.component';
 import { LoanItemComponent } from './modules/summary/loans/loan-item/loan-item.component';
 import { ContributionItemComponent } from './modules/summary/contributions/contribution-item/contribution-item.component';

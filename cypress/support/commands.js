@@ -24,9 +24,8 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 Cypress.Commands.add("loadfixtures", () => {
-    cy.intercept('POST', '/getUserByPhoneNumber', { fixture: 'getUserByPhoneNumber.json' }).as('getUserByPhoneNumber');
+    
 })
-
 Cypress.Commands.add("login", (phoneNumber,password) => {
     cy.visit('http://localhost:4200');
     cy.contains("Start Here").click();
