@@ -7,7 +7,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "concurrently \"firebase emulators:start --project group-saving-test\" \"ng serve --configuration test\" \"wait-on http-get://localhost:4200 && $(npm bin)/cypress run --headed\"",
+    "e2e": "concurrently --kill-others --success first \"firebase emulators:start --project group-saving-test\" \"ng serve --configuration test\" \"wait-on http-get://localhost:4200 && $(npm bin)/cypress run\"",
     "e2e:interactive": "concurrently \"npm run emulators\" \"ng serve --configuration test\" \"wait-on http-get://localhost:4200 && $(npm bin)/cypress open\"",
     "emulators": "firebase emulators:start --project group-saving-test",
     "test:emulate": "cross-env FIREBASE_AUTH_EMULATOR_HOST=\"localhost:$(cat firebase.json | jq .emulators.auth.port)\" FIREBASE_DATABASE_EMULATOR_HOST=\"localhost:$(cat firebase.json | jq .emulators.database.port)\" FIRESTORE_EMULATOR_HOST=\"localhost:$(cat firebase.json | jq .emulators.firestore.port)\" yarn test:open",

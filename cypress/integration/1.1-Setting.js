@@ -118,7 +118,6 @@ context('SETTINGS', () => {
       cy.get('mat-dialog-container button').contains("Add").click();
       cy.get('button').contains("Save").click();
       cy.get('button').contains("Yes").click();
-      //cy.contains("Close").click();
     })
 
     it('ADDING Leadership', () => {
@@ -127,7 +126,7 @@ context('SETTINGS', () => {
       cy.get("mat-select").eq(0).click();
       cy.get("mat-option").contains("Arnold").click();
       cy.get("mat-select").eq(1).click();
-      cy.get("mat-option").contains("Edith").click();
+      cy.get("mat-option").contains("Edith Minde").click();
       cy.get("mat-select").eq(2).click();
       cy.get("mat-option").contains("Vincent").click();
       cy.get('button').contains("Save").click();
