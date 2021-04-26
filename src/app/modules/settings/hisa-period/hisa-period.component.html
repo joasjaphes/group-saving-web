@@ -9,19 +9,13 @@
       </mat-form-field>
     </div>
     <div class="col-sm-12">
-      <mat-form-field appearance="outline">
-        <mat-label>Date of distributing share</mat-label>
-        <input [min]="currentStartDate" readonly matInput [matDatepicker]="endingDate1" [(ngModel)]="distributionDate"/>
-        <mat-datepicker-toggle matSuffix [for]="endingDate1"></mat-datepicker-toggle>
-        <mat-datepicker #endingDate1></mat-datepicker>
-      </mat-form-field>
+      <mat-form-field appearance="outline">zs</mat-form-field>zz
     </div>
 
     <div class="col-sm-12 mt-3" @fadeIn>
       <app-save-area
         [confirmFirst]="true"
-        [saveDisabled]="!currentStartDate || !distributionDate"
-        confirmText="Current share period will start from  {{currentStartDate | date}} to {{distributionDate | date}}, confirm"
+         confirmText="Current share period will start from  {{currentStartDate | date}} to {{distributionDate | date}}, confirm"
         (cancel)="onClose()"
         (save)="save()"
         [savingData]="loading"

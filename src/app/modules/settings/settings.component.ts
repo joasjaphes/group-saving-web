@@ -12,6 +12,7 @@ import {selectNeedBalance} from '../../store/group/group.selectors';
 import {FineType} from '../../store/fine-type/fine-type.model';
 import * as fineTypeSelector from '../../store/fine-type/fine-type.selectors';
 import {first} from 'rxjs/operators';
+import {Member} from '../../store/member/member.model';
 
 @Component({
   selector: 'app-settings',
@@ -65,6 +66,12 @@ export class SettingsComponent implements OnInit {
       image: 'money.png'
     },
     {
+      name: 'Member Permissions',
+      route: '',
+      description: 'Manage which member will manage meetings, contributions and other group settings',
+      image: 'users-settings.png'
+    },
+    {
       name: 'Add Previous Data',
       route: ['', 'settings', 'add-previous-data'],
       description: 'Add existing group data that are missing and cannot be added one by one',
@@ -73,6 +80,7 @@ export class SettingsComponent implements OnInit {
   ];
   group$: Observable<Group>;
   memberName$: Observable<string>;
+  members$: Observable<Member[]>;
   progress$: Observable<any>;
   progressDetails$: Observable<GroupProgress>;
   contributionTypeNeedBalance$: Observable<ContributionType[]>;
@@ -88,6 +96,7 @@ export class SettingsComponent implements OnInit {
     this.progress$ = this.store.pipe(select(groupSelector.selectProgressPercent));
     this.progressDetails$ = this.store.pipe(select(groupSelector.selectProgress));
     this.memberName$ = this.store.pipe(select(memberSelector.selectFirstNameOnly));
+    this.members$ = this.store.pipe(select(memberSelector.selectAll));
     this.contributionTypeNeedBalance$ = this.store.pipe(select(selectNeedBalance));
     this.fineTypes$ = this.store.pipe(select(fineTypeSelector.selectAll));
   }
@@ -134,6 +143,11 @@ export class SettingsComponent implements OnInit {
       this.panelTitle = 'Set Share Timeline';
       this.viewDetails = true;
       this.viewType = 'shareTimeline';
+    }
+    if (clickedMenu.name === 'Member Permissions') {
+      this.panelTitle = 'Set Key Members Permissions';
+      this.viewDetails = true;
+      this.viewType = 'memberPermission';
     }
   }
 

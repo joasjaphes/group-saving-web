@@ -59,5 +59,12 @@
       [group]="group$ | async"
       (closeForm)="closePanel()"
     ></app-hisa-period>
+
+    <app-members-permission
+      *ngIf="viewType == 'memberPermission'"
+      [group]="group$ | async"
+      [members]="members$ | async"
+      (closeForm)="closePanel()"
+    ></app-members-permission>
   </ng-container>
 </app-shared-layout>

@@ -60,6 +60,9 @@ export interface Group {
   start_month: string;
   start_year: string;
   track_contribution_period: boolean;
+  meeting_editors?: string[];
+  contribution_editors?: string[];
+  settings_editors?: string[];
   next_meeting?: {
     meeting_date: any;
     meeting_place: string;

@@ -89,6 +89,7 @@ import { LoanItemComponent } from './modules/summary/loans/loan-item/loan-item.c
 import { ContributionItemComponent } from './modules/summary/contributions/contribution-item/contribution-item.component';
 import { FineItemComponent } from './modules/summary/fines/fine-item/fine-item.component';
 import { SummaryModelComponent } from './modules/dashboard/summary-model/summary-model.component';
+import { MembersPermissionComponent } from './modules/settings/members-permission/members-permission.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -174,7 +175,8 @@ const firebaseConfig = {
     LoanItemComponent,
     ContributionItemComponent,
     FineItemComponent,
-    SummaryModelComponent
+    SummaryModelComponent,
+    MembersPermissionComponent
   ],
   imports: [
     BrowserModule,
