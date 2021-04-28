@@ -1,0 +1,51 @@
+<div
+  appClickOutside
+  (clickOutside)="isOpen = false"
+  class="main-div cursor"
+>
+  <div
+    class="period-title-grid open-ou cursor"
+    (click)="isOpen = !isOpen"
+    title="Click to select one or more period"
+  >
+    <div style="text-align: start">
+      <mat-icon>access_time</mat-icon>
+    </div>
+    <div  style="text-align: center">
+      <span *ngIf="selectedPeriod">{{ selectedPeriod }}</span>
+      <span *ngIf="!selectedPeriod">{{ placeholder }}</span>
+    </div>
+    <div style="text-align: end">
+      <mat-icon>keyboard_arrow_down</mat-icon>
+    </div>
+  </div>
+
+  <div [ngClass]="{ hideData: !isOpen }" class="dropdownField">
+    <div class="year-area">
+      <div (click)="addCurrentYear()"  class="arrows" style="text-align: start">
+        << Prev
+      </div>
+      <div  style="text-align: center">
+<!--        <button mat-button [matMenuTriggerFor]="menu">-->
+<!--          {{currentYear}}-->
+<!--          <mat-icon style="color: white;">arrow_drop_down</mat-icon>-->
+<!--        </button>-->
+<!--        <mat-menu #menu="matMenu">-->
+<!--          <button (click)="selectYear(year, $event)" mat-menu-item *ngFor="let year of years">{{year}}</button>-->
+<!--        </mat-menu>-->
+        {{currentYear}}
+      </div>
+      <div  class="arrows"  (click)="reduceCurrentYear()"  style="text-align: end">Next >></div>
+    </div>
+    <div class="month-area">
+      <mat-list>
+        <mat-list-item
+          class="cursor zoom-on-hover"
+          *ngFor="let month of months"
+          (click)="setSelectedPeriod(month)"
+        > {{month.name}} {{currentYear}}
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+</div>

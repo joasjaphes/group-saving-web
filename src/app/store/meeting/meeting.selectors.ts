@@ -24,15 +24,23 @@ export const selected = createSelector(
 export const selectDetailed = createSelector(
   selectAll,
   fromMember.selected,
-  (allItems, member) => allItems.map(item => {
-    const memberAttended = member ? item.attendance.find(i => i.member_id === member.id) : null;
-    const attending = item.attendance.length < 4 ? item.attendance : item.attendance.slice(0, 3);
+  fromMember.selectEntities,
+  (allItems, member, memberEntities) => allItems.map(item => {
+    const attendanceDetailed = item.attendance.filter(i => !!memberEntities[i]).map(i => {
+      const memberData = memberEntities[i];
+      return {
+        member_id: memberData.id,
+        name: memberData.name,
+      };
+    });
+    const memberAttended = member ? attendanceDetailed.find(i => i.member_id === member.id) : null;
+    const attending = attendanceDetailed.length < 5 ? attendanceDetailed : attendanceDetailed.slice(0, 4);
     let membersNames = attending
       .filter(i => member && i.member_id !== member.id)
-      .map(i => i.member_name)
+      .map(i => i.name.split(' ')[0])
       .join(', ');
-    if (item.attendance.length > 3) {
-      const remainingMembers = item.attendance.length - 3;
+    if (item.attendance.length > 5) {
+      const remainingMembers = item.attendance.length - 5;
       membersNames += ' and ' + remainingMembers + ' more';
     }
     return {

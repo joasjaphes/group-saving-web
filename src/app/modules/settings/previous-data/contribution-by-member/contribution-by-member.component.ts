@@ -146,6 +146,7 @@ export class ContributionByMemberComponent implements OnInit {
         date: this.commonService.formatDate(i.date),
         year: i.year,
         month: i.month,
+        period: `${i.year}${i.month}`,
         referenceNumber: '',
         paymentMode: '',
       };

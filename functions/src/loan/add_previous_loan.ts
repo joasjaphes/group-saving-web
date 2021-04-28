@@ -1,6 +1,8 @@
 import * as functions from 'firebase-functions';
 import * as helpers from '../helpers';
 import * as admin from 'firebase-admin';
+import {LoanModel, SingleLoanModel} from '../data-models/loan.model';
+import {PaymentModel} from '../data-models/payment.model';
 
 const cors = require('cors')({origin: true});
 
@@ -34,9 +36,32 @@ export const assignPastActiveLoanToMember = functions.https.onRequest((request, 
         const loanId = data.loanId ? data.loanId : helpers.makeid();
         const loanTypeData: any = groupData.loanTypes[data.loanUsed];
         const loanDetails = prepareLoan(loanId, data, loanTypeData, last_update);
+        const payments: { [id: string]: PaymentModel } = {};
+        if (loanDetails.payments.length > 0) {
+          for (const payment of loanDetails.payments) {
+            let existingPaymentData: PaymentModel = payments[payment.period];
+            if (!existingPaymentData) {
+              const paymentDocRef = admin.firestore().doc(`groups/${groupId}/payments/period_${payment.period}`);
+              const paymentDoc = await transaction.get(paymentDocRef);
+              existingPaymentData = paymentDoc.exists ? paymentDoc.data() as PaymentModel : helpers.prepareEmptyPayment(payment, groupData);
+            }
+            payments[memberData.period] = helpers.preparePayment({
+              ...payment,
+              memberId: data.memberId,
+              fines: {},
+              contributions: {},
+              loans: {
+                [loanDetails.id]: payment.amount,
+              },
+            }, groupData, existingPaymentData);
+          }
+        }
         if (parseInt(data.remaining_balance + '', 10) === 0) {
-          const loanRef = admin.firestore().doc(`groups/${data.groupId}/loans/${loanDetails.id}`);
-          transaction.set(loanRef, {...loanDetails, last_update }, {merge: true});
+          const loanRef = admin.firestore().doc(`groups/${data.groupId}/loans/member_${data.memberId}`);
+          const loanDoc = await transaction.get(loanRef);
+          const existingLoanData = loanDoc.exists ? loanDoc.data() as LoanModel : helpers.prepareEmptyLoan(data, groupData);
+          existingLoanData.loans[loanDetails.id] = loanDetails;
+          transaction.set(loanRef, {...existingLoanData, last_update }, {merge: true});
           transaction.set(otherUpdateAtRef, {  loan_updated: last_update }, {merge: true});
           if (memberData.active_loans && memberData.active_loans[loanDetails.id]) {
             memberData.active_loans = Object.keys(memberData.active_loans).reduce((object: any, key: string) => {
@@ -55,10 +80,18 @@ export const assignPastActiveLoanToMember = functions.https.onRequest((request, 
             memberData.active_loans = {};
             memberData.active_loans[loanDetails.id] = loanDetails;
           }
-          console.log('hapa napo nafika mwee...');
           transaction.update(memberRef, {...memberData, last_update});
           transaction.set(otherUpdateAtRef, {  member_updated: last_update }, {merge: true});
         }
+
+        if (loanDetails.payments.length > 0) {
+          for (const key of Object.keys(payments)) {
+            const paymentRef = admin.firestore().doc(`groups/${data.groupId}/payments/${key}`);
+            transaction.set(paymentRef, {...payments[key], last_update});
+          }
+          transaction.set(otherUpdateAtRef, {payments_updated: last_update}, {merge: true});
+        }
+
       });
       response.status(200).send({data: 'Success'});
     } catch (e) {
@@ -70,8 +103,8 @@ export const assignPastActiveLoanToMember = functions.https.onRequest((request, 
 
 });
 
-function prepareLoan(loanId: string, data: any, currentLoanType: any, last_update: any) {
-  const loan: any = {
+function prepareLoan(loanId: string, data: any, currentLoanType: any, last_update: any): SingleLoanModel {
+  const loan: SingleLoanModel = {
     id: loanId,
     group_id: data.groupId,
     last_update,
@@ -86,9 +119,9 @@ function prepareLoan(loanId: string, data: any, currentLoanType: any, last_updat
     date: helpers.formatDate(data.date),
     expected_date_of_payment: helpers.formatDate(data.end_date),
     start_month: helpers.getMonth(data.date),
-    start_year: helpers.getYear(data.date),
+    start_year: helpers.getYear(data.date) + '',
     end_month: helpers.getMonth(data.end_date),
-    end_year: helpers.getYear(data.end_date),
+    end_year: helpers.getYear(data.end_date) + '',
     account_used: currentLoanType.contribution_type_id,
     total_profit_contribution: data.total_profit_contribution,
     remaining_balance: data.remaining_balance || 0,
@@ -99,13 +132,15 @@ function prepareLoan(loanId: string, data: any, currentLoanType: any, last_updat
     loan.payments = data.payments.map(
       (payment: any) => ({
         id: payment.id,
-        period: payment.year + '' + payment.month,
-        month: payment.month,
+        month: payment.month ?? '',
         year: payment.year,
+        week: payment.week ?? '',
+        period: payment.period,
         amount: payment.amount,
         paid_on_time: true,
         date_of_payment: helpers.formatDate(payment.date),
-        member_id: data.memberId,
+        previous_balance: payment.previous_balance,
+        new_balance: payment.new_balance,
         from_previous_loan: true,
       })
     );

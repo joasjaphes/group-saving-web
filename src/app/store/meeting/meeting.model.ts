@@ -10,10 +10,7 @@ export interface Meeting {
   year: string;
   excuses: any;
   place: string;
-  attendance: {
-    member_id: string;
-    member_name: string;
-  }[];
+  attendance: string[];
   members?: string;
   memberAttended?: any;
   place_location_url: string;

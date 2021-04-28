@@ -105,6 +105,7 @@ export class ContributionByPeriodComponent implements OnInit {
         date: this.commonService.formatDate(new Date(`${this.year}-${this.month}-01`)),
         year: this.year,
         month: this.month,
+        period: `${this.year}${this.month}`,
         referenceNumber: '',
         paymentMode: '',
       };

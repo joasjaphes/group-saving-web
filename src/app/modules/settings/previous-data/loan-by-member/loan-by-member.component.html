@@ -7,29 +7,29 @@
       </h3>
       <div *ngFor="let loan of memberLoans$ | async" class="item-grid"
            style="margin-bottom: 20px;padding-bottom: 10px; border-bottom: 1px solid white">
-       <div>
-         <h3 class="registration-title mb-1" *ngIf="loan.remaining_balance > 0">
-           <small class="text-muted">{{group.currency}}</small>
-           {{loan.remaining_balance | number}}
-         </h3>
-         <h3 class="registration-title mb-1" *ngIf="loan.remaining_balance <= 0">
-           Paid
-         </h3>
-         <p class="secondary-text mb-0">
-           <b>{{loan.amount_paid_to_date | number}}</b> Paid of <b>{{loan.total_amount_to_pay | number}}</b>
-         </p>
-         <p class="secondary-text">
-           <small>
-             <b>{{loan.duration }}</b> {{ loan.durationName}}
-             ({{loan.date | date:'MMM YYYY'}} to {{loan.expected_date_of_payment | date| date:'MMM YYYY'}})
-           </small>
-         </p>
-       </div>
-       <div>
-         <button mat-icon-button (click)="editLoan(loan)">
-           <mat-icon style="color: white">edit</mat-icon>
-         </button>
-       </div>
+        <div>
+          <h3 class="registration-title mb-1" *ngIf="loan.remaining_balance > 0">
+            <small class="text-muted">{{group.currency}}</small>
+            {{loan.remaining_balance | number}}
+          </h3>
+          <h3 class="registration-title mb-1" *ngIf="loan.remaining_balance <= 0">
+            Paid
+          </h3>
+          <p class="secondary-text mb-0">
+            <b>{{loan.amount_paid_to_date | number}}</b> Paid of <b>{{loan.total_amount_to_pay | number}}</b>
+          </p>
+          <p class="secondary-text">
+            <small>
+              <b>{{loan.duration }}</b> {{ loan.durationName}}
+              ({{loan.date | date:'MMM YYYY'}} to {{loan.expected_date_of_payment | date| date:'MMM YYYY'}})
+            </small>
+          </p>
+        </div>
+        <div>
+          <button mat-icon-button (click)="editLoan(loan)">
+            <mat-icon style="color: white">edit</mat-icon>
+          </button>
+        </div>
 
       </div>
     </div>
@@ -65,14 +65,14 @@
             <mat-datepicker #startingDate></mat-datepicker>
           </mat-form-field>
         </div>
-        <div class="col-sm-6" *ngIf="contributionDate">
+        <div class="col-sm-6" *ngIf="contributionDate" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Amount Loaned <span *ngIf="loanAmount">({{loanAmount | number}})</span></mat-label>
             <input type="number" (input)="calculateLoan()" matInput [(ngModel)]="loanAmount"
                    placeholder="Amount Loaned">
           </mat-form-field>
         </div>
-        <div class="col-sm-6" *ngIf="loanAmount">
+        <div class="col-sm-6" *ngIf="loanAmount" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Loan duration ({{duration}} {{durationTYpe}})</mat-label>
             <input type="number" (input)="calculateLoan()" matInput [(ngModel)]="duration"
@@ -87,20 +87,22 @@
             <mat-datepicker #endingDate></mat-datepicker>
           </mat-form-field>
         </div>
-        <div [ngClass]="currentLoanType && currentLoanType.is_insured ? 'col-sm-6' : 'col-sm-12'" class="col-sm-6" *ngIf="duration">
+        <div [ngClass]="currentLoanType && currentLoanType.is_insured ? 'col-sm-6' : 'col-sm-12'" class="col-sm-6"
+             *ngIf="duration" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Amount to return <span *ngIf="returnAmount">({{returnAmount | number}})</span></mat-label>
-            <input (input)="calculateTotal()" type="number" matInput [(ngModel)]="returnAmount" placeholder="Amount to return">
+            <input (input)="calculateTotal()" type="number" matInput [(ngModel)]="returnAmount"
+                   placeholder="Amount to return">
           </mat-form-field>
         </div>
-<!--        <div class="col-sm-6" *ngIf="returnAmount">-->
-<!--          <mat-form-field appearance="outline">-->
-<!--            <mat-label>Amount returned to date <span *ngIf="returnedAmount">({{returnedAmount | number}})</span>-->
-<!--            </mat-label>-->
-<!--            <input (input)="setReturnedAmount($event)" type="number" matInput [(ngModel)]="returnedAmount"-->
-<!--                   placeholder="Amount returned to date">-->
-<!--          </mat-form-field>-->
-<!--        </div>-->
+        <!--        <div class="col-sm-6" *ngIf="returnAmount">-->
+        <!--          <mat-form-field appearance="outline">-->
+        <!--            <mat-label>Amount returned to date <span *ngIf="returnedAmount">({{returnedAmount | number}})</span>-->
+        <!--            </mat-label>-->
+        <!--            <input (input)="setReturnedAmount($event)" type="number" matInput [(ngModel)]="returnedAmount"-->
+        <!--                   placeholder="Amount returned to date">-->
+        <!--          </mat-form-field>-->
+        <!--        </div>-->
         <div class="col-sm-6" *ngIf="currentLoanType && currentLoanType.is_insured && returnAmount" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Insurance Amount <span *ngIf="insuranceAmount">({{insuranceAmount | number}})</span></mat-label>
@@ -108,50 +110,30 @@
           </mat-form-field>
         </div>
 
-<!--        <div class="col-sm-6" *ngIf="returnedAmount" @fadeIn>-->
-<!--          <mat-form-field appearance="outline">-->
-<!--            <mat-label>Last return Date</mat-label>-->
-<!--            <input readonly matInput [matDatepicker]="lastDate" [(ngModel)]="lastReturnDate"/>-->
-<!--            <mat-datepicker-toggle matSuffix [for]="lastDate"></mat-datepicker-toggle>-->
-<!--            <mat-datepicker #lastDate></mat-datepicker>-->
-<!--          </mat-form-field>-->
-<!--        </div>-->
+        <!--        <div class="col-sm-6" *ngIf="returnedAmount" @fadeIn>-->
+        <!--          <mat-form-field appearance="outline">-->
+        <!--            <mat-label>Last return Date</mat-label>-->
+        <!--            <input readonly matInput [matDatepicker]="lastDate" [(ngModel)]="lastReturnDate"/>-->
+        <!--            <mat-datepicker-toggle matSuffix [for]="lastDate"></mat-datepicker-toggle>-->
+        <!--            <mat-datepicker #lastDate></mat-datepicker>-->
+        <!--          </mat-form-field>-->
+        <!--        </div>-->
 
         <div class="col-sm-12" *ngIf="returnAmount" @fadeIn>
           <p class="registration-title">Payments</p>
           <table class="table table-bordered entry-table">
             <tr>
-              <th *ngIf="group.track_contribution_period">Month</th>
-              <th *ngIf="group.track_contribution_period">Year</th>
+              <th *ngIf="group.track_contribution_period">Period</th>
               <th *ngIf="!group.track_contribution_period">Date</th>
               <th>Amount</th>
               <td style="width: 50px"></td>
             </tr>
             <tr *ngFor="let payment of payments">
               <td *ngIf="group.track_contribution_period">
-                <mat-form-field appearance="outline">
-                  <mat-select [(ngModel)]="payment.year">
-                    <mat-option *ngFor="let y of years" [value]="y">{{y}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </td>
-              <td *ngIf="group.track_contribution_period">
-                <mat-form-field appearance="outline">
-                  <mat-select [(ngModel)]="payment.month">
-                    <mat-option value="01">Jan {{payment.year}}</mat-option>
-                    <mat-option value="02">Feb {{payment.year}}</mat-option>
-                    <mat-option value="03">Mar {{payment.year}}</mat-option>
-                    <mat-option value="04">Apr {{payment.year}}</mat-option>
-                    <mat-option value="05">May {{payment.year}}</mat-option>
-                    <mat-option value="06">Jun {{payment.year}}</mat-option>
-                    <mat-option value="07">Jul {{payment.year}}</mat-option>
-                    <mat-option value="08">Aug {{payment.year}}</mat-option>
-                    <mat-option value="09">Sep {{payment.year}}</mat-option>
-                    <mat-option value="10">Oct {{payment.year}}</mat-option>
-                    <mat-option value="11">Nov {{payment.year}}</mat-option>
-                    <mat-option value="12">Dec {{payment.year}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
+                <app-period-selector
+                  [currentMonth]="payment.month"
+                  [currentYear]="payment.year"
+                ></app-period-selector>
               </td>
               <th *ngIf="!group.track_contribution_period">
                 {{payment.date | date}}
@@ -165,6 +147,11 @@
                     (input)="calculateTotal()"
                   >
                 </mat-form-field>
+                <p class="mb-0">
+                  <small class="text-muted">
+                    From: <b>{{payment.previous_balance | number}}</b> to <b>{{payment.new_balance | number}}</b>
+                  </small>
+                </p>
               </td>
 
               <td>
@@ -176,29 +163,10 @@
 
             <tr>
               <td *ngIf="group.track_contribution_period">
-                <mat-form-field appearance="outline">
-                  <mat-select placeholder="Contribution Year" [(ngModel)]="year">
-                    <mat-option *ngFor="let y of years" [value]="y">{{y}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </td>
-              <td *ngIf="group.track_contribution_period">
-                <mat-form-field appearance="outline" @fadeIn *ngIf="year">
-                  <mat-select placeholder="Contribution Month" [(ngModel)]="month" (selectionChange)="setNewMonth($event)">
-                    <mat-option value="01">Jan {{year}}</mat-option>
-                    <mat-option value="02">Feb {{year}}</mat-option>
-                    <mat-option value="03">Mar {{year}}</mat-option>
-                    <mat-option value="04">Apr {{year}}</mat-option>
-                    <mat-option value="05">May {{year}}</mat-option>
-                    <mat-option value="06">Jun {{year}}</mat-option>
-                    <mat-option value="07">Jul {{year}}</mat-option>
-                    <mat-option value="08">Aug {{year}}</mat-option>
-                    <mat-option value="09">Sep {{year}}</mat-option>
-                    <mat-option value="10">Oct {{year}}</mat-option>
-                    <mat-option value="11">Nov {{year}}</mat-option>
-                    <mat-option value="12">Dec {{year}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
+                <app-period-selector
+                  (selected)="setMonthAndYear($event)"
+                  [clearAfterSelection]="true"
+                ></app-period-selector>
               </td>
               <td *ngIf="!group.track_contribution_period">
                 <mat-form-field appearance="outline">
@@ -219,7 +187,7 @@
             </tr>
 
             <tr>
-              <th style="text-align: right" [attr.colspan]="group.track_contribution_period ? 2 : 1">
+              <th style="text-align: right">
                 Total Paid
               </th>
               <th colspan="2">{{returnedAmount | number}}</th>

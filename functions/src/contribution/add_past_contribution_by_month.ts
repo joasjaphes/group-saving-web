@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as helpers from '../helpers';
 import * as admin from 'firebase-admin';
+import {PaymentModel} from '../data-models/payment.model';
 
 const cors = require('cors')({origin: true});
 
@@ -31,12 +32,21 @@ export const addPastContributions = functions.https.onRequest((request, response
       await admin.firestore().runTransaction(async (transaction) => {
         const groupDoc = await transaction.get(groupDocRef);
         const groupData: any = {...groupDoc.data()};
-        data.membersData.forEach((memberData: any) => {
-          const paymentRef = admin.firestore().doc(`groups/${data.groupId}/payments/${helpers.makeid()}`);
-          const paymentData = preparePayment(memberData, groupData);
-          transaction.set(paymentRef, {...paymentData, last_update});
-        });
-        transaction.set(otherUpdateAtRef, {payments_updated: last_update }, {merge: true});
+        const payments: { [id: string]: PaymentModel } = {};
+        for (const memberData of data.membersData) {
+          let existingPaymentData: PaymentModel = payments[memberData.period];
+          if (!existingPaymentData) {
+            const paymentDocRef = admin.firestore().doc(`groups/${groupId}/payments/period_${memberData.period}`);
+            const paymentDoc = await transaction.get(paymentDocRef);
+            existingPaymentData = paymentDoc.exists ? paymentDoc.data() as PaymentModel : helpers.prepareEmptyPayment(memberData, groupData);
+          }
+          payments[memberData.period] = helpers.preparePayment(memberData, groupData, existingPaymentData);
+        }
+        for (const key of Object.keys(payments)) {
+          const paymentRef = admin.firestore().doc(`groups/${data.groupId}/payments/${key}`);
+          transaction.set(paymentRef, {...payments[key], last_update});
+        }
+        transaction.set(otherUpdateAtRef, {payments_updated: last_update}, {merge: true});
       });
       response.status(200).send({data: 'Success'});
     } catch (e) {
@@ -48,12 +58,3 @@ export const addPastContributions = functions.https.onRequest((request, response
 
 });
 
-function preparePayment(data: any, group: any) {
-  return {
-    id: helpers.makeid(),
-    ...data,
-    year: group.track_contribution_period ? data.year : helpers.getYear(data.date),
-    month: group.track_contribution_period ? data.month : helpers.getMonth(data.date),
-    date: helpers.formatDate(data.date),
-  };
-}

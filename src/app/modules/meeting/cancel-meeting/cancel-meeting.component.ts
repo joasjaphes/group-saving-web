@@ -4,11 +4,13 @@ import {Meeting} from '../../../store/meeting/meeting.model';
 import {Member} from '../../../store/member/member.model';
 import {CommonService} from '../../../services/common.service';
 import {FunctionsService} from '../../../services/functions.service';
+import {fadeIn} from '../../../shared/animations/router-animation';
 
 @Component({
   selector: 'app-cancel-meeting',
   templateUrl: './cancel-meeting.component.html',
-  styleUrls: ['./cancel-meeting.component.scss']
+  styleUrls: ['./cancel-meeting.component.scss'],
+  animations: [fadeIn],
 })
 export class CancelMeetingComponent implements OnInit {
 

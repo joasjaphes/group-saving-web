@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Group} from '../../../store/group/group.model';
 import {Member} from '../../../store/member/member.model';
 import {FineType} from '../../../store/fine-type/fine-type.model';
@@ -121,6 +120,7 @@ export class AddContributionComponent implements OnInit {
       date: this.commonService.formatDate(this.contributionDate),
       year: this.year,
       month: this.month,
+      period: `${this.year}${this.month}`,
       referenceNumber: this.referenceNumber,
       paymentMode: this.paymentMode,
     };

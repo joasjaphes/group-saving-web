@@ -2,6 +2,7 @@ import {Member} from '../member/member.model';
 
 export interface Payment {
   member?: Member;
+  members?: any;
   id: string;
   groupId: string;
   description?: string;
@@ -12,6 +13,7 @@ export interface Payment {
   month: string;
   week: string;
   year: string;
+  period: string;
   memberId: string;
   paymentMode: string;
   paymentType: string;

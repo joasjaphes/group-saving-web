@@ -1,6 +1,8 @@
 import * as functions from 'firebase-functions';
 import * as helpers from '../helpers';
 import * as admin from 'firebase-admin';
+import {PaymentModel} from '../data-models/payment.model';
+import {LoanModel, SingleLoanModel} from '../data-models/loan.model';
 
 const cors = require('cors')({origin: true});
 
@@ -77,9 +79,10 @@ export const addNewContribution = functions.https.onRequest((request, response) 
           }
         }
 
+        // Update the current active loans for a member and remove from list if loan is completed
         const current_active_loans = memberData.active_loans ? Object.keys(memberData.active_loans).map(key => memberData.active_loans[key]) : [];
         const updated_active_loans = prepareLoanPayment(current_active_loans, data, loanConfigs, fineTypes, groupData);
-        const completed_loans: any[] = [];
+        const completed_loans: SingleLoanModel[] = [];
         const done_paying = updated_active_loans.done_paying;
         let active_loans = {...updated_active_loans.active_loans};
         if ( done_paying.length > 0 ) {
@@ -95,19 +98,27 @@ export const addNewContribution = functions.https.onRequest((request, response) 
             }
           });
         }
+        memberData.active_loans = active_loans;
 
+        // Add list of completed loans to the members data
+        const loanRef = admin.firestore().doc(`groups/${groupId}/loans/member_${data.memberId}`);
+        const loanDoc = await transaction.get(loanRef);
+        const existingLoanData = loanDoc.exists ? loanDoc.data() as LoanModel : helpers.prepareEmptyLoan(data, groupData);
         completed_loans.forEach((loan) => {
           done_paying_loans.push(loan);
-          const loanRef = admin.firestore().doc(`groups/${data.groupId}/loans/${loan.id}`);
-          transaction.set(loanRef, {...loan, last_update }, {merge: true});
+          existingLoanData.loans[loan.id] = loan;
         });
-        memberData.active_loans = active_loans;
-        const paymentRef = admin.firestore().doc(`groups/${data.groupId}/payments/${helpers.makeid()}`);
-        const paymentData = preparePayment(data, groupData);
+
+        // Prepare payment data and merge them into a correct period
+        const paymentDocRef = admin.firestore().doc(`groups/${data.groupId}/payments/period_${data.period}`);
+        const paymentDoc = await transaction.get(paymentDocRef);
+        const existingPaymentData = paymentDoc.exists ? paymentDoc.data() as PaymentModel : helpers.prepareEmptyPayment(data, groupData);
+        const paymentData = helpers.preparePayment(data, groupData, existingPaymentData, false);
         transaction.update(groupDocRef, { ...groupData , last_update});
         transaction.update(memberRef, {...memberData, last_update});
-        transaction.set(paymentRef, {...paymentData, last_update});
+        transaction.set(paymentDocRef, {...paymentData, last_update}, {merge: true});
         if (completed_loans.length > 0) {
+          transaction.set(loanRef, {...existingLoanData, last_update }, {merge: true});
           transaction.set(otherUpdateAtRef, {
             loan_updated: last_update,
             group_updated: last_update,
@@ -133,45 +144,6 @@ export const addNewContribution = functions.https.onRequest((request, response) 
 
 });
 
-function preparePayment(data: any, group: any) {
-  return {
-    id: helpers.makeid(),
-    ...data,
-    year: group.track_contribution_period ? data.year : helpers.getYear(data.date),
-    month: group.track_contribution_period ? data.month : helpers.getMonth(data.date),
-    date: helpers.formatDate(data.date),
-  };
-}
-
-// function calculateTotal(data: any) {
-//   let total  = 0;
-//   for (const key in data.loans) {
-//     if (data.loans.hasOwnProperty(key)) {
-//       const amount = data.loans[key] + '';
-//       if (!!amount) {
-//         total = parseFloat(total + '') + parseFloat(data.loans[key] + '');
-//       }
-//     }
-//   }
-//   for (const key in data.fines) {
-//     if (data.fines.hasOwnProperty(key)) {
-//       const amount = data.fines[key] + '';
-//       if (!!amount) {
-//         total = parseFloat(total + '') + parseFloat(data.fines[key] + '');
-//       }
-//     }
-//   }
-//   for (const key in data.contributions) {
-//     if (data.contributions.hasOwnProperty(key)) {
-//       const amount = data.contributions[key] + '';
-//       if (!!amount) {
-//         total = parseFloat(total + '') + parseFloat(data.contributions[key] + '');
-//       }
-//     }
-//   }
-//   return total;
-// }
-
 function prepareLoanFines(data: any, fineConfig: any, loanId: string, group: any) {
   const finesArr: any = {};
   const fines = data.fines;
@@ -196,9 +168,14 @@ function prepareLoanFines(data: any, fineConfig: any, loanId: string, group: any
   return finesArr;
 }
 
-function prepareLoanPayment(member_active_loans: any, data: any, loanConfigs: any, fineConfig: any, group: any) {
+function prepareLoanPayment(
+  member_active_loans: any,
+  data: any,
+  loanConfigs: any,
+  fineConfig: any,
+  group: any): { active_loans: { [id: string]: SingleLoanModel }, done_paying: string[] } {
   const active_loans: any = {};
-  const loanreturn = data.loans;
+  const loanReturn = data.loans;
   const done_paying: any[] = [];
   member_active_loans.forEach((loan: any) => {
     const loan_fines = prepareLoanFines(data, fineConfig, loan.loan_used, group);
@@ -209,9 +186,10 @@ function prepareLoanPayment(member_active_loans: any, data: any, loanConfigs: an
     let amount_paid_to_date = loan.amount_paid_to_date;
     const fines = loan.fines || [];
     const payments = [...loan.payments];
-    if (loanreturn[loan.id] && loanreturn[loan.id] !== null && parseInt(loanreturn[loan.id] + '', 10) !== 0 ) {
-      remaining_balance = loan.remaining_balance - loanreturn[loan.id]; // calculate remaining balance
-      amount_paid_to_date = parseFloat(loan.amount_paid_to_date + '') + parseFloat(loanreturn[loan.id] + '');
+    const previous_balance = loan.remaining_balance;
+    if (loanReturn[loan.id] && loanReturn[loan.id] !== null && parseInt(loanReturn[loan.id] + '', 10) !== 0 ) {
+      remaining_balance = loan.remaining_balance - loanReturn[loan.id]; // calculate remaining balance
+      amount_paid_to_date = parseFloat(loan.amount_paid_to_date + '') + parseFloat(loanReturn[loan.id] + '');
       // if loan is of type reducing balance add to profit contribution
       if ( loanConfigs[loan.loan_used] && loanConfigs[loan.loan_used].profit_type === 'Reducing Balance') {
         total_profit_contribution = parseFloat(loan.total_profit_contribution + '') + parseFloat(loan.amount_per_return + '');
@@ -228,13 +206,15 @@ function prepareLoanPayment(member_active_loans: any, data: any, loanConfigs: an
         period: group.track_contribution_period ? data.year + '' + data.month : helpers.getYear(data.date) + '' + helpers.getMonth(data.date),
         month: group.track_contribution_period ? data.month : helpers.getMonth(data.date),
         year: group.track_contribution_period ? data.year : helpers.getYear(data.date),
-        amount: loanreturn[loan.id],
+        amount: loanReturn[loan.id],
         paid_on_time: true,
         payment_mode: data.paymentMode || '',
         payment_type: data.paymentType || '',
         reference_number: data.referenceNumber || '',
         date_of_payment: helpers.formatDate(data.date),
         member_id: data.memberId,
+        previous_balance,
+        new_balance: remaining_balance,
       };
       if ( loan_fines[loan.loan_used] ) {
         payment.fine = loan_fines[loan.loan_used];

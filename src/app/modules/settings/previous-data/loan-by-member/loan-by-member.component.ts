@@ -186,10 +186,14 @@ export class LoanByMemberComponent implements OnInit {
 
   calculateTotal() {
     let total = 0;
+    let balance = this.returnAmount;
     for (const payment of this.payments) {
       const amount = payment.amount + '';
       if (!!amount) {
         total += parseFloat(amount);
+        payment.previous_balance = balance;
+        payment.new_balance = this.returnAmount - total;
+        balance = this.returnAmount - total;
       }
     }
     this.returnedAmount = total;
@@ -207,6 +211,7 @@ export class LoanByMemberComponent implements OnInit {
       id: this.commonService.makeid(),
       year: this.year,
       month: this.month,
+      period: `${this.year}${this.month}`,
       date: this.commonService.formatDate(new Date(`${this.year}-${this.month}-01`)),
       memberId: this.memberId,
       amount
@@ -218,6 +223,7 @@ export class LoanByMemberComponent implements OnInit {
         this.year = this.payments[this.payments.length - 1].year;
       }, 100);
     }
+    this.preparePayments(this.payments);
     this.calculateTotal();
   }
 
@@ -227,16 +233,39 @@ export class LoanByMemberComponent implements OnInit {
       amount = this.amountPerReturn;
     }
     const month = new Date(this.contributionDate).getMonth() + 1;
+    // const date1 = new Date(this.contributionDate);
+    // const oneJan =  new Date(date1.getFullYear(), 0, 1);
+    // // @ts-ignore
+    // const numberOfDays =  Math.floor((date1 - oneJan) / (24 * 60 * 60 * 1000));
+    // const weekNumber = Math.ceil(( date1.getDay() + 1 + numberOfDays) / 7);
     this.payments.push({
       id: this.commonService.makeid(),
       year: new Date(this.contributionDate).getFullYear(),
       month: (month + '').length === 1 ? '0' + month : month + '',
+      week: '',
       date: this.commonService.formatDate(this.contributionDate),
       memberId: this.memberId,
       amount
     });
     this.paymentDate = null;
+    this.preparePayments(this.payments);
     this.calculateTotal();
+  }
+
+  preparePayments(payments: any[]) {
+    this.payments = payments.sort((a, b) => {
+      if (a.date > b.date) {
+        return 1;
+      } else {
+        return -1;
+      }
+    }).map(loan => {
+      return {
+        ...loan,
+        previous_balance: 0,
+        new_balance: 0,
+      };
+    });
   }
 
   deletePay(payment: any) {
@@ -260,5 +289,24 @@ export class LoanByMemberComponent implements OnInit {
     this.payments = loan.payments.map(i => ({
       ...i
     }));
+  }
+
+  setMonthAndYear($event: any) {
+    let amount = null;
+    if (this.currentLoanType.pay_same_amount_is_must) {
+      amount = this.amountPerReturn;
+    }
+    this.payments.push({
+      id: this.commonService.makeid(),
+      year: $event.year,
+      month: $event.month.id,
+      period: `${$event.year}${$event.month.id}`,
+      week: '',
+      date: this.commonService.formatDate(new Date(`${$event.year}-${$event.month.id}-01`)),
+      memberId: this.memberId,
+      amount
+    });
+    this.preparePayments(this.payments);
+    this.calculateTotal();
   }
 }

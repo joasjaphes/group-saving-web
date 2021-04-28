@@ -139,7 +139,7 @@ export class SettingsComponent implements OnInit {
       this.viewDetails = true;
       this.viewType = 'balance';
     }
-    if (clickedMenu.name === 'Share Timeline') {
+    if (clickedMenu.name === 'Contribution Cycle') {
       this.panelTitle = 'Set Share Timeline';
       this.viewDetails = true;
       this.viewType = 'shareTimeline';

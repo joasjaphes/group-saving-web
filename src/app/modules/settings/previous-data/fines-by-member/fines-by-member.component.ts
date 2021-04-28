@@ -38,6 +38,7 @@ export class FinesByMemberComponent implements OnInit {
   grandTotal = 0;
   contributionTotal = {};
   loading: any;
+  startingMonth: any;
 
   constructor(
     private commonService: CommonService,
@@ -141,10 +142,12 @@ export class FinesByMemberComponent implements OnInit {
         date: this.commonService.formatDate(i.date),
         year: i.year,
         month: i.month,
+        period: `${i.year}${i.month}`,
         referenceNumber: '',
         paymentMode: '',
       };
     });
+    console.log(JSON.stringify(membersData));
     this.loading = true;
     try {
       await this.functionsService.saveData('addPastContributions', {
@@ -179,6 +182,24 @@ export class FinesByMemberComponent implements OnInit {
     } else {
       monthData.fines[contr.id] = 0;
     }
+    this.calculateTotal();
+  }
+
+  setMonthAndYear($event: { month: {id: string, name: string}, year: any }) {
+    const fines = {};
+    this.monthsDatas.push({
+      id: this.commonService.makeid(),
+      year: $event.year,
+      month: $event.month.id,
+      period: `${$event.year}${$event.month.id}`,
+      date: this.commonService.formatDate(new Date(`${$event.year}-${$event.month.id}-01`)),
+      memberId: this.memberId,
+      fines,
+      hasFine: {},
+      total: 0,
+    });
+    this.year = null;
+    this.month = null;
     this.calculateTotal();
   }
 }

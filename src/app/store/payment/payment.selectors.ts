@@ -45,27 +45,33 @@ export const selectDetailed = createSelector(
     return allItems.map(item => {
       const contrDetails = [];
       const paymentItems = [];
-      const contributionsDetails = Object.keys(item.contributions).map(contrId => ({
+      const contributionsDetails = !!item.contributions ? Object.keys(item.contributions).map(contrId => ({
         contr_id: contrId,
         name: contributionTypes[contrId] ? contributionTypes[contrId].name : '',
         amount: item.contributions[contrId],
-      }));
-      const fineDetails = Object.keys(item.fines).map(contrId => ({
+      })) : null;
+      const fineDetails = !!item.fines ? Object.keys(item.fines).map(contrId => ({
         id: contrId,
         name: fineTypes[contrId] ? fineTypes[contrId].description : '',
         amount: item.fines[contrId],
-      }));
-      const loanDetails = Object.keys(item.loans).map(contrId => ({
+      })) : null;
+      const loanDetails = !!item.loans ? Object.keys(item.loans).map(contrId => ({
         id: loans[contrId] && loanTypes[loans[contrId].loan_used] ? loanTypes[loans[contrId].loan_used].id : '',
         name: loans[contrId] && loanTypes[loans[contrId].loan_used] ? loanTypes[loans[contrId].loan_used].name : '',
         amount: item.loans[contrId],
-      }));
-      contrDetails.push(...contributionsDetails.map(i => `${i.name} ${i.amount}`));
-      contrDetails.push(...fineDetails.map(i => `${i.name} ${i.amount}`));
-      contrDetails.push(...loanDetails.map(i => `${i.name} ${i.amount}`));
-      paymentItems.push(...contributionsDetails);
-      paymentItems.push(...fineDetails);
-      paymentItems.push(...loanDetails);
+      })) : null;
+      if (contributionsDetails) {
+        contrDetails.push(...contributionsDetails.map(i => `${i.name} ${i.amount}`));
+        paymentItems.push(...contributionsDetails);
+      }
+      if (fineDetails) {
+        contrDetails.push(...fineDetails.map(i => `${i.name} ${i.amount}`));
+        paymentItems.push(...fineDetails);
+      }
+      if (loanDetails) {
+        contrDetails.push(...loanDetails.map(i => `${i.name} ${i.amount}`));
+        paymentItems.push(...loanDetails);
+      }
       return {
         ...item,
         contributionsDetails,

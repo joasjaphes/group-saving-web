@@ -29,6 +29,8 @@ import {StartingBalancesComponent} from './components/group-progress/starting-ba
 import {HalfProgressComponent} from './components/half-progress/half-progress.component';
 import {SmallCircularProgressComponent} from './components/small-circular-progress/small-circular-progress.component';
 import { SaveLoaderComponent } from './components/save-loader/save-loader.component';
+import { PeriodSelectorComponent } from './components/period-selector/period-selector.component';
+import { ClickOutsideDirective } from './directives/click-outside.directive';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,8 @@ import { SaveLoaderComponent } from './components/save-loader/save-loader.compon
     HalfProgressComponent,
     SmallCircularProgressComponent,
     SaveLoaderComponent,
+    PeriodSelectorComponent,
+    ClickOutsideDirective,
   ],
   imports: [
     CommonModule,
@@ -100,6 +104,7 @@ import { SaveLoaderComponent } from './components/save-loader/save-loader.compon
         ToUpperPipe,
         HalfProgressComponent,
         SaveLoaderComponent,
+        PeriodSelectorComponent,
     ]
 })
 export class SharedModule {

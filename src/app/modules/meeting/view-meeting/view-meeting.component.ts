@@ -24,7 +24,7 @@ export class ViewMeetingComponent implements OnInit {
   ngOnInit(): void {
     if (this.currentMeeting) {
       this.currentMeeting.attendance.forEach(item => {
-        this.attendance[item.member_id] = true;
+        this.attendance[item] = true;
       });
     }
   }

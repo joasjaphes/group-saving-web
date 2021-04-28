@@ -40,7 +40,7 @@ export class CompleteMeetingComponent implements OnInit {
       this.meetingPlace = this.currentMeeting.place;
       this.notes = this.currentMeeting.notes;
       this.currentMeeting.attendance.forEach(item => {
-        this.attendance[item.member_id] = true;
+        this.attendance[item] = true;
       });
     } else {
       if (this.group && this.group.next_meeting) {
@@ -62,11 +62,7 @@ export class CompleteMeetingComponent implements OnInit {
       place: this.meetingPlace,
       notes: this.notes,
       attendance: Object.keys(this.attendance)
-        .filter(i => this.attendance[i])
-        .map(i => ({
-        member_id: i,
-        member_name: this.membersEntities[i]?.name
-      }))
+        .filter(i => !!this.attendance[i])
     };
     this.loading = true;
     try {

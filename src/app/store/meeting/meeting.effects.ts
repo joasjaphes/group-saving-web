@@ -11,10 +11,26 @@ export class MeetingEffects {
   loadData$ = createEffect(() => this.actions$.pipe(
     ofType(fromActions.getMeetings),
     switchMap((action) => this.offlineService.getItems(DataKeys.Meeting)),
-    switchMap(meetings => [
-      fromActions.upsertMeetings({meetings}),
+    switchMap(meetings => {
+      const meetingsToSave = [];
+      for (const meeting of meetings) {
+        if ('meetings' in meeting) {
+          Object.keys(meeting.meetings).forEach(meetingId => {
+            const meetingData = meeting.meetings[meetingId];
+            meetingsToSave.push({
+              ...meetingData,
+              last_update: meeting.last_update
+            });
+          });
+        } else {
+          meetingsToSave.push(meeting);
+        }
+      }
+      return [
+      fromActions.upsertMeetings({meetings: meetingsToSave}),
       fromActions.doneLoadingMeetings()
-    ])
+    ];
+    })
   ));
 
   constructor(
