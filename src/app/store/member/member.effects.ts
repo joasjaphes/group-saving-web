@@ -21,35 +21,11 @@ export class MemberEffects {
         if (member.active_loans) {
           const loan = Object.keys(member.active_loans).map(i => member.active_loans[i]);
           loans.push(...loan);
-          loan.forEach(loanItem => {
-            if (loanItem.payments && loanItem.payments.length > 0) {
-              loanItem.payments.forEach(payment => {
-                if (payment.from_previous_loan) {
-                  payments.push({
-                    id: payment.id,
-                    groupId: loanItem.group_id,
-                    date: payment.date,
-                    month: payment.month,
-                    year: payment.year,
-                    week: payment.week,
-                    memberId: payment.member_id,
-                    contributions: {},
-                    fines: {},
-                    loans: {
-                      [loanItem.id]: payment.amount,
-                    },
-                    totalAmount: payment.amount,
-                  });
-                }
-              });
-            }
-          });
         }
       });
       return [
         fromActions.upsertMembers({members}),
         loanActions.upsertLoans({loans}),
-        fromPaymentActions.upsertPayments({payments}),
         fromActions.doneLoadingMembers()
       ];
     })

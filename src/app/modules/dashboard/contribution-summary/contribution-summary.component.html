@@ -1,0 +1,52 @@
+<div class="row content-area ml-0">
+  <div class="col-sm-12 pr-0" [ngClass]="'title-grid'">
+    <div style="display: grid;align-content: center">
+      <h3 class="registration-title mb-1" *ngIf="group$ | async">
+        Contributions
+      </h3>
+    </div>
+
+    <div style="text-align: end">
+
+      <mat-menu #yearMenu="matMenu">
+        <button mat-menu-item (click)="setYear('All')">All Years</button>
+        <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setYear(yr)">{{yr}}</button>
+      </mat-menu>
+      <small class="text-muted">For</small>
+      <button style="padding-right: 0" mat-button [matMenuTriggerFor]="yearMenu" class="cursor">
+        <mat-icon>date_range</mat-icon> &nbsp;
+        <span>{{year === 'All' ? 'All Years' : year}}</span> &nbsp;
+        <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="container-fluid">
+    <div>
+      <div class="zoom-on-hover cursor" (click)="goToContribution()" title="Click to view more details">
+        <p style="font-size: 20px;" class="text-muted m-0">
+          Total Contribution
+          <span class="currency-area">({{(group$ | async)?.currency}})</span>
+        </p>
+        <h1 class="registration-title big-amount mb-0">{{(totalContributionOnly$ | async) | number}}</h1>
+      </div>
+      <div class="inner1-grid">
+        <div class="inner1-item-grid" *ngFor="let contr of contributionTypes$ | async">
+          <div class="img-area in"></div>
+          <div>
+            <p class="text-muted">{{contr.name | uppercase}}</p>
+            <h1 class="registration-title mb-0 down-amount">{{contr.total | number}}</h1>
+            <span *ngIf="(group$ | async).contribution_balances && (group$ | async).contribution_balances[contr.id]"
+                  @fadeIn>
+              <small class="balance-area">
+                Balance - {{(group$ | async)?.currency}} <b>{{(group$ | async).contribution_balances[contr.id] | number}}</b>
+              </small>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

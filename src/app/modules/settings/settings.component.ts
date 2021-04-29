@@ -110,7 +110,7 @@ export class SettingsComponent implements OnInit {
     console.log({group});
     if (group && group.has_share) {
       this.menus.push({
-        name: 'Share Timeline',
+        name: 'Contribution Cycle',
         route: '',
         description: 'Update group share collection start date and date of share distribution',
         image: 'timeline.png'
@@ -140,7 +140,7 @@ export class SettingsComponent implements OnInit {
       this.viewType = 'balance';
     }
     if (clickedMenu.name === 'Contribution Cycle') {
-      this.panelTitle = 'Set Share Timeline';
+      this.panelTitle = 'Set Contribution Cycle';
       this.viewDetails = true;
       this.viewType = 'shareTimeline';
     }

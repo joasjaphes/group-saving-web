@@ -39,13 +39,13 @@ export const assignPastActiveLoanToMember = functions.https.onRequest((request, 
         const payments: { [id: string]: PaymentModel } = {};
         if (loanDetails.payments.length > 0) {
           for (const payment of loanDetails.payments) {
-            let existingPaymentData: PaymentModel = payments[payment.period];
+            let existingPaymentData: PaymentModel = payments[`period_${payment.period}`];
             if (!existingPaymentData) {
               const paymentDocRef = admin.firestore().doc(`groups/${groupId}/payments/period_${payment.period}`);
               const paymentDoc = await transaction.get(paymentDocRef);
               existingPaymentData = paymentDoc.exists ? paymentDoc.data() as PaymentModel : helpers.prepareEmptyPayment(payment, groupData);
             }
-            payments[memberData.period] = helpers.preparePayment({
+            payments[`period_${payment.period}`] = helpers.preparePayment({
               ...payment,
               memberId: data.memberId,
               fines: {},

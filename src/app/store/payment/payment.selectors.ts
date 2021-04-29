@@ -271,6 +271,7 @@ export const selectContributionTypeSummary = (year) => createSelector(
   selectDetailed,
   fromContributionTypes.selectRepeating,
   (allItems, contributionTypes) => {
+    console.log({contributionTypes});
     const summary = {};
     for (const contr of contributionTypes) {
       summary[contr.id] = {name: contr.name, total: 0, id: contr.id};

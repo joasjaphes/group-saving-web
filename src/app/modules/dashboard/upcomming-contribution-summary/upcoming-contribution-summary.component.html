@@ -1,0 +1,37 @@
+<div class="row content-area ml-0">
+  <div class="col-sm-12 pr-0" [ngClass]="'title-grid'">
+    <div style="display: grid;align-content: center">
+      <h3 class="registration-title mb-1" *ngIf="group">
+        Expected collection
+      </h3>
+    </div>
+
+    <div style="text-align: end">
+      <mat-menu #yearMenu="matMenu">
+        <button *ngFor="let yr of useMonth" mat-menu-item (click)="setYear(yr)">{{yr.name}} {{year}}</button>
+      </mat-menu>
+      <small class="text-muted">Month</small>
+      <button style="padding-right: 0" mat-button [matMenuTriggerFor]="yearMenu" class="cursor">
+        <!--        <mat-icon>date_range</mat-icon> &nbsp;-->
+        <span>{{month.name}} {{year}}</span> &nbsp;
+        <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="col-sm-12" style="margin: 1.5em auto">
+    <div class="zoom-on-hover cursor">
+      <p style="font-size: 20px;" class="text-muted m-0">
+        Expected collections
+        <span class="currency-area">({{group?.currency}})</span>
+      </p>
+      <h1 class="registration-title big-amount mb-0">4,356,000</h1>
+    </div>
+    <div class="inner1-grid">
+      <div class="img-area "></div>
+      <p>
+        Jamii - <b>250,000</b>; Hisa - <b>2,280,000</b>; Loan returns - <b>4,650,000</b>
+      </p>
+    </div>
+  </div>
+</div>

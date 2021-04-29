@@ -8,7 +8,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 export class CircularProgressComponent implements OnInit, OnChanges {
 
   @Input() value = 70;
-  @Input() radius = 90;
+  @Input() radius = 70;
   pact = 0;
   constructor() { }
 

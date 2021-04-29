@@ -232,17 +232,20 @@ export class LoanByMemberComponent implements OnInit {
     if (this.currentLoanType.pay_same_amount_is_must) {
       amount = this.amountPerReturn;
     }
-    const month = new Date(this.contributionDate).getMonth() + 1;
+    const monthData = new Date(this.contributionDate).getMonth() + 1;
     // const date1 = new Date(this.contributionDate);
     // const oneJan =  new Date(date1.getFullYear(), 0, 1);
     // // @ts-ignore
     // const numberOfDays =  Math.floor((date1 - oneJan) / (24 * 60 * 60 * 1000));
     // const weekNumber = Math.ceil(( date1.getDay() + 1 + numberOfDays) / 7);
+    const year = new Date(this.contributionDate).getFullYear();
+    const month = (monthData + '').length === 1 ? '0' + monthData : monthData + '';
     this.payments.push({
       id: this.commonService.makeid(),
-      year: new Date(this.contributionDate).getFullYear(),
-      month: (month + '').length === 1 ? '0' + month : month + '',
+      year,
+      month,
       week: '',
+      period: `${year}${month}`,
       date: this.commonService.formatDate(this.contributionDate),
       memberId: this.memberId,
       amount

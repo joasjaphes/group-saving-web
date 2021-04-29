@@ -14,15 +14,37 @@
       ></app-group-progress>
     </div>
 
+    <div class="first-dashboard-grid">
+      <div [ngClass]="routeAnimationsElements">
+        <app-contribution-summary></app-contribution-summary>
+      </div>
+      <div [ngClass]="routeAnimationsElements">
+        <app-loan-summary [group]="group$ | async"></app-loan-summary>
+      </div>
+      <div [ngClass]="routeAnimationsElements">
+        <app-upcoming-contribution-summary [group]="group$ | async"></app-upcoming-contribution-summary>
+      </div>
+      <div [ngClass]="routeAnimationsElements">
+        <app-loan-queue-summary></app-loan-queue-summary>
+      </div>
+      <div [ngClass]="routeAnimationsElements">
+        <app-fine-summary
+          [group]="group$ | async"
+        ></app-fine-summary>
+      </div>
+      <div [ngClass]="routeAnimationsElements">
+        <app-expense-summary
+          [group]="group$ | async"
+        ></app-expense-summary>
+      </div>
+    </div>
+
     <div class="dashboard-grid">
       <div [ngClass]="routeAnimationsElements">
         <app-collection-summary></app-collection-summary>
       </div>
       <div [ngClass]="routeAnimationsElements" class="other-summary">
         <app-other-summary [group]="group$ | async"></app-other-summary>
-      </div>
-      <div [ngClass]="routeAnimationsElements">
-        <app-loan-summary [group]="group$ | async"></app-loan-summary>
       </div>
     </div>
 

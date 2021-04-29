@@ -90,6 +90,12 @@ import { ContributionItemComponent } from './modules/summary/contributions/contr
 import { FineItemComponent } from './modules/summary/fines/fine-item/fine-item.component';
 import { SummaryModelComponent } from './modules/dashboard/summary-model/summary-model.component';
 import { MembersPermissionComponent } from './modules/settings/members-permission/members-permission.component';
+import { ContributionSummaryComponent } from './modules/dashboard/contribution-summary/contribution-summary.component';
+import { FineSummaryComponent } from './modules/dashboard/fine-summary/fine-summary.component';
+import { ExpenseSummaryComponent } from './modules/dashboard/expense-summary/expense-summary.component';
+import { LeadershipSummaryComponent } from './modules/dashboard/leadership-summary/leadership-summary.component';
+import { UpcomingContributionSummaryComponent } from './modules/dashboard/upcomming-contribution-summary/upcoming-contribution-summary.component';
+import { LoanQueueSummaryComponent } from './modules/dashboard/loan-queue-summary/loan-queue-summary.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -176,7 +182,13 @@ const firebaseConfig = {
     ContributionItemComponent,
     FineItemComponent,
     SummaryModelComponent,
-    MembersPermissionComponent
+    MembersPermissionComponent,
+    ContributionSummaryComponent,
+    FineSummaryComponent,
+    ExpenseSummaryComponent,
+    LeadershipSummaryComponent,
+    UpcomingContributionSummaryComponent,
+    LoanQueueSummaryComponent
   ],
   imports: [
     BrowserModule,

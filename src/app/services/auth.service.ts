@@ -25,6 +25,9 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
+    localStorage.removeItem('group-saving-user');
+    localStorage.removeItem('group_savings_active_group');
+    localStorage.removeItem('group_savings_current_member');
     const result = await this.afAuth.signInWithEmailAndPassword(email, password);
   }
 
@@ -33,7 +36,6 @@ export class AuthService {
     localStorage.removeItem('group-saving-user');
     localStorage.removeItem('group_savings_active_group');
     localStorage.removeItem('group_savings_current_member');
-    localStorage.removeItem('group-saving-user');
     this.localStorageService.clearEverything();
   }
 

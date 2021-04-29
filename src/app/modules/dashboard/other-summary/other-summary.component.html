@@ -1,76 +1,4 @@
-<div class="container-fluid pl-1 pr-0">
-
-  <div class="row content-area pl-4" style="margin-bottom: 5px;">
-<!--    <div class="col-sm-12 title-grid">-->
-<!--      <div style="display: grid; align-content: center">-->
-<!--        <h3 class="registration-title" style="color: #ffffffc7;">Expenses</h3>-->
-<!--      </div>-->
-<!--      <div style="text-align: end;color: #ffffffc7;">-->
-
-<!--        <mat-menu #yearMenu="matMenu">-->
-<!--          <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setYear(yr)">{{yr}}</button>-->
-<!--        </mat-menu>-->
-
-<!--        &lt;!&ndash;        <small class="text-muted">For</small>&ndash;&gt;-->
-<!--        <button mat-button [matMenuTriggerFor]="yearMenu" class="cursor">-->
-<!--          &lt;!&ndash;          <mat-icon>date_range</mat-icon> &nbsp;&ndash;&gt;-->
-<!--          <span>{{year}}</span> &nbsp;-->
-<!--          <mat-icon style="color: white;">arrow_drop_down</mat-icon>-->
-<!--        </button>-->
-<!--      </div>-->
-
-<!--    </div>-->
-<!--    <div class="col-sm-12" style="height: 135px; display: grid;align-content: center">-->
-<!--      <div class="some-grid zoom-on-hover cursor">-->
-<!--        <div class="image-area">-->
-<!--          <img src="assets/images/icons/money1.png">-->
-<!--        </div>-->
-<!--        <div class="amount-area">-->
-<!--          <p>Total Expenses</p>-->
-<!--          <h1 class="registration-title" style="color: #ffffffc7;">{{totalExpenses$ | async | number}}</h1>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--&lt;!&ndash;      <h1 class="registration-title" style="color: #ffffffc7;">712,300</h1>&ndash;&gt;-->
-<!--    </div>-->
-
-    <div class="col-sm-12 title-grid">
-      <div style="display: grid; align-content: center">
-        <h3 class="registration-title" style="color: #ffffffc7;">Fines</h3>
-      </div>
-      <div style="text-align: end;color: #ffffffc7;">
-
-        <mat-menu #fyearMenu="matMenu">
-          <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setFineYear(yr)">{{yr}}</button>
-        </mat-menu>
-
-        <!--        <small class="text-muted">For</small>-->
-        <button mat-button [matMenuTriggerFor]="fyearMenu" class="cursor">
-          <!--          <mat-icon>date_range</mat-icon> &nbsp;-->
-          <span>{{fineYear}}</span> &nbsp;
-          <mat-icon style="color: white;">arrow_drop_down</mat-icon>
-        </button>
-      </div>
-
-    </div>
-    <div class="col-sm-12" style="display: grid;align-content: center">
-      <div class="some-grid zoom-on-hover cursor">
-        <div class="image-area">
-          <img src="assets/images/icons/fine.png">
-        </div>
-        <div class="amount-area">
-          <p>Total Fines</p>
-          <h1 class="registration-title" style="color: #ffffffc7;">{{totalFinesPaid$ | async | number}}</h1>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-12">
-      <p>Latest Fines</p>
-    </div>
-    <div class="col-sm-12">
-
-    </div>
-  </div>
-    <div class="row content-area">
+<div class="row content-area">
     <div class="col-sm-12 title-grid" *ngIf="!member">
       <div style="display: grid; align-content: center">
         <h3 class="registration-title" style="color: #ffffffc7;">Leadership</h3>
@@ -80,7 +8,7 @@
       </div>
 
     </div>
-    <div class="col-sm-12" style="height: 230px" *ngIf="group && !member">
+    <div class="col-sm-12" *ngIf="group && !member">
       <!--      Chairperson-->
       <div class="leader-grid" *ngIf="group.chairpersonDetails">
         <div class="img-div">
@@ -114,19 +42,5 @@
         </div>
       </div>
     </div>
-
-<!--    Meeting attendance if view is for member-->
-    <div class="col-sm-12 title-grid" *ngIf="member">
-      <div style="display: grid; align-content: center">
-        <h3 class="registration-title" style="color: #ffffffc7;">Meetings</h3>
-      </div>
-      <div style="text-align: end">
-
-      </div>
-
-    </div>
-   <div class="col-sm-12" style="height: 230px" *ngIf="member">
-   </div>
   </div>
 
-</div>

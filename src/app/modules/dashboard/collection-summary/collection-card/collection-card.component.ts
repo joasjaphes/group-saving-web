@@ -31,15 +31,15 @@ export class CollectionCardComponent implements OnInit {
   }
 
   onAmountClick() {
-    this.amountClicked.emit();
+    // this.amountClicked.emit();
   }
 
   onLeftClick() {
-    this.leftClicked.emit();
+    // this.leftClicked.emit();
   }
 
   onRightClicked() {
-    this.rightClicked.emit();
+    // this.rightClicked.emit();
   }
 
 }

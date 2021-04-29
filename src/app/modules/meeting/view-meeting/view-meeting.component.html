@@ -17,38 +17,6 @@
     </div>
 
 
-    <div class="col-sm-12 mt-2">
-      <h3 class="registration-title mb-0">
-        Attended
-      </h3>
-      <p class="mb-1" style="color: #ffffffa8; font-size: 12px">
-        <b>{{currentMeeting.attendance.length}}</b> of  <b>{{members.length}}</b> Attended this meeting
-      </p>
-    </div>
-
-    <div class="col-sm-12 mt-1 cursor" >
-      <div class="members-grid">
-        <ng-container *ngFor="let member of members">
-          <div  *ngIf="attendance[member.id]" [ngClass]="{'active': attendance[member.id]}" class="member-grid">
-            <div class="img-div">
-              <h1 style="font-size: 20px; color: white" class="registration-title">{{member.name[0].toUpperCase()}}</h1>
-            </div>
-            <div>
-              <h2 class="registration-title mb-1" style="font-size: 17px">{{member.name}}</h2>
-              <p class="lead">{{member.phone_number}}</p>
-            </div>
-            <div style="display: grid; align-content: center">
-              <mat-icon style="color: #F15A28">check_box</mat-icon>
-            </div>
-          </div>
-        </ng-container>
-
-      </div>
-
-    </div>
-
-
-
     <div class="col-sm-12 mt-3">
       <h3 class="registration-title mb-0">
         Missed
@@ -59,25 +27,73 @@
     </div>
 
     <div class="col-sm-12 mt-1 cursor" >
-      <div class="members-grid">
+      <mat-chip-list aria-label="Attended Members">
         <ng-container *ngFor="let member of members">
-          <div *ngIf="!attendance[member.id]" [ngClass]="{'active': attendance[member.id]}" class="member-grid">
-            <div class="img-div">
-              <h1 style="font-size: 20px; color: white" class="registration-title">{{member.name[0].toUpperCase()}}</h1>
-            </div>
-            <div>
-              <h2 class="registration-title mb-1" style="font-size: 17px">{{member.name}}</h2>
-              <p class="lead">{{member.phone_number}}</p>
-            </div>
-            <div style="display: grid; align-content: center">
-              <mat-icon>check_box_outline_blank</mat-icon>
-            </div>
-          </div>
+          <mat-chip *ngIf="!attendance[member.id]" >
+            <mat-icon style="color: #affff4ad">check_box_outline_blank</mat-icon>&nbsp;
+            {{member.name}}
+          </mat-chip>
         </ng-container>
+      </mat-chip-list>
+      <!--      <div class="members-grid">-->
+      <!--        <ng-container *ngFor="let member of members">-->
+      <!--          <div *ngIf="!attendance[member.id]" [ngClass]="{'active': attendance[member.id]}" class="member-grid">-->
+      <!--            <div class="img-div">-->
+      <!--              <h1 style="font-size: 20px; color: white" class="registration-title">{{member.name[0].toUpperCase()}}</h1>-->
+      <!--            </div>-->
+      <!--            <div>-->
+      <!--              <h2 class="registration-title mb-1" style="font-size: 17px">{{member.name}}</h2>-->
+      <!--              <p class="lead">{{member.phone_number}}</p>-->
+      <!--            </div>-->
+      <!--            <div style="display: grid; align-content: center">-->
+      <!--              <mat-icon>check_box_outline_blank</mat-icon>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </ng-container>-->
 
-      </div>
+      <!--      </div>-->
 
     </div>
+
+    <div class="col-sm-12 mt-3">
+      <h3 class="registration-title mb-0">
+        Attended
+      </h3>
+      <p class="mb-1" style="color: #ffffffa8; font-size: 12px">
+        <b>{{currentMeeting.attendance.length}}</b> of  <b>{{members.length}}</b> Attended this meeting
+      </p>
+    </div>
+
+    <div class="col-sm-12 mt-1 cursor" >
+      <mat-chip-list aria-label="Attended Members">
+        <ng-container *ngFor="let member of members">
+          <mat-chip *ngIf="attendance[member.id]" >
+            <mat-icon style="color: #affff4ad">check_box</mat-icon>&nbsp;
+            {{member.name}}
+          </mat-chip>
+        </ng-container>
+      </mat-chip-list>
+<!--      <div class="members-grid">-->
+<!--        <ng-container *ngFor="let member of members">-->
+<!--          <div  *ngIf="attendance[member.id]" [ngClass]="{'active': attendance[member.id]}" class="member-grid">-->
+<!--            <div class="img-div">-->
+<!--              <h1 style="font-size: 20px; color: white" class="registration-title">{{member.name[0].toUpperCase()}}</h1>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <h2 class="registration-title mb-1" style="font-size: 17px">{{member.name}}</h2>-->
+<!--              <p class="lead">{{member.phone_number}}</p>-->
+<!--            </div>-->
+<!--            <div style="display: grid; align-content: center">-->
+<!--              <mat-icon style="color: #F15A28">check_box</mat-icon>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </ng-container>-->
+
+<!--      </div>-->
+
+    </div>
+
+
 
 
     <!--    Save Area-->

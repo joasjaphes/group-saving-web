@@ -1,0 +1,43 @@
+<div class="row content-area ml-0">
+  <div class="col-sm-12 pr-0" [ngClass]="'title-grid'">
+    <div style="display: grid;align-content: center">
+      <h3 class="registration-title mb-1" *ngIf="group">
+        Fines collected
+      </h3>
+    </div>
+
+    <div style="text-align: end">
+      <mat-menu #yearMenu="matMenu">
+        <button mat-menu-item (click)="setYear('All')">All Years</button>
+        <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setYear(yr)">{{yr}}</button>
+      </mat-menu>
+      <small class="text-muted">For</small>
+      <button style="padding-right: 0" mat-button [matMenuTriggerFor]="yearMenu" class="cursor">
+        <mat-icon>date_range</mat-icon> &nbsp;
+        <span>{{year === 'All' ? 'All Years' : year}}</span> &nbsp;
+        <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="col-sm-12" style="margin: 1.5em auto">
+    <div class="some-grid zoom-on-hover cursor" (click)="goToFines()" title="Click to view more details">
+      <div class="image-area">
+        <img src="assets/images/icons/fine.png">
+      </div>
+      <div class="amount-area">
+        <p style="font-size: 20px;" class="text-muted m-0">
+          Total Fines
+          <span class="currency-area">({{group?.currency}})</span>
+        </p>
+        <h1 class="registration-title" style="color: #ffffffc7;">{{totalFinesPaid$ | async | number}}</h1>
+      </div>
+    </div>
+  </div>
+<!--  <div class="col-sm-12">-->
+<!--    <p>Latest Fines</p>-->
+<!--  </div>-->
+  <div class="col-sm-12">
+
+  </div>
+</div>

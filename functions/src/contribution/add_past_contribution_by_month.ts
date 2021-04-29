@@ -34,13 +34,13 @@ export const addPastContributions = functions.https.onRequest((request, response
         const groupData: any = {...groupDoc.data()};
         const payments: { [id: string]: PaymentModel } = {};
         for (const memberData of data.membersData) {
-          let existingPaymentData: PaymentModel = payments[memberData.period];
+          let existingPaymentData: PaymentModel = payments[`period_${memberData.period}`];
           if (!existingPaymentData) {
             const paymentDocRef = admin.firestore().doc(`groups/${groupId}/payments/period_${memberData.period}`);
             const paymentDoc = await transaction.get(paymentDocRef);
             existingPaymentData = paymentDoc.exists ? paymentDoc.data() as PaymentModel : helpers.prepareEmptyPayment(memberData, groupData);
           }
-          payments[memberData.period] = helpers.preparePayment(memberData, groupData, existingPaymentData);
+          payments[`period_${memberData.period}`] = helpers.preparePayment(memberData, groupData, existingPaymentData);
         }
         for (const key of Object.keys(payments)) {
           const paymentRef = admin.firestore().doc(`groups/${data.groupId}/payments/${key}`);

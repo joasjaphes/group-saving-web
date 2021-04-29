@@ -65,7 +65,7 @@ export const selectActiveLoans = createSelector(
 export const selectActiveLoansSummary = (loanType, memberId) => createSelector(
   selectDetailed,
   (allItems) => {
-    const totals = { totalOut: 0, paid: 0, unpaid: 0, percent: 0 };
+    const totals = { totalOut: 0, paid: 0, unpaid: 0, percent: 0, count: 0 };
     const activeLoans = allItems
       .filter(i => memberId === 'All' || i.member_id === memberId)
       .filter(i => parseFloat(i.remaining_balance + '') > 0)
@@ -79,6 +79,7 @@ export const selectActiveLoansSummary = (loanType, memberId) => createSelector(
       const percent =  (totals.paid / totals.totalOut) * 100;
       totals.percent = parseInt(percent + '', 10);
     }
+    totals.count = activeLoans.length;
     return totals;
   }
 );

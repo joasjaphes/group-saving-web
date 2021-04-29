@@ -59,11 +59,11 @@
         class="menu-grid content-area"
         *ngFor="let member of members$ | async | search:'name':memberSearch"
       >
-        <div class="img-div">
+        <div class="img-div" *ngIf="member">
           <h1 style="font-size: 40px; color: white" class="registration-title">{{member.name[0].toUpperCase()}}</h1>
         </div>
 
-        <div>
+        <div *ngIf="member">
           <h2 class="registration-title mb-1">{{member.name}}</h2>
           <p class="lead">{{member.phone_number}}</p>
           <p>

@@ -1,13 +1,9 @@
 
 .dashboard-grid {
   display: grid;
-  grid-gap: 20px;
+  grid-gap: 1.5rem;
+  margin-top: 1.5rem;
   grid-template-columns: 1fr 320px;
-  grid-template-rows: auto auto;
-
-  .other-summary {
-    grid-row: span 2;
-  }
 }
 .top-grid {
   display: grid;
@@ -75,5 +71,21 @@
       height: 35px;
       border-radius: 10%;
     }
+  }
+}
+
+.first-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat( 2, minmax(450px, 1fr) );
+  grid-gap: 1.5rem;
+  div { }
+}
+
+@media only screen and (max-width: 968px) {
+  .first-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat( 1, minmax(450px, 1fr) );
+    grid-gap: 20px;
+    div { }
   }
 }

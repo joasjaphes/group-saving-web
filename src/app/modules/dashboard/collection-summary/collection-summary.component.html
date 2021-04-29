@@ -2,7 +2,7 @@
   <div class="col-sm-12 pr-0" [ngClass]="showTitle ? 'title-grid' : 'title-grid1'">
     <div *ngIf="showTitle" style="display: grid;align-content: center">
       <h3 class="registration-title mb-1" *ngIf="group$ | async">
-        Contribution Summary
+        Transactions
         <span *ngIf="currentContr != 'All' && (group$ | async).contribution_balances && (group$ | async).contribution_balances[currentContr]" @fadeIn>
           (Balance
           <small style="color: white">{{(group$ | async)?.currency}}</small>&nbsp;
