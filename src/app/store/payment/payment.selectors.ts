@@ -397,6 +397,84 @@ export const selectContributionMemberMonthSummary = (months: string[], contribut
   }
 );
 
+export const selecteExpectedCollection = (period: string) => createSelector(
+  fromContributionTypes.selectRepeating,
+  fromLoan.selectAll,
+  fromMember.selectAll,
+  (contributionTypes, loans, members) => {
+    const activeLoans = loans.filter(i => `${i.end_year}${i.end_month}` <= period);
+    let totalLoan = 0;
+    let totalExpected = 0;
+    activeLoans.forEach(i => totalLoan += parseFloat(i.amount_per_return + ''));
+    const contrReturs = contributionTypes.map(i => {
+      if (i.is_must && i.is_fixed) {
+        totalExpected += i.fixed_value * members.length;
+        return {name: i.name, value: i.fixed_value * members.length};
+      } else if (i.is_must && !i.is_fixed) {
+        totalExpected += i.fixed_value * members.length;
+        return {name: i.name, value: i.minimum_contribution * members.length};
+      } else {
+        return '';
+      }
+    }).filter(i => !!i);
+    totalExpected += totalLoan;
+    return {total: totalExpected, amounts: [...contrReturs, {name: 'Loans', value:  totalLoan}]};
+  }
+);
+
+export const selectContributionAndLoanForSingleMonth = (period: string) => createSelector(
+  selectDetailed,
+  fromMember.selectAll,
+  fromLoan.selectAll,
+  fromContributionTypes.selectRepeating,
+  (allItems, members, loans, contributionTypes) => {
+    return members.map(member => {
+      const memberMonth = {};
+      let total = 0;
+      let loanAmount = 0;
+      let profitAmount = 0;
+      let remainingLoan = 0;
+      let loanPay = 0;
+      const availableLoan = loans.find(i => i.member_id === member.id && i.payments.filter(k => k.period === period).length > 0);
+      if (availableLoan) {
+        loanAmount = availableLoan.amount_taken;
+        profitAmount = availableLoan.total_profit_contribution;
+        availableLoan.payments.filter(k => k.period === period).forEach(loanPayment => {
+          remainingLoan = loanPayment.new_balance;
+          loanPay = loanPayment.amount;
+          total += parseFloat(loanPayment.amount + '');
+        });
+      }
+      contributionTypes.forEach(contrType => {
+        memberMonth[contrType.id] = 0;
+        const memberContr = allItems
+          .filter(i => i.memberId === member.id)
+          .filter(i => !!i.contributionsDetails.find(k => (k.contr_id === contrType.id)))
+          .filter(i => i.period === period);
+        memberContr.forEach(item => {
+          for (const contr of item.contributionsDetails) {
+            if ( contr.contr_id === contrType.id ) {
+              memberMonth[contrType.id] += parseFloat(contr.amount + '');
+              total += parseFloat(contr.amount + '');
+            }
+          }
+        });
+      });
+      return {
+        name: member.name,
+        phoneNumber: member.phone_number,
+        email: member.email,
+        loanAmount,
+        profitAmount,
+        remainingLoan,
+        loanPay,
+        memberMonth,
+        total,
+      };
+    }).sort((a, b) => a.name > b.name ? 1 : -1);
+  }
+);
+
 export const selectContributionByMonth = (month, year) => createSelector(
   selectDetailed,
   (allItems) => allItems

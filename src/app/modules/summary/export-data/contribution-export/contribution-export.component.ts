@@ -102,7 +102,6 @@ export class ContributionExportComponent implements OnInit, OnDestroy {
         name: monthName
       };
     });
-    console.log('months', this.months);
     this.setTitle();
     this.memberData$ = this.store.pipe(select(selectContributionMemberMonthSummary(months, this.contributionType)));
     this.totalSubscription = this.memberData$.subscribe(i => this.calculateMonthTotal(i));
@@ -111,8 +110,7 @@ export class ContributionExportComponent implements OnInit, OnDestroy {
   }
 
   downloadExcel() {
-    this.excelService.download1(
-      this.type === 'Loan' ? 'Loan Summary' : 'Contribution Summary',
+    this.excelService.download1('Contribution Summary',
       this.dataTable.nativeElement
     );
   }

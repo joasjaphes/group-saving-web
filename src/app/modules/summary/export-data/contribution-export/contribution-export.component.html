@@ -1,13 +1,17 @@
-<div class="container-fluid p-0 mt-3">
+<div class="container-fluid p-0 mt-4">
   <div class="row">
 
     <div class="col-sm-3">
       <app-period-selector
+        placeholder="Start Month"
+        [inActiveBg]="false"
         (selected)="setStartMonth($event)"
       ></app-period-selector>
     </div>
     <div class="col-sm-3" *ngIf="startDate" @fadeIn>
       <app-period-selector
+        [inActiveBg]="false"
+        placeholder="End Month"
         (selected)="setEndMonth($event)"
       ></app-period-selector>
     </div>
@@ -23,7 +27,7 @@
     </div>
 
 
-    <div class="col-sm-2" *ngIf="contributionType" @fadeIn>
+    <div class="col-sm-3" *ngIf="contributionType" @fadeIn>
       <button
         style="height: 44px; margin-top: 3px; width: 100%;background-color: #141432; border: 1px solid #ffffff52;"
         mat-raised-button

@@ -1,14 +1,45 @@
 import {Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-period-selector',
   templateUrl: './period-selector.component.html',
-  styleUrls: ['./period-selector.component.scss']
+  styleUrls: ['./period-selector.component.scss'],
+  animations: [
+    trigger('titleState', [
+      state('normal', style({})),
+      state('above', style({
+        display: 'block',
+        position: 'absolute',
+        top: '-11px',
+        'background-color': '#141432',
+        padding: '0 10px',
+        height: '20px',
+        'z-index': '3',
+        left: '22px',
+      })),
+      state('above1', style({
+        display: 'block',
+        position: 'absolute',
+        top: '-11px',
+        'background-color': '#1D1D42',
+        padding: '0 10px',
+        height: '20px',
+        'z-index': '3',
+        left: '22px',
+      })),
+      // transition('normal => above', [
+      //   animate('200ms ease-in', style({opacity: 1}))
+      //   ]
+      // ),
+      // transition('normal => above1', animate('200ms ease-in'))
+    ])
+  ]
 })
 export class PeriodSelectorComponent implements OnInit, OnChanges {
 
   isOpen = false;
-  placeholder = 'Select period';
+  @Input() inActiveBg = true;
   selectedPeriod = '';
   months = [
     {id: '01', name: 'January'},
@@ -25,6 +56,7 @@ export class PeriodSelectorComponent implements OnInit, OnChanges {
     {id: '12', name: 'December'},
   ];
   usedMonths: { id: string; name: string; }[] = [];
+  @Input() placeholder = 'Select period';
   @Input() currentYear: any = new Date().getFullYear();
   @Input() currentMonth;
   @Input() minMonth;
@@ -70,7 +102,7 @@ export class PeriodSelectorComponent implements OnInit, OnChanges {
   }
 
   getPeriodByMinMonth() {
-    let monthMin = [];
+    let monthMin: any[];
     const year = this.minMonth.substr(0, 4);
     const month = this.minMonth.substr(4, 2);
     this.minYear = year + '';

@@ -1,1 +1,73 @@
-<p>month-export works!</p>
+<div class="container-fluid p-0 mt-4">
+  <div class="row">
+    <div class="col-sm-9">
+      <app-period-selector
+        [inActiveBg]="false"
+        placeholder="Select Month"
+        (selected)="setMonth($event)"
+      ></app-period-selector>
+    </div>
+    <div class="col-sm-3" *ngIf="selectedMonth" @fadeIn>
+      <button
+        style="height: 44px; margin-top: 3px; width: 100%;background-color: #141432; border: 1px solid #ffffff52;"
+        mat-raised-button
+        class="zoom-on-hover"
+        (click)="getData()"
+      >
+        <mat-icon>refresh</mat-icon>
+        Get Data
+      </button>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="dateReady" @fadeIn>
+    <div class="col-sm-6">
+      <mat-checkbox [(ngModel)]="showPhoneNumber">Show Phone Number</mat-checkbox>
+    </div>
+    <div class="col-sm-6 mb-1" style="text-align: right">
+      <button class="zoom-on-hover no-print" (click)="downloadExcel()" mat-raised-button style="background-color: #141432; border: 1px solid #ffffff52;">
+        <img src="assets/images/csv.png" style="height: 26px"> &nbsp; Download
+      </button>
+    </div>
+    <div class="col-sm-12">
+      <table  #dataTable class="table table-bordered" style="color: white">
+        <tr>
+          <th [attr.colspan]="(contributionTypes$ | async)?.length + (showPhoneNumber ? 5 : 4)" style="text-align: center">
+            {{monthName}} Contribution Summary
+          </th>
+        </tr>
+        <tr>
+          <th>Member</th>
+          <th *ngIf="showPhoneNumber">Phone Number</th>
+          <th>Loan</th>
+          <th *ngFor="let month of contributionTypes$ | async">{{month.name}}</th>
+          <td>Loan Payment</td>
+          <th>Total</th>
+        </tr>
+        <ng-container *ngFor="let member of memberData$ | async">
+          <tr>
+            <th>{{member.name}}</th>
+            <th *ngIf="showPhoneNumber">{{member.phoneNumber}}</th>
+            <td><span *ngIf="member.loanAmount">{{member.loanAmount | number}}</span> </td>
+            <td *ngFor="let month of contributionTypes$ | async">
+                  <span *ngIf="member.memberMonth[month.id]">
+                    {{member.memberMonth[month.id] | number}}
+                  </span>
+            </td>
+            <td>
+              <span *ngIf="member.loanAmount">
+                {{member.loanPay | number}}</span>
+            </td>
+            <th>{{member.total | number}}</th>
+          </tr>
+        </ng-container>
+        <tr>
+          <th [attr.colspan]="showPhoneNumber ? 3 : 2" style="text-align: right">Total</th>
+          <th *ngFor="let month of contributionTypes$ | async">{{monthTotals[month.id] | number}}</th>
+          <th>{{totalLoan | number}}</th>
+          <th>{{overAllTotals | number}}</th>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

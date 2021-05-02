@@ -26,7 +26,7 @@ export class LoanExportComponent implements OnInit {
   startDate;
   endDate;
   type: string;
-  loanType = 'All';
+  loanType = '';
   selectedLoanType: LoanType;
   months: { id: string, name: string }[] = [];
   memberData$: Observable<any[]>;
@@ -40,6 +40,8 @@ export class LoanExportComponent implements OnInit {
   basicTotals = 0;
   interestTotals = 0;
   title = 'Summary';
+  startPeriod = '';
+  endPeriod = '';
   @ViewChild('dataTable') dataTable: ElementRef;
   showPhoneNumber = false;
 
@@ -107,10 +109,20 @@ export class LoanExportComponent implements OnInit {
         name: monthName
       };
     });
-    this.loanData$ = this.store.pipe(select(selectLoansActiveBetweenDates(startDate, endDate, months, this.loanType)));
+    this.loanData$ = this.store.pipe(select(selectLoansActiveBetweenDates(this.startPeriod, this.endPeriod, months, this.loanType)));
     this.loanData$.subscribe(i => this.calculateLoanMonthTotal(i));
     this.setTitle();
     this.dateReady = true;
+  }
+
+  setStartMonth($event: { month: { name: string; id: string }; year: any }) {
+    this.startDate = $event.year + '-' + $event.month.id + '-' + '01';
+    this.startPeriod = $event.year + '' + $event.month.id;
+  }
+
+  setEndMonth($event: { month: { name: string; id: string }; year: any }) {
+    this.endDate = $event.year + '-' + $event.month.id + '-' + '01';
+    this.endPeriod = $event.year + '' + $event.month.id;
   }
 
   downloadExcel() {

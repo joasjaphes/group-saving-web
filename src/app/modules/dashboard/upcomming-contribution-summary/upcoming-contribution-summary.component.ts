@@ -19,6 +19,7 @@ export class UpcomingContributionSummaryComponent implements OnInit {
   totalContributionOnly$: Observable<number>;
   year: any = new Date().getFullYear();
   contributionTypes$: Observable<{name: string, total: number, id: string}[]>;
+  expected$: Observable<{amounts: {name: string; value: number; }[], total: number}>;
   months = [
     { id: '01', name: 'January'},
     { id: '02', name: 'February'},
@@ -59,6 +60,7 @@ export class UpcomingContributionSummaryComponent implements OnInit {
     const memberId = this.member ? this.member.id : 'All';
     this.totalContributionOnly$ = this.store.pipe(select(paymentSelector.selectTotalPaymentByYear(this.year, 'All', memberId)));
     this.contributionTypes$ = this.store.pipe(select(paymentSelector.selectContributionTypeSummary(this.year, 'All')));
+    this.expected$ = this.store.pipe(select(paymentSelector.selecteExpectedCollection('202101')));
   }
 
   setYear(year: any) {

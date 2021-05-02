@@ -131,10 +131,12 @@ export const selectLoansActiveBetweenDates = (startDate, endDate, months: string
       const loanEndDate = `${item.end_year}-${item.end_month}-01`;
       return {
         ...item,
+        loanStartDate,
+        loanEndDate,
         monthData
       };
     }
-  )
+  ).filter(k => k.payments.filter(i => i.period >= startDate && i.period <= endDate).length > 0)
 );
 
 export function durationTYpe(frequency) {

@@ -14,12 +14,25 @@ import {MatSelectChange} from '@angular/material/select';
 import {first} from 'rxjs/operators';
 import {selectLoansActiveBetweenDates} from '../../../store/loan/loan.selectors';
 import {selectContributionMemberMonthSummary} from '../../../store/payment/payment.selectors';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-export-data',
   templateUrl: './export-data.component.html',
   styleUrls: ['./export-data.component.scss'],
-  animations: [fadeIn]
+  animations: [fadeIn, trigger('slideShow', [
+    transition(
+      ':enter', [
+        style({opacity: 0, transform: 'translateX(-100%)', position: 'absolute', top: '0px', width: '*'}),
+        animate('500ms ease-out', style({opacity: 1, transform: 'translateX(0%)'}))
+      ]
+    ),
+    transition(
+      ':leave', [
+        animate('500ms ease-out', style({opacity: 0, transform: 'translateX(100%)'}))
+      ]
+    ),
+  ])]
 })
 export class ExportDataComponent implements OnInit {
 

@@ -12,8 +12,8 @@
       <mat-icon>access_time</mat-icon>
     </div>
     <div  style="text-align: center">
-      <span *ngIf="selectedPeriod">{{ selectedPeriod }}</span>
-      <span *ngIf="!selectedPeriod">{{ placeholder }}</span>
+      <span *ngIf="selectedPeriod" [@titleState]="'normal1'">{{ selectedPeriod }}</span>
+      <span [@titleState]="selectedPeriod ? inActiveBg ? 'above' : 'above1' : 'normal'">{{ placeholder }}</span>
     </div>
     <div style="text-align: end">
       <mat-icon>keyboard_arrow_down</mat-icon>

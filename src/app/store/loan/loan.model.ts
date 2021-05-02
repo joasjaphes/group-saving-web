@@ -32,6 +32,8 @@ export interface Loan {
   start_week: string;
   payments: {
     amount: number;
+    previous_balance: number;
+    new_balance: number;
     date_of_payment: string;
     date: string;
     from_previous_loan: boolean;

@@ -25,12 +25,12 @@
         Expected collections
         <span class="currency-area">({{group?.currency}})</span>
       </p>
-      <h1 class="registration-title big-amount mb-0">4,356,000</h1>
+      <h1 class="registration-title big-amount mb-0">{{(expected$ | async)?.total | number}}</h1>
     </div>
     <div class="inner1-grid">
       <div class="img-area "></div>
       <p>
-        Jamii - <b>250,000</b>; Hisa - <b>2,280,000</b>; Loan returns - <b>4,650,000</b>
+        <span *ngFor="let item of (expected$ | async)?.amounts">  {{item.name}} - <b>{{item.value | number}}</b>;</span>
       </p>
     </div>
   </div>

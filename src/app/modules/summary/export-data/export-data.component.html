@@ -19,7 +19,7 @@
             class="zoom-on-hover cursor action-button"
             [ngClass]="{'active': summaryType == 'Loan'}"
             (click)="summaryType = 'Loan'"
-          >Loan</button>
+          >Loan Payments</button>
           <button
             mat-raised-button
             class="zoom-on-hover cursor action-button"
@@ -29,18 +29,15 @@
         </div>
 
         <div class="col-sm-12">
-          <app-contribution-export
-            @fadeIn
-            *ngIf="summaryType == 'Contribution'"
-          ></app-contribution-export>
-          <app-loan-export
-            @fadeIn
-            *ngIf="summaryType == 'Loan'"
-          ></app-loan-export>
-          <app-month-export
-            @fadeIn
-            *ngIf="summaryType == 'Monthly'"
-          ></app-month-export>
+          <div @slideShow *ngIf="summaryType == 'Contribution'">
+            <app-contribution-export></app-contribution-export>
+          </div>
+          <div @slideShow *ngIf="summaryType == 'Loan'">
+            <app-loan-export></app-loan-export>
+          </div>
+          <div @slideShow *ngIf="summaryType == 'Monthly'">
+            <app-month-export></app-month-export>
+          </div>
         </div>
       </div>
     </div>
