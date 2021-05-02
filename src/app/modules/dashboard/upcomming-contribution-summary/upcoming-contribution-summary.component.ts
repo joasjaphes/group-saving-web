@@ -36,6 +36,7 @@ export class UpcomingContributionSummaryComponent implements OnInit {
   ];
   useMonth = [];
   month: any;
+  period;
   constructor(
     private store: Store<ApplicationState>,
   ) {
@@ -58,13 +59,12 @@ export class UpcomingContributionSummaryComponent implements OnInit {
 
   getData() {
     const memberId = this.member ? this.member.id : 'All';
-    this.totalContributionOnly$ = this.store.pipe(select(paymentSelector.selectTotalPaymentByYear(this.year, 'All', memberId)));
-    this.contributionTypes$ = this.store.pipe(select(paymentSelector.selectContributionTypeSummary(this.year, 'All')));
-    this.expected$ = this.store.pipe(select(paymentSelector.selecteExpectedCollection('202101')));
+    this.expected$ = this.store.pipe(select(paymentSelector.selecteExpectedCollection(this.period)));
   }
 
   setYear(year: any) {
-    this.year = year;
+    this.period = `${this.year}${year.id}`;
+    this.month = year;
     this.getData();
   }
 
