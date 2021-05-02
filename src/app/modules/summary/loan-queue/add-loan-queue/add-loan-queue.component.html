@@ -1,8 +1,8 @@
-<div class="container-fluid">
+<div class="container-fluid" style="min-height: 400px">
   <div class="row">
 
     <!--    Members-->
-    <div class="col-sm-12">
+    <div class="col-sm-6">
       <mat-form-field appearance="outline">
         <mat-label>Select Member</mat-label>
         <mat-select [(ngModel)]="memberId" (selectionChange)="selectMember($event.value)">
@@ -15,7 +15,7 @@
     </div>
 
     <!--        Type of Loan-->
-    <div class="col-sm-12" *ngIf="memberId" @fadeIn>
+    <div class="col-sm-6" *ngIf="memberId" @fadeIn>
       <mat-form-field appearance="outline">
         <mat-label>Loan Type</mat-label>
         <mat-select [(ngModel)]="loanTypeId" placeholder="Loan Type"
@@ -28,7 +28,7 @@
     </div>
 
     <!--   Loan Taking Date-->
-    <div class="col-sm-12" *ngIf="!group.track_contribution_period && loanTypeId && memberId" @fadeIn>
+    <div class="col-sm-6" *ngIf="!group.track_contribution_period && loanTypeId && memberId" @fadeIn>
       <mat-form-field appearance="outline">
         <mat-label>Expected Loan date</mat-label>
         <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="dateToTake" placeholder="Expected Loan date"/>
@@ -38,40 +38,16 @@
     </div>
 
 <!--    Loan Taking Year-->
-    <div class="col-sm-6" *ngIf="group.track_contribution_period && loanTypeId && memberId" @fadeIn>
-      <!-- Expected Loan Year-->
-      <mat-form-field appearance="outline">
-        <mat-label>Expected Loan Year</mat-label>
-        <mat-select [(ngModel)]="year">
-          <mat-option *ngFor="let y of years" [value]="y">{{y}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-<!--    Loan Taking Month-->
-    <div class="col-sm-6" *ngIf="group.track_contribution_period && loanTypeId && memberId" @fadeIn>
-      <!-- Expected Loan Month-->
-      <mat-form-field appearance="outline">
-        <mat-label>Expected Loan Month</mat-label>
-        <mat-select [(ngModel)]="month" (selectionChange)="selectMonth($event.value)">
-          <mat-option value="01">Jan {{year}}</mat-option>
-          <mat-option value="02">Feb {{year}}</mat-option>
-          <mat-option value="03">Mar {{year}}</mat-option>
-          <mat-option value="04">Apr {{year}}</mat-option>
-          <mat-option value="05">May {{year}}</mat-option>
-          <mat-option value="06">Jun {{year}}</mat-option>
-          <mat-option value="07">Jul {{year}}</mat-option>
-          <mat-option value="08">Aug {{year}}</mat-option>
-          <mat-option value="09">Sep {{year}}</mat-option>
-          <mat-option value="10">Oct {{year}}</mat-option>
-          <mat-option value="11">Nov {{year}}</mat-option>
-          <mat-option value="12">Dec {{year}}</mat-option>
-        </mat-select>
-      </mat-form-field>
+    <div class="col-sm-6 mb-3" *ngIf="group.track_contribution_period && loanTypeId && memberId" @fadeIn>
+      <app-period-selector
+        (selected)="setLoanPeriod($event)"
+        [currentYear]="year"
+        [currentMonth]="month"
+      ></app-period-selector>
     </div>
 
     <!--        Loan amount-->
-    <div class="col-sm-12" *ngIf="dateToTake || month" @fadeIn>
+    <div class="col-sm-6" *ngIf="dateToTake || month" @fadeIn>
       <mat-form-field appearance="outline">
         <mat-label>Expected Loan amount <span *ngIf="loanAmount">({{loanAmount | number}})</span></mat-label>
         <input matInput [(ngModel)]="loanAmount" type="number" placeholder="Loan amount">

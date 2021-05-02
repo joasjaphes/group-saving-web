@@ -165,6 +165,7 @@
               <td *ngIf="group.track_contribution_period">
                 <app-period-selector
                   (selected)="setMonthAndYear($event)"
+                  [exclude]="excludedPeriods"
                   [clearAfterSelection]="true"
                 ></app-period-selector>
               </td>

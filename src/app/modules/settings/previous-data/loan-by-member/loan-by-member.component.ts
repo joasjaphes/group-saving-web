@@ -51,7 +51,7 @@ export class LoanByMemberComponent implements OnInit {
   recordByDate = false;
   paymentDate = null;
   loanId;
-
+  excludedPeriods = [];
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
@@ -248,6 +248,7 @@ export class LoanByMemberComponent implements OnInit {
 
   deletePay(payment: any) {
     this.payments = this.payments.filter(i => i.id !== payment.id);
+    this.excludedPeriods = this.payments.map(i => i.period);
     this.calculateTotal();
   }
 
@@ -284,6 +285,7 @@ export class LoanByMemberComponent implements OnInit {
       memberId: this.memberId,
       amount
     });
+    this.excludedPeriods = this.payments.map(i => i.period);
     this.preparePayments(this.payments);
     this.calculateTotal();
   }

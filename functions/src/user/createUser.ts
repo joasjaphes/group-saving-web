@@ -122,6 +122,7 @@ function createGroup(data: any, groupDocRef: FirebaseFirestore.DocumentReference
     contributions: {},
     loanTypes: {},
     loan_queue: [],
+    share_periods: [],
     contribution_balances: {},
     country: data?.countryCode,
     currency: data?.currency,

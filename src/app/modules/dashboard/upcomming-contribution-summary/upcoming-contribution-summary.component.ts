@@ -54,6 +54,7 @@ export class UpcomingContributionSummaryComponent implements OnInit {
     const monthNum = today.getMonth() + 1;
     const monthKey = monthNum < 10 ? `0${monthNum}` : `${monthNum}`;
     this.month = this.months.find(i => i.id === monthKey);
+    this.period = `${this.year}${this.month.id}`;
     this.useMonth = this.months.filter(i => i.id >= monthKey);
   }
 

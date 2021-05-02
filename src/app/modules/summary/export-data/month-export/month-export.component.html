@@ -56,7 +56,12 @@
             </td>
             <td>
               <span *ngIf="member.loanAmount">
-                {{member.loanPay | number}}</span>
+                {{member.loanPay | number}}
+                (
+                <small *ngIf="member.remainingLoan"> Remains {{member.remainingLoan | number}}</small>
+                <small  *ngIf="!member.remainingLoan"> Paid</small>
+                )
+              </span>
             </td>
             <th>{{member.total | number}}</th>
           </tr>

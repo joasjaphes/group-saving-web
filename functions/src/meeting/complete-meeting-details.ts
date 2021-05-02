@@ -38,6 +38,7 @@ export const completeMeeting = functions.https.onRequest((request, response) => 
         const existingMeeting: MeetingModel = meetingDoc.exists ? meetingDoc.data() as MeetingModel : {
           id: `period_${next_meeting.year}`,
           year: next_meeting.year,
+          group_id: data.groupId,
           meetings: {},
         };
         existingMeeting.meetings[next_meeting.id] = next_meeting;

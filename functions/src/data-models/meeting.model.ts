@@ -16,6 +16,7 @@ export interface SingleMeeting {
 export interface MeetingModel {
   id: string;
   year: string;
+  group_id: string;
   meetings: {
     [id: string]: SingleMeeting
   };

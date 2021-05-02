@@ -108,4 +108,8 @@ export class AddLoanQueueComponent implements OnInit {
   selectMonth(value: any) {
     this.dateToTake = new Date(`${this.year}-${this.month}-01`);
   }
+
+  setLoanPeriod($event: { month: { name: string; id: string }; year: any }) {
+    this.dateToTake = new Date(`${$event.year}-${$event.month.id}-01`);
+  }
 }
