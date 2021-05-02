@@ -1,0 +1,11 @@
+.action-button {
+  background-color: #1d1d42;
+  margin-right: 8px;
+  border: 1px solid white;
+  border-radius: 5px;
+  transition: all 300ms ease-in-out;
+}
+
+.active {
+  background-color: #0f0e22;
+}

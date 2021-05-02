@@ -1,37 +1,52 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
 
 @Component({
   selector: 'app-period-selector',
   templateUrl: './period-selector.component.html',
   styleUrls: ['./period-selector.component.scss']
 })
-export class PeriodSelectorComponent implements OnInit {
+export class PeriodSelectorComponent implements OnInit, OnChanges {
 
   isOpen = false;
   placeholder = 'Select period';
   selectedPeriod = '';
   months = [
-    { id: '01', name: 'January'},
-    { id: '02', name: 'February'},
-    { id: '03', name: 'March'},
-    { id: '04', name: 'April'},
-    { id: '05', name: 'May'},
-    { id: '06', name: 'June'},
-    { id: '07', name: 'July'},
-    { id: '08', name: 'August'},
-    { id: '09', name: 'September'},
-    { id: '10', name: 'October'},
-    { id: '11', name: 'November'},
-    { id: '12', name: 'December'},
+    {id: '01', name: 'January'},
+    {id: '02', name: 'February'},
+    {id: '03', name: 'March'},
+    {id: '04', name: 'April'},
+    {id: '05', name: 'May'},
+    {id: '06', name: 'June'},
+    {id: '07', name: 'July'},
+    {id: '08', name: 'August'},
+    {id: '09', name: 'September'},
+    {id: '10', name: 'October'},
+    {id: '11', name: 'November'},
+    {id: '12', name: 'December'},
   ];
+  usedMonths: { id: string; name: string; }[] = [];
   @Input() currentYear: any = new Date().getFullYear();
   @Input() currentMonth;
+  @Input() minMonth;
+  @Input() exclude = [];
   @Input() clearAfterSelection = false;
-  @Output() selected = new EventEmitter();
+  @Output() selected = new EventEmitter<{ month: { name: string; id: string }, year: any }>();
   years = [];
-  constructor() { }
+  selectedYear = this.currentYear;
+  minYear;
+
+  constructor() {
+  }
 
   ngOnInit(): void {
+    this.initiatePeriods();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.initiatePeriods();
+  }
+
+  initiatePeriods() {
     if (this.currentMonth) {
       const monthDetails = this.months.find(i => i.id === this.currentMonth);
       this.selectedPeriod = monthDetails.name + ' ' + this.currentYear;
@@ -39,6 +54,48 @@ export class PeriodSelectorComponent implements OnInit {
       this.selectedPeriod = '';
     }
     this.generateYears();
+    this.usedMonths = this.generateMonths();
+  }
+
+  generateMonths() {
+    if (this.exclude.length === 0 && !this.minMonth) {
+      return this.months;
+    } else if (this.minMonth && this.exclude.length > 0) {
+      return this.filterMonthsByExcluded(this.getPeriodByMinMonth());
+    } else if (this.minMonth) {
+      return this.getPeriodByMinMonth();
+    } else if (this.exclude.length > 0) {
+      return this.filterMonthsByExcluded(this.months);
+    }
+  }
+
+  getPeriodByMinMonth() {
+    let monthMin = [];
+    const year = this.minMonth.substr(0, 4);
+    const month = this.minMonth.substr(4, 2);
+    this.minYear = year + '';
+    if (parseInt(year, 10) < parseInt(this.currentYear + '', 10)) {
+      monthMin = this.months;
+    } else if (parseInt(year, 10) === parseInt(this.currentYear + '', 10)) {
+      monthMin = this.months.filter(i => parseInt(i.id, 10) > parseInt(month, 10));
+    } else {
+      monthMin = [];
+    }
+    return monthMin;
+  }
+
+  filterMonthsByExcluded(months) {
+    return months.filter(month => {
+      let check = true;
+      for (const period of this.exclude) {
+        const year = period.substr(0, 4);
+        const monthData = period.substr(4, 2);
+        if (monthData === month.id && parseInt(year, 10) === parseInt(this.currentYear + '', 10)) {
+          check = false;
+        }
+      }
+      return check;
+    });
   }
 
   generateYears() {
@@ -51,11 +108,13 @@ export class PeriodSelectorComponent implements OnInit {
   addCurrentYear() {
     this.currentYear++;
     this.generateYears();
+    this.usedMonths = this.generateMonths();
   }
 
   reduceCurrentYear() {
     this.currentYear--;
     this.generateYears();
+    this.usedMonths = this.generateMonths();
   }
 
   selectYear(year: any, event) {
@@ -73,6 +132,7 @@ export class PeriodSelectorComponent implements OnInit {
     }
   }
 }
+
 //
 // function getWeekPeriodsInYear(year) {
 //   weeks = [];

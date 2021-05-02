@@ -40,7 +40,7 @@ export class ContributionsComponent implements OnInit {
     this.years$ = this.store.pipe(select(paymentSelector.selectYearsWithPayment));
     // this.contributions$ = this.store.pipe(select(paymentSelector.selectDetailedGroupByMonth('2021')));
     this.contributions$ = this.store.pipe(select(paymentSelector.selectDetailedGroupByMember(this.year)));
-    this.contributionTypes$ = this.store.pipe(select(paymentSelector.selectContributionTypeSummary(this.year)));
+    this.contributionTypes$ = this.store.pipe(select(paymentSelector.selectContributionTypeSummary(this.year, 'All')));
   }
 
   ngOnInit(): void {
@@ -76,7 +76,7 @@ export class ContributionsComponent implements OnInit {
     } else {
       this.contributions$ = this.store.pipe(select(paymentSelector.selectDetailedGroupByMonth(this.year)));
     }
-    this.contributionTypes$ = this.store.pipe(select(paymentSelector.selectContributionTypeSummary(this.year)));
+    this.contributionTypes$ = this.store.pipe(select(paymentSelector.selectContributionTypeSummary(this.year, 'All')));
   }
 
   viewContributions(payment: any) {

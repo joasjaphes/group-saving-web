@@ -267,16 +267,16 @@ export const selectYearsWithPayment = createSelector(
 );
 
 
-export const selectContributionTypeSummary = (year) => createSelector(
+export const selectContributionTypeSummary = (year, memberId) => createSelector(
   selectDetailed,
   fromContributionTypes.selectRepeating,
   (allItems, contributionTypes) => {
-    console.log({contributionTypes});
     const summary = {};
     for (const contr of contributionTypes) {
       summary[contr.id] = {name: contr.name, total: 0, id: contr.id};
       allItems
         .filter(i => year === 'All' || i.year + '' === year + '')
+        .filter(i => memberId === 'All' || i.memberId === memberId)
         .forEach(item => {
           if (item.contributions) {
             if (Object.keys(item.contributions).indexOf(contr.id) !== -1) {

@@ -47,6 +47,7 @@ export const assignPastActiveLoanToMember = functions.https.onRequest((request, 
             }
             payments[`period_${payment.period}`] = helpers.preparePayment({
               ...payment,
+              date: payment.date_of_payment,
               memberId: data.memberId,
               fines: {},
               contributions: {},

@@ -59,19 +59,15 @@ export const selectProgressPercent = createSelector(
       let availableContributions = 0;
       let percent = 12;
       if (members.length > 1) {
-        console.log('hapa pos pos1');
         percent += 16;
       }
       if (selectedGroup.meeting_settings && selectedGroup.meeting_settings.meeting_frequency) {
-        console.log('hapa pos pos2');
         percent += 7;
       }
       if (selectedGroup.currency) {
-        console.log('hapa pos pos3');
         percent += 8;
       }
       if (selectedGroup.has_share || selectedGroup.has_entry_fee || selectedGroup.has_social || selectedGroup.has_other_contribution) {
-        console.log('hapa pos pos4');
         percent += 10;
       }
       const share_exist = !!contributionTypes.find(i => i.type === 'Share');

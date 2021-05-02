@@ -35,3 +35,18 @@
   //border: 1px solid #ffffff5e;
   //box-shadow: 0 0 1em #00000096;
 }
+.first-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat( 2, minmax(450px, 1fr) );
+  grid-gap: 1.5rem;
+  div { }
+}
+
+@media only screen and (max-width: 968px) {
+  .first-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat( 1, minmax(450px, 1fr) );
+    grid-gap: 20px;
+    div { }
+  }
+}

@@ -32,6 +32,9 @@
     </div>
 
     <div class="col-sm-12" *ngIf="month" @fadeIn>
+      <p *ngIf="(contributions$ | async)?.length > 0">
+        There are <b>{{(contributions$ | async)?.length}}</b> contributions already posted for {{monthName}}
+      </p>
       <mat-tab-group>
         <mat-tab label="New Contributions">
           <mat-form-field appearance="legacy">
@@ -80,8 +83,6 @@
                 There are no contribution for {{monthName}}
               </p>
               <div *ngFor="let contr of contributions$ | async">
-                <h5 class="mb-0"  style="color: #ffffffbf">{{contr.date | date:'MMM yyyy'}}</h5>
-
                 <h2 class="registration-title mb-0">{{contr.totalAmount | number}}</h2>
                 <h4 class="registration-title mb-0">{{contr.member.name}}</h4>
                 <p style="border-bottom: 1px solid white" class="pb-2" ><small  style="color: #ffffff6e">{{contr.description}}</small></p>

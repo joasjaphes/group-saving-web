@@ -49,7 +49,7 @@ export class AddExpenseComponent implements OnInit {
 
   async save() {
     const dataToSave = {
-      id: this.currentExpense ? this.currentExpense.id : this.commonService.makeid(),
+      id: this.currentExpense ? this.currentExpense.id : this.commonService.makeId(),
       groupId: this.group.id,
       memberId: this.memberId,
       amount: this.amount,

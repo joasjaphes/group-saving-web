@@ -21,12 +21,11 @@
 
         <mat-tab-group>
           <mat-tab label="New Contributions">
-            <div class="row">
+            <div class="row" style="min-height: 400px">
               <div class="col-sm-12 mt-2" *ngIf="memberId" @fadeIn>
                 <table class="table table-bordered entry-table">
                   <tr>
-                    <th *ngIf="group.track_contribution_period">Year</th>
-                    <th *ngIf="group.track_contribution_period">Month</th>
+                    <th *ngIf="group.track_contribution_period">period</th>
                     <th *ngIf="!group.track_contribution_period">Contribution Date</th>
                     <th *ngFor="let contr of contributionTypes">{{contr.name}}</th>
                     <th>Total</th>
@@ -34,29 +33,7 @@
                   </tr>
                   <tr *ngFor="let monthData of monthsDatas">
                     <td *ngIf="group.track_contribution_period">
-                      <mat-form-field appearance="outline">
-                        <mat-select [(ngModel)]="monthData.year">
-                          <mat-option *ngFor="let y of years" [value]="y">{{y}}</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </td>
-                    <td *ngIf="group.track_contribution_period">
-                      <mat-form-field appearance="outline">
-                        <mat-select [(ngModel)]="monthData.month">
-                          <mat-option value="01">Jan {{monthData.year}}</mat-option>
-                          <mat-option value="02">Feb {{monthData.year}}</mat-option>
-                          <mat-option value="03">Mar {{monthData.year}}</mat-option>
-                          <mat-option value="04">Apr {{monthData.year}}</mat-option>
-                          <mat-option value="05">May {{monthData.year}}</mat-option>
-                          <mat-option value="06">Jun {{monthData.year}}</mat-option>
-                          <mat-option value="07">Jul {{monthData.year}}</mat-option>
-                          <mat-option value="08">Aug {{monthData.year}}</mat-option>
-                          <mat-option value="09">Sep {{monthData.year}}</mat-option>
-                          <mat-option value="10">Oct {{monthData.year}}</mat-option>
-                          <mat-option value="11">Nov {{monthData.year}}</mat-option>
-                          <mat-option value="12">Dec {{monthData.year}}</mat-option>
-                        </mat-select>
-                      </mat-form-field>
+                      <app-period-selector [currentMonth]="monthData.month" [currentYear]="monthData.year"></app-period-selector>
                     </td>
                     <th *ngIf="!group.track_contribution_period" >
                       {{monthData.date | date}}
@@ -81,31 +58,11 @@
                   <!--        New Entry-->
                   <tr>
                     <td *ngIf="group.track_contribution_period">
-                      <mat-form-field appearance="outline">
-                        <mat-label>Contribution Year</mat-label>
-                        <mat-select [(ngModel)]="year">
-                          <mat-option *ngFor="let y of years" [value]="y">{{y}}</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </td>
-                    <td *ngIf="group.track_contribution_period">
-                      <mat-form-field appearance="outline" @fadeIn *ngIf="year">
-                        <mat-label>Contribution Month</mat-label>
-                        <mat-select [(ngModel)]="month" (selectionChange)="setNewMonth($event)">
-                          <mat-option value="01">Jan {{year}}</mat-option>
-                          <mat-option value="02">Feb {{year}}</mat-option>
-                          <mat-option value="03">Mar {{year}}</mat-option>
-                          <mat-option value="04">Apr {{year}}</mat-option>
-                          <mat-option value="05">May {{year}}</mat-option>
-                          <mat-option value="06">Jun {{year}}</mat-option>
-                          <mat-option value="07">Jul {{year}}</mat-option>
-                          <mat-option value="08">Aug {{year}}</mat-option>
-                          <mat-option value="09">Sep {{year}}</mat-option>
-                          <mat-option value="10">Oct {{year}}</mat-option>
-                          <mat-option value="11">Nov {{year}}</mat-option>
-                          <mat-option value="12">Dec {{year}}</mat-option>
-                        </mat-select>
-                      </mat-form-field>
+                      <app-period-selector
+                        (selected)="setMonthAndYear($event)"
+                        [clearAfterSelection]="true"
+                        [exclude]="excludedPeriods"
+                      ></app-period-selector>
                     </td>
                     <td *ngIf="!group.track_contribution_period">
                       <mat-form-field appearance="outline">
@@ -120,7 +77,7 @@
                     <td colspan="2"></td>
                   </tr>
                   <tr *ngIf="monthsDatas.length > 0">
-                    <th style="text-align: right" [attr.colspan]="group.track_contribution_period ? 2 : 1">
+                    <th style="text-align: right">
                       Total
                     </th>
                     <th *ngFor="let contr of contributionTypes">

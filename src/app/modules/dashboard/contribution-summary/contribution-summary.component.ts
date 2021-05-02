@@ -38,7 +38,7 @@ export class ContributionSummaryComponent implements OnInit {
   getData() {
     const memberId = this.member ? this.member.id : 'All';
     this.totalContributionOnly$ = this.store.pipe(select(paymentSelector.selectTotalPaymentByYear(this.year, 'All', memberId)));
-    this.contributionTypes$ = this.store.pipe(select(paymentSelector.selectContributionTypeSummary(this.year)));
+    this.contributionTypes$ = this.store.pipe(select(paymentSelector.selectContributionTypeSummary(this.year, memberId)));
   }
 
   setYear(year: any) {

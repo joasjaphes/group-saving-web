@@ -44,6 +44,7 @@ export class AddContributionComponent implements OnInit {
   loading: any;
   year = new Date().getFullYear();
   years = [];
+  period;
   month: string;
   paymentMode: string;
   referenceNumber: string;
@@ -120,7 +121,7 @@ export class AddContributionComponent implements OnInit {
       date: this.commonService.formatDate(this.contributionDate),
       year: this.year,
       month: this.month,
-      period: `${this.year}${this.month}`,
+      period: this.period ?? `${this.year}${this.month}`,
       referenceNumber: this.referenceNumber,
       paymentMode: this.paymentMode,
     };
@@ -167,5 +168,11 @@ export class AddContributionComponent implements OnInit {
       this.fineAmounts = {};
       this.finesToBePaid = [];
     }
+  }
+
+  setPeriod($event: { month: { name: string; id: string }; year: any }) {
+    this.year = $event.year;
+    this.month = $event.month.id;
+    this.period = `${$event.year}${$event.month.id}`;
   }
 }

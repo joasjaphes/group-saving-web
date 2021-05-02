@@ -1,19 +1,4 @@
 <div class="container-fluid" style="max-height: 90vh; overflow-y: auto">
-<!--  <div class="row">-->
-<!--    <div class="col-sm-10">-->
-<!--      <h2 class="registration-title">-->
-<!--&lt;!&ndash;        <img class="title-img" src="assets/images/icons/contribution1.png">&ndash;&gt;-->
-<!--&lt;!&ndash;        <mat-icon>add</mat-icon>&ndash;&gt;-->
-<!--        Add contribution for {{member.name}}-->
-<!--      </h2>-->
-<!--    </div>-->
-<!--    <div class="col-sm-2 pr-0" style="text-align: right">-->
-<!--      <button mat-button (click)="closeDialog()">-->
-<!--        <mat-icon>close</mat-icon>-->
-<!--        <span> Close</span>-->
-<!--      </button>-->
-<!--    </div>-->
-<!--  </div>-->
 
   <div class="row">
     <div class="col-sm-7">
@@ -146,34 +131,12 @@
             <mat-datepicker #endingDate></mat-datepicker>
           </mat-form-field>
         </div>
-        <div class="col-sm-6" *ngIf="group.track_contribution_period" @fadeIn>
-          <!-- Contribution Year-->
-          <mat-form-field appearance="outline">
-            <mat-label>Contribution Year</mat-label>
-            <mat-select [(ngModel)]="year">
-              <mat-option *ngFor="let y of years" [value]="y">{{y}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="col-sm-6" *ngIf="group.track_contribution_period" @fadeIn>
-          <!-- Contribution Month-->
-          <mat-form-field appearance="outline">
-            <mat-label>Contribution Month</mat-label>
-            <mat-select [(ngModel)]="month">
-              <mat-option value="01">Jan {{year}}</mat-option>
-              <mat-option value="02">Feb {{year}}</mat-option>
-              <mat-option value="03">Mar {{year}}</mat-option>
-              <mat-option value="04">Apr {{year}}</mat-option>
-              <mat-option value="05">May {{year}}</mat-option>
-              <mat-option value="06">Jun {{year}}</mat-option>
-              <mat-option value="07">Jul {{year}}</mat-option>
-              <mat-option value="08">Aug {{year}}</mat-option>
-              <mat-option value="09">Sep {{year}}</mat-option>
-              <mat-option value="10">Oct {{year}}</mat-option>
-              <mat-option value="11">Nov {{year}}</mat-option>
-              <mat-option value="12">Dec {{year}}</mat-option>
-            </mat-select>
-          </mat-form-field>
+        <div class="col-sm-12 mb-3" *ngIf="group.track_contribution_period" @fadeIn>
+          <app-period-selector
+          [currentYear]="year"
+          [currentMonth]="month"
+          (selected)="setPeriod($event)"
+          ></app-period-selector>
         </div>
 
         <div [ngClass]="paymentMode == 'Bank Deposit' || paymentMode == 'Mobile Money' ? 'col-sm-6' : 'col-sm-12'"

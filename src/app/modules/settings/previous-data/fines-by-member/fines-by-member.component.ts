@@ -24,6 +24,7 @@ export class FinesByMemberComponent implements OnInit {
   @Input() fineTypes: FineType[];
   @Input() group: Group;
   @Output() closeForm = new EventEmitter();
+  excludedPeriods = [];
   membersFines$: Observable<Fine[]>;
   currentMember: Member;
   years = [];
@@ -36,9 +37,7 @@ export class FinesByMemberComponent implements OnInit {
   totals = {};
   contributionDate: any;
   grandTotal = 0;
-  contributionTotal = {};
   loading: any;
-  startingMonth: any;
 
   constructor(
     private commonService: CommonService,
@@ -90,7 +89,7 @@ export class FinesByMemberComponent implements OnInit {
     try {
       const fines = {};
       this.monthsDatas.push({
-        id: this.commonService.makeid(),
+        id: this.commonService.makeId(),
         year: this.year,
         month: this.month,
         date: this.commonService.formatDate(new Date(`${this.year}-${this.month}-01`)),
@@ -117,7 +116,7 @@ export class FinesByMemberComponent implements OnInit {
     //   }
     // });
     this.monthsDatas.push({
-      id: this.commonService.makeid(),
+      id: this.commonService.makeId(),
       year: '',
       month: '',
       memberId: this.memberId,
@@ -188,7 +187,7 @@ export class FinesByMemberComponent implements OnInit {
   setMonthAndYear($event: { month: {id: string, name: string}, year: any }) {
     const fines = {};
     this.monthsDatas.push({
-      id: this.commonService.makeid(),
+      id: this.commonService.makeId(),
       year: $event.year,
       month: $event.month.id,
       period: `${$event.year}${$event.month.id}`,
@@ -198,6 +197,7 @@ export class FinesByMemberComponent implements OnInit {
       hasFine: {},
       total: 0,
     });
+    this.excludedPeriods = this.monthsDatas.map(i => i.period);
     this.year = null;
     this.month = null;
     this.calculateTotal();

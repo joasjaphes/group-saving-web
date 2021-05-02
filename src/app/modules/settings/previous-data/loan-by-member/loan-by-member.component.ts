@@ -149,7 +149,7 @@ export class LoanByMemberComponent implements OnInit {
 
   async save() {
     const savedValues = {
-      loanId: this.loanId ? this.loanId : this.commonService.makeid(),
+      loanId: this.loanId ? this.loanId : this.commonService.makeId(),
       groupId: this.group.id,
       memberId: this.memberId,
       return_amount: this.returnAmount,
@@ -202,31 +202,6 @@ export class LoanByMemberComponent implements OnInit {
     }
   }
 
-  setNewMonth($event: MatSelectChange) {
-    let amount = null;
-    if (this.currentLoanType.pay_same_amount_is_must) {
-      amount = this.amountPerReturn;
-    }
-    this.payments.push({
-      id: this.commonService.makeid(),
-      year: this.year,
-      month: this.month,
-      period: `${this.year}${this.month}`,
-      date: this.commonService.formatDate(new Date(`${this.year}-${this.month}-01`)),
-      memberId: this.memberId,
-      amount
-    });
-    this.year = null;
-    this.month = null;
-    if (this.payments.length > 0) {
-      setTimeout(() => {
-        this.year = this.payments[this.payments.length - 1].year;
-      }, 100);
-    }
-    this.preparePayments(this.payments);
-    this.calculateTotal();
-  }
-
   setDate() {
     let amount = null;
     if (this.currentLoanType.pay_same_amount_is_must) {
@@ -241,7 +216,7 @@ export class LoanByMemberComponent implements OnInit {
     const year = new Date(this.contributionDate).getFullYear();
     const month = (monthData + '').length === 1 ? '0' + monthData : monthData + '';
     this.payments.push({
-      id: this.commonService.makeid(),
+      id: this.commonService.makeId(),
       year,
       month,
       week: '',
@@ -300,7 +275,7 @@ export class LoanByMemberComponent implements OnInit {
       amount = this.amountPerReturn;
     }
     this.payments.push({
-      id: this.commonService.makeid(),
+      id: this.commonService.makeId(),
       year: $event.year,
       month: $event.month.id,
       period: `${$event.year}${$event.month.id}`,

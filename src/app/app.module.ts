@@ -96,6 +96,9 @@ import { ExpenseSummaryComponent } from './modules/dashboard/expense-summary/exp
 import { LeadershipSummaryComponent } from './modules/dashboard/leadership-summary/leadership-summary.component';
 import { UpcomingContributionSummaryComponent } from './modules/dashboard/upcomming-contribution-summary/upcoming-contribution-summary.component';
 import { LoanQueueSummaryComponent } from './modules/dashboard/loan-queue-summary/loan-queue-summary.component';
+import { MonthExportComponent } from './modules/summary/export-data/month-export/month-export.component';
+import { LoanExportComponent } from './modules/summary/export-data/loan-export/loan-export.component';
+import { ContributionExportComponent } from './modules/summary/export-data/contribution-export/contribution-export.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -188,7 +191,10 @@ const firebaseConfig = {
     ExpenseSummaryComponent,
     LeadershipSummaryComponent,
     UpcomingContributionSummaryComponent,
-    LoanQueueSummaryComponent
+    LoanQueueSummaryComponent,
+    MonthExportComponent,
+    LoanExportComponent,
+    ContributionExportComponent
   ],
   imports: [
     BrowserModule,

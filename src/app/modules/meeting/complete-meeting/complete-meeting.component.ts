@@ -56,7 +56,7 @@ export class CompleteMeetingComponent implements OnInit {
 
   async save() {
     const dataToSave = {
-      id: this.currentMeeting ? this.currentMeeting.id : this.commonService.makeid(),
+      id: this.currentMeeting ? this.currentMeeting.id : this.commonService.makeId(),
       groupId: this.group.id,
       date: this.commonService.formatDate(this.meetingDate),
       place: this.meetingPlace,

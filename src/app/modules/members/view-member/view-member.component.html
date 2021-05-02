@@ -1,49 +1,54 @@
-<!--<div class="row" *ngIf="false">-->
-<!--  <div class="col-sm-12 menu-grid">-->
-<!--    <div class="img-div">-->
-<!--      <h1 style="font-size: 40px; color: white" class="registration-title">-->
-<!--        {{member?.name[0]}}-->
-<!--      </h1>-->
-<!--    </div>-->
-<!--    <div>-->
-<!--      <h2 class="registration-title mb-1">{{member?.name}}</h2>-->
-<!--      <p class="lead">{{member?.phone_number}}</p>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
-<div class="dashboard-grid">
+<div class="first-dashboard-grid">
   <div [ngClass]="routeAnimationsElements">
-    <!--        <h3 class="registration-title">Contributions</h3>-->
-    <app-collection-summary [member]="member" ></app-collection-summary>
-  </div>
-  <div [ngClass]="routeAnimationsElements" class="other-summary">
-    <div style="display: grid;justify-content: center">
-      <div class="img-area mb-4">
-        <h1 class="registration-title">{{member?.name[0]}}</h1>
-      </div>
-      <h3 class="registration-title" style="text-align: center; font-size: 30px">{{member?.name}}</h3>
-      <h5 class="registration-title" style="text-align: center; font-size:  20px; color: #ffffffba">{{member?.phone_number}}</h5>
-    </div>
-
-    <!--        <h3 class="registration-title">More</h3>-->
-<!--    <app-other-summary [member]="member" [group]="group"></app-other-summary>-->
+    <app-contribution-summary [member]="member"></app-contribution-summary>
   </div>
   <div [ngClass]="routeAnimationsElements">
-    <!--        <h3 class="registration-title">Active loans</h3>-->
-    <app-loan-summary [member]="member"  [group]="group"></app-loan-summary>
+    <app-loan-summary  [member]="member"  [group]="group"></app-loan-summary>
   </div>
-
-  <div [ngClass]="routeAnimationsElements" class="content-area">
-    <h3 class="registration-title">Contribution</h3>
-    <div *ngIf="payments$ | async">
-      <div *ngFor="let contr of (payments$ | async).items">
-        <p class="mb-0" style="color: #ffffff8a">{{contr.name}}</p>
-        <h1 class="registration-title">{{contr.amount | number}}</h1>
-      </div>
-
-    </div>
-    <h1 class="text-muted text-center mt-4" *ngIf="!(payments$ | async)">There are no contributions</h1>
-
+  <div [ngClass]="routeAnimationsElements">
+    <app-fine-summary
+      [member]="member"  [group]="group"
+    ></app-fine-summary>
+  </div>
+  <div [ngClass]="routeAnimationsElements">
+    <app-expense-summary
+      [member]="member"  [group]="group"
+    ></app-expense-summary>
   </div>
 </div>
+
+<!--<div class="dashboard-grid">-->
+<!--  <div [ngClass]="routeAnimationsElements">-->
+<!--    &lt;!&ndash;        <h3 class="registration-title">Contributions</h3>&ndash;&gt;-->
+<!--    <app-collection-summary [member]="member" ></app-collection-summary>-->
+<!--  </div>-->
+<!--  <div [ngClass]="routeAnimationsElements" class="other-summary">-->
+<!--    <div style="display: grid;justify-content: center">-->
+<!--      <div class="img-area mb-4">-->
+<!--        <h1 class="registration-title">{{member?.name[0]}}</h1>-->
+<!--      </div>-->
+<!--      <h3 class="registration-title" style="text-align: center; font-size: 30px">{{member?.name}}</h3>-->
+<!--      <h5 class="registration-title" style="text-align: center; font-size:  20px; color: #ffffffba">{{member?.phone_number}}</h5>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash;        <h3 class="registration-title">More</h3>&ndash;&gt;-->
+<!--&lt;!&ndash;    <app-other-summary [member]="member" [group]="group"></app-other-summary>&ndash;&gt;-->
+<!--  </div>-->
+<!--  <div [ngClass]="routeAnimationsElements">-->
+<!--    &lt;!&ndash;        <h3 class="registration-title">Active loans</h3>&ndash;&gt;-->
+<!--    <app-loan-summary [member]="member"  [group]="group"></app-loan-summary>-->
+<!--  </div>-->
+
+<!--  <div [ngClass]="routeAnimationsElements" class="content-area">-->
+<!--    <h3 class="registration-title">Contribution</h3>-->
+<!--    <div *ngIf="payments$ | async">-->
+<!--      <div *ngFor="let contr of (payments$ | async).items">-->
+<!--        <p class="mb-0" style="color: #ffffff8a">{{contr.name}}</p>-->
+<!--        <h1 class="registration-title">{{contr.amount | number}}</h1>-->
+<!--      </div>-->
+
+<!--    </div>-->
+<!--    <h1 class="text-muted text-center mt-4" *ngIf="!(payments$ | async)">There are no contributions</h1>-->
+
+<!--  </div>-->
+<!--</div>-->

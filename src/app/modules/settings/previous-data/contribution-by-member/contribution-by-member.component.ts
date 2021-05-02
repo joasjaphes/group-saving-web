@@ -24,6 +24,7 @@ export class ContributionByMemberComponent implements OnInit {
   @Output() closeForm = new EventEmitter();
 
   currentMember: Member;
+  excludedPeriods = [];
   years = [];
   memberId;
   searchMembers;
@@ -36,7 +37,6 @@ export class ContributionByMemberComponent implements OnInit {
   grandTotal = 0;
   contributionTotal = {};
   loading: any;
-  visible = 'enterData';
 
   memberContributions$: Observable<Payment[]>;
 
@@ -48,44 +48,7 @@ export class ContributionByMemberComponent implements OnInit {
     this.memberContributions$ = this.store.pipe(select(paymentSelector.selectContributionOnlyByMember(this.memberId)));
   }
 
-  ngOnInit(): void {
-    this.generateYears();
-  }
-
-  generateYears() {
-    this.years = [];
-    const currentYear = new Date().getFullYear();
-    for (let i = -5; i < 10; i++) {
-      this.years.push(currentYear + i);
-    }
-  }
-
-  setNewMonth(event: any) {
-    try {
-      const contributions = {};
-      this.contributionTypes.forEach(contr => {
-        if (contr.is_fixed && contr.is_must) {
-          contributions[contr.id] = contr.fixed_value;
-        }
-      });
-      this.monthsDatas.push({
-        id: this.commonService.makeid(),
-        year: this.year,
-        month: this.month,
-        date: this.commonService.formatDate(new Date(`${this.year}-${this.month}-01`)),
-        memberId: this.memberId,
-        contributions,
-        total: 0,
-      });
-      this.year = null;
-      this.month = null;
-      event.value = '';
-      this.calculateTotal();
-    } catch (e) {
-      console.error(e);
-    }
-
-  }
+  ngOnInit(): void {}
 
   setDate() {
     const contributions = {};
@@ -95,7 +58,7 @@ export class ContributionByMemberComponent implements OnInit {
       }
     });
     this.monthsDatas.push({
-      id: this.commonService.makeid(),
+      id: this.commonService.makeId(),
       year: '',
       month: '',
       memberId: this.memberId,
@@ -179,6 +142,27 @@ export class ContributionByMemberComponent implements OnInit {
 
   onClose() {
     this.closeForm.emit();
+  }
+
+  setMonthAndYear($event: { month: {id: string, name: string}, year: any }) {
+    const contributions = {};
+    this.contributionTypes.forEach(contr => {
+      if (contr.is_fixed && contr.is_must) {
+        contributions[contr.id] = contr.fixed_value;
+      }
+    });
+    this.monthsDatas.push({
+      id: this.commonService.makeId(),
+      year: $event.year,
+      month: $event.month.id,
+      period: `${$event.year}${$event.month.id}`,
+      date: this.commonService.formatDate(new Date(`${$event.year}-${$event.month.id}-01`)),
+      memberId: this.memberId,
+      contributions,
+      total: 0,
+    });
+    this.excludedPeriods = this.monthsDatas.map(i => i.period);
+    this.calculateTotal();
   }
 
 }

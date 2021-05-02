@@ -1,39 +1,36 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {CommonService} from '../../../services/common.service';
-import {select, Store} from '@ngrx/store';
-import {ApplicationState} from '../../../store';
+import {LoanType} from '../../../../store/loan-type/loan-type.model';
+import {ContributionType} from '../../../../store/contribution-type/contribution-type.model';
 import {Observable} from 'rxjs';
-import {ContributionType} from '../../../store/contribution-type/contribution-type.model';
-import * as contributionTypeSelector from '../../../store/contribution-type/contribution-type.selectors';
-import {LoanType} from '../../../store/loan-type/loan-type.model';
-import * as loanTypeSelector from '../../../store/loan-type/loan-type.selectors';
-import {fadeIn} from '../../../shared/animations/router-animation';
-import {ExcelDownloadService} from '../../../services/excel-download.service';
-import {Loan} from '../../../store/loan/loan.model';
+import {Loan} from '../../../../store/loan/loan.model';
+import {CommonService} from '../../../../services/common.service';
+import {select, Store} from '@ngrx/store';
+import {ApplicationState} from '../../../../store';
+import {ExcelDownloadService} from '../../../../services/excel-download.service';
+import * as contributionTypeSelector from '../../../../store/contribution-type/contribution-type.selectors';
+import * as loanTypeSelector from '../../../../store/loan-type/loan-type.selectors';
 import {MatSelectChange} from '@angular/material/select';
 import {first} from 'rxjs/operators';
-import {selectLoansActiveBetweenDates} from '../../../store/loan/loan.selectors';
-import {selectContributionMemberMonthSummary} from '../../../store/payment/payment.selectors';
+import {selectLoansActiveBetweenDates} from '../../../../store/loan/loan.selectors';
+import {selectContributionMemberMonthSummary} from '../../../../store/payment/payment.selectors';
+import {fadeIn} from '../../../../shared/animations/router-animation';
 
 @Component({
-  selector: 'app-export-data',
-  templateUrl: './export-data.component.html',
-  styleUrls: ['./export-data.component.scss'],
+  selector: 'app-loan-export',
+  templateUrl: './loan-export.component.html',
+  styleUrls: ['./loan-export.component.scss'],
   animations: [fadeIn]
 })
-export class ExportDataComponent implements OnInit {
+export class LoanExportComponent implements OnInit {
 
   startDate;
   endDate;
   type: string;
   loanType = 'All';
-  contributionType = 'All';
   selectedLoanType: LoanType;
-  selectedContributionType: ContributionType;
   months: { id: string, name: string }[] = [];
   memberData$: Observable<any[]>;
   loanData$: Observable<Loan[]>;
-  contributionTypes$: Observable<ContributionType[]>;
   loanTypes$: Observable<LoanType[]>;
   dateReady = false;
   monthTotals = {};
@@ -43,7 +40,6 @@ export class ExportDataComponent implements OnInit {
   basicTotals = 0;
   interestTotals = 0;
   title = 'Summary';
-  summaryType = 'Contribution';
   @ViewChild('dataTable') dataTable: ElementRef;
   showPhoneNumber = false;
 
@@ -52,7 +48,6 @@ export class ExportDataComponent implements OnInit {
     private store: Store<ApplicationState>,
     private excelService: ExcelDownloadService,
   ) {
-    this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectDetailed));
     this.loanTypes$ = this.store.pipe(select(loanTypeSelector.selectDetailed));
   }
 
@@ -66,32 +61,6 @@ export class ExportDataComponent implements OnInit {
     } else {
       this.selectedLoanType = loanTypes.find(i => i.id === $event.value);
     }
-  }
-
-  async setContributionType($event: MatSelectChange) {
-    const items = await this.contributionTypes$.pipe(first()).toPromise();
-    if ($event.value === 'All') {
-      this.selectedContributionType = null;
-    } else {
-      this.selectedContributionType = items.find(i => i.id === $event.value);
-    }
-  }
-
-  calculateMonthTotal(memberData: any[]) {
-    this.overAllTotals = 0;
-    const monthTotals = {};
-    for (const member of memberData) {
-      this.overAllTotals += member.total;
-    }
-    for (const month of this.months) {
-      monthTotals[month.id] = 0;
-      for (const member of memberData) {
-        if (member.memberMonth && member.memberMonth[month.id]) {
-          monthTotals[month.id] += member.memberMonth[month.id];
-        }
-      }
-    }
-    this.monthTotals = monthTotals;
   }
 
   calculateLoanMonthTotal(memberData: Loan[]) {
@@ -116,13 +85,8 @@ export class ExportDataComponent implements OnInit {
   }
 
   setTitle() {
-    if (this.type === 'Contribution') {
-      const contrName = this.selectedContributionType ? ' - ' + this.selectedContributionType.name : '';
-      this.title = 'Contribution Summary ' + contrName;
-    } else if (this.type === 'Loan') {
-      const loanName = this.selectedLoanType ? ' - ' + this.selectedLoanType.name : '';
-      this.title = 'Loan Summary ' + loanName;
-    }
+    const loanName = this.selectedLoanType ? ' - ' + this.selectedLoanType.name : '';
+    this.title = 'Loan Summary ' + loanName;
   }
 
   getData() {
@@ -146,16 +110,13 @@ export class ExportDataComponent implements OnInit {
     this.loanData$ = this.store.pipe(select(selectLoansActiveBetweenDates(startDate, endDate, months, this.loanType)));
     this.loanData$.subscribe(i => this.calculateLoanMonthTotal(i));
     this.setTitle();
-    this.memberData$ = this.store.pipe(select(selectContributionMemberMonthSummary(months, this.contributionType)));
-    this.memberData$.subscribe(i => this.calculateMonthTotal(i));
-
     this.dateReady = true;
   }
 
   downloadExcel() {
     this.excelService.download1(
-      this.type === 'Loan' ? 'Loan Summary' : 'Contribution Summary',
-      this.dataTable.nativeElement
+      'Loan Summary', this.dataTable.nativeElement
     );
   }
+
 }

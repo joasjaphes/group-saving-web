@@ -22,29 +22,28 @@
 
   <div [ngClass]="{ hideData: !isOpen }" class="dropdownField">
     <div class="year-area">
-      <div (click)="addCurrentYear()"  class="arrows" style="text-align: start">
-        << Prev
+      <div class="arrows" style="text-align: start">
+        <div [ngClass]="{'hidden': !(!minYear || (minYear && currentYear > minYear))}" (click)="reduceCurrentYear()" >
+          << Prev
+        </div>
       </div>
+
       <div  style="text-align: center">
-<!--        <button mat-button [matMenuTriggerFor]="menu">-->
-<!--          {{currentYear}}-->
-<!--          <mat-icon style="color: white;">arrow_drop_down</mat-icon>-->
-<!--        </button>-->
-<!--        <mat-menu #menu="matMenu">-->
-<!--          <button (click)="selectYear(year, $event)" mat-menu-item *ngFor="let year of years">{{year}}</button>-->
-<!--        </mat-menu>-->
         {{currentYear}}
       </div>
-      <div  class="arrows"  (click)="reduceCurrentYear()"  style="text-align: end">Next >></div>
+      <div  class="arrows"  (click)="addCurrentYear()"  style="text-align: end">Next >></div>
     </div>
     <div class="month-area">
       <mat-list>
-        <mat-list-item
-          class="cursor zoom-on-hover"
-          *ngFor="let month of months"
-          (click)="setSelectedPeriod(month)"
-        > {{month.name}} {{currentYear}}
-        </mat-list-item>
+        <ng-container *ngFor="let month of usedMonths">
+          <mat-list-item
+            class="cursor zoom-on-hover in-active-month"
+            [ngClass]="{'active-month': month.name + ' ' + this.currentYear == selectedPeriod}"
+            (click)="setSelectedPeriod(month)"
+          > {{month.name}} {{currentYear}}
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        </ng-container>
       </mat-list>
     </div>
   </div>

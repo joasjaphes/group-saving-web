@@ -91,7 +91,7 @@ export class StartingContributionTypeComponent implements OnInit {
 
   async sendData() {
     const dataToSave = {
-      id: this.currentContributionType ? this.currentContributionType.id : this.commonService.makeid(),
+      id: this.currentContributionType ? this.currentContributionType.id : this.commonService.makeId(),
       groupId: this.group.id,
       name: this.name,
       frequency: this.frequency,

@@ -1,7 +1,7 @@
 .inner-grid {
   display: grid;
   grid-template-columns: 40px auto;
-  grid-gap: 40px;
+  grid-gap: 30px;
   align-content: center;
   //padding-left: 55px;
   padding-top: 10px;
@@ -9,7 +9,7 @@
   .icon-area {
     background-color: #1d1e42;
     border-radius: 20px;
-    padding: 16px 0 9px 5px;
+    padding: 40px 0 29px 5px;
     width: 50px;
   }
   mat-icon {
@@ -53,20 +53,22 @@
 .inner1-grid {
   //padding-left: 55px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   align-content: center;
-  margin-top: 15px;
+  margin-top: -60px;
+  margin-left: 70px;
   .inner1-item-grid {
     display: grid;
     grid-template-columns: 30px auto;
     align-content: center;
+    margin-bottom: 5px;
 
     p {
-      margin-bottom: 0px;
-      font-size: 12px;
+      margin-bottom: 0;
+      font-size: 13px;
     }
     h1 {
-      font-size: 18px;
+      font-size: 20px;
       margin-bottom: 0;
     }
 
@@ -80,7 +82,7 @@
 }
 
 .justify-end {
-  justify-content: end;
+  //justify-content: end;
 }
 
 .green {
