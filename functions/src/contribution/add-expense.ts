@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as helpers from '../helpers';
 import * as admin from 'firebase-admin';
+import {ExpenseModel, SingleExpenseModel} from '../data-models/expense.model';
 
 const cors = require('cors')({origin: true});
 
@@ -41,11 +42,23 @@ export const createExpense = functions.https.onRequest((request, response) => {
           }
         }
         const expense: any = prepareExpenseDetails(data, last_update);
-        const expenseRef = admin.firestore().doc(`groups/${data.groupId}/expense/${expense.id}`);
-        transaction.update(groupDocRef, { ...groupData , last_update});
-        transaction.set(expenseRef, {...expense, last_update});
+        const expenseRef = admin.firestore().doc(`groups/${data.groupId}/expense/${data.groupId}_${expense.year}`);
+        const expenseDoc = await transaction.get(expenseRef);
+        const existingExpense: ExpenseModel = expenseDoc.exists ? expenseDoc.data() as ExpenseModel : {
+          id: `${data.groupId}_${expense.year}`,
+          group_id: data.groupId,
+          year: expense.year,
+          expenses: {},
+        };
+        existingExpense.expenses[expense.id] = expense;
+        if (contrType && contrType.track_balance) {
+          transaction.update(groupDocRef, { ...groupData , last_update});
+          transaction.set(otherUpdateAtRef, {
+            group_updated: last_update,
+          }, {merge: true});
+        }
+        transaction.set(expenseRef, {...existingExpense, last_update});
         transaction.set(otherUpdateAtRef, {
-          group_updated: last_update,
           expense_updated: last_update,
         }, {merge: true});
       });
@@ -58,7 +71,7 @@ export const createExpense = functions.https.onRequest((request, response) => {
 
 });
 
-function prepareExpenseDetails(data: any, last_update: any) {
+function prepareExpenseDetails(data: any, last_update: any): SingleExpenseModel {
   return {
     id: data.id,
     group_id: data.groupId,
@@ -71,6 +84,6 @@ function prepareExpenseDetails(data: any, last_update: any) {
     is_active: true,
     associated_member_id: data.memberId ? data.memberId : null,
     additional_config: {},
-    year: helpers.getYear(data.date),
+    year: helpers.getYear(data.date) + '',
   };
 }
