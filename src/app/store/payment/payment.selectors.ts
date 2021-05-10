@@ -148,7 +148,6 @@ export const selectDetailedGroupByMonth = (year) => createSelector(
       allItems
         .filter(item => item.month + '' === month.key && item.year + '' === year + '')
         .forEach(item => {
-          console.log({item});
           monthData[key].total += parseFloat(item.totalContributions + '');
           for (const contr of item.contributionsDetails) {
             if (monthData[key].totals[contr.contr_id]) {
@@ -397,7 +396,7 @@ export const selectContributionMemberMonthSummary = (months: string[], contribut
   }
 );
 
-export const selecteExpectedCollection = (period: string) => createSelector(
+export const selectExpectedCollection = (period: string) => createSelector(
   fromContributionTypes.selectRepeating,
   fromLoan.selectAll,
   fromMember.selectAll,

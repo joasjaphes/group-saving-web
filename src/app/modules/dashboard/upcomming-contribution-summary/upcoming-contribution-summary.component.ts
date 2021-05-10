@@ -60,7 +60,7 @@ export class UpcomingContributionSummaryComponent implements OnInit {
 
   getData() {
     const memberId = this.member ? this.member.id : 'All';
-    this.expected$ = this.store.pipe(select(paymentSelector.selecteExpectedCollection(this.period)));
+    this.expected$ = this.store.pipe(select(paymentSelector.selectExpectedCollection(this.period)));
   }
 
   setYear(year: any) {
