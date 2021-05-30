@@ -3,6 +3,7 @@ import {ContributionType} from '../contribution-type/contribution-type.model';
 import {LoanType} from '../loan-type/loan-type.model';
 import {LoanQueue} from '../loan-queue/loan-queue.model';
 import {Member} from '../member/member.model';
+import {SharePeriod} from '../share-period/share-period.model';
 
 export interface Group {
   id: string;
@@ -70,6 +71,7 @@ export interface Group {
   chairpersonDetails?: Member;
   secretaryDetails?: Member;
   treasuryDetails?: Member;
+  share_periods?: SharePeriod[];
   share_start_date: any;
   share_end_date: any;
 }

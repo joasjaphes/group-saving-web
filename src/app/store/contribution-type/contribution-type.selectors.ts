@@ -22,11 +22,11 @@ export const selected = createSelector(
 );
 
 export const selectedWithLoan = createSelector(
-  selectAll, (allItems, id) => allItems.filter(i => i.allow_loan)
+  selectAll, (allItems) => allItems.filter(i => i.allow_loan)
 );
 
 export const selectRepeating = createSelector(
-  selectAll, (allItems, id) => allItems.filter(i => !i.is_one_time_contribution)
+  selectAll, (allItems) => allItems.filter(i => !i.is_one_time_contribution)
 );
 
 export const selectDetailed = createSelector(

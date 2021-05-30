@@ -23,6 +23,7 @@ import {addCurrentUser} from './store/user/user.actions';
 export class AppComponent implements OnInit, AfterViewInit {
 
   fetchData = true;
+  title = 'kikoba-web';
 
   constructor(
     updates: SwUpdate,

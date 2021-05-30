@@ -413,7 +413,7 @@ export const selectExpectedCollection = (period: string) => createSelector(
         totalExpected += i.fixed_value * members.length;
         return {name: i.name, value: i.minimum_contribution * members.length};
       } else {
-        return '';
+        return null;
       }
     }).filter(i => !!i);
     totalExpected += totalLoan;

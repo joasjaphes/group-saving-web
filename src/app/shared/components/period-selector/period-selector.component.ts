@@ -163,7 +163,13 @@ export class PeriodSelectorComponent implements OnInit, OnChanges {
       this.selectedPeriod = '';
     }
   }
+
+  clear() {
+    this.selectedPeriod = '';
+  }
 }
+
+
 
 //
 // function getWeekPeriodsInYear(year) {

@@ -34,8 +34,7 @@ export const setShareTimeline = functions.https.onRequest((request, response) =>
         transaction.update(groupDocRef, {
           ...groupData,
           last_update,
-          share_start_date: data.startDate,
-          share_end_date: data.endDate,
+          share_periods: data.dates,
         });
         transaction.set(otherUpdateAtRef, { group_updated: last_update }, {merge: true});
       });

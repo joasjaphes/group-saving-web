@@ -34,6 +34,7 @@ import * as fromPayment from './payment/payment.reducer';
 import * as fromPaymentItem from './payment-item/payment-item.reducer';
 import * as fromShareDividend from './share-dividend/share-dividend.reducer';
 import * as fromShareDividendMember from './share-dividend-member/share-dividend-member.reducer';
+import * as fromSharePeriod from './share-period/share-period.reducer';
 import * as fromLoginSteps from './login-steps/login-steps.reducer';
 import * as fromRouter from '@ngrx/router-store';
 import {RouterStateUrl} from './router/router.reducer';
@@ -68,6 +69,7 @@ export interface ApplicationState {
   [fromMemberBalance.memberBalancesFeatureKey]: fromMemberBalance.State;
   [fromMemberGroup.memberGroupsFeatureKey]: fromMemberGroup.State;
   [fromMemberShare.memberSharesFeatureKey]: fromMemberShare.State;
+  [fromSharePeriod.sharePeriodsFeatureKey]: fromSharePeriod.State;
   [fromPayment.paymentsFeatureKey]: fromPayment.State;
   [fromPaymentItem.paymentItemsFeatureKey]: fromPaymentItem.State;
   [fromShareDividend.shareDividendsFeatureKey]: fromShareDividend.State;
@@ -103,6 +105,7 @@ export const reducers: ActionReducerMap<ApplicationState> = {
   [fromMemberBalance.memberBalancesFeatureKey]: fromMemberBalance.reducer,
   [fromMemberGroup.memberGroupsFeatureKey]: fromMemberGroup.reducer,
   [fromMemberShare.memberSharesFeatureKey]: fromMemberShare.reducer,
+  [fromSharePeriod.sharePeriodsFeatureKey]: fromSharePeriod.reducer,
   [fromPayment.paymentsFeatureKey]: fromPayment.reducer,
   [fromPaymentItem.paymentItemsFeatureKey]: fromPaymentItem.reducer,
   [fromShareDividend.shareDividendsFeatureKey]: fromShareDividend.reducer,

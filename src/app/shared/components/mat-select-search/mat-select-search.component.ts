@@ -53,9 +53,11 @@ export class MatSelectSearchComponent
   /** Reference to the search input field */
   @ViewChild('searchSelectInput', { read: ElementRef, static: true })
   searchSelectInput: ElementRef;
+  // tslint:disable-next-line:variable-name
   private _value: string;
 
   /** Reference to the MatSelect options */
+    // tslint:disable-next-line:variable-name
   public _options: QueryList<MatOption>;
 
   // Previously selected values when using <mat-select [multiple]='true'>*/
@@ -68,10 +70,11 @@ export class MatSelectSearchComponent
   private change = new EventEmitter<string>();
 
   /** Subject that emits when the component has been destroyed. */
+    // tslint:disable-next-line:variable-name
   private _onDestroy = new Subject<void>();
 
-  onChange: Function = (_: any) => {};
-  onTouched: Function = (_: any) => {};
+  onChange = (_: any) => {};
+  onTouched = (_: any) => {};
 
   ngOnInit() {
     // set custom panel class
@@ -167,14 +170,14 @@ export class MatSelectSearchComponent
 
   onBlur(value: string) {
     this.writeValue(value);
-    this.onTouched();
+    this.onTouched(value);
   }
 
-  registerOnChange(fn: Function) {
+  registerOnChange(fn: (_: any) => void) {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: Function) {
+  registerOnTouched(fn: (_: any) => void) {
     this.onTouched = fn;
   }
 
@@ -218,21 +221,21 @@ export class MatSelectSearchComponent
    * so that the selected option is at the position of the select box when opening
    */
   private setOverlayClass() {
-    if (this.overlayClassSet) {
-      return;
-    }
-    const overlayClass = 'cdk-overlay-pane-select-search';
-
-    this.matSelect.overlayDir.attach
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        // note: this is hacky, but currently there is no better way to do this
-        this.searchSelectInput.nativeElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add(
-          overlayClass
-        );
-      });
-
-    this.overlayClassSet = true;
+    // if (this.overlayClassSet) {
+    //   return;
+    // }
+    // const overlayClass = 'cdk-overlay-pane-select-search';
+    //
+    // this.matSelect._overlayPanelClass.add().attach
+    //   .pipe(takeUntil(this._onDestroy))
+    //   .subscribe(() => {
+    //     // note: this is hacky, but currently there is no better way to do this
+    //     this.searchSelectInput.nativeElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add(
+    //       overlayClass
+    //     );
+    //   });
+    //
+    // this.overlayClassSet = true;
   }
 
   /**

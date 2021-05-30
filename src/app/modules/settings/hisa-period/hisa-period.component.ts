@@ -1,8 +1,10 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, ViewChild} from '@angular/core';
 import {Group} from '../../../store/group/group.model';
 import {CommonService} from '../../../services/common.service';
 import {FunctionsService} from '../../../services/functions.service';
 import {fadeIn} from '../../../shared/animations/router-animation';
+import {PeriodSelectorComponent} from '../../../shared/components/period-selector/period-selector.component';
+import {SharePeriod} from '../../../store/share-period/share-period.model';
 
 @Component({
   selector: 'app-hisa-period',
@@ -18,6 +20,13 @@ export class HisaPeriodComponent implements OnInit {
   currentStartDate: any;
   distributionDate: any;
   loading = false;
+  dates: SharePeriod[] = [];
+  startMonth;
+  startMonthDetailed: { month: {id: string, name: string}, year: any };
+  endMonthDetailed: { month: {id: string, name: string}, year: any };
+  endMonth;
+  @ViewChild('startMonthSelector') startMonthSelector: PeriodSelectorComponent;
+  @ViewChild('endMonthSelector') endMonthSelector: PeriodSelectorComponent;
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
@@ -25,8 +34,7 @@ export class HisaPeriodComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.group) {
-      this.currentStartDate = this.group.share_start_date;
-      this.distributionDate = this.group.share_end_date;
+      this.dates = this.group.share_periods;
     }
   }
 
@@ -37,8 +45,7 @@ export class HisaPeriodComponent implements OnInit {
   async save() {
     const dataToSave = {
       groupId: this.group.id,
-      startDate: this.commonService.formatDate(this.currentStartDate),
-      endDate: this.commonService.formatDate(this.distributionDate),
+      dates: this.dates,
     };
     this.loading = true;
     try {
@@ -53,4 +60,42 @@ export class HisaPeriodComponent implements OnInit {
     }
   }
 
+  addPeriod() {
+    const dataToSave: SharePeriod = {
+      id: this.commonService.makeId(),
+      isCurrent: false,
+      startMonth: this.startMonth,
+      endMonth: this.endMonth,
+      start: this.startMonthDetailed,
+      end: this.endMonthDetailed,
+    };
+    this.dates.push(dataToSave);
+    this.startMonthSelector.clear();
+    this.endMonthSelector.clear();
+    this.startMonth = '';
+    this.endMonth = '';
+    this.startMonthDetailed = null;
+    this.endMonthDetailed = null;
+  }
+
+  isCurrentPeriod(date: SharePeriod): boolean {
+    const start = new Date(`${date.start.year}-${date.start.month.id}-01`);
+    const end = new Date(`${date.end.year}-${date.end.month.id}-01`);
+    const today = new Date();
+    return today > start && today < end;
+  }
+
+  deleteDate(date: any) {
+    this.dates = this.dates.filter(i => i.id !== date.id);
+  }
+
+  setStartMonthAndYear($event: { month: {id: string, name: string}, year: any }) {
+    this.startMonth = `${$event.year}${$event.month.id}`;
+    this.startMonthDetailed = $event;
+  }
+
+  setEndMonthAndYear($event: { month: {id: string, name: string}, year: any }) {
+    this.endMonth = `${$event.year}${$event.month.id}`;
+    this.endMonthDetailed = $event;
+  }
 }

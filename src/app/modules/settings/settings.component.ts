@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {fadeIn, ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
+import {fadeIn} from '../../shared/animations/router-animation';
 import {select, Store} from '@ngrx/store';
 import {ApplicationState} from '../../store';
 import {Observable} from 'rxjs';

@@ -15,7 +15,7 @@ export class AngularIndexedDB {
       const request = this.utils.indexedDB.open(this.dbWrapper.dbName, version);
       request.onsuccess = e => {
         self.dbWrapper.db = request.result;
-        resolve();
+        resolve(e);
       };
 
       request.onerror = e => {
@@ -40,6 +40,7 @@ export class AngularIndexedDB {
           reject(e);
         },
         complete: (e: Event) => {
+          console.log(e);
         }
       });
       const objectStore = transaction.objectStore(storeName);
@@ -62,6 +63,7 @@ export class AngularIndexedDB {
           reject(e);
         },
         complete: (e: Event) => {
+          console.log(e);
         }
       });
       const objectStore = transaction.objectStore(storeName);
@@ -202,7 +204,7 @@ export class AngularIndexedDB {
           reject(e);
         },
         complete: (e: Event) => {
-          resolve();
+          resolve(e);
         },
         abort: (e: Event) => {
           reject(e);
@@ -226,7 +228,7 @@ export class AngularIndexedDB {
           reject(e);
         },
         complete: (e: Event) => {
-          resolve();
+          resolve(e);
         },
         abort: (e: Event) => {
           reject(e);
@@ -237,7 +239,7 @@ export class AngularIndexedDB {
 
       request.onsuccess = (evt: Event) => {
         cursorCallback(evt);
-        resolve();
+        resolve(evt);
       };
     });
   }
@@ -254,7 +256,7 @@ export class AngularIndexedDB {
           reject(e);
         },
         complete: (e: Event) => {
-          resolve();
+          resolve(e);
         },
         abort: (e: Event) => {
           reject(e);
@@ -262,7 +264,7 @@ export class AngularIndexedDB {
       });
       const objectStore = transaction.objectStore(storeName);
       objectStore.clear();
-      resolve();
+      resolve(null);
     });
   }
 
@@ -281,6 +283,7 @@ export class AngularIndexedDB {
           reject(e);
         },
         complete: (e: Event) => {
+          console.log(e);
         }
       });
       const objectStore = transaction.objectStore(storeName);

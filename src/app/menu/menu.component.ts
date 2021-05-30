@@ -235,6 +235,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
               .filter(i => i !== DataKeys.ContributionType)
               .filter(i => i !== DataKeys.FineType)
               .filter(i => i !== DataKeys.Fine)
+              .filter(i => i !== DataKeys.SharePeriods)
               .filter(i => i !== 'groups');
             for (const storeKey of keysToWorkWith) {
               this.firestoreService.getUpdatedData(
@@ -267,6 +268,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
       .filter(i => i !== DataKeys.ContributionType)
       .filter(i => i !== DataKeys.FineType)
       .filter(i => i !== DataKeys.Fine)
+      .filter(i => i !== DataKeys.SharePeriods)
       .forEach(
         storeKey => this.store.dispatch(GET_METHODS[storeKey])
       );

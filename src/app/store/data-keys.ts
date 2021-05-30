@@ -57,6 +57,7 @@ export enum DataKeys {
   ShareDividendMember = 'share_dividend_member',
   ShareDividend = 'share_dividend',
   User = 'user',
+  SharePeriods = 'SharePeriods',
 }
 export const UpdatedDataKeys = {
   [DataKeys.LastUpdatedTable]: 'updated',

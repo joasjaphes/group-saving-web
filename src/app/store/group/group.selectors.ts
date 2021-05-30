@@ -261,7 +261,7 @@ export const selectProgress = createSelector(
 
 export const selectNeedBalance = createSelector(
   selected,
-  fromContribution.selectAll, (currentGroup, allItems, id) => allItems
+  fromContribution.selectAll, (currentGroup, allItems) => allItems
     .filter(i => {
       const hasBalance = currentGroup && currentGroup.current_balances && !!currentGroup.current_balances[i.id];
       return i.track_balance && !hasBalance;
