@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFirestore} from '@angular/fire/compat/firestore';
 import {OfflineManagerService} from './offline-manager.service';
 import {ApplicationState} from '../store';
 import {Store} from '@ngrx/store';

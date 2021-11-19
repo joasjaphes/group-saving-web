@@ -28,10 +28,10 @@ import { GroupNameComponent } from './registration/group-name/group-name.compone
 import { SetPasswordComponent } from './registration/set-password/set-password.component';
 import { ConfirmPasswordComponent } from './registration/confirm-password/confirm-password.component';
 import { NumberOfMembersComponent } from './registration/number-of-members/number-of-members.component';
-import {AngularFireModule} from '@angular/fire';
-import {AngularFirestoreModule} from '@angular/fire/firestore';
-import {AngularFireStorageModule} from '@angular/fire/storage';
-import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AngularFireModule} from '@angular/fire/compat';
+import {AngularFirestoreModule} from '@angular/fire/compat/firestore';
+import {AngularFireStorageModule} from '@angular/fire/compat/storage';
+import {AngularFireAuthModule} from '@angular/fire/compat/auth';
 import { CreatingGroupComponent } from './registration/creating-group/creating-group.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { MenuComponent } from './menu/menu.component';
