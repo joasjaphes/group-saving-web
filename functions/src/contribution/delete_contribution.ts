@@ -1,13 +1,14 @@
 import * as functions from 'firebase-functions';
 import * as helpers from '../helpers';
 import * as admin from 'firebase-admin';
+import {PaymentModel} from '../data-models/payment.model';
 
 const cors = require('cors')({origin: true});
 
 /**
- * input data : { groupId, memberId,  amount, date, month, year, loanTypeId }
+ * input data : { groupId, memberId,  period }
  */
-export const createLoanQueue = functions.https.onRequest((request, response) => {
+export const deleteContribution = functions.https.onRequest((request, response) => {
   return cors(request, response, async () => {
     response.header('Access-Control-Allow-Origin', '*');
     response.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -28,35 +29,27 @@ export const createLoanQueue = functions.https.onRequest((request, response) => 
       const last_update = new Date().getTime();
       const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
       const groupDocRef = admin.firestore().doc(`groups/${groupId}`);
+      const paymentDocRef = admin.firestore().doc(`groups/${data.groupId}/payments/period_${data.period}`);
+
       await admin.firestore().runTransaction(async (transaction) => {
         const groupDoc = await transaction.get(groupDocRef);
+        const paymentDoc = await transaction.get(paymentDocRef);
         const groupData: any = {...groupDoc.data()};
-        const loanQueueId = data.id ? data.id : helpers.makeid();
-        const old_loan_queue = groupData.loan_queue || [];
-        const expense: any = prepareLoanQueueData(data, last_update, loanQueueId);
-        const loan_queue = [expense, ...old_loan_queue];
-        transaction.update(groupDocRef, {...groupData, loan_queue, last_update});
-        transaction.set(otherUpdateAtRef, {group_updated: last_update}, {merge: true});
+        if (paymentDoc.exists) {
+          const existingPaymentData = paymentDoc.data() as PaymentModel;
+          transaction.update(groupDocRef, { ...groupData , last_update});
+          transaction.set(paymentDocRef, {...existingPaymentData, last_update}, {merge: true});
+          transaction.set(otherUpdateAtRef, {
+            group_updated: last_update,
+            payments_updated: last_update,
+          }, {merge: true});
+        }
       });
       response.status(200).send({data: 'Success'});
     } catch (e) {
-      console.log('Error adding member to loan queue:', e);
+      console.log('Error fetching user data:', e);
       response.status(500).send({data: 'Fail'});
     }
   });
 
 });
-
-function prepareLoanQueueData(data: any, last_update: any, loanQueueId: string) {
-  return {
-    id: loanQueueId,
-    group_id: data.groupId,
-    amount: data.amount,
-    member_id: data.memberId,
-    loan_type_id: data.loanTypeId,
-    date: helpers.formatDate(data.date),
-    month: helpers.getMonth(data.date),
-    additional_config: {},
-    year: helpers.getYear(data.date),
-  };
-}

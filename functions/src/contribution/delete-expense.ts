@@ -39,10 +39,8 @@ export const deleteExpense = functions.https.onRequest((request, response) => {
           const prevContrType = contributionTypes[expenseData.associated_account];
           const expenseAmount = expenseData.amount + '';
           const prevBalance = groupData.contribution_balances[expenseData.associated_account] + '';
-          if (prevContrType && prevContrType.track_balance) {
-            if (!!expenseAmount && groupData.contribution_balances && !!prevBalance) {
-              groupData.contribution_balances[expenseData.associated_account] = parseFloat(prevBalance) + parseFloat(expenseAmount);
-            }
+          if (prevContrType && prevContrType.track_balance && !!expenseAmount && groupData.contribution_balances && !!prevBalance) {
+            groupData.contribution_balances[expenseData.associated_account] = parseFloat(prevBalance) + parseFloat(expenseAmount);
           }
         }
         transaction.update(groupDocRef, { ...groupData , last_update});
