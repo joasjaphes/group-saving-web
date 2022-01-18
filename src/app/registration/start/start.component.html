@@ -9,7 +9,8 @@
       </p>
       <div class="mt-5">
         <div [ngClass]="routeAnimationsElements">
-          <button class="zoom-on-hover" mat-raised-button [routerLink]="['', 'welcome', 'registration']">
+<!--          <button class="zoom-on-hover" mat-raised-button [routerLink]="['', 'welcome', 'registration']">-->
+          <button class="zoom-on-hover" (click)="downloadExcel()">
             Start Here
             <mat-icon>arrow_forward</mat-icon>
           </button>
@@ -34,7 +35,8 @@
       Save Together Save Better!
     </h2>
     <div [ngClass]="routeAnimationsElements" style="text-align: center">
-      <button mat-raised-button [routerLink]="['', 'welcome', 'registration']">
+<!--      <button mat-raised-button [routerLink]="['', 'welcome', 'registration']">-->
+      <button mat-raised-button (click)="downloadExcel()">
         Start Here
         <mat-icon>arrow_forward</mat-icon>
       </button>

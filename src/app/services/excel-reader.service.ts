@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as XLSX from 'xlsx';
-import { Workbook, ValueType } from 'exceljs';
-import { Observable } from 'rxjs';
+import {Workbook} from 'exceljs';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,27 +22,27 @@ export class ExcelReaderService {
               allowBlank: true,
               showErrorMessage: true,
               formulae: [`"${col.options.join()}"`]
-            }
+            };
           }
           if (col?.valueType === 'DATE') {
-            cell.note = 'mm/dd/yyyy'
+            cell.note = 'mm/dd/yyyy';
             cell.dataValidation = {
               type: 'date',
               operator: 'lessThan',
               showErrorMessage: true,
               // allowBlank: true,
               formulae: [new Date()]
-            }
+            };
           }
         }
       }
     }
   }
 
-  getExcelData(file):Observable<{[sheetName:string]:any[]}> {
+  getExcelData(file): Observable<{[sheetName: string]: any[]}> {
     return new Observable(observer => {
-      const excelData: { [sheetName: string]: any[] } = {}
-      const target: DataTransfer = <DataTransfer>(file);
+      const excelData: { [sheetName: string]: any[] } = {};
+      const target: DataTransfer = (file) as DataTransfer;
       if (target.files.length !== 1) {
         observer.error('Cannot use multiple files');
       }
@@ -53,32 +53,30 @@ export class ExcelReaderService {
         const wb: XLSX.WorkBook = XLSX.read(binarystr, { type: 'binary' });
         for (const sheetName of Object.keys(wb.Sheets)) {
           const ws: XLSX.WorkSheet = wb.Sheets[sheetName];
-          const data = XLSX.utils.sheet_to_json(ws);
-          excelData[sheetName] = data;
+          excelData[sheetName] = XLSX.utils.sheet_to_json(ws);
         }
         observer.next(excelData);
         observer.complete();
-      }
+      };
     });
   }
 
   excelDateToJSDate(serial) {
-    var utc_days = Math.floor(serial - 25569);
-    var utc_value = utc_days * 86400;
-    var date_info = new Date(utc_value * 1000);
-    var fractional_day = serial - Math.floor(serial) + 0.0000001;
-    var total_seconds = Math.floor(86400 * fractional_day);
-    var seconds = total_seconds % 60;
+    const utc_days = Math.floor(serial - 25569);
+    const utc_value = utc_days * 86400;
+    const date_info = new Date(utc_value * 1000);
+    const fractional_day = serial - Math.floor(serial) + 0.0000001;
+    let total_seconds = Math.floor(86400 * fractional_day);
+    const seconds = total_seconds % 60;
     total_seconds -= seconds;
-    var hours = Math.floor(total_seconds / (60 * 60));
-    var minutes = Math.floor(total_seconds / 60) % 60;
-    const date = new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
-    return date;
+    const hours = Math.floor(total_seconds / (60 * 60));
+    const minutes = Math.floor(total_seconds / 60) % 60;
+    return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
   }
 
   async generateExcelTemplate(columns: { name: string; valueType: string; key?: string; options?: string[] }[], sheetNames: string[] | string, fileName: string) {
     const workbook = new Workbook();
-    if (isArray(sheetNames)) {
+    if (Array.isArray(sheetNames)) {
       for (const sheetName of sheetNames) {
         await this.addSheets(workbook, sheetName, columns);
       }
@@ -87,9 +85,8 @@ export class ExcelReaderService {
     }
     const buffer = await workbook.xlsx.writeBuffer();
     const dlink = document.createElement('a');
-    const url = URL.createObjectURL(new Blob([buffer]));
-    dlink.href = url;
-    dlink.setAttribute('download', `${fileName}.xlsx`)
+    dlink.href = URL.createObjectURL(new Blob([buffer]));
+    dlink.setAttribute('download', `${fileName}.xlsx`);
     dlink.click();
     dlink.remove();
   }
@@ -97,8 +94,8 @@ export class ExcelReaderService {
   async addSheets(workbook: Workbook, sheetName, columns: { name: string; valueType: string; key?: string; options?: string[] }[]) {
     const ws = workbook.addWorksheet(sheetName);
     ws.columns = columns.map((col) => {
-      return { header: col.name, key: col.key, width: 35, style: { numFmt: 'mm-dd-yyyy' } }
-    })
+      return { header: col.name, key: col.key, width: 35, style: { numFmt: 'mm-dd-yyyy' } };
+    });
     ws.columns.forEach(column => {
       column.eachCell((cell, num) => {
         cell.font = {
@@ -110,8 +107,8 @@ export class ExcelReaderService {
         cell.alignment = {
           vertical: 'middle', horizontal: 'center'
         };
-      })
-    })
+      });
+    });
     await this.formatSheet(ws, columns);
   }
 }
