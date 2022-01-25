@@ -1,16 +1,25 @@
 <div class="grid-area" *ngIf="!(isHandset$ | async)">
   <div class="contetia">
     <div class="textArea1">
-      <h1  [ngClass]="routeAnimationsElements" class="registration-title" style="font-size: 50px">
-        <span class="orange">Group</span><span class="blue">Savings</span>
-      </h1>
-      <p style="font-size: 20px; color: #fdfdfdad" [ngClass]="routeAnimationsElements">
-        Save Together Save Better
-      </p>
-      <div class="mt-5">
+      <div class="flex flex-row gap-2">
+        <div>
+          <img src="assets/icons/icon-72x72.png">
+        </div>
+        <div>
+          <h1  [ngClass]="routeAnimationsElements" class="registration-title" style="font-size: 50px">
+            <span class="orange">Group</span><span class="blue">Savings</span>
+          </h1>
+          <p style="font-size: 20px; color: #fdfdfdad" [ngClass]="routeAnimationsElements">
+            Save Together Save Better
+          </p>
+        </div>
+
+      </div>
+
+      <div class="mt-5 ml-5">
         <div [ngClass]="routeAnimationsElements">
-<!--          <button class="zoom-on-hover" mat-raised-button [routerLink]="['', 'welcome', 'registration']">-->
-          <button class="zoom-on-hover" (click)="downloadExcel()">
+          <button class="zoom-on-hover" mat-raised-button [routerLink]="['', 'welcome', 'registration']">
+<!--          <button class="zoom-on-hover" (click)="downloadExcel()">-->
             Start Here
             <mat-icon>arrow_forward</mat-icon>
           </button>
@@ -44,3 +53,4 @@
     <!--        <h2>Save Together Save Better!</h2>-->
   </div>
 </div>
+

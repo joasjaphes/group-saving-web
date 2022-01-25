@@ -1,14 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
-
+@use "styles/variables";
 @use '@angular/material' as mat;
-@import '../node_modules/bootstrap/scss/bootstrap-reboot';
-@import '../node_modules/bootstrap/scss/bootstrap-grid';
-@import '../node_modules/bootstrap/scss/bootstrap';
+@use 'styles/palette' as palette;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @include mat.core();
-$angular-primary: mat.define-palette(mat.$deep-orange-palette, 500, 100, 900);
-$angular-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-$angular-warn: mat.define-palette(mat.$red-palette);
+$angular-primary: mat.define-palette(palette.$primary-pat);
+$angular-accent: mat.define-palette(palette.$accent-pat, A200, A100, A400);
+$angular-warn: mat.define-palette(palette.$warn-pat);
 $custom-background-color: #141434;
+$ng-material-tailwind-typography: mat.define-typography-config(
+  $font-family: theme("fontFamily.sans")
+);
 $angular-default-theme: mat.define-light-theme(
     (
       color: (
@@ -16,6 +22,7 @@ $angular-default-theme: mat.define-light-theme(
         accent: $angular-accent,
         warn: $angular-warn,
       ),
+      typography: $ng-material-tailwind-typography
     )
 );
 $angular-dark-theme: mat.define-dark-theme(
@@ -25,9 +32,12 @@ $angular-dark-theme: mat.define-dark-theme(
         accent: $angular-accent,
         warn: $angular-warn,
       ),
+      typography: $ng-material-tailwind-typography
     )
 );
 @include mat.all-component-themes($angular-dark-theme);
+@include mat.all-component-typographies($angular-dark-theme);
+
 
 @font-face {
   font-family: 'Material Icons';
@@ -63,7 +73,7 @@ $angular-dark-theme: mat.define-dark-theme(
   font-feature-settings: 'liga';
 }
 
-html, body { height: 100%; }
+html, body { @apply h-full; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 body * {
   font-family: Scorecard-Averta, sans-serif, appleLogo;

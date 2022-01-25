@@ -16,8 +16,10 @@
         name="ampm"
         class="ampm">
         <mat-option *ngFor="let country of countries" [value]="country.phoneCode">
-          <img alt="flag" style="height: 15px; width: 25px" src="assets/flags/{{country.isoCode.toLowerCase()}}.png">
-          &nbsp; (+{{country.phoneCode}}) {{country.name}}
+          <div class="flex flex-row gap-2 items-center">
+             <img alt="flag" style="height: 15px; width: 25px" src="assets/flags/{{country.isoCode.toLowerCase()}}.png">
+            &nbsp;<span>(+{{country.phoneCode}}) {{country.name}}</span>
+          </div>
         </mat-option>
       </mat-select>
     </mat-form-field>
