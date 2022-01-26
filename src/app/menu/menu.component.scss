@@ -38,7 +38,7 @@ mat-nav-list {
 }
 
 .active-menu {
-  border-radius: 0px!important;
+  border-radius: 0!important;
   //background-color: rgba(0,0,0,0.08)!important;
   background-color: #141432;
   border-right: 4px solid #F15A28!important;
@@ -70,7 +70,7 @@ mat-nav-list {
 }
 
 .mat-drawer-side {
-  border: 0px !important;
+  border: 0 !important;
 }
 
 
@@ -79,7 +79,7 @@ mat-nav-list {
   height: 65px!important;
   width: 100%;
   padding: 0;
-  font-size: 14.5px;
+  font-size: 16.5px;
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
 }
 
@@ -180,7 +180,7 @@ mat-nav-list {
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
   display: grid;
   width: 100%;
-  grid-template-columns: auto 40px;
+  grid-template-columns: auto;
   grid-gap: 5px;
   font-weight: bolder;
   font-size: 1.2em;

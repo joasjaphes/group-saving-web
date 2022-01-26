@@ -112,7 +112,8 @@
         matBadgeColor="warn"
         matBadgePosition="above after"
         style="margin-right: 12px; color: white;"
-      >notifications_none</mat-icon
+      >notifications_none
+      </mat-icon
       >
     </button>
     <div
@@ -143,19 +144,17 @@
     [opened]="!(isHandset$ | async)"
   >
 
-    <div class="row pt-3 pb-3 m-0">
+    <div class="grid pt-3 pb-3 m-0">
 
       <div style="cursor: pointer" title="Switch Group" class="col-sm-12 titleArea" *ngIf="(user$ | async)" @fadeIn>
-        <div style="padding-top: 5px;">
-          <div style="display: inline">
-            <img alt="logo" style="height: 30px; border-radius: 50%; vertical-align: middle" src="assets/icons/icon-72x72.png">
+        <div class="flex items-center gap-2">
+          <div class="flex-none">
+            <img alt="logo" style="height: 30px; border-radius: 50%; vertical-align: middle"
+                 src="assets/icons/icon-72x72.png">
           </div>
-          <div style="display: inline; white-space: nowrap; position: absolute; bottom: 0">
+          <div class="text-ellipsis">
             <span>{{(group$ | async)?.group_name}}</span>
           </div>
-        </div>
-        <div style="padding-top: 5px;">
-<!--          <mat-icon style="color: white;">keyboard_arrow_down</mat-icon>-->
         </div>
       </div>
     </div>

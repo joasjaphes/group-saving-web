@@ -4,9 +4,9 @@
       <ng-template matStepLabel>
         Basic Information
       </ng-template>
-      <div class="row">
+      <div class="grid gap-x-4 gap-y-2 grid-cols-2">
         <!--      Contribution TYpe-->
-        <div class="col-sm-6">
+        <div class="">
           <mat-form-field appearance="outline">
             <mat-label>Type</mat-label>
             <mat-select [(ngModel)]="contributionType" [disabled]="!editing">
@@ -19,7 +19,7 @@
         </div>
 
         <!--      Contribution Name-->
-        <div class="col-sm-6">
+        <div class="">
           <mat-form-field appearance="outline">
             <mat-label>Contribution name</mat-label>
             <input [(ngModel)]="name" matInput placeholder="Contribution name">
@@ -27,7 +27,7 @@
         </div>
 
         <!--      Contribution Frequency-->
-        <div class="col-sm-12">
+        <div class="col-span-2">
           <mat-form-field appearance="outline">
             <mat-label>Contribution Frequency</mat-label>
             <mat-select [(ngModel)]="frequency">
@@ -40,7 +40,7 @@
         </div>
 
         <!--      Track balances for this contribution-->
-        <div class="col-sm-12">
+        <div class="col-span-2">
           <mat-form-field appearance="outline">
             <mat-label>Track contribution balance</mat-label>
             <mat-select [(ngModel)]="trackBalance">
@@ -52,7 +52,7 @@
         </div>
 
         <!--      Next step for first step-->
-        <div class="col-sm-12">
+        <div class="col-span-2">
           <button [disabled]="!name || !frequency" class="next-btn zoom-on-hover" style="float: right" mat-button
                   matStepperNext>
             Next
@@ -67,11 +67,11 @@
       <ng-template matStepLabel>
         Amount Information
       </ng-template>
-      <div class="row">
+      <div class="grid gap-x-4 gap-y-2 grid-cols-2">
         <!--      Share price if type is share-->
         <div class="col-sm-6 mb-2" *ngIf="contributionType == 'Share'">
           <mat-form-field appearance="outline">
-            <mat-label>Price per share</mat-label>
+            <mat-label>Price per share <b>({{pricePerShare | number}})</b></mat-label>
             <input placeholder="Price per share" matInput type="number" [(ngModel)]="pricePerShare">
             <mat-hint *ngIf="pricePerShare" @fadeIn>buying price of share is <b>{{pricePerShare | number}}</b>
             </mat-hint>
@@ -79,8 +79,8 @@
         </div>
 
         <!--      Is Mandantory-->
-        <div [ngClass]="{'col-sm-6': contributionType == 'Share', 'col-sm-12': contributionType != 'Share'}"
-             class="col-sm-6" *ngIf="pricePerShare || contributionType != 'Share'" @fadeIn>
+        <div [ngClass]="{'col-span-1': contributionType == 'Share', 'col-span-2': contributionType != 'Share'}"
+             class="" *ngIf="pricePerShare || contributionType != 'Share'" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Is Mandatory?</mat-label>
             <mat-select [(ngModel)]="isMandatory" placeholder="Is this contribution mandatory"
@@ -105,7 +105,7 @@
         <!--      Fixed amount if amount is the same-->
         <div class="col-sm-6" *ngIf="isAmountSame == 'Yes'" @fadeIn>
           <mat-form-field appearance="outline">
-            <mat-label>Amount</mat-label>
+            <mat-label>Amount <b *ngIf="amount">({{amount | number}})</b> </mat-label>
             <input matInput type="number" [(ngModel)]="amount">
             <mat-hint *ngIf="amount" @fadeIn>Each member will contribute <b>{{amount | number}}</b></mat-hint>
           </mat-form-field>
@@ -114,13 +114,13 @@
         <!--      Minimum Amount-->
         <div class="col-sm-6" *ngIf="isAmountSame == 'No'" @fadeIn>
           <mat-form-field appearance="outline">
-            <mat-label>Minimum Amount</mat-label>
+            <mat-label>Minimum Amount <b *ngIf="minimumAmount">({{minimumAmount | number}})</b></mat-label>
             <input matInput type="number" [(ngModel)]="minimumAmount">
             <mat-hint *ngIf="minimumAmount" @fadeIn>Each member will contribute a minimum of
               <b>{{minimumAmount | number}}</b></mat-hint>
           </mat-form-field>
         </div>
-        <div class="col-sm-12">
+        <div class="col-span-2">
           <button [disabled]="!(!!amount || !!minimumAmount)" class="next-btn zoom-on-hover" style="float: right"
                   mat-button matStepperNext>
             Next
@@ -139,9 +139,9 @@
       <ng-template matStepLabel>
         Fine & Loan Information
       </ng-template>
-      <div class="row">
+      <div class="grid grid-cols-2 gap-x-4 gap-y-2">
         <!--      Is loan Allowed-->
-        <div class="col-sm-12">
+        <div class="col-span-2">
           <mat-form-field appearance="outline">
             <mat-label>Is loan allowed?</mat-label>
             <mat-select [(ngModel)]="allowLoan" >
@@ -194,7 +194,7 @@
         <!--      Fine Amount-->
         <div class="col-sm-6" *ngIf="fineCalculationType" @fadeIn>
           <mat-form-field appearance="outline">
-            <mat-label>Fine Amount ({{fineAmount | number}})</mat-label>
+            <mat-label>Fine Amount <b *ngIf="fineAmount"> ({{fineAmount | number}}) </b></mat-label>
             <input matInput placeholder="Fine amount" type="number" [(ngModel)]="fineAmount">
             <mat-hint *ngIf="fineAmount" @fadeIn>Member will pay a fine of <b>{{fineAmount | number}}
               ( {{fineCalculationType}} )</b></mat-hint>
@@ -202,13 +202,13 @@
         </div>
 
         <!--      Save Area-->
-        <div class="col-sm-12">
+        <div class="col-span-2">
           <button class="next-btn zoom-on-hover" mat-button matStepperPrevious>
             <mat-icon>arrow_back</mat-icon>
             Back
           </button>
         </div>
-        <div class="col-sm-12 mt-2">
+        <div class="col-span-2 mt-2">
           <app-save-area
             [confirmFirst]="true"
             [saveDisabled]="!allowLoan || !allowFine || !frequency"

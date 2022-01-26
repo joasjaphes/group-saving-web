@@ -15,6 +15,7 @@ $custom-background-color: #141434;
 $ng-material-tailwind-typography: mat.define-typography-config(
   $font-family: theme("fontFamily.sans")
 );
+
 $angular-default-theme: mat.define-light-theme(
     (
       color: (
@@ -518,4 +519,24 @@ input[type=number] {
 
 .mat-drawer {
   overflow-y: hidden!important;
+}
+
+.phone-number {
+  .mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 4px 0 0 0!important;
+    padding: 0.75em 0.75em 0 0.75em;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-outline-thick{
+    color: white !important
+  }
+}
+
+.phone-number1 {
+  .mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 0 4px 0 0!important;
+    padding: 0.75em 0.75em 0 0.75em;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-outline-thick{
+    color: white !important
+  }
 }

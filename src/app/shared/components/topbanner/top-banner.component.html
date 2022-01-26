@@ -2,8 +2,8 @@
   class="container-fluid"
   style="padding-left: 25px; padding-top: 25px; padding-right: 25px; background-color: #1d1d42"
 >
-  <div class="row">
-    <div [ngClass]="{'col-sm-12': (isHandset$ | async), 'col-sm-10': !(isHandset$ | async)}">
+  <div class="flex">
+    <div [ngClass]="{'w-full': (isHandset$ | async), 'w-10/12': !(isHandset$ | async)}">
       <h1 style="font-size: 27px" class="registration-title" [ngClass]="routeAnimationsElements">
         <img
           alt="image"
@@ -19,7 +19,7 @@
         {{ title }}
       </h1>
     </div>
-    <div class="col-sm-2" style="text-align: right" *ngIf="!(isHandset$ | async)">
+    <div class="w-2/12" style="text-align: right" *ngIf="!(isHandset$ | async)">
       <button mat-icon-button title="Get Help Here" (click)="openHelp()">
         <mat-icon style="color: white">help_outline</mat-icon>
       </button>

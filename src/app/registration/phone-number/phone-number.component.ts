@@ -48,6 +48,10 @@ export class PhoneNumberComponent implements OnInit, AfterViewInit {
     setTimeout(() => this.myInputField.nativeElement.focus());
   }
 
+  selectPhone(event: any) {
+    this.setPhoneNumber.emit(event.target.value)
+  }
+
   async verifyPhoneNumber() {
     this.fetchingPhoneUpdates = true;
     try {

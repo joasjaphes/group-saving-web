@@ -29,6 +29,7 @@ export class StartingLoanTypeComponent implements OnInit {
   @Output() closeForm = new EventEmitter();
 
   contributionTypes$: Observable<ContributionType[]>;
+  selectedContributionType$: Observable<ContributionType>;
   contributionType: string;
   name: string;
   frequency: string;
@@ -75,9 +76,11 @@ export class StartingLoanTypeComponent implements OnInit {
   ngOnInit(): void {
     if (this.progressDetails) {
       this.contributionType = this.progressDetails.contributionTypeId;
+      this.selectedContributionType$ = this.store.pipe(select(contributionSelector.selectById(this.contributionType)));
       this.name = this.progressDetails.contributionName;
     } else if (this.currentLoanType) {
       this.contributionType = this.currentLoanType.contribution_type_id;
+      this.selectedContributionType$ = this.store.pipe(select(contributionSelector.selectById(this.contributionType)));
       this.name = this.currentLoanType.name;
       this.frequency = this.currentLoanType.duration_type;
       this.minimumDuration = this.currentLoanType.min_duration;

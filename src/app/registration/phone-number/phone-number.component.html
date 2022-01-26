@@ -3,12 +3,13 @@
   </h3>
   <div [ngClass]="routeAnimationsElements" style="text-align: center">
     <div class="time-picker-component" style="width: 350px">
-      <div class="row">
-        <div class="col-sm-4 p-0" @fadeIn>
+      <div class="flex w-full">
+        <div class="w-4/12 p-0 phone-number" @fadeIn>
           <mat-form-field appearance="fill">
             <img
               matPrefix
               style="height: 15px; width: 25px; margin-right: 10px"
+              alt="Country Flag"
               *ngIf="country"
               src="assets/flags/{{country.isoCode.toLowerCase()}}.png">
             <mat-select (selectionChange)="setPhoneCountry($event)" [(ngModel)]="selectedCountry">
@@ -19,18 +20,20 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-sm-8 p-0" @fadeIn>
+        <div class="w-8/12 p-0 phone-number1" @fadeIn>
           <mat-form-field appearance="fill">
             <mat-label>Phone number</mat-label>
             <input
               [(ngModel)]="phoneNumber"
-              (input)="setPhoneNumber.emit($event.target.value)"
+              (input)="selectPhone($event)"
               matInput type="text" placeholder="OXXXXXXXXX"
               #myInput
             >
             <mat-icon matSuffix>phone</mat-icon>
           </mat-form-field>
         </div>
+      </div>
+      <div class="w-full mt-4">
         <div class="col-sm-12 p-0" *ngIf="fetchingPhoneUpdates" @fadeIn>
           <mat-progress-bar style="color: #ffed00" mode="indeterminate" ></mat-progress-bar>
           <p>Checking Phone Number...</p>

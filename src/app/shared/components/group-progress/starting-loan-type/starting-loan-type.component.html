@@ -157,9 +157,9 @@
       <ng-template matStepLabel>
         Loan Conditions
       </ng-template>
-      <div class="row">
+      <div class="grid grid-cols-2 gap-x-4 gap-y-2">
         <!--      Minimum Duration-->
-        <div class="col-sm-6">
+        <div >
           <mat-form-field appearance="outline">
             <mat-label>Minimum Duration <span *ngIf="durationTYpe">({{minimumDuration | number}} {{durationTYpe}}
               )</span>
@@ -169,7 +169,7 @@
           </mat-form-field>
         </div>
         <!--      Maximum Duration-->
-        <div class="col-sm-6">
+        <div>
           <mat-form-field appearance="outline">
             <mat-label>Maximum Duration <span *ngIf="durationTYpe">({{maximumDuration | number}} {{durationTYpe}}
               )</span>
@@ -180,7 +180,7 @@
         </div>
 
         <!--      Minimum Loan Amount-->
-        <div class="col-sm-6">
+        <div class="col-span-2">
           <mat-form-field appearance="outline">
             <mat-label>
               Minimum Amount <span *ngIf="group">({{minimumAmount | number}} {{group.currency}})</span>
@@ -190,7 +190,7 @@
         </div>
 
         <!--      Maximum Amount Type-->
-        <div class="col-sm-6">
+        <div class="col-span-2">
           <mat-form-field appearance="outline">
             <mat-label>Maximum Amount Type</mat-label>
             <mat-select [(ngModel)]="maximumAmountType" placeholder="Maximum Amount Type">
@@ -202,7 +202,7 @@
         </div>
 
         <!--      Maximum Loan Amount-->
-        <div class="col-sm-6" *ngIf="maximumAmountType == 'Fixed'" @fadeIn>
+        <div class="col-span-2" *ngIf="maximumAmountType == 'Fixed'" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Maximum Loan Amount <span *ngIf="group">({{maximumAmount | number}} {{group.currency}})</span>
             </mat-label>
@@ -211,16 +211,17 @@
         </div>
 
         <!--      Maximum Loan Amount Balance Factor-->
-        <div class="col-sm-6" *ngIf="maximumAmountType == 'Relative to Balance'" @fadeIn>
+        <div class="col-span-2" *ngIf="maximumAmountType == 'Relative to Balance'" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Balance Factor <small>(This number times members current contribution balance will be maximum
               amount )</small></mat-label>
             <input matInput type="number" placeholder="Balance Factor" [(ngModel)]="maximumAmountBalanceFactor">
+            <mat-hint *ngIf="maximumAmountBalanceFactor">Member will receive {{maximumAmountBalanceFactor | number}} times balance of {{(selectedContributionType$ | async)?.name}} amount</mat-hint>
           </mat-form-field>
         </div>
 
         <!--      Loan Topup allowed-->
-        <div class="col-sm-6">
+        <div class="col-span-2">
           <mat-form-field appearance="outline">
             <mat-label>Allow loan top up</mat-label>
             <mat-select [(ngModel)]="allowLoanTopUp">
@@ -231,7 +232,7 @@
         </div>
 
         <!--      Next and previous icons for second stage-->
-        <div class="col-sm-12">
+        <div class="col-span-2">
           <button class="next-btn zoom-on-hover" style="float: right" mat-button matStepperNext>
             Next
             <mat-icon>arrow_forward</mat-icon>
