@@ -4,7 +4,7 @@
 >
   <div class="flex">
     <div [ngClass]="{'w-full': (isHandset$ | async), 'w-10/12': !(isHandset$ | async)}">
-      <h1 style="font-size: 27px" class="registration-title" [ngClass]="routeAnimationsElements">
+      <h1 style="font-size: 27px" class="registration-title flex flex-row gap-1 items-center" [ngClass]="routeAnimationsElements">
         <img
           alt="image"
           *ngIf="image"
@@ -12,9 +12,9 @@
           [src]="'assets/images/icons/'+image"
           style="padding: 4px; height: 32px; margin-top: -15px; border-radius: 11px; background-color: #ffffffa6"
         >
-        <mat-icon *ngIf="icon">{{icon}}</mat-icon>&nbsp;
+        <mat-icon *ngIf="icon" style="font-size: 27px">{{icon}}</mat-icon>&nbsp;
         <b *ngIf="url">
-          <a style="color: #fbfbfba3;" [routerLink]="url">{{urlName}}</a> >
+          <a style="color: #fbfbfba3;" [routerLink]="url">{{urlName}}</a> /
         </b>
         {{ title }}
       </h1>

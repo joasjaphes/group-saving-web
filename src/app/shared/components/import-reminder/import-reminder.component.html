@@ -1,0 +1,45 @@
+<div class="grid place-items-center bg-mainBg mb-6 rounded-2xl p-8">
+  <p class="registration-title tracking-wider text-2xl text-center text-firstLevel">
+    Your group information is complete,
+  </p>
+  <p class="registration-title tracking-wider text-xl text-center text-secondLevel">
+    Start by importing existing contributions, loans and fines
+  </p>
+  <button
+    *ngIf="!showConfirm" @fadeIn
+    style="font-weight: 900; border-radius: 20px;margin-top: 15px;padding: 5px 25px;font-size: 15px;border: 1px solid #FF7043;"
+    mat-raised-button
+    class="registration-title add-button"
+    [routerLink]="['', 'settings', 'add-previous-data']"
+  >
+    Import Data
+    <mat-icon>arrow_forward</mat-icon>
+  </button>
+
+  <p class="pt-4" *ngIf="!showConfirm" @fadeIn>
+    <a (click)="showConfirm = true" class="text-secondLevel underline cursor-pointer">I do not have existing data </a>
+  </p>
+
+  <div style="text-align: center" *ngIf="showConfirm" @fadeIn class="pt-4">
+    <div class="">
+      <p class="lead">
+        You can import data at any time by going to
+        <a [routerLink]="['', 'settings', 'add-previous-data']" class="text-secondLevel underline cursor-pointer">
+          Settings / Previous Data / Import
+        </a>
+      </p>
+      <p class="confirm-div">
+        <button mat-raised-button class="yes-button zoom-on-hover"  @fadeIn
+                (click)="dontImport()">
+          <mat-icon>done</mat-icon> Ok, I understand
+        </button>
+        <button mat-raised-button class="no-button zoom-on-hover" @fadeIn
+                (click)="showConfirm = false;">
+          <mat-icon>clear</mat-icon> Close
+        </button> &nbsp;
+      </p>
+
+    </div>
+  </div>
+
+</div>

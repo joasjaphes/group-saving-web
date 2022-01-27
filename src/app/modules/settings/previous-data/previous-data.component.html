@@ -44,5 +44,12 @@
       [members]="members$ | async"
       (closeForm)="closePanel()"
     ></app-fines-by-member>
+
+    <app-import-contribution
+      *ngIf="viewType == 'Import Contributions'"
+      [group]="group$ | async"
+      [contributionTypes]="contributionTypes$ | async"
+      [members]="members$ | async"
+    ></app-import-contribution>
   </ng-container>
 </app-shared-layout>

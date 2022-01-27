@@ -100,6 +100,7 @@ import { MonthExportComponent } from './modules/summary/export-data/month-export
 import { LoanExportComponent } from './modules/summary/export-data/loan-export/loan-export.component';
 import { ContributionExportComponent } from './modules/summary/export-data/contribution-export/contribution-export.component';
 import {CommonModule} from '@angular/common';
+import { ImportContributionComponent } from './modules/settings/previous-data/import-contribution/import-contribution.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -195,7 +196,8 @@ const firebaseConfig = {
     LoanQueueSummaryComponent,
     MonthExportComponent,
     LoanExportComponent,
-    ContributionExportComponent
+    ContributionExportComponent,
+    ImportContributionComponent
   ],
   imports: [
     CommonModule,

@@ -5,6 +5,7 @@ import {ApplicationState} from '../store';
 import {Store} from '@ngrx/store';
 import {TypedAction} from '@ngrx/store/src/models';
 import {map} from 'rxjs/operators';
+import {CommonService} from './common.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class FirestoreService {
   constructor(
     private afs: AngularFirestore,
     private offlineService: OfflineManagerService,
-    private store: Store<ApplicationState>
+    private store: Store<ApplicationState>,
+    private commonService: CommonService,
   ) {
   }
 
@@ -29,6 +31,7 @@ export class FirestoreService {
       .pipe(map(i => i.map(k => k.data() as any))
       ).toPromise();
     console.log({collection});
+    currentClass.commonService.setIsLoading(false);
     for (const item of collection) {
       if (item.deleted) {
         await currentClass.offlineService.removeItem(dataKey, item.id);
@@ -66,7 +69,6 @@ export class FirestoreService {
       const local_time = (localTimes ? localTimes[updatedKey] : 0) || 0;
       const online_time = (onlineTimes ? onlineTimes[updatedKey] : 0) || 0;
       if (local_time !== online_time) {
-        console.log('naitwa ' + dbKey);
         await dataGetter(local_time, this, dbKey, group_id);
         this.store.dispatch(dispatcher);
       }

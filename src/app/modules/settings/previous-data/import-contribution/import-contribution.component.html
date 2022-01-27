@@ -1,0 +1,41 @@
+<div class="grid grid-cols-4 gap-2">
+
+  <div class="col-sm-3">
+    <app-period-selector
+      placeholder="Start Month"
+      [inActiveBg]="false"
+      (selected)="setStartMonth($event)"
+    ></app-period-selector>
+  </div>
+  <div class="col-sm-3" *ngIf="startDate" @fadeIn>
+    <app-period-selector
+      [inActiveBg]="false"
+      placeholder="End Month"
+      (selected)="setEndMonth($event)"
+    ></app-period-selector>
+  </div>
+
+  <div class="col-sm-3" *ngIf="endDate" @fadeIn>
+    <mat-form-field appearance="outline">
+      <mat-select multiple [(ngModel)]="contributionIds" (selectionChange)="setContributionType($event)">
+        <mat-option *ngFor="let contr of contributionTypes"
+                    [value]="contr.id">{{contr.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+
+  <div class="col-sm-3" *ngIf="contributionIds.length > 0" @fadeIn>
+    <button
+      style="height: 44px; margin-top: 3px; width: 100%;background-color: #141432; border: 1px solid #ffffff52;"
+      mat-raised-button
+      class="zoom-on-hover"
+      (click)="getData()"
+    >
+      <mat-icon>refresh</mat-icon>
+      Get Data
+    </button>
+  </div>
+</div>
+
+<pre>{{months | json}}</pre>

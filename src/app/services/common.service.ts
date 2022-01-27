@@ -11,6 +11,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 export class CommonService {
 
   showHElp1 = new BehaviorSubject(false);
+  isLoading = new BehaviorSubject(false);
   helpText = new BehaviorSubject('');
   private onlineStatus$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
@@ -23,6 +24,10 @@ export class CommonService {
   showHelp(helpText) {
     this.helpText.next(helpText);
     this.showHElp1.next(true);
+  }
+
+  setIsLoading(val: boolean){
+    this.isLoading.next(val);
   }
 
   closeHelp() {

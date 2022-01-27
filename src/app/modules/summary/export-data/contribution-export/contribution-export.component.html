@@ -1,5 +1,5 @@
 <div class="container-fluid p-0 mt-4">
-  <div class="row">
+  <div class="grid grid-cols-4 gap-2">
 
     <div class="col-sm-3">
       <app-period-selector
@@ -40,16 +40,19 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="dateReady" @fadeIn>
+  <div class="grid grid-cols-2" *ngIf="dateReady" @fadeIn>
     <div class="col-sm-6">
       <mat-checkbox [(ngModel)]="showPhoneNumber">Show Phone Number</mat-checkbox>
     </div>
     <div class="col-sm-6 mb-1" style="text-align: right">
       <button class="zoom-on-hover no-print" (click)="downloadExcel()" mat-raised-button style="background-color: #141432; border: 1px solid #ffffff52;">
-        <img src="assets/images/csv.png" style="height: 26px"> &nbsp; Download
+        <div class="flex items-center gap-1"å>
+          <img src="assets/images/csv.png" style="height: 26px">
+          <span>Download</span>
+        </div>
       </button>
     </div>
-    <div class="col-sm-12">
+    <div class="col-span-2">
       <table  #dataTable class="table table-bordered" style="color: white">
         <tr>
           <th [attr.colspan]="months.length + (showPhoneNumber ? 3 : 2)" style="text-align: center">

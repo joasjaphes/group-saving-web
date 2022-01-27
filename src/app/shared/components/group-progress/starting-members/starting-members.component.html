@@ -1,59 +1,95 @@
-<div class="row">
-  <div class="col-md-5">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-4 p-0" @fadeIn>
-          <mat-form-field appearance="fill">
-            <img
-              alt="flag"
-              matPrefix
-              style="height: 15px; width: 25px; margin-right: 10px"
-              *ngIf="country"
-              src="assets/flags/{{country.isoCode.toLowerCase()}}.png">
-            <mat-select (selectionChange)="setPhoneCountry($event)" [(ngModel)]="selectedCountry">
-              <mat-option *ngFor="let count of countries" [value]="count.phoneCode">
-                <img alt="flag" style="height: 15px; width: 25px" src="assets/flags/{{count.isoCode.toLowerCase()}}.png">
-                &nbsp; +{{count.phoneCode}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="col-sm-8 p-0" @fadeIn>
-          <mat-form-field appearance="fill">
-            <mat-label>Phone number</mat-label>
-            <input
-              [(ngModel)]="phoneNumber"
-              (input)="setPhoneNumber($event.target.value)"
-              matInput type="text" placeholder="OXXXXXXXXX"
-              #myInput
-            >
-            <mat-icon matSuffix>phone</mat-icon>
-          </mat-form-field>
-        </div>
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">file_upload</mat-icon>
+      Upload Members from Excel
+    </ng-template>
+    <div class="mt-5 grid gap-4 place-items-center">
+      <div class="text-center">
+        <p class="">Import members from Excel
+          <a (click)="downloadExcel()" class="text-secondLevel underline cursor-pointer">Download Sample Excel</a>
+          Fill it then import</p>
+      </div>
+
+      <div class="col-md-6 text-center">
+        <button mat-raised-button (click)="inputFile.click()"
+                title="Upload associated file" type="button">
+          <mat-icon>attach_file</mat-icon>
+          <span *ngIf="fileUploadedName; else weHaveFile"> {{ fileUploadedName }}</span>
+          <ng-template #weHaveFile> Upload A File</ng-template>
+        </button>
+        <input hidden mat-raised-button color="default" #inputFile (change)="onFileSelected($event)" type="file"
+               accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
       </div>
     </div>
-  </div>
-  <div class="col-md-5" *ngIf="phoneIsValid" @fadeIn>
-     <mat-form-field appearance="fill">
-       <mat-label>Member name</mat-label>
-       <mat-icon matPrefix>person_outline</mat-icon>
-       <input matInput [(ngModel)]="memberName">
-     </mat-form-field>
-  </div>
-  <div class="col-md-2" *ngIf="memberName && memberName.length > 2" @fadeIn>
-    <button (click)="addMember()" class="save-btn zoom-on-hover" mat-raised-button>
-      <mat-icon>add</mat-icon>
-      Add
-    </button>
-  </div>
-</div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">person_add</mat-icon>
+      Add Users
+    </ng-template>
+
+    <div class="flex gap-2 mt-5">
+      <div class="w-5/12">
+        <div class="container-fluid">
+          <div class="flex">
+            <div class="w-4/12 p-0 phone-number" @fadeIn>
+              <mat-form-field appearance="fill">
+                <img
+                  alt="flag"
+                  matPrefix
+                  style="height: 15px; width: 25px; margin-right: 10px"
+                  *ngIf="country"
+                  src="assets/flags/{{country.isoCode.toLowerCase()}}.png">
+                <mat-select (selectionChange)="setPhoneCountry($event)" [(ngModel)]="selectedCountry">
+                  <mat-option *ngFor="let count of countries" [value]="count.phoneCode">
+                    <img alt="flag" style="height: 15px; width: 25px"
+                         src="assets/flags/{{count.isoCode.toLowerCase()}}.png">
+                    &nbsp; +{{count.phoneCode}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="w-8/12 p-0 phone-number1" @fadeIn>
+              <mat-form-field appearance="fill">
+                <mat-label>Phone number</mat-label>
+                <input
+                  [(ngModel)]="phoneNumber"
+                  (input)="setPhoneNumber($event)"
+                  matInput type="text" placeholder="OXXXXXXXXX"
+                  #myInput
+                >
+                <mat-icon matSuffix>phone</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-5/12" *ngIf="phoneIsValid" @fadeIn>
+        <mat-form-field appearance="fill">
+          <mat-label>Member name</mat-label>
+          <mat-icon matPrefix>person_outline</mat-icon>
+          <input matInput [(ngModel)]="memberName">
+        </mat-form-field>
+      </div>
+      <div class="w-5/12" *ngIf="memberName && memberName.length > 2" @fadeIn>
+        <button (click)="addMember()" class="save-btn zoom-on-hover" mat-raised-button>
+          <mat-icon>add</mat-icon>
+          Add
+        </button>
+      </div>
+    </div>
+
+  </mat-tab>
+</mat-tab-group>
+
 
 <div class="row mt-2" *ngIf="members.length > 0" @fadeIn style="max-height: 550px; overflow: auto">
   <div class="col-sm-12">
     <h4 class="registration-title">Members to be added</h4>
   </div>
   <div class="col-sm-12">
-    <table style="font-size: 12px; color: white" class="table table-bordered">
+    <table style="font-size: 12px; color: white" class="w-full table table-bordered">
       <tr>
         <th>#</th>
         <th>Phone Number</th>
@@ -61,7 +97,7 @@
         <th></th>
       </tr>
       <tr *ngFor="let member of members; let i = index;" @fadeIn @fadeOut>
-        <td style="padding-top: 3px; padding-bottom: 3px">{{ i+1 }}</td>
+        <td style="padding-top: 3px; padding-bottom: 3px">{{ i + 1 }}</td>
         <td style="padding-top: 3px; padding-bottom: 3px">{{ member.phoneNumber }}</td>
         <td style="padding-top: 3px; padding-bottom: 3px">{{ member.name }}</td>
         <td style="padding-top: 3px; padding-bottom: 3px">

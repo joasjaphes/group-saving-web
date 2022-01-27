@@ -5,6 +5,8 @@ import {CommonService} from '../../../../services/common.service';
 import {fadeIn, fadeOut} from '../../../animations/router-animation';
 import {countries, Country} from 'src/app/store/countries';
 import {trimPhoneNumber} from '../../../../store/login-steps/login-steps.selectors';
+import {ExcelReaderService} from '../../../../services/excel-reader.service';
+import * as Excel from 'exceljs';
 
 @Component({
   selector: 'app-starting-members',
@@ -17,6 +19,7 @@ export class StartingMembersComponent implements OnInit {
   @Input() currentMemberName: string;
   @Output() closeForm = new EventEmitter();
 
+  fileUploadedName: string;
   countries = countries;
   selectedCountry: string;
   country: Country;
@@ -29,6 +32,7 @@ export class StartingMembersComponent implements OnInit {
   constructor(
     private functionsService: FunctionsService,
     private commonService: CommonService,
+    private excelDownloadService: ExcelReaderService,
   ) {
   }
 
@@ -43,11 +47,15 @@ export class StartingMembersComponent implements OnInit {
     this.selectedCountry = this.country.phoneCode;
   }
 
-  setPhoneNumber(value) {
+  setPhoneNumber(event: any) {
   }
 
   get phoneIsValid() {
-    const phone = `+${this.country.phoneCode}${trimPhoneNumber(this.phoneNumber)}`;
+    return this.checkPhoneValidity(this.phoneNumber)
+  }
+
+  checkPhoneValidity(phoneNumber: any) {
+    const phone = `+${this.country.phoneCode}${trimPhoneNumber(phoneNumber)}`;
     const testRegex = /^\+\d\d\d\d\d\d\d\d\d\d\d\d$/;
     return testRegex.test(phone);
   }
@@ -79,12 +87,15 @@ export class StartingMembersComponent implements OnInit {
       groupId: this.group.id,
     };
     this.loading = true;
+    this.commonService.setIsLoading(true);
     try {
       await this.functionsService.saveData('createMembers', dataToSave);
       this.loading = false;
       this.commonService.showSuccess('Members information set successful');
       this.onClose();
     } catch (e) {
+
+      this.commonService.setIsLoading(false);
       this.loading = false;
       console.error(e);
     }
@@ -92,5 +103,42 @@ export class StartingMembersComponent implements OnInit {
 
   onClose() {
     this.closeForm.emit();
+  }
+
+  downloadExcel() {
+    const columns = [{
+      name: 'Name',
+      valueType: 'TEXT',
+    }, {
+      name: 'Phone Number (07XXXXXXXX)',
+      valueType: 'TEXT',
+    },
+    ];
+    this.excelDownloadService.generateExcelTemplate(columns, 'Sheet 1', this.group.group_name + '  Members for importation').then();
+  }
+
+  async onFileSelected(event) {
+    const data = await this.excelDownloadService.getExcelData(event.target).subscribe(
+      (data) => {
+        const rows = Object.values(data)[0];
+        for( const row of rows) {
+          const dataInRow = Object.values(row);
+          if (dataInRow[0] && dataInRow[1]) {
+            const phoneNumber = `+${this.country.phoneCode}${trimPhoneNumber(dataInRow[1] + '')}`
+            const member = this.members.find(i => i.phoneNumber === phoneNumber);
+            if (!member && this.checkPhoneValidity(phoneNumber)) {
+              this.members.push(
+                {
+                  phoneNumber: `+${this.country.phoneCode}${trimPhoneNumber(dataInRow[1] + '')}`,
+                  name: dataInRow[0] + ''
+                }
+              )
+            }
+
+          }
+          console.log(dataInRow);
+        }
+      }
+    )
   }
 }

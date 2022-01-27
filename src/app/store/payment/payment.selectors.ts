@@ -491,7 +491,26 @@ export const selectTotalPaymentByYear = (year, contributionType, memberId?) => c
     // const items = allItems;
     let sum = 0;
     for (const item of items) {
-      const contr = Object.keys(item.contributions).filter(i => contributionType === 'All' || i === contributionType).map(i => item.contributions[i]);
+      const contr = Object.keys(item.contributions)
+        .filter(i => contributionType === 'All' || i === contributionType)
+        .map(i => item.contributions[i]);
+      for (const amount of contr) {
+        sum += !!(amount + '') ? parseFloat(amount + '') : 0;
+      }
+    }
+    return sum;
+  }
+);
+
+export const selectGroupTotalPayments = createSelector(
+  selectDetailed,
+  (allItems) => {
+    const items = allItems;
+    // const items = allItems;
+    let sum = 0;
+    for (const item of items) {
+      const contr = Object.keys(item.contributions)
+        .map(i => item.contributions[i]);
       for (const amount of contr) {
         sum += !!(amount + '') ? parseFloat(amount + '') : 0;
       }

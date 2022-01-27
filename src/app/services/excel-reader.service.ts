@@ -94,7 +94,7 @@ export class ExcelReaderService {
   async addSheets(workbook: Workbook, sheetName, columns: { name: string; valueType: string; key?: string; options?: string[] }[]) {
     const ws = workbook.addWorksheet(sheetName);
     ws.columns = columns.map((col) => {
-      return { header: col.name, key: col.key, width: 35, style: { numFmt: 'mm-dd-yyyy' } };
+      return { header: col.name, key: col.key, width: 35 };
     });
     ws.columns.forEach(column => {
       column.eachCell((cell, num) => {

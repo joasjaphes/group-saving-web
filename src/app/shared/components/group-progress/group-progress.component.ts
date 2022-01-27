@@ -11,11 +11,14 @@ import * as groupSelector from '../../../store/group/group.selectors';
 import * as memberSelector from '../../../store/member/member.selectors';
 import {selectNeedBalance} from '../../../store/group/group.selectors';
 import {first} from 'rxjs/operators';
+import {CommonService} from '../../../services/common.service';
+import {fadeIn} from '../../animations/router-animation';
 
 @Component({
   selector: 'app-group-progress',
   templateUrl: './group-progress.component.html',
-  styleUrls: ['./group-progress.component.scss']
+  styleUrls: ['./group-progress.component.scss'],
+  animations: [fadeIn],
 })
 export class GroupProgressComponent implements OnInit {
 
@@ -23,17 +26,20 @@ export class GroupProgressComponent implements OnInit {
   progress$: Observable<any>;
   progressDetails$: Observable<GroupProgress>;
   memberName$: Observable<string>;
+  loading$: Observable<boolean>;
   contributionTypeNeedBalance$: Observable<ContributionType[]>;
   assignedNumber = 0;
   constructor(
     public dialog: MatDialog,
-    private store: Store<ApplicationState>
+    private store: Store<ApplicationState>,
+    private commonService: CommonService,
   ) {
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.progress$ = this.store.pipe(select(groupSelector.selectProgressPercent));
     this.progressDetails$ = this.store.pipe(select(groupSelector.selectProgress));
     this.memberName$ = this.store.pipe(select(memberSelector.selectFirstNameOnly));
     this.contributionTypeNeedBalance$ = this.store.pipe(select(selectNeedBalance));
+    this.loading$ = this.commonService.isLoading;
 
   }
 

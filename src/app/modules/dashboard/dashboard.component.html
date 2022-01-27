@@ -7,11 +7,14 @@
 <!--    <app-save-loader></app-save-loader>-->
 
 <!--    <app-half-progress></app-half-progress>-->
-
     <div class="mb-4 mr-2" *ngIf="(progress$ | async) != 100">
       <app-group-progress
 
       ></app-group-progress>
+    </div>
+
+    <div *ngIf="(groupTotalPayments$ | async) == 0 && (progress$ | async) == 100 && !(loadingPayments$ | async)">
+      <app-import-reminder *ngIf="donNotHaveExistingData != 'YES'" (setExisting)="setHaveExistingData()"></app-import-reminder>
     </div>
 
 <!--    <div class="loading-sign">-->

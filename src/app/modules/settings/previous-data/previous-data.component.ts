@@ -21,6 +21,12 @@ import * as fineSelector from '../../../store/fine-type/fine-type.selectors';
 export class PreviousDataComponent implements OnInit {
   menus = [
     {
+      name: 'Import Contributions',
+      route: '',
+      description: 'Add contributions from excel file',
+      image: 'export-excel.png'
+    },
+    {
       name: 'Contribution By Member',
       route: '',
       description: 'Add past contribution for a specific member for many periods',

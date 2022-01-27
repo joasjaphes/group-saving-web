@@ -1,6 +1,6 @@
-<div class="row">
+<div class="grid grid-cols-2 gap-x-4 gap-y-2">
   <!--  Meeting Frequency-->
-  <div class="transition-element" [ngClass]="!!meetingFrequency && meetingFrequency != 'No Meeting' ? 'col-sm-6' : 'col-sm-12'">
+  <div class="transition-element" [ngClass]="!!meetingFrequency && meetingFrequency != 'No Meeting' ? 'col-span-1' : 'col-span-2'">
     <mat-form-field appearance="outline">
       <mat-label>Meeting Frequency</mat-label>
       <mat-select [(ngModel)]="meetingFrequency">
@@ -13,7 +13,7 @@
   </div>
 
   <!--  Member must attend meeting-->
-  <div class="col-sm-6" *ngIf="!!meetingFrequency && meetingFrequency != 'No Meeting'">
+  <div class="col-span-1" *ngIf="!!meetingFrequency && meetingFrequency != 'No Meeting'">
     <mat-form-field appearance="outline">
       <mat-label>Member must attend meeting</mat-label>
       <mat-select [(ngModel)]="memberMustAttend">
@@ -23,13 +23,13 @@
     </mat-form-field>
   </div>
 
-  <hr  *ngIf="memberMustAttend == 'Yes'" @fadeIn>
-  <div class="col-sm-12" *ngIf="memberMustAttend == 'Yes'" @fadeIn>
+  <hr  *ngIf="memberMustAttend == 'Yes'" @fadeIn class="col-span-2">
+  <div class="col-span-2" *ngIf="memberMustAttend == 'Yes'" @fadeIn>
     <h4 class="registration-title">Fine for being late to the meeting</h4>
   </div>
 
   <!--  Is there fine for being late to the meeting?-->
-  <div [ngClass]="allowFineForLate == 'Yes' ? 'col-sm-6' : 'col-sm-12'" class="transition-element" *ngIf="memberMustAttend == 'Yes'" @fadeIn>
+  <div [ngClass]="allowFineForLate == 'Yes' ? 'col-span-1' : 'col-span-2'" class="transition-element" *ngIf="memberMustAttend == 'Yes'" @fadeIn>
     <mat-form-field appearance="outline">
       <mat-label>Is there fine for being late to the meeting?</mat-label>
       <mat-select [(ngModel)]="allowFineForLate" (selectionChange)="setLateMeetingFine($event)">
@@ -40,7 +40,7 @@
   </div>
 
   <!--      Fine Amount-->
-  <div class="col-sm-6" *ngIf="allowFineForLate == 'Yes'">
+  <div class="col-span-1" *ngIf="allowFineForLate == 'Yes'">
     <mat-form-field appearance="outline">
       <mat-label>Fine Name</mat-label>
       <input matInput placeholder="Name Fine for being late" [(ngModel)]="lateFineName">
@@ -48,7 +48,7 @@
   </div>
 
   <!--      Fine Amount-->
-  <div class="col-sm-6" *ngIf="allowFineForLate == 'Yes'">
+  <div class="col-span-1" *ngIf="allowFineForLate == 'Yes'">
     <mat-form-field appearance="outline">
       <mat-label>Fine Amount ({{lateFineAmount | number}})</mat-label>
       <input matInput placeholder="Fine for being late" type="number" [(ngModel)]="lateFineAmount">
@@ -56,7 +56,7 @@
   </div>
 
 
-  <div class="col-sm-6" *ngIf="allowFineForLate == 'Yes'" @fadeIn>
+  <div class="col-span-1" *ngIf="allowFineForLate == 'Yes'" @fadeIn>
     <mat-form-field appearance="outline">
       <mat-label>Fines should be added to</mat-label>
       <mat-select [(ngModel)]="addLateFineTo" placeholder="Late meeting fine should be added to">
@@ -67,12 +67,12 @@
     </mat-form-field>
   </div>
 
-  <hr *ngIf="memberMustAttend == 'Yes' && allowFineForLate" @fadeIn>
-  <div class="col-sm-12" *ngIf="memberMustAttend == 'Yes' && allowFineForLate" @fadeIn>
+  <hr *ngIf="memberMustAttend == 'Yes' && allowFineForLate" @fadeIn class="col-span-2">
+  <div class="col-span-2" *ngIf="memberMustAttend == 'Yes' && allowFineForLate" @fadeIn>
     <h4 class="registration-title">Fine for not attending meeting</h4>
   </div>
   <!--  Fine for not attending the meeting-->
-  <div [ngClass]="allowFineForNotAttending == 'Yes' ? 'col-sm-6' : 'col-sm-12'"  class="transition-element" *ngIf="memberMustAttend == 'Yes' && allowFineForLate" @fadeIn>
+  <div [ngClass]="allowFineForNotAttending == 'Yes' ? 'col-span-1' : 'col-span-2'"  class="transition-element" *ngIf="memberMustAttend == 'Yes' && allowFineForLate" @fadeIn>
     <mat-form-field appearance="outline">
       <mat-label>Is there fine for not attending meeting?</mat-label>
       <mat-select [(ngModel)]="allowFineForNotAttending" (selectionChange)="setNotAttendingLMeetingFine($event)">
@@ -110,7 +110,7 @@
     </mat-form-field>
   </div>
 
-  <div class="col-sm-12">
+  <div class="col-span-2">
     <app-save-area
       [saveDisabled]="!meetingFrequency
       || (meetingFrequency != 'No Meeting' && !memberMustAttend)

@@ -31,6 +31,7 @@ import {SmallCircularProgressComponent} from './components/small-circular-progre
 import { SaveLoaderComponent } from './components/save-loader/save-loader.component';
 import { PeriodSelectorComponent } from './components/period-selector/period-selector.component';
 import { ClickOutsideDirective } from './directives/click-outside.directive';
+import { ImportReminderComponent } from './components/import-reminder/import-reminder.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { ClickOutsideDirective } from './directives/click-outside.directive';
     SaveLoaderComponent,
     PeriodSelectorComponent,
     ClickOutsideDirective,
+    ImportReminderComponent,
   ],
   imports: [
     CommonModule,
@@ -98,6 +100,7 @@ import { ClickOutsideDirective } from './directives/click-outside.directive';
         StartingLeadershipComponent,
         StartingBalancesComponent,
         SmallCircularProgressComponent,
+      ImportReminderComponent,
 
         SearchPipe,
         FirstUpperCasePipe,

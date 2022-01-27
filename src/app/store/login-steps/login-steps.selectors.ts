@@ -54,9 +54,10 @@ export const phoneNumberValid = createSelector(
 );
 
 export function trimPhoneNumber(value: string) {
-  return value && value.length > 1 && value.trim().substr(0, 1) === '0'
-    ? value.trim().substr(1)
-    : value;
+  return value && value.length > 1 ? value.trim().substring(value.trim().length - 9) : value;
+  // return value && value.length > 1 && value.trim().substring(value.trim().length - 9) === '0'
+  //   ? value.trim().substr(1)
+  //   : value;
 }
 
 export const selectProgressValue = createSelector(
