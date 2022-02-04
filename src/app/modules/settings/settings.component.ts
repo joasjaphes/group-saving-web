@@ -6,6 +6,7 @@ import {Observable} from 'rxjs';
 import {Group} from '../../store/group/group.model';
 import * as groupSelector from '../../store/group/group.selectors';
 import * as memberSelector from '../../store/member/member.selectors';
+import * as loanSelector from '../../store/loan-type/loan-type.selectors';
 import {GroupProgress} from '../../store/group/group-progress.model';
 import {ContributionType} from '../../store/contribution-type/contribution-type.model';
 import {selectNeedBalance} from '../../store/group/group.selectors';
@@ -13,6 +14,8 @@ import {FineType} from '../../store/fine-type/fine-type.model';
 import * as fineTypeSelector from '../../store/fine-type/fine-type.selectors';
 import {first} from 'rxjs/operators';
 import {Member} from '../../store/member/member.model';
+import {ActivatedRoute} from '@angular/router';
+import {LoanType} from '../../store/loan-type/loan-type.model';
 
 @Component({
   selector: 'app-settings',
@@ -77,10 +80,17 @@ export class SettingsComponent implements OnInit {
       description: 'Add existing group data that are missing and cannot be added one by one',
       image: 'past_data.png'
     },
+    {
+      name: 'Delete Contribution',
+      route: ['', 'settings', 'delete-contributions'],
+      description: 'Delete contributions when they are wrongly entered',
+      image: 'expense-book.png'
+    },
   ];
   group$: Observable<Group>;
   memberName$: Observable<string>;
   members$: Observable<Member[]>;
+  loanTypes$: Observable<LoanType[]>;
   progress$: Observable<any>;
   progressDetails$: Observable<GroupProgress>;
   contributionTypeNeedBalance$: Observable<ContributionType[]>;
@@ -91,6 +101,7 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private store: Store<ApplicationState>,
+    private route: ActivatedRoute,
   ) {
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.progress$ = this.store.pipe(select(groupSelector.selectProgressPercent));
@@ -99,10 +110,14 @@ export class SettingsComponent implements OnInit {
     this.members$ = this.store.pipe(select(memberSelector.selectAll));
     this.contributionTypeNeedBalance$ = this.store.pipe(select(selectNeedBalance));
     this.fineTypes$ = this.store.pipe(select(fineTypeSelector.selectAll));
+    this.loanTypes$ = this.store.pipe(select(loanSelector.selectAll));
   }
 
   ngOnInit(): void {
     this.checkIfGroupHasShare().then();
+    this.route.queryParams.subscribe(params => {
+      console.log({params});
+    });
   }
 
   async checkIfGroupHasShare() {

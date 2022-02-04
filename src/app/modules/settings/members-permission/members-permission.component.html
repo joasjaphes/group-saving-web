@@ -1,7 +1,49 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-12">
-      <h1>Members permission</h1>
-    </div>
+<div class="row">
+
+  <div class="col-sm-12">
+    <h4 class="registration-title !mb-0">Manage Contributions</h4>
+    <mat-form-field appearance="outline">
+      <mat-label>Select Members who will manage contributions</mat-label>
+      <mat-select multiple [(ngModel)]="contributions" placeholder="Select Members who will manage contributions">
+        <mat-option [value]="member.id" *ngFor="let member of members">
+          {{member.name}} <small>({{member.phone_number}})</small>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="col-sm-12" *ngIf="group.meeting_settings.meeting_frequency != 'No Meeting'">
+    <h4 class="registration-title !mb-0">Manage Meetings</h4>
+    <mat-form-field appearance="outline">
+      <mat-label>Select Members who will manage meetings </mat-label>
+      <mat-select multiple [(ngModel)]="meetings" placeholder="Select Members who will manage meetings">
+        <mat-option [value]="member.id" *ngFor="let member of members">
+          {{member.name}} <small>({{member.phone_number}})</small>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+
+  <div class="col-sm-12" *ngIf="loanTypes.length > 0">
+    <h4 class="registration-title !mb-0">Loan Approval</h4>
+    <mat-form-field appearance="outline">
+      <mat-label>Select Members Who will approval loan requests</mat-label>
+      <mat-select multiple [(ngModel)]="loanApproval" placeholder="Select Members Who will approval loan requests">
+        <mat-option [value]="member.id" *ngFor="let member of members">
+          {{member.name}} <small>({{member.phone_number}})</small>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="col-sm-12 mt-2">
+    <app-save-area
+      [saveDisabled]="contributions.length == 0"
+      [confirmFirst]="true"
+      (cancel)="close()"
+      (save)="save()"
+      [savingData]="loading"
+    ></app-save-area>
   </div>
 </div>

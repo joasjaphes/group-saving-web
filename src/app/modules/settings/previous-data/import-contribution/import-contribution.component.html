@@ -17,7 +17,9 @@
 
   <div class="col-sm-3" *ngIf="endDate" @fadeIn>
     <mat-form-field appearance="outline">
-      <mat-select multiple [(ngModel)]="contributionIds" (selectionChange)="setContributionType($event)">
+      <mat-select
+        [(ngModel)]="contributionIds"
+        (selectionChange)="setContributionType($event)">
         <mat-option *ngFor="let contr of contributionTypes"
                     [value]="contr.id">{{contr.name}}</mat-option>
       </mat-select>
@@ -25,7 +27,7 @@
   </div>
 
 
-  <div class="col-sm-3" *ngIf="contributionIds.length > 0" @fadeIn>
+  <div class="col-sm-3" *ngIf="contributionIds" @fadeIn>
     <button
       style="height: 44px; margin-top: 3px; width: 100%;background-color: #141432; border: 1px solid #ffffff52;"
       mat-raised-button
@@ -38,4 +40,78 @@
   </div>
 </div>
 
-<pre>{{months | json}}</pre>
+<div  @fadeIn class="my-5 pt-5 pb-5 grid place-items-center">
+  <p class="text-xl tracking-wider text-secondLevel">Prepare excel file with fields just like in table bellow and after filling it upload data here</p>
+  <p>
+    <a (click)="downloadData()" class="text-secondLevel underline cursor-pointer">Download Sample Excel</a> and do not change Headings or format before Uploading
+  </p>
+  <div>
+    <button style="font-weight: 900; border-radius: 20px;margin-top: 25px;padding: 5px 25px;font-size: 15px;border: 1px solid #FF7043;"
+            mat-raised-button
+            class="registration-title add-button" (click)="inputFile.click()"
+            title="Upload associated file" type="button">
+      <mat-icon>attach_file</mat-icon>
+      <span *ngIf="fileUploadedName; else weHaveFile"> {{ fileUploadedName }}</span>
+      <ng-template #weHaveFile> Upload A File</ng-template>
+    </button>
+    <input hidden mat-raised-button color="default" #inputFile (change)="onFileSelected($event)" type="file"
+           accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+
+  </div>
+
+</div>
+
+<div *ngIf="months.length > 0 && this.excelData.length == 0" @fadeIn>
+  <div class="flex justify-end">
+    <button mat-raised-button (click)="downloadData()" class="!text-green-700">
+      <mat-icon>file_download</mat-icon>
+      Download Excel Templete</button>
+  </div>
+  <table class="table table-bordered">
+    <tr>
+      <th>Name</th>
+      <th>Phone</th>
+      <th *ngFor="let mont of months">
+        {{mont.name}}
+      </th>
+    </tr>
+    <tr *ngFor="let member of members">
+      <td>{{member.name}}</td>
+      <td>{{member.phone_number}}</td>
+      <td *ngFor="let month of months"></td>
+    </tr>
+  </table>
+</div>
+
+
+<div class="pt-5" *ngIf="excelData.length > 0" @fadeIn>
+
+  <table class="table table-bordered">
+    <tr>
+      <th>Name</th>
+      <th>Phone</th>
+      <th *ngFor="let mont of excelMonths">
+        {{ mont.name }}
+      </th>
+    </tr>
+    <tr *ngFor="let member of excelData">
+      <td>{{ member['Name'] }}</td>
+      <td>{{ member['Phone'] }}</td>
+      <td *ngFor="let month of excelMonths">
+        {{ member[month.name] }}
+      </td>
+    </tr>
+  </table>
+  <div class="mt-4">
+    <app-save-area
+      loadingMessage="Saving Contribution information please wait"
+      [savingData]="loading"
+      (save)="saveData()"
+      (cancel)="onClose()"
+      [confirmFirst]="true"
+      confirmText="Are you sure you want to import these data?"
+    ></app-save-area>
+  </div>
+</div>
+
+

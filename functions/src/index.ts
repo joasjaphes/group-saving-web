@@ -37,6 +37,7 @@ import * as setNextMeeting from './meeting/set-next-meeting-details';
 import * as completeMeeting from './meeting/complete-meeting-details';
 import * as updateMeeting from './meeting/update-meeting-details';
 import * as deleteMeeting from './meeting/remove-meeting-details';
+import * as deleteLoan from './loan/delete_loan';
 import * as cancelNextMeeting from './meeting/cancel-next-meeting-details';
 
 exports.getUserByPhoneNumber = getUserByPhoneNumber.getUserByPhoneNumber;
@@ -67,6 +68,7 @@ exports.cancelNextMeeting = cancelNextMeeting.cancelNextMeeting;
 exports.completeMeeting = completeMeeting.completeMeeting;
 exports.updateMeeting = updateMeeting.updateMeeting;
 exports.deleteMeeting = deleteMeeting.deleteMeeting;
+exports.deleteLoan = deleteLoan.deleteLoan;
 exports.assignLoanToMember = assignLoanToMember.assignLoanToMember;
 exports.createLoanQueue = createLoanQueue.createLoanQueue;
 exports.removeMemberFromLoanQueue = removeMemberFromLoanQueue.removeMemberFromLoanQueue;

@@ -91,10 +91,24 @@ export class ExcelReaderService {
     dlink.remove();
   }
 
-  async addSheets(workbook: Workbook, sheetName, columns: { name: string; valueType: string; key?: string; options?: string[] }[]) {
+  async generateExcelTemplateWithData(columns: { name: string; valueType: string; key?: string; options?: string[] }[], sheetNames: string, fileName: string, data: any[]) {
+    const workbook = new Workbook();
+    const worksheet =  await this.addSheets(workbook, sheetNames, columns, 20);
+    data.forEach(dataItem => {
+      const row = worksheet.addRow(dataItem)
+    });
+    const buffer = await workbook.xlsx.writeBuffer();
+    const dlink = document.createElement('a');
+    dlink.href = URL.createObjectURL(new Blob([buffer]));
+    dlink.setAttribute('download', `${fileName}.xlsx`);
+    dlink.click();
+    dlink.remove();
+  }
+
+  async addSheets(workbook: Workbook, sheetName, columns: { name: string; valueType: string; key?: string; options?: string[] }[], width: number = 35) {
     const ws = workbook.addWorksheet(sheetName);
     ws.columns = columns.map((col) => {
-      return { header: col.name, key: col.key, width: 35 };
+      return { header: col.name, key: col.key, width };
     });
     ws.columns.forEach(column => {
       column.eachCell((cell, num) => {
@@ -109,6 +123,8 @@ export class ExcelReaderService {
         };
       });
     });
-    await this.formatSheet(ws, columns);
+    return ws;
+    // await this.formatSheet(ws, columns);
   }
+
 }

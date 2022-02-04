@@ -14,5 +14,18 @@
       <small>{{ payment.date | date:'MMM yyyy' }}</small>
       <span style="color: #ffffffbf; font-size: 11px"> ({{payment.description}})</span>
     </p>
+
+  </div>
+
+  <div style="grid-column: span 2" *ngIf="showDelete">
+    <app-save-area
+      saveText="delete"
+      saveIcon="delete"
+      (save)="deleteContributions()"
+      [confirmFirst]="true"
+      [showCancel]="false"
+      [savingData]="loading"
+      confirmText="Are you sure you want to delete this contributions for {{payment?.member?.name}}"
+    ></app-save-area>
   </div>
 </div>

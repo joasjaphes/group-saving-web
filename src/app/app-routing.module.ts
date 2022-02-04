@@ -25,6 +25,7 @@ import {ContributionTypesComponent} from './modules/settings/contribution-types/
 import {FineTypesComponent} from './modules/settings/fine-types/fine-types.component';
 import {LoanQueueComponent} from './modules/summary/loan-queue/loan-queue.component';
 import {ExportDataComponent} from './modules/summary/export-data/export-data.component';
+import {DeleteContributionsComponent} from './modules/settings/delete-contributions/delete-contributions.component';
 
 
 const routes: Routes = [
@@ -133,6 +134,11 @@ const routes: Routes = [
       {
         path: 'settings/add-previous-data',
         component: PreviousDataComponent,
+        data: { title: 'Previous Data' }
+      },
+      {
+        path: 'settings/delete-contributions',
+        component: DeleteContributionsComponent,
         data: { title: 'Previous Data' }
       },
       {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {ApplicationState} from '../../../store';
 import {Observable} from 'rxjs';
@@ -18,6 +18,7 @@ import { formatNumber } from '@angular/common';
   animations: [fadeIn],
 })
 export class ContributionsComponent implements OnInit {
+  @Input() enableDelete = false;
   viewDetails = false;
   panelTitle = '';
   viewType = '';

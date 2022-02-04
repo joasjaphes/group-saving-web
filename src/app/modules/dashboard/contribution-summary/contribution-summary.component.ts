@@ -17,6 +17,7 @@ import {Go} from '../../../store/router/router.action';
 })
 export class ContributionSummaryComponent implements OnInit {
   @Input() showTitle = true;
+  @Input() enableDelete = false;
   @Input() member: Member;
   group$: Observable<Group>;
   totalContributionOnly$: Observable<number>;

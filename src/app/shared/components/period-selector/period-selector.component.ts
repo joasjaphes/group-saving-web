@@ -22,7 +22,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
         display: 'block',
         position: 'absolute',
         top: '-11px',
-        'background-color': '#1D1D42',
+        'background-color': '#141432',
         padding: '0 10px',
         height: '20px',
         'z-index': '3',
@@ -32,7 +32,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
       //   animate('200ms ease-in', style({opacity: 1}))
       //   ]
       // ),
-      // transition('normal => above1', animate('200ms ease-in'))
+      // transition('normal => *', animate('200ms ease-in'))
     ])
   ]
 })

@@ -77,6 +77,7 @@ export const selectDetailed = createSelector(
         contributionsDetails,
         fineDetails,
         paymentItems,
+        keys: contributionsDetails.map(i => i.contr_id),
         member: members[item.memberId],
         description: contrDetails.join(', '),
         ...findTotal(item)
@@ -327,6 +328,7 @@ export const selectContributionByTypeByYear = (year, typeId) => createSelector(
     .map(i => ({
       ...i,
       totalContributions: i.contributionsDetails.filter(k => k.contr_id === typeId).map(k => k.amount).reduce((j, k) => k + j),
+      keys: i.contributionsDetails.filter(k => k.contr_id === typeId).map(k => k.contr_id),
       description: i.contributionsDetails.filter(k => k.contr_id === typeId).map(k => `${k.name} ${numberWithCommas(k.amount)}`).join(', ')
     }))
 );
@@ -407,10 +409,10 @@ export const selectExpectedCollection = (period: string) => createSelector(
     activeLoans.forEach(i => totalLoan += parseFloat(i.amount_per_return + ''));
     const contrReturs = contributionTypes.map(i => {
       if (i.is_must && i.is_fixed) {
-        totalExpected += i.fixed_value * members.length;
+        totalExpected += parseFloat(i.fixed_value + '') * members.length;
         return {name: i.name, value: i.fixed_value * members.length};
       } else if (i.is_must && !i.is_fixed) {
-        totalExpected += i.fixed_value * members.length;
+        totalExpected += parseFloat(i.minimum_contribution + '') * members.length;
         return {name: i.name, value: i.minimum_contribution * members.length};
       } else {
         return null;

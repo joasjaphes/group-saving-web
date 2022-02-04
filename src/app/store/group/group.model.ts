@@ -26,6 +26,11 @@ export interface Group {
   members_can_see_all: boolean;
   additional_config: any;
   contribution_frequency: string;
+  member_permission?: {
+    contributions: string[],
+    meetings: string[],
+    loan_approval: string[],
+  }
   meeting_settings: {
     meeting_frequency: string;
     allow_late_fine: boolean;

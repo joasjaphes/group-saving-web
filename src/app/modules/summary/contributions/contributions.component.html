@@ -10,8 +10,8 @@
   [animationSize]="'full'"
   [formTitle]="panelTitle"
   (closeDetails)="closePanel()"
-  urlName="Summary"
-  [url]="['', 'summary']"
+  [urlName]="enableDelete ? 'Settings' : 'Summary'"
+  [url]="enableDelete ? ['', 'settings'] : ['', 'summary']"
 >
   <ng-container ngProjectAs="table">
     <div class="row">
@@ -122,6 +122,8 @@
       *ngIf="viewType == 'view'"
       [contributions]="currentPayments$ | async"
       [group]="group$ | async"
+      [showDelete]="enableDelete"
+      (closeForm)="closePanel()"
     ></app-list-contributions>
   </ng-container>
 </app-shared-layout>

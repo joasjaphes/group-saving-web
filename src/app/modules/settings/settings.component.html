@@ -64,6 +64,7 @@
       *ngIf="viewType == 'memberPermission'"
       [group]="group$ | async"
       [members]="members$ | async"
+      [loanTypes]="loanTypes$ | async"
       (closeForm)="closePanel()"
     ></app-members-permission>
   </ng-container>
