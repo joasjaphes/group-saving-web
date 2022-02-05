@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {FineType} from '../../../store/fine-type/fine-type.model';
 import * as fineSelector from '../../../store/fine-type/fine-type.selectors';
@@ -19,6 +19,7 @@ import {fadeIn, ROUTE_ANIMATIONS_ELEMENTS} from '../../../shared/animations/rout
   animations: [fadeIn]
 })
 export class FinesComponent implements OnInit {
+  @Input() enableDelete = false;
   viewDetails = false;
   panelTitle = '';
   viewType = '';

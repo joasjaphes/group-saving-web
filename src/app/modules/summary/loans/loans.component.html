@@ -73,6 +73,7 @@
     <app-single-loan
       *ngIf="viewType == 'view'"
       [loan]="currentLoan"
+      [showDelete]="enableDelete"
       [group]="group$ | async"
       (closeForm)="closePanel()"
     ></app-single-loan>

@@ -31,6 +31,7 @@ export class AddContributionComponent implements OnInit {
   @Output() closeForm = new EventEmitter();
   contributionDate = new Date();
   contributionSelected: any = {};
+  startingShareSelected: any = {};
   loanSelected: any = {};
   contributionAmount: any = {};
   loanAmount: any = {};
@@ -111,13 +112,35 @@ export class AddContributionComponent implements OnInit {
   }
 
   async save() {
-    const dataToSave = {
+    // Making sure that I am not sending empty or zeros to the server to cause issues
+    this.fineAmounts = Object.keys(this.fineAmounts).reduce((object: any, key: string) => {
+      if (!!this.fineAmounts[key]) {
+        object[key] = this.fineAmounts[key];
+      }
+      return object;
+    }, {});
+    this.loanAmount = Object.keys(this.loanAmount).reduce((object: any, key: string) => {
+      if (!!this.loanAmount[key]) {
+        object[key] = this.loanAmount[key];
+      }
+      return object;
+    }, {});
+    this.contributionAmount = Object.keys(this.contributionAmount).reduce((object: any, key: string) => {
+      if (!!this.contributionAmount[key]) {
+        object[key] = this.contributionAmount[key];
+      }
+      return object;
+    }, {});
+
+    // Preparing Values to save
+    let dataToSave = {
       groupId: this.group.id,
       memberId: this.member.id,
       amountTaken: this.loanAmount,
       loans: this.loanAmount,
       fines: this.fineAmounts,
       contributions: this.contributionAmount,
+      startingAmount: {},
       date: this.commonService.formatDate(this.contributionDate),
       year: this.year,
       month: this.month,
@@ -125,6 +148,16 @@ export class AddContributionComponent implements OnInit {
       referenceNumber: this.referenceNumber,
       paymentMode: this.paymentMode,
     };
+
+    // Check to see if the current value is the starting share and add its value
+    Object.keys(this.startingShareSelected).forEach(key => {
+      if(this.startingShareSelected[key]) {
+        dataToSave = {
+          ...dataToSave,
+          startingAmount: {[key]: this.contributionAmount[key]}
+        }
+      }
+    });
     this.loading = true;
     try {
       await this.functionsService.saveData('addNewContribution', dataToSave);
@@ -143,7 +176,12 @@ export class AddContributionComponent implements OnInit {
       this.contributionAmount[contributionType.id] = contributionType.fixed_value;
       this.findTotal();
     } else {
-      this.contributionAmount[contributionType.id] = null;
+      this.contributionAmount = Object.keys(this.contributionAmount).reduce((object: any, key: string) => {
+        if (key !== contributionType.id) {
+          object[key] = this.contributionAmount[key];
+        }
+        return object;
+      }, {});
       this.findTotal();
     }
   }
@@ -154,7 +192,12 @@ export class AddContributionComponent implements OnInit {
       this.loanAmount[loan.id] = loan.amount_per_return;
       this.findTotal();
     } else {
-      this.loanAmount[loan.id] = null;
+      this.loanAmount = Object.keys(this.loanAmount).reduce((object: any, key: string) => {
+        if (key !== loan.id) {
+          object[key] = this.loanAmount[key];
+        }
+        return object;
+      }, {});
       this.findTotal();
     }
   }

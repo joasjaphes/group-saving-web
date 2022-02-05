@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Loan} from '../../../store/loan/loan.model';
 import * as loanSelector from '../../../store/loan/loan.selectors';
@@ -17,6 +17,7 @@ import {ROUTE_ANIMATIONS_ELEMENTS} from '../../../shared/animations/router-anima
   styleUrls: ['./loans.component.scss']
 })
 export class LoansComponent implements OnInit {
+  @Input() enableDelete = false;
   currentView = 'current';
   activeLoans$: Observable<Loan[]>;
   completedLoans$: Observable<Loan[]>;

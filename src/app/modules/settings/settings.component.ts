@@ -86,6 +86,18 @@ export class SettingsComponent implements OnInit {
       description: 'Delete contributions when they are wrongly entered',
       image: 'expense-book.png'
     },
+    {
+      name: 'Delete Loans',
+      route: ['', 'settings', 'delete-loans'],
+      description: 'Delete contributions when they are wrongly entered',
+      image: 'expense-book.png'
+    },
+    {
+      name: 'Delete Fines',
+      route: ['', 'settings', 'delete-fines'],
+      description: 'Delete contributions when they are wrongly entered',
+      image: 'expense-book.png'
+    },
   ];
   group$: Observable<Group>;
   memberName$: Observable<string>;

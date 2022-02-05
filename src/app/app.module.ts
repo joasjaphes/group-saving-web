@@ -102,6 +102,8 @@ import { ContributionExportComponent } from './modules/summary/export-data/contr
 import {CommonModule} from '@angular/common';
 import { ImportContributionComponent } from './modules/settings/previous-data/import-contribution/import-contribution.component';
 import { DeleteContributionsComponent } from './modules/settings/delete-contributions/delete-contributions.component';
+import { DeleteFinesComponent } from './modules/settings/delete-fines/delete-fines.component';
+import { DeleteLoansComponent } from './modules/settings/delete-loans/delete-loans.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -199,7 +201,9 @@ const firebaseConfig = {
     LoanExportComponent,
     ContributionExportComponent,
     ImportContributionComponent,
-    DeleteContributionsComponent
+    DeleteContributionsComponent,
+    DeleteFinesComponent,
+    DeleteLoansComponent
   ],
   imports: [
     CommonModule,

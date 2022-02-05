@@ -13,7 +13,7 @@ export class LoanItemComponent implements OnInit {
 
   @Input() loan: Loan;
   @Input() group: Group;
-  @Input() showDelete = true;
+  @Input() showDelete = false;
   loading = false;
   constructor(
     private commonService: CommonService,

@@ -14,7 +14,7 @@ export class SingleLoanComponent implements OnInit {
   @Input() group: Group;
   @Input() loan: Loan;
 
-  @Input() showDelete = true;
+  @Input() showDelete = false;
   loading = false;
   @Output() closeForm = new EventEmitter();
   constructor(

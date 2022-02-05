@@ -26,6 +26,8 @@ import {FineTypesComponent} from './modules/settings/fine-types/fine-types.compo
 import {LoanQueueComponent} from './modules/summary/loan-queue/loan-queue.component';
 import {ExportDataComponent} from './modules/summary/export-data/export-data.component';
 import {DeleteContributionsComponent} from './modules/settings/delete-contributions/delete-contributions.component';
+import {DeleteLoansComponent} from './modules/settings/delete-loans/delete-loans.component';
+import {DeleteFinesComponent} from './modules/settings/delete-fines/delete-fines.component';
 
 
 const routes: Routes = [
@@ -139,7 +141,17 @@ const routes: Routes = [
       {
         path: 'settings/delete-contributions',
         component: DeleteContributionsComponent,
-        data: { title: 'Previous Data' }
+        data: { title: 'Delete Contributions' }
+      },
+      {
+        path: 'settings/delete-fines',
+        component: DeleteFinesComponent,
+        data: { title: 'Delete Fines' }
+      },
+      {
+        path: 'settings/delete-loans',
+        component: DeleteLoansComponent,
+        data: { title: 'Delete Loans' }
       },
       {
         path: 'change-password',

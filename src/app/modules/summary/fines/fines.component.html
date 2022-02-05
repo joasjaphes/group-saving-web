@@ -117,6 +117,7 @@
   <ng-container ngProjectAs="form">
     <app-list-fines
       *ngIf="viewType == 'view'"
+      [showDelete]="enableDelete"
       [contributions]="currentFines$ | async"
       [group]="group$ | async"
     ></app-list-fines>
