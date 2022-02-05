@@ -73,11 +73,9 @@ export class FinesByMemberComponent implements OnInit {
       this.fineTypes.forEach(contr => {
         const amount = data.fines[contr.id] ? data.fines[contr.id] + '' : '0';
         if (!!amount) {
-          console.log(amount);
           data.total += parseFloat(amount);
           this.grandTotal += parseFloat(amount);
         } else {
-          console.log({amount});
           data.total += 0;
           this.grandTotal += 0;
         }

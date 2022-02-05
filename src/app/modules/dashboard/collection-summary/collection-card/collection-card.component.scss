@@ -85,6 +85,13 @@
   //justify-content: end;
 }
 
+.end-justify {
+  justify-content: flex-end;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
 .green {
   color: greenyellow
 }

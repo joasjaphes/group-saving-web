@@ -34,4 +34,6 @@ export interface ContributionType {
   fine_period_type?: string;
   fine_calculation?: string;
   fine_amount_per_period?: number;
+  is_starting_share: boolean;
+  minimum_starting_share: number;
 }

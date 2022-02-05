@@ -12,6 +12,7 @@ export interface PaymentModel {
       contributions: { [id: string]: number },
       fines: { [id: string]: number },
       loans: { [id: string]: number },
+      startingAmount: { [id: string]: number },
       referenceNumber: string;
       paymentMode: string;
       date: any

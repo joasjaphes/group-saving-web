@@ -1,6 +1,7 @@
 import {Member} from '../member/member.model';
 
 export interface Payment {
+  fineKeys?: string[];
   keys?: string[];
   member?: Member;
   members?: any;

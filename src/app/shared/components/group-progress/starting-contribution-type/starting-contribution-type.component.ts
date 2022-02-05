@@ -32,8 +32,10 @@ export class StartingContributionTypeComponent implements OnInit {
   pricePerShare: any;
   isMandatory: string;
   isAmountSame: string;
+  isStartingShare: string;
   amount: any;
   minimumAmount: any;
+  minimumStartingAmount: any;
   allowFine: string;
   allowLoan: string;
   fineCalculationType: string;
@@ -59,6 +61,8 @@ export class StartingContributionTypeComponent implements OnInit {
       this.isMandatory = this.currentContributionType.is_must ? 'Yes' : 'No';
       this.isAmountSame = this.currentContributionType.is_fixed ? 'Yes' : 'No';
       this.amount = this.currentContributionType.fixed_value;
+      this.minimumStartingAmount = this.currentContributionType.minimum_starting_share;
+      this.isStartingShare = this.currentContributionType.is_starting_share ? 'Yes' : 'No';
       this.minimumAmount = this.currentContributionType.minimum_contribution;
       this.allowFine = this.currentContributionType.allow_late_fine ? 'Yes' : 'No';
       this.allowLoan = this.currentContributionType.allow_loan ? 'Yes' : 'No';
@@ -107,6 +111,8 @@ export class StartingContributionTypeComponent implements OnInit {
       fineAmount: this.fineAmount,
       fineName: this.fineName,
       isLoanAllowed: this.allowLoan,
+      isStartingShare: this.isStartingShare,
+      minimumStartingShare: this.minimumStartingAmount,
       trackBalance: this.trackBalance,
       fineHasData: this.fineHasData,
     };

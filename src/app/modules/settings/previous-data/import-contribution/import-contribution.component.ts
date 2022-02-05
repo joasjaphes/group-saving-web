@@ -32,6 +32,8 @@ export class ImportContributionComponent implements OnInit {
   startDate: any;
   endDate: any;
   contributionIds: string;
+  includeStartingShare = 'No';
+  startingShareDate: any;
   selectedContributionTypes: ContributionType;
   months: { id: string, name: string }[] = [];
   fileUploadedName: string;
@@ -61,6 +63,10 @@ export class ImportContributionComponent implements OnInit {
 
   setEndMonth($event: { month: { name: string; id: string }; year: any }) {
     this.endDate = $event.year + '-' + $event.month.id + '-' + '01';
+  }
+
+  setStartingShare($event: { month: { name: string; id: string }; year: any }) {
+    this.startingShareDate = $event.year + '-' + $event.month.id + '-' + '01';
   }
 
   getData() {
@@ -118,14 +124,31 @@ export class ImportContributionComponent implements OnInit {
       'January': '01', 'February': '02', 'March': '03', 'April': '04', 'May': '05', 'June': '06',
       'July': '07', 'August': '08', 'September': '09', 'October': '10', 'November': '11', 'December': '12'
     };
-    const dataItems = [];
+    let dataItems = [];
     for( const row of this.excelData) {
       const phoneNumber = row['Phone'];
       const member = this.members.find(i => i.phone_number === phoneNumber);
-      console.log({member});
-      const dataInRow = Object.values(row);
       Object.keys(row).forEach(key => {
-        if (key === 'Phone' || key === 'Name') {} else {
+        if (key === 'Phone' || key === 'Name') {}
+        else if (key === 'Starting' && row[key] && this.startingShareDate && this.includeStartingShare === 'Yes') {
+          const contribution = {
+            groupId: this.group.id,
+            memberId: member.id,
+            amountTaken: row[key],
+            loans: {},
+            fines: {},
+            contributions: {[this.contributionIds]: row[key]},
+            date: this.startingShareDate,
+            year: this.startingShareDate.substring(0, 4),
+            month: this.startingShareDate.substring(5,7),
+            period: `${this.startingShareDate.substring(0, 4)}${this.startingShareDate.substring(5,7)}`,
+            isStarting: true,
+            referenceNumber: '',
+            paymentMode: '',
+          };
+          dataItems.push(contribution);
+        }
+        else {
           const splittedKey = key.split(' ');
           if (this.contributionIds && row[key] && splittedKey.length === 2 && monthNames[splittedKey[0]]) {
             const contribution = {
@@ -134,6 +157,7 @@ export class ImportContributionComponent implements OnInit {
               amountTaken: row[key],
               loans: {},
               fines: {},
+              startingAmount: {},
               contributions: {[this.contributionIds]: row[key]},
               date: `${splittedKey[1]}-${monthNames[splittedKey[0]]}-01`,
               year: splittedKey[1],
@@ -141,6 +165,7 @@ export class ImportContributionComponent implements OnInit {
               period: `${splittedKey[1]}${monthNames[splittedKey[0]]}`,
               referenceNumber: '',
               paymentMode: '',
+              isStarting: false,
             };
             dataItems.push(contribution);
           }
@@ -148,6 +173,24 @@ export class ImportContributionComponent implements OnInit {
       })
     }
     this.loading = true;
+    this.members.forEach(member => {
+      const startingFound = dataItems.find(i => i.memberId === member.id && i.isStarting);
+      if (startingFound) {
+        const monthData = dataItems.find(i => i.memberId === member.id && i.period === startingFound.period && !i.isStarting);
+        if (monthData) {
+          const monthAmount = parseFloat(monthData.contributions[this.contributionIds] + '');
+          const startingAmount = parseFloat(startingFound.contributions[this.contributionIds] + '');
+          const index = dataItems.findIndex(i => i.memberId === member.id && i.period === startingFound.period && !i.isStarting);
+          dataItems[index] = {
+            ...monthData,
+            contributions: {[this.contributionIds]: monthAmount + startingAmount},
+            startingAmount: {[this.contributionIds]: startingAmount},
+          }
+          dataItems = dataItems.filter(i => !(i.memberId === member.id && i.isStarting));
+        }
+      }
+    });
+    console.log(JSON.stringify(dataItems));
     try {
       await this.functionsService.saveData('addPastContributions', {
         groupId: this.group.id,
@@ -180,6 +223,9 @@ export class ImportContributionComponent implements OnInit {
       data.push(item);
     });
     columns.push({name: 'Name', valueType: 'TEXT', key: 'name'}, {name: 'Phone', valueType: 'TEXT', key: 'phone'});
+    if (this.includeStartingShare === 'Yes') {
+      columns.push({name: 'Starting', valueType: 'TEXT', key: 'starting'});
+    }
     this.months.forEach(month => columns.push({name: month.name, valueType: 'TEXT', key: month.id}));
     this.excelService.generateExcelTemplateWithData(
       columns,

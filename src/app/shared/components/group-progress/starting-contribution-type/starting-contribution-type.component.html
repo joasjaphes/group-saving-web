@@ -120,6 +120,32 @@
               <b>{{minimumAmount | number}}</b></mat-hint>
           </mat-form-field>
         </div>
+
+        <!--      is amount the same-->
+        <div class="col-sm-6" *ngIf="contributionType && contributionType == 'Share'" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Is There starting share amount {{group.country}} <span *ngIf="group.country == 'TZ'">
+              (Kuna Hisa Anzia?)
+            </span></mat-label>
+            <mat-select [(ngModel)]="isStartingShare">
+              <mat-option value="Yes">Yes </mat-option>
+              <mat-option value="No">No </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+
+        <!--      Minimum Amount-->
+        <div class="col-sm-6" *ngIf="isStartingShare == 'Yes'" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Minimum Starting Amount <span *ngIf="group.country == 'TZ'">
+              (Kiasi cha chini cha Kuanzia?)
+            </span><b *ngIf="minimumStartingAmount">({{minimumStartingAmount | number}})</b></mat-label>
+            <input matInput type="number" [(ngModel)]="minimumStartingAmount">
+            <mat-hint *ngIf="minimumStartingAmount" @fadeIn>Each member will contribute a minimum of
+              <b>{{minimumStartingAmount | number}}</b> at the start of share period</mat-hint>
+          </mat-form-field>
+        </div>
         <div class="col-span-2">
           <button [disabled]="!(!!amount || !!minimumAmount)" class="next-btn zoom-on-hover" style="float: right"
                   mat-button matStepperNext>

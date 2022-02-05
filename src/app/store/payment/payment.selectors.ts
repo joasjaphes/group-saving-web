@@ -78,6 +78,7 @@ export const selectDetailed = createSelector(
         fineDetails,
         paymentItems,
         keys: contributionsDetails.map(i => i.contr_id),
+        fineKeys: fineDetails.map(i => i.id),
         member: members[item.memberId],
         description: contrDetails.join(', '),
         ...findTotal(item)
@@ -180,11 +181,12 @@ export const selectFinesDetailedGroupByMember = (year, fineType) => createSelect
   (allItems, members) => {
     const memberData = {};
     for (const member of members) {
-      memberData[member.id] = {type: 'member', id: member.id, name: member.name, total: 0, totals: {}, items: []};
+      memberData[member.id] = {type: 'member', id: member.id, name: member.name, total: 0, totals: {}, items: [], fineKeys: []};
       allItems.filter(i => i.year + '' === year + '')
         .forEach(item => {
           if (item.memberId === member.id) {
             for (const contr of item.fineDetails) {
+              memberData[member.id].fineKeys = fineType === 'All' ? item.fineKeys : [fineType];
               if (fineType === 'All' || fineType === contr.id) {
                 if (memberData[member.id].totals[contr.id]) {
                   memberData[member.id].totals[contr.id]['amount'] += parseFloat(contr.amount);
@@ -224,12 +226,13 @@ export const selectFineDetailedGroupByMonth = (year, fineType) => createSelector
     const months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
     const monthData = {};
     for (const month of monthNames) {
-      monthData[month.key] = {type: 'month', id: month.key + year, key: month.key, name: month.name, total: 0, totals: {}, items: []};
+      monthData[month.key] = {type: 'month', id: month.key + year, key: month.key, name: month.name, total: 0, totals: {}, items: [], fineKeys: []};
       allItems
         .filter(item => item.month + '' === month.key && item.year + '' === year + '')
         .forEach(item => {
           if (item.month === month.key && item.year + '' === year + '') {
             for (const contr of item.fineDetails) {
+              monthData[month.key].fineKeys = fineType === 'All' ? item.fineKeys : [fineType];
               if (fineType === 'All' || fineType === contr.id) {
                 if (monthData[month.key].totals[contr.id]) {
                   monthData[month.key].totals[contr.id]['amount'] += parseFloat(contr.amount);
@@ -602,7 +605,14 @@ export const selectFinesByMemberByYear = (year, memberId, fineType) => createSel
     .filter(i => !!i.fineDetails.find(k => (k.id === fineType || fineType === 'All')))
     .map(i => ({
       ...i,
-      description: i.fineDetails.map(k => `${k.name} ${numberWithCommas(k.amount)}`).join(', ')
+      fineKeys: fineType === 'All' ? i.fineKeys : [fineType],
+      totalFines: i.fineDetails
+        .filter(k => fineType === 'All' || k.id === fineType)
+        .map(k => k.amount)
+        .reduce((j, k) => k + j),
+      description: i.fineDetails
+        .filter(k => fineType === 'All' || k.id === fineType)
+        .map(k => `${k.name} ${numberWithCommas(k.amount)}`).join(', ')
     }))
 );
 
@@ -613,7 +623,14 @@ export const selectFinesByMonthByYear = (year, month, fineType) => createSelecto
     .filter(i => !!i.fineDetails.find(k => (k.id === fineType || fineType === 'All')))
     .map(i => ({
       ...i,
-      description: i.fineDetails.map(k => `${k.name} ${numberWithCommas(k.amount)}`).join(', ')
+      fineKeys: fineType === 'All' ? i.fineKeys : [fineType],
+      totalFines: i.fineDetails
+        .filter(k => fineType === 'All' || k.id === fineType)
+        .map(k => k.amount)
+        .reduce((j, k) => k + j),
+      description: i.fineDetails
+        .filter(k => fineType === 'All' || k.id === fineType)
+        .map(k => `${k.name} ${numberWithCommas(k.amount)}`).join(', ')
     }))
 );
 

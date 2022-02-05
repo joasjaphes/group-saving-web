@@ -1,5 +1,5 @@
-<div class="row">
-  <div class="col-sm-12 inner-grid" (click)="onAmountClick()" [ngClass]="{'justify-end': justifyRight}">
+<div class="row" [ngClass]="{'end-justify': justifyRight}">
+  <div class="col-sm-12 inner-grid" (click)="onAmountClick()" >
     <div class="icon-area">
       <mat-icon [ngClass]="iconClass">{{icon}}</mat-icon>
     </div>
@@ -13,7 +13,7 @@
 
   <!--            Sub summary area-->
   <div class="col-sm-12 inner1-grid">
-    <div class="inner1-item-grid" (click)="onLeftClick()" [ngClass]="{'justify-end': justifyRight}">
+    <div class="inner1-item-grid" (click)="onLeftClick()" >
       <div class="img-area in">
       </div>
       <div>
@@ -21,7 +21,7 @@
         <h1 class="registration-title down-amount"> {{leftAmount | number}}</h1>
       </div>
     </div>
-    <div class="inner1-item-grid " (click)="onRightClicked()" [ngClass]="{'justify-end': justifyRight}">
+    <div class="inner1-item-grid " (click)="onRightClicked()">
       <div class="img-area out"></div>
       <div>
         <p class="text-muted">{{rightTitle}}</p>

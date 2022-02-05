@@ -51,6 +51,7 @@ export const preparePayment = (data: any, group: any, currentPayment: PaymentMod
     fines: {},
     contributions: {},
     loans: {},
+    startingAmount: {},
   };
 
   return {
@@ -62,6 +63,7 @@ export const preparePayment = (data: any, group: any, currentPayment: PaymentMod
         fines: mergeObjects(memberPayments.fines, data.fines, replace),
         contributions: mergeObjects(memberPayments.contributions, data.contributions, replace),
         loans: mergeObjects(memberPayments.loans, data.loans, replace),
+        startingAmount: mergeObjects(memberPayments.startingAmount ?? {}, data.startingAmount, replace),
         referenceNumber: data.referenceNumber ?? '',
         paymentMode: data.paymentMode ?? '',
         date: formatDate(data.date),
@@ -86,6 +88,7 @@ export const deleteContribution = (
           fines: deleteKeys(memberPayments.fines, data.keys),
           contributions: deleteKeys(memberPayments.contributions, data.keys),
           loans: deleteKeys(memberPayments.loans, data.keys),
+          startingAmount: deleteKeys(memberPayments.startingAmount ?? {}, data.keys),
         },
       },
     };
