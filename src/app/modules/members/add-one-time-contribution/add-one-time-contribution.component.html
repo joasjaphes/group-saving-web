@@ -1,0 +1,54 @@
+<div class="grid grid-cols-12 gap-4">
+  <div class="col-span-12">
+    <p class="registration-title text-2xl text-secondLevel">{{currentContribution?.name}} from {{member?.name}}</p>
+  </div>
+  <!--        Payment Reference Number-->
+  <div class="col-span-6">
+    <mat-form-field appearance="outline">
+      <mat-label>Amount <span *ngIf="amount">( {{amount | number}} )</span> </mat-label>
+      <input type="number" matInput [(ngModel)]="amount" placeholder="Amount">
+    </mat-form-field>
+  </div>
+
+  <div class="col-span-6">
+    <!--        Start Date-->
+    <mat-form-field appearance="outline">
+      <mat-label>Date</mat-label>
+      <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="contributionDate"/>
+      <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
+      <mat-datepicker #endingDate></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div [ngClass]="paymentMode == 'Bank Deposit' || paymentMode == 'Mobile Money' ? 'col-span-6' : 'col-span-12'"
+       *ngIf="!!amount" @fadeIn>
+    <mat-form-field appearance="outline">
+      <mat-label>Payment Mode</mat-label>
+      <mat-select [(ngModel)]="paymentMode" placeholder="Payment Mode">
+        <mat-option value="Cash">Cash</mat-option>
+        <mat-option value="Bank Deposit">Bank Deposit</mat-option>
+        <mat-option value="Mobile Money">Mobile Money</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!--        Payment Reference Number-->
+  <div class="col-span-6" *ngIf="paymentMode == 'Bank Deposit' || paymentMode == 'Mobile Money'" @fadeIn>
+    <mat-form-field appearance="outline">
+      <mat-label>Reference Number <small class="text-muted">(Optional)</small> </mat-label>
+      <input matInput [(ngModel)]="referenceNumber" placeholder="Payment Reference Number">
+    </mat-form-field>
+  </div>
+
+  <div class="col-span-12 mt-3" *ngIf="amount && contributionDate" @fadeIn>
+    <app-save-area
+      [confirmFirst]="true"
+      confirmText="Are you sure you want to ADD {{amount | number}}  as {{currentContribution.name}} for {{member.name}}?"
+      [saveDisabled]="!paymentMode"
+      (cancel)="closeDialog()"
+      (save)="save()"
+      [savingData]="loading"
+    ></app-save-area>
+  </div>
+
+</div>

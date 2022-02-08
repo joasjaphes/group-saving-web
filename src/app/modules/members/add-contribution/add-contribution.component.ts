@@ -166,7 +166,7 @@ export class AddContributionComponent implements OnInit {
       this.closeDialog();
     } catch (e) {
       this.loading = false;
-      this.commonService.showError('Loan was not assigned successful');
+      this.commonService.showError('Contribution was not assigned successful');
       console.error(e);
     }
   }

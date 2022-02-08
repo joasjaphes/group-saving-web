@@ -30,7 +30,7 @@ export const selectRepeating = createSelector(
 );
 
 export const selectOneTime = createSelector(
-  selectAll, (allItems) => allItems.filter(i => !i.is_one_time_contribution)
+  selectAll, (allItems) => allItems.filter(i => i.is_one_time_contribution)
 );
 
 export const selectDetailed = createSelector(

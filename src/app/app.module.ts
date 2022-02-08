@@ -104,6 +104,7 @@ import { ImportContributionComponent } from './modules/settings/previous-data/im
 import { DeleteContributionsComponent } from './modules/settings/delete-contributions/delete-contributions.component';
 import { DeleteFinesComponent } from './modules/settings/delete-fines/delete-fines.component';
 import { DeleteLoansComponent } from './modules/settings/delete-loans/delete-loans.component';
+import { AddOneTimeContributionComponent } from './modules/members/add-one-time-contribution/add-one-time-contribution.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -203,7 +204,8 @@ const firebaseConfig = {
     ImportContributionComponent,
     DeleteContributionsComponent,
     DeleteFinesComponent,
-    DeleteLoansComponent
+    DeleteLoansComponent,
+    AddOneTimeContributionComponent
   ],
   imports: [
     CommonModule,

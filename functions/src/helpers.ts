@@ -2,6 +2,7 @@ import * as Moment from 'moment';
 import * as admin from 'firebase-admin';
 import {PaymentModel} from './data-models/payment.model';
 import {LoanModel} from './data-models/loan.model';
+import {OneTimePaymentModel} from './data-models/one-time-payment.model';
 
 export const makeid = () => {
   let text = '';
@@ -72,6 +73,31 @@ export const preparePayment = (data: any, group: any, currentPayment: PaymentMod
   };
 };
 
+export const prepareOneTimePayment = (data: any, group: any, currentPayment: OneTimePaymentModel, replace = true): OneTimePaymentModel => {
+  const memberPayments = currentPayment.members[data.memberId] ?? {
+    id: makeid(),
+    memberId: data.memberId,
+    amount: data.amount,
+    referenceNumber: data.referenceNumber ?? '',
+    paymentMode: data.paymentMode ?? '',
+    date: formatDate(data.date),
+  };
+
+  return {
+    ...currentPayment,
+    members: {
+      ...currentPayment.members,
+      [memberPayments.memberId]: {
+        ...memberPayments,
+        amount: data.amount,
+        referenceNumber: data.referenceNumber ?? '',
+        paymentMode: data.paymentMode ?? '',
+        date: formatDate(data.date),
+      },
+    },
+  } as OneTimePaymentModel;
+};
+
 export const deleteContribution = (
   data: { memberId: string, keys: string[] },
   group: any,
@@ -106,6 +132,16 @@ export const prepareEmptyPayment = (data: any, group: any): PaymentModel => {
     year: data.year + '',
     period: data.period,
     week: data.week ?? '',
+    members: {},
+  };
+};
+
+// This function is used to prepare empty payment if not exist
+export const prepareEmptyOneTimePayment = (data: any, group: any): OneTimePaymentModel => {
+  return {
+    id: `contribution_${data.contributionId}`,
+    groupId: group.id,
+    contributionId: data.contributionId,
     members: {},
   };
 };

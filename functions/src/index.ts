@@ -22,6 +22,7 @@ import * as setAvailableContributionType from './contribution/set-available-cont
 import * as addNewContribution from './contribution/add_new_contribution';
 import * as deleteContribution from './contribution/delete_contribution';
 import * as addPastContributions from './contribution/add_past_contribution_by_month';
+import * as addOneTimeContribution from './contribution/add_one_time_contribution';
 import * as setContributionBalances from './contribution/group-starting-balances';
 import * as createContributionType from './contribution/create-contribution-type';
 import * as createExpense from './contribution/add-expense';
@@ -78,5 +79,6 @@ exports.createExpense = createExpense.createExpense;
 exports.updateExpense = updateExpense.updateExpense;
 exports.deleteExpense = deleteExpense.deleteExpense;
 exports.addPastContributions = addPastContributions.addPastContributions;
+exports.addOneTimeContribution = addOneTimeContribution.addOneTimeContribution;
 exports.deleteContribution = deleteContribution.deleteContribution;
 exports.assignPastActiveLoanToMember = assignPastActiveLoanToMember.assignPastActiveLoanToMember;

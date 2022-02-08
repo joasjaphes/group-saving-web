@@ -85,6 +85,9 @@
             <button mat-menu-item (click)="addContribution(member)">
               <mat-icon>add</mat-icon> Add Contribution
             </button>
+            <button *ngFor="let oneTime of oneTimeContributionTypes$ | async" mat-menu-item (click)="addOneTimeContribution(member, oneTime)">
+              <mat-icon>add</mat-icon> {{oneTime.name}}
+            </button>
             <button mat-menu-item (click)="addLoan(member)">
               <mat-icon>money</mat-icon> Assign Loan
             </button>
@@ -126,6 +129,16 @@
       [member]="currentMember"
       (closeForm)="onClose()"
     ></app-add-contribution>
+
+    <app-add-one-time-contribution
+      *ngIf="viewType == 'one-time-contribution' && currentContribution"
+      [group]="group$ | async"
+      [contributionTypes]="contributionTypes$ | async"
+      [currentContribution]="currentContribution"
+      [fineTypes]="fineTypes$ | async"
+      [member]="currentMember"
+      (closeForm)="onClose()"
+    ></app-add-one-time-contribution>
 
     <app-add-member
       *ngIf="viewType == 'add'"

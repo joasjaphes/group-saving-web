@@ -21,6 +21,7 @@ import {GroupProgress} from '../../store/group/group-progress.model';
 import {GroupProgressEnum} from '../../store/group/group-progress.enum';
 import {FineType} from '../../store/fine-type/fine-type.model';
 import {Loan} from '../../store/loan/loan.model';
+import {selectOneTime} from '../../store/contribution-type/contribution-type.selectors';
 
 @Component({
   selector: 'app-members',
@@ -46,6 +47,7 @@ export class MembersComponent implements OnInit {
   details;
   currentMember: Member;
   memberSearch: any;
+  currentContribution: ContributionType;
 
   constructor(
     private store: Store<ApplicationState>,
@@ -57,7 +59,7 @@ export class MembersComponent implements OnInit {
     this.progressDetails$ = this.store.pipe(select(groupSelector.selectProgress));
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectRepeating));
-    this.oneTimeContributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectRepeating));
+    this.oneTimeContributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectOneTime));
     this.loanTypes$ = this.store.pipe(select(loanTypeSelector.selectAll));
     this.fineTypes$ = this.store.pipe(select(fineTypeSelector.selectDetailed));
     this.memberName$ = this.store.pipe(select(memberSelector.selectMemberName));
@@ -72,6 +74,15 @@ export class MembersComponent implements OnInit {
     this.viewType = 'contribution';
     this.viewDetails = true;
     this.panelTitle = 'Add contribution from ' + member.name;
+  }
+
+  async addOneTimeContribution(member: Member, contribution: ContributionType) {
+    this.currentMember = member;
+    this.membersLoans$ = this.store.pipe(select(loanSelector.selectLoanByMember(member.id)));
+    this.viewType = 'one-time-contribution';
+    this.currentContribution = contribution;
+    this.viewDetails = true;
+    this.panelTitle = `Add ${this.currentContribution.name} from ${member.name}`;
   }
 
   async addLoan(member: Member) {
@@ -131,5 +142,6 @@ export class MembersComponent implements OnInit {
     this.panelTitle = '';
     this.viewType = '';
     this.currentMember = null;
+    this.currentContribution = null;
   }
 }
