@@ -25,6 +25,7 @@ import {getPaymentItems} from './payment-item/payment-item.actions';
 import {getPayments} from './payment/payment.actions';
 import {getShareDividendMembers} from './share-dividend-member/share-dividend-member.actions';
 import {getShareDividends} from './share-dividend/share-dividend.actions';
+import {getOneTimePayments} from './one-time-payment/one-time-payment.actions';
 
 export enum DataKeys {
   LastUpdatedTable = 'updated',
@@ -58,6 +59,7 @@ export enum DataKeys {
   ShareDividend = 'share_dividend',
   User = 'user',
   SharePeriods = 'SharePeriods',
+  OneTimePayments = 'single_payments',
 }
 export const UpdatedDataKeys = {
   [DataKeys.LastUpdatedTable]: 'updated',
@@ -90,6 +92,7 @@ export const UpdatedDataKeys = {
   [DataKeys.ShareDividendMember]: 'share_dividend_member_updated',
   [DataKeys.ShareDividend]: 'share_dividend_updated',
   [DataKeys.User]: 'user',
+  [DataKeys.OneTimePayments]: 'single_payments_updated',
 };
 
 export const GET_METHODS = {
@@ -121,4 +124,5 @@ export const GET_METHODS = {
   [DataKeys.Payments]: getPayments(),
   [DataKeys.ShareDividendMember]: getShareDividendMembers(),
   [DataKeys.ShareDividend]: getShareDividends(),
+  [DataKeys.OneTimePayments]: getOneTimePayments(),
 };

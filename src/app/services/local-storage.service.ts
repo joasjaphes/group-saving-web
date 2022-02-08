@@ -37,10 +37,11 @@ export class LocalStorageService {
     payments: DataKeys.Payments,
     share_dividend_member: DataKeys.ShareDividendMember,
     share_dividend: DataKeys.ShareDividend,
+    single_payments: DataKeys.OneTimePayments,
     user: DataKeys.User,
   };
   constructor() {
-    this.db = new AngularIndexedDB('group_savings_data', 1);
+    this.db = new AngularIndexedDB('group_savings_data', 2);
   }
 
   /**

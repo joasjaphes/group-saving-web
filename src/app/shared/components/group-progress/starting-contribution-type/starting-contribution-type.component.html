@@ -14,7 +14,7 @@
               <mat-option [value]="contributionTypeEnums.Social">{{contributionTypeEnums.Social}}</mat-option>
               <mat-option [value]="contributionTypeEnums.EntryFee">{{contributionTypeEnums.EntryFee}}</mat-option>
               <mat-option [value]="contributionTypeEnums.Other">{{contributionTypeEnums.Other}}</mat-option>
-              <mat-option [value]="contributionTypeEnums.OneTime">{{contributionTypeEnums.OneTime}}</mat-option>
+              <mat-option *ngIf="members.length > 0" [value]="contributionTypeEnums.OneTime">{{contributionTypeEnums.OneTime}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -51,6 +51,29 @@
             </mat-select>
           </mat-form-field>
         </div>
+        <!--      Track balances for this contribution-->
+        <div class="col-span-2" [ngClass]="isGivenToMember == 'Yes' ? 'col-span-1' : 'col-span-2'" *ngIf="contributionType == contributionTypeEnums.OneTime">
+          <mat-form-field appearance="outline">
+            <mat-label>This is contribution will be given a specific member</mat-label>
+            <mat-select [(ngModel)]="isGivenToMember">
+              <mat-option value="Yes">Yes <small> (Contribution will be given to member)</small></mat-option>
+              <mat-option value="No">No <small> (Contribution is for group/other purpose)</small></mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-1" *ngIf="isGivenToMember == 'Yes' && contributionType == contributionTypeEnums.OneTime">
+          <mat-form-field appearance="outline">
+            <mat-label>Contribution will be given to</mat-label>
+            <mat-select [(ngModel)]="memberId">
+              <app-mat-select-search [(ngModel)]="memberSearch"></app-mat-select-search>
+              <mat-option [value]="member.id" *ngFor="let member of members | search:'name':memberSearch">
+                {{member.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
 
         <!--      Track balances for this contribution-->
         <div class="col-span-2" *ngIf="contributionType == contributionTypeEnums.OneTime">
@@ -81,6 +104,7 @@
             <mat-datepicker #endingDate></mat-datepicker>
           </mat-form-field>
         </div>
+
 
         <!--      Next step for first step-->
         <div class="col-span-2">

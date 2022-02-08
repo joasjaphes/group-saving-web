@@ -39,4 +39,6 @@ export interface ContributionType {
   contribution_has_deadline: boolean;
   contribution_start_date: string;
   contribution_end_date: string;
+  is_given_to_member: boolean;
+  member_id: string;
 }

@@ -9,6 +9,7 @@ import {ContributionType} from '../../../../store/contribution-type/contribution
 import {FineType} from '../../../../store/fine-type/fine-type.model';
 import {Fine} from '../../../../store/fine/fine.model';
 import {ContributionTypes} from '../../../../store/contribution-type/contribution-type.enum';
+import {Member} from '../../../../store/member/member.model';
 
 @Component({
   selector: 'app-starting-contribution-type',
@@ -19,6 +20,7 @@ import {ContributionTypes} from '../../../../store/contribution-type/contributio
 export class StartingContributionTypeComponent implements OnInit {
 
   @Input() group: Group;
+  @Input() members: Member[] = [];
   @Input() progressDetails: GroupProgress;
   @Input() editing = false;
   @Input() currentContributionType: ContributionType;
@@ -46,6 +48,9 @@ export class StartingContributionTypeComponent implements OnInit {
   loading;
   fineHasData =  false;
   contributionHasDeadline = 'Yes';
+  isGivenToMember = 'Yes';
+  memberId: string;
+  memberSearch: string;
   contributionStartDate: any;
   contributionEndDate: any;
   contributionTypeEnums = ContributionTypes;
@@ -75,6 +80,8 @@ export class StartingContributionTypeComponent implements OnInit {
       this.contributionHasDeadline = this.currentContributionType.contribution_has_deadline ? 'Yes' : 'No';
       this.contributionStartDate = this.currentContributionType.contribution_start_date;
       this.contributionEndDate = this.currentContributionType.contribution_end_date;
+      this.isGivenToMember = this.currentContributionType.is_given_to_member ? 'Yes' : 'No';
+      this.memberId = this.currentContributionType.member_id;
       if (this.fineTypes) {
         const lateFine = this.fineTypes.find(i => i.type === 'Contribution' && i.contribution_type_id === this.currentContributionType.id);
         this.allowFine = !!lateFine ? 'Yes' : 'No';
@@ -88,10 +95,12 @@ export class StartingContributionTypeComponent implements OnInit {
           }
         }
       }
+    } else {
+      if (this.group) {
+        this.frequency = this.group.contribution_frequency;
+      }
     }
-    if (this.group) {
-      this.frequency = this.group.contribution_frequency;
-    }
+
   }
 
   setIsMandatory(value: any) {
@@ -124,6 +133,8 @@ export class StartingContributionTypeComponent implements OnInit {
       trackBalance: this.trackBalance,
       fineHasData: this.fineHasData,
       contributionHasDeadline: this.contributionHasDeadline,
+      isGivenToMember: this.isGivenToMember,
+      memberId: this.memberId,
       contributionStartDate: this.commonService.formatDate(this.contributionStartDate),
       contributionEndDate: this.commonService.formatDate(this.contributionEndDate),
 

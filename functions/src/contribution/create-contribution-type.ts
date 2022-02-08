@@ -151,6 +151,8 @@ function prepareContributionData(data: any, contributionTypeId: string, last_upd
     contribution_has_deadline: data.contributionHasDeadline || false,
     contribution_start_date: data.contributionStartDate || '',
     contribution_end_date: data.contributionEndDate || '',
+    is_given_to_member: data.isGivenToMember === 'Yes',
+    member_id: data.memberId || '',
     additional_config: {},
   };
 }
