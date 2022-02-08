@@ -148,6 +148,9 @@ function prepareContributionData(data: any, contributionTypeId: string, last_upd
     track_balance: data.trackBalance === 'Yes',
     is_starting_share: data.isStartingShare === 'Yes',
     minimum_starting_share: data.minimumStartingShare ?? 0,
+    contribution_has_deadline: data.contributionHasDeadline || false,
+    contribution_start_date: data.contributionStartDate || '',
+    contribution_end_date: data.contributionEndDate || '',
     additional_config: {},
   };
 }

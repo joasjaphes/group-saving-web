@@ -43,6 +43,11 @@ export const nextMeeting = createSelector(
   (group) => group && group.next_meeting && group.next_meeting.meeting_date ? group.next_meeting : null
 );
 
+export const selectSharePeriod = createSelector(
+  selected,
+  (group) => group.share_periods
+)
+
 export const selectProgressPercent = createSelector(
   selected,
   fromLoan.selectAll,

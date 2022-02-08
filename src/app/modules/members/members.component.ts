@@ -32,6 +32,7 @@ export class MembersComponent implements OnInit {
   members$: Observable<Member[]>;
   group$: Observable<Group>;
   contributionTypes$: Observable<ContributionType[]>;
+  oneTimeContributionTypes$: Observable<ContributionType[]>;
   loanTypes$: Observable<LoanType[]>;
   fineTypes$: Observable<FineType[]>;
   memberName$: Observable<string>;
@@ -56,6 +57,7 @@ export class MembersComponent implements OnInit {
     this.progressDetails$ = this.store.pipe(select(groupSelector.selectProgress));
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectRepeating));
+    this.oneTimeContributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectRepeating));
     this.loanTypes$ = this.store.pipe(select(loanTypeSelector.selectAll));
     this.fineTypes$ = this.store.pipe(select(fineTypeSelector.selectDetailed));
     this.memberName$ = this.store.pipe(select(memberSelector.selectMemberName));

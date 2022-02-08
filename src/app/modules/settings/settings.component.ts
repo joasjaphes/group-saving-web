@@ -138,7 +138,7 @@ export class SettingsComponent implements OnInit {
     if (group && group.has_share) {
       this.menus.push({
         name: 'Contribution Cycle',
-        route: '',
+        route: ['', 'settings', 'contribution-periods'],
         description: 'Update group share collection start date and date of share distribution',
         image: 'timeline.png'
       });

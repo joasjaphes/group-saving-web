@@ -28,6 +28,8 @@ import {ExportDataComponent} from './modules/summary/export-data/export-data.com
 import {DeleteContributionsComponent} from './modules/settings/delete-contributions/delete-contributions.component';
 import {DeleteLoansComponent} from './modules/settings/delete-loans/delete-loans.component';
 import {DeleteFinesComponent} from './modules/settings/delete-fines/delete-fines.component';
+import {ContributionTypeBalanceEffects} from './store/contribution-type-balance/contribution-type-balance.effects';
+import {HisaPeriodComponent} from './modules/settings/hisa-period/hisa-period.component';
 
 
 const routes: Routes = [
@@ -151,6 +153,11 @@ const routes: Routes = [
       {
         path: 'settings/delete-loans',
         component: DeleteLoansComponent,
+        data: { title: 'Delete Loans' }
+      },
+      {
+        path: 'settings/contribution-periods',
+        component: HisaPeriodComponent,
         data: { title: 'Delete Loans' }
       },
       {

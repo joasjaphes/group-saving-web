@@ -9,11 +9,12 @@
         <div class="">
           <mat-form-field appearance="outline">
             <mat-label>Type</mat-label>
-            <mat-select [(ngModel)]="contributionType" [disabled]="!editing">
-              <mat-option value="Share">Share</mat-option>
-              <mat-option value="Social">Social</mat-option>
-              <mat-option value="Entry Fee">Entry Fee</mat-option>
-              <mat-option value="Other">Other</mat-option>
+            <mat-select [(ngModel)]="contributionType" [disabled]="!editing" (selectionChange)="setContributionType($event)">
+              <mat-option [value]="contributionTypeEnums.Share">{{contributionTypeEnums.Share}}</mat-option>
+              <mat-option [value]="contributionTypeEnums.Social">{{contributionTypeEnums.Social}}</mat-option>
+              <mat-option [value]="contributionTypeEnums.EntryFee">{{contributionTypeEnums.EntryFee}}</mat-option>
+              <mat-option [value]="contributionTypeEnums.Other">{{contributionTypeEnums.Other}}</mat-option>
+              <mat-option [value]="contributionTypeEnums.OneTime">{{contributionTypeEnums.OneTime}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -40,7 +41,7 @@
         </div>
 
         <!--      Track balances for this contribution-->
-        <div class="col-span-2">
+        <div class="col-span-2" *ngIf="contributionType != contributionTypeEnums.OneTime">
           <mat-form-field appearance="outline">
             <mat-label>Track contribution balance</mat-label>
             <mat-select [(ngModel)]="trackBalance">
@@ -48,6 +49,36 @@
               <mat-option value="No">No <small> (Do not keep track of balance, Record only in and out
                 transactions)</small></mat-option>
             </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!--      Track balances for this contribution-->
+        <div class="col-span-2" *ngIf="contributionType == contributionTypeEnums.OneTime">
+          <mat-form-field appearance="outline">
+            <mat-label>This contribution has a fixed timeline</mat-label>
+            <mat-select [(ngModel)]="contributionHasDeadline">
+              <mat-option value="Yes">Yes <small> (There is a deadline for {{name}})</small></mat-option>
+              <mat-option value="No">No <small> (There is no deadline for {{name}})</small></mat-option>
+            </mat-select>
+            <mat-hint>Select yes if there is a deadline for members to contribute</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div class="col-span-1" *ngIf="contributionType == contributionTypeEnums.OneTime && contributionHasDeadline == 'Yes'">
+          <mat-form-field appearance="outline">
+            <mat-label>Start Date</mat-label>
+            <input readonly matInput [matDatepicker]="startingDate" [(ngModel)]="contributionStartDate"/>
+            <mat-datepicker-toggle matSuffix [for]="startingDate"></mat-datepicker-toggle>
+            <mat-datepicker #startingDate></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="col-span-1" *ngIf="contributionType == contributionTypeEnums.OneTime && contributionHasDeadline == 'Yes'">
+          <mat-form-field appearance="outline">
+            <mat-label>Deadline Date</mat-label>
+            <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="contributionEndDate"/>
+            <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
+            <mat-datepicker #endingDate></mat-datepicker>
           </mat-form-field>
         </div>
 

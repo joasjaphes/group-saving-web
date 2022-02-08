@@ -1,10 +1,15 @@
-import {Component, Input, OnInit, Output, EventEmitter, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, ViewChild, OnDestroy} from '@angular/core';
 import {Group} from '../../../store/group/group.model';
 import {CommonService} from '../../../services/common.service';
 import {FunctionsService} from '../../../services/functions.service';
 import {fadeIn} from '../../../shared/animations/router-animation';
 import {PeriodSelectorComponent} from '../../../shared/components/period-selector/period-selector.component';
 import {SharePeriod} from '../../../store/share-period/share-period.model';
+import {select, Store} from '@ngrx/store';
+import {ApplicationState} from '../../../store';
+import {Observable, Subscription} from 'rxjs';
+import * as groupSelector from '../../../store/group/group.selectors';
+import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-hisa-period',
@@ -12,9 +17,9 @@ import {SharePeriod} from '../../../store/share-period/share-period.model';
   styleUrls: ['./hisa-period.component.scss'],
   animations: [fadeIn]
 })
-export class HisaPeriodComponent implements OnInit {
+export class HisaPeriodComponent implements OnInit, OnDestroy {
 
-  @Input() group: Group;
+  group: Group;
   @Output() closeForm = new EventEmitter();
 
   currentStartDate: any;
@@ -25,24 +30,41 @@ export class HisaPeriodComponent implements OnInit {
   startMonthDetailed: { month: {id: string, name: string}, year: any };
   endMonthDetailed: { month: {id: string, name: string}, year: any };
   endMonth;
+
+  viewDetails = false;
+  panelTitle = '';
+  viewType = '';
+  group$: Observable<Group>;
+  sharePeriods$: Observable<SharePeriod[]>;
+  subscription: Subscription;
   @ViewChild('startMonthSelector') startMonthSelector: PeriodSelectorComponent;
   @ViewChild('endMonthSelector') endMonthSelector: PeriodSelectorComponent;
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
-  ) { }
+    private store: Store<ApplicationState>,
+  ) {
+    this.group$ = this.store.pipe(select(groupSelector.selected));
+    this.sharePeriods$ = this.store.pipe(select(groupSelector.selectSharePeriod));
+    this.subscription = this.sharePeriods$.subscribe(i  => this.dates = i);
+  }
 
   ngOnInit(): void {
-    if (this.group) {
-      this.dates = this.group.share_periods;
-    }
+    this.subscription = this.sharePeriods$.subscribe(i  => this.dates = i || []);
   }
 
   onClose() {
     this.closeForm.emit();
   }
 
+  closePanel() {
+    this.viewDetails = false;
+    this.panelTitle = '';
+    this.viewType = '';
+  }
+
   async save() {
+    this.group = await this.group$.pipe(first()).toPromise();
     const dataToSave = {
       groupId: this.group.id,
       dates: this.dates,
@@ -97,5 +119,11 @@ export class HisaPeriodComponent implements OnInit {
   setEndMonthAndYear($event: { month: {id: string, name: string}, year: any }) {
     this.endMonth = `${$event.year}${$event.month.id}`;
     this.endMonthDetailed = $event;
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

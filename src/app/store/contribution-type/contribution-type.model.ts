@@ -36,4 +36,7 @@ export interface ContributionType {
   fine_amount_per_period?: number;
   is_starting_share: boolean;
   minimum_starting_share: number;
+  contribution_has_deadline: boolean;
+  contribution_start_date: string;
+  contribution_end_date: string;
 }

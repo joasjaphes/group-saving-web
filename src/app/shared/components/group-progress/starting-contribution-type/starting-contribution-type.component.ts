@@ -8,6 +8,7 @@ import {MatSelectChange} from '@angular/material/select';
 import {ContributionType} from '../../../../store/contribution-type/contribution-type.model';
 import {FineType} from '../../../../store/fine-type/fine-type.model';
 import {Fine} from '../../../../store/fine/fine.model';
+import {ContributionTypes} from '../../../../store/contribution-type/contribution-type.enum';
 
 @Component({
   selector: 'app-starting-contribution-type',
@@ -44,6 +45,10 @@ export class StartingContributionTypeComponent implements OnInit {
   trackBalance: string;
   loading;
   fineHasData =  false;
+  contributionHasDeadline = 'Yes';
+  contributionStartDate: any;
+  contributionEndDate: any;
+  contributionTypeEnums = ContributionTypes;
   constructor(
     private functionsService: FunctionsService,
     private commonService: CommonService,
@@ -67,6 +72,9 @@ export class StartingContributionTypeComponent implements OnInit {
       this.allowFine = this.currentContributionType.allow_late_fine ? 'Yes' : 'No';
       this.allowLoan = this.currentContributionType.allow_loan ? 'Yes' : 'No';
       this.trackBalance = this.currentContributionType.track_balance ? 'Yes' : 'No';
+      this.contributionHasDeadline = this.currentContributionType.contribution_has_deadline ? 'Yes' : 'No';
+      this.contributionStartDate = this.currentContributionType.contribution_start_date;
+      this.contributionEndDate = this.currentContributionType.contribution_end_date;
       if (this.fineTypes) {
         const lateFine = this.fineTypes.find(i => i.type === 'Contribution' && i.contribution_type_id === this.currentContributionType.id);
         this.allowFine = !!lateFine ? 'Yes' : 'No';
@@ -115,6 +123,10 @@ export class StartingContributionTypeComponent implements OnInit {
       minimumStartingShare: this.minimumStartingAmount,
       trackBalance: this.trackBalance,
       fineHasData: this.fineHasData,
+      contributionHasDeadline: this.contributionHasDeadline,
+      contributionStartDate: this.commonService.formatDate(this.contributionStartDate),
+      contributionEndDate: this.commonService.formatDate(this.contributionEndDate),
+
     };
     this.loading = true;
     try {
@@ -139,6 +151,14 @@ export class StartingContributionTypeComponent implements OnInit {
       this.fineName = '';
       this.fineCalculationType = '';
       this.fineAmount = null;
+    }
+  }
+
+  setContributionType($event: MatSelectChange) {
+    if ($event.value === this.contributionTypeEnums.OneTime) {
+      this.frequency = 'Random';
+      this.allowLoan = 'No';
+      this.allowFine = 'No';
     }
   }
 }
