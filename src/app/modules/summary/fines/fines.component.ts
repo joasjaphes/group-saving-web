@@ -65,7 +65,7 @@ export class FinesComponent implements OnInit {
 
   addItem() {
     this.viewDetails = true;
-    this.panelTitle = 'Add new expense';
+    this.panelTitle = 'Add new expected fine';
     this.viewType = 'add';
   }
 

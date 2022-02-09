@@ -3,6 +3,8 @@ import * as admin from 'firebase-admin';
 import {PaymentModel} from './data-models/payment.model';
 import {LoanModel} from './data-models/loan.model';
 import {OneTimePaymentModel} from './data-models/one-time-payment.model';
+import {ExpectedFineModel} from './data-models/expected-fine.model';
+import {LoanRequestModel} from './data-models/loan-request.model';
 
 export const makeid = () => {
   let text = '';
@@ -96,6 +98,45 @@ export const prepareOneTimePayment = (data: any, group: any, currentPayment: One
       },
     },
   } as OneTimePaymentModel;
+};
+
+export const prepareExpectedFine = (data: any, group: any, currentFines: ExpectedFineModel, replace = true): ExpectedFineModel => {
+  return {
+    ...currentFines,
+    fines: [
+      ...currentFines.fines,
+      {
+        id: makeid(),
+        memberId: data.memberId,
+        groupId: group.id,
+        month: data.month ? data.month + '' : '',
+        year: data.year + '',
+        period: data.period,
+        fines: data.fineAmounts ?? {},
+        week: data.week ?? '',
+        date: data.date ?? '',
+      },
+    ],
+  }
+};
+
+export const prepareLoanRequest = (data: any, group: any, currentFines: LoanRequestModel, replace = true): LoanRequestModel => {
+  return {
+    ...currentFines,
+    loans: [
+      ...currentFines.loans,
+      {
+        id: makeid(),
+        memberId: data.memberId,
+        groupId: group.id,
+        loanTypeId: data.loanTypeId,
+        loanId: data.loanId,
+        approvalStatus: 'PENDING',
+        approvals: {},
+        guarantors: [],
+      },
+    ],
+  }
 };
 
 export const deleteContribution = (

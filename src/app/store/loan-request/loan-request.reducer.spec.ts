@@ -1,6 +1,6 @@
-import { reducer, initialState } from './one-time-payment.reducer';
+import { reducer, initialState } from './loan-request.reducer';
 
-describe('One Time Payment Reducer', () => {
+describe('Expected Fines Reducer', () => {
   describe('unknown action', () => {
     it('should return the previous state', () => {
       const action = {} as any;

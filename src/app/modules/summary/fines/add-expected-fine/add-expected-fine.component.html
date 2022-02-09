@@ -1,0 +1,63 @@
+<div class="grid gap-4">
+  <div>
+    <p class="registration-title text-2xl text-secondLevel">Add Expected fine <span *ngIf="member"> from {{member?.name}}</span></p>
+    <p class="text-secondLevel">These are fines that {{member?.name}} is supposed to pay but has not being paid yet</p>
+  </div>
+
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label>Select Member</mat-label>
+      <mat-select [(ngModel)]="memberId" (selectionChange)="setMember($event.value)">
+        <app-mat-select-search [(ngModel)]="searchKey"></app-mat-select-search>
+        <mat-option *ngFor="let item of members | search:'name':searchKey" [value]="item.id">{{item.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="memberId" @fadeIn>
+    <!--        Fine Amounts-->
+    <div class="col-sm-12" *ngFor="let toBePaid of fineTypes" @fadeIn>
+      <mat-checkbox [(ngModel)]="selectedFines[toBePaid?.id]" (change)="enableFine($event.checked, toBePaid)">
+        {{toBePaid?.description}}&nbsp;
+        <b *ngIf="fineAmounts[toBePaid?.id]">( {{fineAmounts[toBePaid?.id] | number}} )</b>
+      </mat-checkbox>
+      <mat-form-field appearance="outline" *ngIf="selectedFines[toBePaid?.id]" @fadeIn>
+        <mat-label>Amount for {{toBePaid?.description}}</mat-label>
+        <input
+          [(ngModel)]="fineAmounts[toBePaid?.id]"
+          matInput
+          type="number"
+          min="0"
+          placeholder="Amount for {{toBePaid?.description}}"
+          (input)="findTotal()"
+        >
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="mb-3" *ngIf="group.track_contribution_period" @fadeIn>
+    <app-period-selector
+      [placeholder]="'Fine Period'"
+      [currentYear]="year"
+      [currentMonth]="month"
+      (selected)="setPeriod($event)"
+    ></app-period-selector>
+  </div>
+
+  <div class="mt-5" *ngIf="memberId && total" @fadeIn>
+    <h1 class="registration-title text-3xl">Total {{total | number}}</h1>
+  </div>
+
+
+
+  <div class=" mt-3" *ngIf="total && memberId && period" @fadeIn>
+    <app-save-area
+      [confirmFirst]="true"
+      confirmText="Are you sure you want to ADD {{total | number}}  as expected fine for {{member?.name}}?"
+      [saveDisabled]="!total"
+      (cancel)="onClose()"
+      (save)="save()"
+      [savingData]="loading"
+    ></app-save-area>
+  </div>
+</div>

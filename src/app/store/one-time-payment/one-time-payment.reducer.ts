@@ -1,18 +1,18 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { ExpenseType } from './one-time-payment.model';
-import * as ExpenseTypeActions from './one-time-payment.actions';
+import { OneTimePayment } from './one-time-payment.model';
+import * as OneTimePaymentActions from './one-time-payment.actions';
 
-export const expenseTypesFeatureKey = 'expenseTypes';
+export const oneTimePaymentsFeatureKey = 'oneTimePayments';
 
-export interface State extends EntityState<ExpenseType> {
+export interface State extends EntityState<OneTimePayment> {
   selected: string;
   loading: boolean;
   loaded: boolean;
   error: any;
 }
 
-export const adapter: EntityAdapter<ExpenseType> = createEntityAdapter<ExpenseType>();
+export const adapter: EntityAdapter<OneTimePayment> = createEntityAdapter<OneTimePayment>();
 
 export const initialState: State = adapter.getInitialState({
   selected: null,
@@ -24,50 +24,50 @@ export const initialState: State = adapter.getInitialState({
 
 export const reducer = createReducer(
   initialState,
-  on(ExpenseTypeActions.getExpenseTypes, ((state, action) => {
+  on(OneTimePaymentActions.getOneTimePayments, ((state, action) => {
       return {...state, loading: true, error: null};
     })
   ),
-  on(ExpenseTypeActions.doneLoadingExpenseTypes, ((state, action) => {
+  on(OneTimePaymentActions.doneLoadingOneTimePayments, ((state, action) => {
       return {...state, loading: false, error: null};
     })
   ),
-  on(ExpenseTypeActions.failLoadingExpenseTypes, ((state, action) => {
+  on(OneTimePaymentActions.failLoadingOneTimePayments, ((state, action) => {
       return {...state, loading: false, error: action.error};
     })
   ),
-  on(ExpenseTypeActions.setSelectedExpenseType, ((state, action) => {
-      return {...state, selected: action.expenseTypeId};
+  on(OneTimePaymentActions.setSelectedOneTimePayment, ((state, action) => {
+      return {...state, selected: action.oneTimePaymentId};
     })
   ),
-  on(ExpenseTypeActions.addExpenseType,
-    (state, action) => adapter.addOne(action.expenseType, state)
+  on(OneTimePaymentActions.addOneTimePayment,
+    (state, action) => adapter.addOne(action.oneTimePayment, state)
   ),
-  on(ExpenseTypeActions.upsertExpenseType,
-    (state, action) => adapter.upsertOne(action.expenseType, state)
+  on(OneTimePaymentActions.upsertOneTimePayment,
+    (state, action) => adapter.upsertOne(action.oneTimePayment, state)
   ),
-  on(ExpenseTypeActions.addExpenseTypes,
-    (state, action) => adapter.addMany(action.expenseTypes, state)
+  on(OneTimePaymentActions.addOneTimePayments,
+    (state, action) => adapter.addMany(action.oneTimePayments, state)
   ),
-  on(ExpenseTypeActions.upsertExpenseTypes,
-    (state, action) => adapter.upsertMany(action.expenseTypes, state)
+  on(OneTimePaymentActions.upsertOneTimePayments,
+    (state, action) => adapter.upsertMany(action.oneTimePayments, state)
   ),
-  on(ExpenseTypeActions.updateExpenseType,
-    (state, action) => adapter.updateOne(action.expenseType, state)
+  on(OneTimePaymentActions.updateOneTimePayment,
+    (state, action) => adapter.updateOne(action.oneTimePayment, state)
   ),
-  on(ExpenseTypeActions.updateExpenseTypes,
-    (state, action) => adapter.updateMany(action.expenseTypes, state)
+  on(OneTimePaymentActions.updateOneTimePayments,
+    (state, action) => adapter.updateMany(action.oneTimePayments, state)
   ),
-  on(ExpenseTypeActions.deleteExpenseType,
+  on(OneTimePaymentActions.deleteOneTimePayment,
     (state, action) => adapter.removeOne(action.id, state)
   ),
-  on(ExpenseTypeActions.deleteExpenseTypes,
+  on(OneTimePaymentActions.deleteOneTimePayments,
     (state, action) => adapter.removeMany(action.ids, state)
   ),
-  on(ExpenseTypeActions.loadExpenseTypes,
-    (state, action) => adapter.setAll(action.expenseTypes, state)
+  on(OneTimePaymentActions.loadOneTimePayments,
+    (state, action) => adapter.setAll(action.oneTimePayments, state)
   ),
-  on(ExpenseTypeActions.clearExpenseTypes,
+  on(OneTimePaymentActions.clearOneTimePayments,
     state => adapter.removeAll(state)
   ),
 );

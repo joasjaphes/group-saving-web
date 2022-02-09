@@ -30,6 +30,9 @@ import {PaymentEffects} from './payment/payment.effects';
 import {PaymentItemEffects} from './payment-item/payment-item.effects';
 import {ShareDividendEffects} from './share-dividend/share-dividend.effects';
 import {ShareDividendMemberEffects} from './share-dividend-member/share-dividend-member.effects';
+import {OneTimePaymentEffects} from './one-time-payment/one-time-payment.effects';
+import {ExpectedFinesEffects} from './expected-fines/expected-fines.effects';
+import {LoanRequestEffects} from './loan-request/loan-request.effects';
 
 
 
@@ -66,4 +69,7 @@ export const effects: any[] = [
   PaymentItemEffects,
   ShareDividendEffects,
   ShareDividendMemberEffects,
+  OneTimePaymentEffects,
+  ExpectedFinesEffects,
+  LoanRequestEffects
 ];

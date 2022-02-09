@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as fromReducer from './one-time-payment.reducer';
+import * as fromReducer from './expected-fines.reducer';
 
-export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.oneTimePaymentsFeatureKey);
+export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.expectedFinesFeatureKey);
 
 export const selectIds = createSelector(selectCurrentState, fromReducer.selectIds);
 export const selectEntities = createSelector(selectCurrentState, fromReducer.selectEntities);

@@ -105,6 +105,7 @@ import { DeleteContributionsComponent } from './modules/settings/delete-contribu
 import { DeleteFinesComponent } from './modules/settings/delete-fines/delete-fines.component';
 import { DeleteLoansComponent } from './modules/settings/delete-loans/delete-loans.component';
 import { AddOneTimeContributionComponent } from './modules/members/add-one-time-contribution/add-one-time-contribution.component';
+import { AddExpectedFineComponent } from './modules/summary/fines/add-expected-fine/add-expected-fine.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -205,7 +206,8 @@ const firebaseConfig = {
     DeleteContributionsComponent,
     DeleteFinesComponent,
     DeleteLoansComponent,
-    AddOneTimeContributionComponent
+    AddOneTimeContributionComponent,
+    AddExpectedFineComponent
   ],
   imports: [
     CommonModule,

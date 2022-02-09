@@ -39,6 +39,9 @@ import * as fromLoginSteps from './login-steps/login-steps.reducer';
 import * as fromRouter from '@ngrx/router-store';
 import {RouterStateUrl} from './router/router.reducer';
 import * as UserActions from './user/user.actions';
+import * as fromOneTimePayment from './one-time-payment/one-time-payment.reducer';
+import * as fromExpectedFines from './expected-fines/expected-fines.reducer'
+import * as fromLoanRequest from './loan-request/loan-request.reducer'
 
 
 export interface ApplicationState {
@@ -75,6 +78,9 @@ export interface ApplicationState {
   [fromShareDividend.shareDividendsFeatureKey]: fromShareDividend.State;
   [fromShareDividendMember.shareDividendMembersFeatureKey]: fromShareDividendMember.State;
   [fromLoginSteps.loginStepsFeatureKey]: fromLoginSteps.State;
+  [fromOneTimePayment.oneTimePaymentsFeatureKey]: fromOneTimePayment.State;
+  [fromExpectedFines.expectedFinesFeatureKey]: fromExpectedFines.State;
+  [fromLoanRequest.loanRequestsFeatureKey]: fromLoanRequest.State;
 }
 
 export const reducers: ActionReducerMap<ApplicationState> = {
@@ -111,6 +117,9 @@ export const reducers: ActionReducerMap<ApplicationState> = {
   [fromShareDividend.shareDividendsFeatureKey]: fromShareDividend.reducer,
   [fromShareDividendMember.shareDividendMembersFeatureKey]: fromShareDividendMember.reducer,
   [fromLoginSteps.loginStepsFeatureKey]: fromLoginSteps.reducer,
+  [fromOneTimePayment.oneTimePaymentsFeatureKey]: fromOneTimePayment.reducer,
+  [fromExpectedFines.expectedFinesFeatureKey]: fromExpectedFines.reducer,
+  [fromLoanRequest.loanRequestsFeatureKey]: fromLoanRequest.reducer,
 };
 
 export function logout(reducer: ActionReducer<any>): ActionReducer<any> {

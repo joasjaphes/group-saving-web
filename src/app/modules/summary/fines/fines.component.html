@@ -1,10 +1,10 @@
 <app-shared-layout
   title="Fines"
   image="fine.png"
-  [hideAdd]="true"
+  [hideAdd]="enableDelete"
   [addIcon]="'add'"
   (addItem)="addItem()"
-  [addText]="'Assign Loan'"
+  [addText]="'Expected Fine'"
   [viewDetails]="viewDetails"
   [smallForm]="false"
   [animationSize]="'full'"
@@ -120,6 +120,15 @@
       [showDelete]="enableDelete"
       [contributions]="currentFines$ | async"
       [group]="group$ | async"
+      (closeForm)="closePanel()"
     ></app-list-fines>
+
+    <app-add-expected-fine
+      *ngIf="viewType == 'add'"
+      [group]="group$ | async"
+      [members]="members$ | async"
+      [fineTypes]="fineTypes$ | async"
+      (closeForm)="closePanel()"
+    ></app-add-expected-fine>
   </ng-container>
 </app-shared-layout>

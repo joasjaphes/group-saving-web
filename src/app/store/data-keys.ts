@@ -26,6 +26,9 @@ import {getPayments} from './payment/payment.actions';
 import {getShareDividendMembers} from './share-dividend-member/share-dividend-member.actions';
 import {getShareDividends} from './share-dividend/share-dividend.actions';
 import {getOneTimePayments} from './one-time-payment/one-time-payment.actions';
+import {ExpectedFine} from './expected-fines/expected-fines.model';
+import {getExpectedFines} from './expected-fines/expected-fines.actions';
+import {getLoanRequests} from './loan-request/loan-request.actions';
 
 export enum DataKeys {
   LastUpdatedTable = 'updated',
@@ -60,6 +63,8 @@ export enum DataKeys {
   User = 'user',
   SharePeriods = 'SharePeriods',
   OneTimePayments = 'single_payments',
+  ExpectedFine = 'expected_fines',
+  LoanRequest= 'loan_request',
 }
 export const UpdatedDataKeys = {
   [DataKeys.LastUpdatedTable]: 'updated',
@@ -93,6 +98,8 @@ export const UpdatedDataKeys = {
   [DataKeys.ShareDividend]: 'share_dividend_updated',
   [DataKeys.User]: 'user',
   [DataKeys.OneTimePayments]: 'single_payments_updated',
+  [DataKeys.ExpectedFine]: 'expected_fines_updated',
+  [DataKeys.LoanRequest]: 'loan_request_updated',
 };
 
 export const GET_METHODS = {
@@ -125,4 +132,6 @@ export const GET_METHODS = {
   [DataKeys.ShareDividendMember]: getShareDividendMembers(),
   [DataKeys.ShareDividend]: getShareDividends(),
   [DataKeys.OneTimePayments]: getOneTimePayments(),
+  [DataKeys.ExpectedFine]: getExpectedFines(),
+  [DataKeys.LoanRequest]: getLoanRequests(),
 };
