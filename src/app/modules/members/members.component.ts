@@ -22,6 +22,7 @@ import {GroupProgressEnum} from '../../store/group/group-progress.enum';
 import {FineType} from '../../store/fine-type/fine-type.model';
 import {Loan} from '../../store/loan/loan.model';
 import {selectOneTime} from '../../store/contribution-type/contribution-type.selectors';
+import {selectMemberOneTime} from '../../store/one-time-payment/one-time-payment.selectors';
 
 @Component({
   selector: 'app-members',
@@ -34,6 +35,7 @@ export class MembersComponent implements OnInit {
   group$: Observable<Group>;
   contributionTypes$: Observable<ContributionType[]>;
   oneTimeContributionTypes$: Observable<ContributionType[]>;
+  membersOneTimeContributionTypes$: Observable<{[id: string]: ContributionType[]}>;
   loanTypes$: Observable<LoanType[]>;
   fineTypes$: Observable<FineType[]>;
   memberName$: Observable<string>;
@@ -60,6 +62,7 @@ export class MembersComponent implements OnInit {
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectRepeating));
     this.oneTimeContributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectOneTime));
+    this.membersOneTimeContributionTypes$ = this.store.pipe(select(selectMemberOneTime));
     this.loanTypes$ = this.store.pipe(select(loanTypeSelector.selectAll));
     this.fineTypes$ = this.store.pipe(select(fineTypeSelector.selectDetailed));
     this.memberName$ = this.store.pipe(select(memberSelector.selectMemberName));

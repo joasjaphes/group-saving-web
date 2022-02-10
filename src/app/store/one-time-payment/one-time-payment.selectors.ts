@@ -1,5 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+
+import * as fromMember from '../member/member.selectors';
+import * as fromContributionTypes from '../contribution-type/contribution-type.selectors';
 import * as fromReducer from './one-time-payment.reducer';
+import {ContributionType} from '../contribution-type/contribution-type.model';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.oneTimePaymentsFeatureKey);
 
@@ -18,3 +22,40 @@ export const selectById = (id: string) => createSelector(
 export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
+
+export const selectDetailed = createSelector(
+  selectAll,
+  fromContributionTypes.selectEntities,
+  fromMember.selectEntities,
+  (
+    allItems,
+    contributionTypes,
+    members
+  ) => {
+    return allItems.map(item => {
+      const contrDetails = [];
+      const contributionsDetails = contributionTypes[item.contributionId];
+      return {
+        ...item,
+        contributionsDetails,
+        member: members[item.memberId],
+        description: contrDetails.join(', '),
+      };
+    });
+  }
+);
+
+export const selectMemberOneTime = createSelector(
+  selectAll,
+  fromMember.selectAll,
+  fromContributionTypes.selectOneTime,
+  (allItems, members, contributionTypes) => {
+    const membersContributions: {[id: string]: ContributionType[]} = {};
+    members.forEach(member => {
+      const memberItems = allItems.filter(i => i.memberId === member.id);
+      const types = contributionTypes.filter(j => memberItems.map(i => i.contributionId).indexOf(j.id) === -1)
+      membersContributions[member.id] = types;
+    });
+    return membersContributions;
+  }
+)

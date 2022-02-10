@@ -85,7 +85,7 @@
             <button mat-menu-item (click)="addContribution(member)">
               <mat-icon>add</mat-icon> Add Contribution
             </button>
-            <button *ngFor="let oneTime of oneTimeContributionTypes$ | async" mat-menu-item (click)="addOneTimeContribution(member, oneTime)">
+            <button *ngFor="let oneTime of ((membersOneTimeContributionTypes$ | async)![member.id] || [])" mat-menu-item (click)="addOneTimeContribution(member, oneTime)">
               <mat-icon>add</mat-icon> {{oneTime.name}}
             </button>
             <button mat-menu-item (click)="addLoan(member)">
