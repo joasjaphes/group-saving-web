@@ -45,6 +45,11 @@ export const selectDetailed = createSelector(
   }
 );
 
+export const selectByContrId = (contrId) => createSelector(
+  selectDetailed,
+  (allItems) => allItems.filter(i => i.contributionId === contrId)
+);
+
 export const selectMemberOneTime = createSelector(
   selectAll,
   fromMember.selectAll,
@@ -57,5 +62,17 @@ export const selectMemberOneTime = createSelector(
       membersContributions[member.id] = types;
     });
     return membersContributions;
+  }
+)
+
+export const selectSummary = createSelector(
+  selectDetailed,
+  fromContributionTypes.selectOneTime,
+  (allItems, contributionTypes) => {
+    return contributionTypes.map(item => ({
+      ...item,
+      total: allItems
+        .filter(i => i.contributionId === item.id).reduce((p, c) => p + parseFloat(c.amount + ''), 0)
+    }))
   }
 )

@@ -106,6 +106,9 @@ import { DeleteFinesComponent } from './modules/settings/delete-fines/delete-fin
 import { DeleteLoansComponent } from './modules/settings/delete-loans/delete-loans.component';
 import { AddOneTimeContributionComponent } from './modules/members/add-one-time-contribution/add-one-time-contribution.component';
 import { AddExpectedFineComponent } from './modules/summary/fines/add-expected-fine/add-expected-fine.component';
+import { OneTimePaymentSummaryComponent } from './modules/summary/one-time-payment-summary/one-time-payment-summary.component';
+import { ListOneTimePaymentComponent } from './modules/summary/one-time-payment-summary/list-one-time-payment/list-one-time-payment.component';
+import { OneTimePaymentItemComponent } from './modules/summary/one-time-payment-summary/one-time-payment-item/one-time-payment-item.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -207,7 +210,10 @@ const firebaseConfig = {
     DeleteFinesComponent,
     DeleteLoansComponent,
     AddOneTimeContributionComponent,
-    AddExpectedFineComponent
+    AddExpectedFineComponent,
+    OneTimePaymentSummaryComponent,
+    ListOneTimePaymentComponent,
+    OneTimePaymentItemComponent
   ],
   imports: [
     CommonModule,

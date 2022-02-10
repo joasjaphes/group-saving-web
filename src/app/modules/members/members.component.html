@@ -91,6 +91,9 @@
             <button mat-menu-item (click)="addLoan(member)">
               <mat-icon>money</mat-icon> Assign Loan
             </button>
+            <button mat-menu-item (click)="addFine(member)">
+              <mat-icon>alarm_add</mat-icon> Fine to be Paid
+            </button>
             <mat-divider></mat-divider>
             <button mat-menu-item>
               <mat-icon>remove_red_eye</mat-icon> View Details
@@ -165,5 +168,14 @@
       [memberName]="memberName$ | async"
       (closeForm)="onClose()"
     ></app-update-member-phone>
+
+    <app-add-expected-fine
+      *ngIf="viewType == 'fine'"
+      [group]="group$ | async"
+      [members]="members$ | async"
+      [member]="currentMember"
+      [fineTypes]="fineTypes$ | async"
+      (closeForm)="onClose()"
+    ></app-add-expected-fine>
   </ng-container>
 </app-shared-layout>

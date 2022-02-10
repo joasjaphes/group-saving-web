@@ -32,6 +32,12 @@ export class SummaryComponent implements OnInit {
       image: 'cash-in-hand.png'
     },
     {
+      name: 'One Time Contributions',
+      route: ['', 'summary',  'one-time-payment'],
+      description: 'View summary of Payment that are only paid once',
+      image: 'money.png'
+    },
+    {
       name: 'Loan Queue',
       route: ['', 'summary',  'loan-queue'],
       description: 'View list of members who are waiting to get loan',

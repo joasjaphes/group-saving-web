@@ -96,6 +96,13 @@ export class MembersComponent implements OnInit {
     this.panelTitle = 'Assign Loan  to ' + member.name;
   }
 
+  async addFine(member: Member) {
+    this.currentMember = member;
+    this.viewType = 'fine';
+    this.viewDetails = true;
+    this.panelTitle = 'Register Fine  to be Paid By ' + member.name;
+  }
+
   async addMembers() {
     this.viewType = 'add';
     this.viewDetails = true;

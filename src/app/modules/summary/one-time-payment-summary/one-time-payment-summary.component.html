@@ -1,0 +1,54 @@
+<app-shared-layout
+  title="One Time Contributions"
+  image="money.png"
+  [hideAdd]="true"
+  [addIcon]="'add'"
+  [addText]="'Add Contributions'"
+  [viewDetails]="viewDetails"
+  [smallForm]="false"
+  [animationSize]="'full'"
+  [formTitle]="panelTitle"
+  (closeDetails)="closePanel()"
+  [urlName]="enableDelete ? 'Settings' : 'Summary'"
+  [url]="enableDelete ? ['', 'settings'] : ['', 'summary']"
+>
+  <ng-container ngProjectAs="table">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="mt-5 pt-5 text-center" *ngIf="(contributionTypes$ | async)?.length == 0">
+          <p class="text-center text-3xl registration-title text-secondLevel"> There are no one time payments </p>
+          <p class="text-center text-secondLevel">These are contribution that are paid only once, like entry fees.</p>
+        </div>
+        <div class="settings-grid">
+          <div [ngClass]="routeAnimationsElements" *ngFor="let contr of contributionTypes$ | async"
+               class="settingGrid content-area zoom-on-hover cursor" (click)="viewMemberContributions(contr)">
+            <div class="name-area">
+              <div class="img-div">
+                <h1 style="font-size: 40px;" class="registration-title">{{contr.name[0].toUpperCase()}}</h1>
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <div>
+                <h2 class="registration-title mb-1">{{contr.name}}</h2>
+                <p class="name-area">{{contr.description}}</p>
+              </div>
+              <div>
+                <p class="registration-title text-4xl">{{contr.total | number}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container ngProjectAs="form">
+    <app-list-one-time-payment
+      *ngIf="viewType == 'view'"
+      [contributions]="contributions$ | async"
+      [group]="group$ | async"
+      [showDelete]="enableDelete"
+      (closeForm)="closePanel()"
+    ></app-list-one-time-payment>
+  </ng-container>
+</app-shared-layout>

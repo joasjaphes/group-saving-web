@@ -1,5 +1,8 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromReducer from './expected-fines.reducer';
+import * as fromFineTypes from '../fine-type/fine-type.selectors';
+import * as fromMember from '../member/member.selectors';
+import {ExpectedFine} from './expected-fines.model';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.expectedFinesFeatureKey);
 
@@ -18,3 +21,86 @@ export const selectById = (id: string) => createSelector(
 export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
+
+export const selectDetailed = createSelector(
+  selectAll,
+  fromFineTypes.selectEntities,
+  fromMember.selectEntities,
+  (
+    allItems,
+    fineTypes,
+    members
+  ) => {
+    return allItems.map(item => {
+      const contrDetails = [];
+      const paymentItems = [];
+      const fineDetails = !!item.fines ? Object.keys(item.fines).map(contrId => ({
+        id: contrId,
+        name: fineTypes[contrId] ? fineTypes[contrId].description : '',
+        amount: item.fines[contrId],
+      })) : null;
+      if (fineDetails) {
+        contrDetails.push(...fineDetails.map(i => `${i.name} ${i.amount}`));
+        paymentItems.push(...fineDetails);
+      }
+      return {
+        ...item,
+        fineDetails,
+        paymentItems,
+        fineKeys: fineDetails.map(i => i.id),
+        member: members[item.memberId],
+        description: contrDetails.join(', '),
+        ...findFineTotal(item)
+      };
+    });
+  }
+);
+
+
+export const selectExpectedFineTypesSummary = createSelector(
+  selectDetailed,
+  fromFineTypes.selectAll,
+  (allItems, contributionTypes) => {
+    const summary = {};
+    summary['All'] = {name: 'All', total: 0, id: 'All'};
+    for (const contr of contributionTypes) {
+      summary[contr.id] = {name: contr.description, total: 0, id: contr.id};
+      allItems
+        .forEach(item => {
+          if (item.fines) {
+            if (Object.keys(item.fines).indexOf(contr.id) !== -1) {
+              summary[contr.id].total += parseFloat(item.fines[contr.id] + '');
+              summary['All'].total += parseFloat(item.fines[contr.id] + '');
+            }
+          }
+        });
+    }
+    return Object.keys(summary).map(i => summary[i]);
+  }
+);
+
+export const selectExpectedFineTypeSummaryString = createSelector(
+  selectExpectedFineTypesSummary,
+  (fineTypes) => fineTypes.map(i => `${i.name} `).join(', ')
+)
+
+export const selectTotalExpectedFines = createSelector(
+  selectDetailed,
+  (allItems) => allItems.reduce((a, b) => a + parseFloat(b.totalFines + ''), 0)
+)
+
+export function findFineTotal(payment: ExpectedFine) {
+  let sum = 0;
+  let totalFines = 0;
+  Object.keys(payment.fines).forEach(item => {
+    const val = payment.fines[item];
+    if (val) {
+      sum += parseFloat(val + '');
+      totalFines += parseFloat(val + '');
+    }
+  });
+  return {
+    totalAmount: sum,
+    totalFines,
+  };
+}

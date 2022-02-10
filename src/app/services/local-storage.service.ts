@@ -39,6 +39,7 @@ export class LocalStorageService {
     share_dividend: DataKeys.ShareDividend,
     single_payments: DataKeys.OneTimePayments,
     expected_fines: DataKeys.ExpectedFine,
+    loan_request: DataKeys.LoanRequest,
     user: DataKeys.User,
   };
   constructor() {

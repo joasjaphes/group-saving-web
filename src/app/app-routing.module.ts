@@ -30,6 +30,7 @@ import {DeleteLoansComponent} from './modules/settings/delete-loans/delete-loans
 import {DeleteFinesComponent} from './modules/settings/delete-fines/delete-fines.component';
 import {ContributionTypeBalanceEffects} from './store/contribution-type-balance/contribution-type-balance.effects';
 import {HisaPeriodComponent} from './modules/settings/hisa-period/hisa-period.component';
+import {OneTimePaymentSummaryComponent} from './modules/summary/one-time-payment-summary/one-time-payment-summary.component';
 
 
 const routes: Routes = [
@@ -89,6 +90,11 @@ const routes: Routes = [
         path: 'summary/contributions',
         component: ContributionsComponent,
         data: { title: 'Contribution' }
+      },
+      {
+        path: 'summary/one-time-payment',
+        component: OneTimePaymentSummaryComponent,
+        data: { title: 'One Time Payment' }
       },
       {
         path: 'summary/fines',
@@ -158,7 +164,7 @@ const routes: Routes = [
       {
         path: 'settings/contribution-periods',
         component: HisaPeriodComponent,
-        data: { title: 'Delete Loans' }
+        data: { title: 'Contribution Period' }
       },
       {
         path: 'change-password',

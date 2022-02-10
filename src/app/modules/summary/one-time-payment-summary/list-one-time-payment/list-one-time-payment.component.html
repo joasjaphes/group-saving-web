@@ -1,0 +1,23 @@
+<div class="payment-grid">
+  <app-one-time-payment-item
+    *ngFor="let contr of contributions"
+    [group]="group"
+    [showDelete]="showDelete"
+    [payment]="contr"
+  ></app-one-time-payment-item>
+
+
+</div>
+
+<div *ngIf="showDelete">
+  <app-save-area
+    saveText="delete"
+    saveIcon="delete"
+    (save)="deleteContributions()"
+    [confirmFirst]="true"
+    (cancel)="onClose()"
+    [savingData]="loading"
+    confirmText="Are you sure you want to delete All these contributions"
+  ></app-save-area>
+</div>
+

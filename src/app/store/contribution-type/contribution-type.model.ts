@@ -41,4 +41,5 @@ export interface ContributionType {
   contribution_end_date: string;
   is_given_to_member: boolean;
   member_id: string;
+  total?: number;
 }
