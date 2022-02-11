@@ -76,8 +76,8 @@ export class PaymentEffects {
       });
       return [
         // fromActions.upsertPayments({payments}),
-        fromActions.upsertPayments({payments: paymentsToSave}),
-        fineActions.upsertFines({fines}),
+        fromActions.loadPayments({payments: paymentsToSave}),
+        fineActions.loadFines({fines}),
         fromActions.doneLoadingPayments()
       ];
     })

@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromReducer from './member.reducer';
+import * as fromGroup from '../group/group.selectors';
 import {getRouteState} from '../index';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.membersFeatureKey);
@@ -38,6 +39,8 @@ export const selectMemberFromRoute = createSelector(
     return entities[memberId];
   }
 );
+
+
 
 export const selectMembersSorted = createSelector(
   selectAll,

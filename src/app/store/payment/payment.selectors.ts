@@ -61,15 +61,15 @@ export const selectDetailed = createSelector(
         amount: item.loans[contrId],
       })) : null;
       if (contributionsDetails) {
-        contrDetails.push(...contributionsDetails.map(i => `${i.name} ${i.amount}`));
+        contrDetails.push(...contributionsDetails.map(i => `${i.name} ${numberWithCommas(i.amount)}`));
         paymentItems.push(...contributionsDetails);
       }
       if (fineDetails) {
-        contrDetails.push(...fineDetails.map(i => `${i.name} ${i.amount}`));
+        contrDetails.push(...fineDetails.map(i => `${i.name} ${numberWithCommas(i.amount)}`));
         paymentItems.push(...fineDetails);
       }
       if (loanDetails) {
-        contrDetails.push(...loanDetails.map(i => `${i.name} ${i.amount}`));
+        contrDetails.push(...loanDetails.map(i => `${i.name} ${numberWithCommas(i.amount)})`));
         paymentItems.push(...loanDetails);
       }
       return {

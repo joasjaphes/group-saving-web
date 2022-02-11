@@ -33,7 +33,7 @@ export class OneTimePaymentEffects {
         }
       });
       return [
-      fromActions.upsertOneTimePayments({oneTimePayments: paymentsToSave}),
+      fromActions.loadOneTimePayments({oneTimePayments: paymentsToSave}),
       fromActions.doneLoadingOneTimePayments()
     ]})
   ));

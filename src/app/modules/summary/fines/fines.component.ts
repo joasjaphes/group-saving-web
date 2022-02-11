@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {FineType} from '../../../store/fine-type/fine-type.model';
 import * as fineSelector from '../../../store/fine-type/fine-type.selectors';
+import * as expectedFineSelector from '../../../store/expected-fines/expected-fines.selectors';
 import {select, Store} from '@ngrx/store';
 import {ApplicationState} from '../../../store';
 import {Member} from '../../../store/member/member.model';
@@ -11,6 +12,7 @@ import * as groupSelector from '../../../store/group/group.selectors';
 import * as paymentSelector from '../../../store/payment/payment.selectors';
 import {first} from 'rxjs/operators';
 import {fadeIn, ROUTE_ANIMATIONS_ELEMENTS} from '../../../shared/animations/router-animation';
+import {ExpectedFine} from '../../../store/expected-fines/expected-fines.model';
 
 @Component({
   selector: 'app-fines',
@@ -37,6 +39,9 @@ export class FinesComponent implements OnInit {
   memberSearch: any;
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   currentFines$: Observable<any>;
+  expectedFines$: Observable<ExpectedFine[]>;
+  totalExpectedFines$: Observable<number>;
+  expectedFinesSummary$: Observable<string>;
 
   constructor(
     private store: Store<ApplicationState>
@@ -47,6 +52,9 @@ export class FinesComponent implements OnInit {
     this.years$ = this.store.pipe(select(paymentSelector.selectYearsWithPayment));
     this.fines$ = this.store.pipe(select(paymentSelector.selectFinesDetailedGroupByMember(this.year, this.fineType)));
     this.finesSummary$ = this.store.pipe(select(paymentSelector.selectFineTypesSummary(this.year)));
+    this.expectedFines$ = this.store.pipe(select(expectedFineSelector.selectDetailed));
+    this.totalExpectedFines$ = this.store.pipe(select(expectedFineSelector.selectTotalExpectedFines));
+    this.expectedFinesSummary$ = this.store.pipe(select(expectedFineSelector.selectExpectedFineTypeSummaryString));
   }
 
   ngOnInit(): void {
@@ -113,5 +121,11 @@ export class FinesComponent implements OnInit {
     }
     this.viewDetails = true;
     this.viewType = 'view';
+  }
+
+  viewExpectedFines() {
+    this.panelTitle = 'Expected Fines';
+    this.viewDetails = true;
+    this.viewType = 'viewFine';
   }
 }

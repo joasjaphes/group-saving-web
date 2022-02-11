@@ -42,6 +42,8 @@ import * as deleteLoan from './loan/delete_loan';
 import * as cancelNextMeeting from './meeting/cancel-next-meeting-details';
 import * as addExpectedFines from './contribution/add_expected_fines';
 import * as addLoanRequest from './loan/add_loan_request';
+import * as deleteExpectedFine from './contribution/delete-expected-fine';
+import * as deleteOneTimeContribution from './contribution/delete-one-time-contribution';
 
 exports.getUserByPhoneNumber = getUserByPhoneNumber.getUserByPhoneNumber;
 
@@ -86,3 +88,5 @@ exports.deleteContribution = deleteContribution.deleteContribution;
 exports.assignPastActiveLoanToMember = assignPastActiveLoanToMember.assignPastActiveLoanToMember;
 exports.addExpectedFines = addExpectedFines.addExpectedFines;
 exports.addLoanRequest = addLoanRequest.addLoanRequest;
+exports.deleteExpectedFine = deleteExpectedFine.deleteExpectedFine;
+exports.deleteOneTimeContribution = deleteOneTimeContribution.deleteOneTimeContribution;

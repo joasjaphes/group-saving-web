@@ -47,7 +47,7 @@
       *ngIf="viewType == 'view'"
       [contributions]="contributions$ | async"
       [group]="group$ | async"
-      [showDelete]="enableDelete"
+      [showDelete]="(member$ | async)?.can_edit"
       (closeForm)="closePanel()"
     ></app-list-one-time-payment>
   </ng-container>

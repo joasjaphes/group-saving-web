@@ -1,0 +1,60 @@
+<div class="payment-grid">
+  <div
+    class="one-payment"
+    *ngFor="let contr of contributions"
+  >
+    <div style="display: grid; align-content: center">
+      <div class="img-div">
+        <h1 style="font-size: 40px;" class="registration-title">{{contr.member?.name[0].toUpperCase()}} </h1>
+      </div>
+    </div>
+    <div class="name-area">
+      <h1 style="color: #ffffffb3;" class="!mb-1 registration-title">{{contr.member.name}}</h1>
+      <!--      <h1 class="registration-title mb-0 amount-title">-->
+      <!--        {{contr.totalFines | number}}-->
+      <!--        <span class="text-muted" style="font-size: 12px!important;">{{group?.currency}}</span>-->
+      <!--      </h1>-->
+      <p style="color: #ffffff6e" class="lead !mb-0"><small>
+<!--        <span style="color: #ffffffbf; font-size: 11px"> ({{contr.description}})</span>-->
+        {{ contr.date | date:'MMM yyyy' }}
+      </small>
+      </p>
+      <p style="color: #ffffff6e" class="lead mb-1"><small>
+        <span style="color: #ffffffbf; font-size: 11px"> ({{contr.description}})</span>
+<!--        {{ contr.date | date:'MMM yyyy' }}-->
+      </small></p>
+
+    </div>
+    <div class="amount-area">
+      <p class="mb-0"><small class="text-muted">{{group?.currency}}</small></p>
+      <h1 class="registration-title">{{contr.totalFines | number}}</h1>
+    </div>
+
+    <div style="grid-column: span 3" *ngIf="showDelete">
+      <app-save-area
+        saveText="Remove"
+        saveIcon="delete"
+        (save)="deleteOneFine(contr)"
+        [confirmFirst]="true"
+        [showCancel]="false"
+        [savingData]="loadingOne[contr.id]"
+        confirmText="Are you sure you want to remove this expected fine for {{contr?.member?.name}}"
+      ></app-save-area>
+    </div>
+
+
+  </div>
+</div>
+
+<!--<div *ngIf="showDelete">-->
+<!--  <app-save-area-->
+<!--    saveText="delete"-->
+<!--    saveIcon="delete"-->
+<!--    (save)="deleteFines()"-->
+<!--    [confirmFirst]="true"-->
+<!--    (cancel)="onClose()"-->
+<!--    [savingData]="loading"-->
+<!--    confirmText="Are you sure you want to delete All these fines"-->
+<!--  ></app-save-area>-->
+<!--</div>-->
+

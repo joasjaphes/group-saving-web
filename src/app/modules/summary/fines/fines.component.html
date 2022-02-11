@@ -18,11 +18,15 @@
       <div class="col-sm-12">
         <div class="flex justify-between items-center mb-8">
           <div>
-            <p class="registration-title text-2xl">Total Expected Fines</p>
-            <p class="text-secondLevel text-xl">Fine ya kazi 1000, fine ya kula 2000</p>
+            <p class="registration-title text-2xl !mb-0">
+              There is
+              {{totalExpectedFines$ | async | number}}<span class="text-xs">{{(group$ | async)?.currency}}</span>
+              as Expected Fines</p>
+            <p class="text-secondLevel text-xl !mb-0">{{expectedFinesSummary$ | async}}</p>
+            <p class="text-secondLevel opacity-70 text-xs">These are fines that were supposed to be paid by members, but have not being paid yet</p>
           </div>
           <div>
-            <p class="registration-title text-3xl">35,000</p>
+            <button mat-flat-button (click)="viewExpectedFines()">View Details</button>
           </div>
         </div>
 
@@ -135,6 +139,14 @@
       [group]="group$ | async"
       (closeForm)="closePanel()"
     ></app-list-fines>
+
+    <app-list-expected-fines
+      *ngIf="viewType == 'viewFine'"
+      [showDelete]="enableDelete"
+      [contributions]="expectedFines$ | async"
+      [group]="group$ | async"
+      (closeForm)="closePanel()"
+    ></app-list-expected-fines>
 
     <app-add-expected-fine
       *ngIf="viewType == 'add'"

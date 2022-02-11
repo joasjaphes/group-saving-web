@@ -36,7 +36,7 @@
       <div style="display: grid; align-content: center">
         <div class="zoom-on-hover cursor" (click)="goToLoans()" title="Click to view more details">
           <p style="font-size: 20px;" class="text-muted m-0">
-            Unpaid Loan
+            Remaining balance
             <span class="currency-area">({{group?.currency}})</span>
           </p>
           <h1 class="registration-title big-amount mb-0">{{(loanSummary$ | async).unpaid | number}}</h1>

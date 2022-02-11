@@ -109,6 +109,7 @@ import { AddExpectedFineComponent } from './modules/summary/fines/add-expected-f
 import { OneTimePaymentSummaryComponent } from './modules/summary/one-time-payment-summary/one-time-payment-summary.component';
 import { ListOneTimePaymentComponent } from './modules/summary/one-time-payment-summary/list-one-time-payment/list-one-time-payment.component';
 import { OneTimePaymentItemComponent } from './modules/summary/one-time-payment-summary/one-time-payment-item/one-time-payment-item.component';
+import { ListExpectedFinesComponent } from './modules/summary/fines/list-expected-fines/list-expected-fines.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -213,7 +214,8 @@ const firebaseConfig = {
     AddExpectedFineComponent,
     OneTimePaymentSummaryComponent,
     ListOneTimePaymentComponent,
-    OneTimePaymentItemComponent
+    OneTimePaymentItemComponent,
+    ListExpectedFinesComponent
   ],
   imports: [
     CommonModule,

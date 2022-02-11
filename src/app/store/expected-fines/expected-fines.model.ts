@@ -12,6 +12,7 @@ export interface ExpectedFine {
   fines: { [id: string]: number };
   date: any;
   last_update: any;
+  description?: string;
   paymentItems?: {
     id: string;
     name: string;

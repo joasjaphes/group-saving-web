@@ -272,3 +272,26 @@ export const selectNeedBalance = createSelector(
       return i.track_balance && !hasBalance;
     })
 );
+
+export const selectPermissions = createSelector(
+  selected,
+  (currentGroup) => currentGroup?.member_permission
+);
+
+export const selectCurrentMember = createSelector(
+  fromMember.selectEntities,
+  selectEntities,
+  (members, groups) => {
+    const memberId = localStorage.getItem('group_savings_current_member');
+    let member = members[memberId]
+    if (member) {
+      const group = groups[member.group_id];
+      console.log({group});
+      member = {
+        ...member,
+        can_edit: group ? group.chairperson === member.id || group.secretary === member.id || group.treasure === member.id :  false,
+      }
+    }
+    return member;
+  }
+)

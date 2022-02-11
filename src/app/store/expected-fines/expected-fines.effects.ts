@@ -25,7 +25,7 @@ export class ExpectedFinesEffects {
         }
       });
       return [
-        fromActions.upsertExpectedFines({expectedFines: finesToSave}),
+        fromActions.loadExpectedFines({expectedFines: finesToSave}),
         fromActions.doneLoadingExpectedFines()
       ];
     })

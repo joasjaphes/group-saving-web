@@ -3,6 +3,7 @@ import * as fromReducer from './expected-fines.reducer';
 import * as fromFineTypes from '../fine-type/fine-type.selectors';
 import * as fromMember from '../member/member.selectors';
 import {ExpectedFine} from './expected-fines.model';
+import {numberWithCommas} from '../fine-type/fine-type.selectors';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.expectedFinesFeatureKey);
 
@@ -40,7 +41,7 @@ export const selectDetailed = createSelector(
         amount: item.fines[contrId],
       })) : null;
       if (fineDetails) {
-        contrDetails.push(...fineDetails.map(i => `${i.name} ${i.amount}`));
+        contrDetails.push(...fineDetails.map(i => `${i.name} ${numberWithCommas(i.amount)}`));
         paymentItems.push(...fineDetails);
       }
       return {
@@ -81,7 +82,7 @@ export const selectExpectedFineTypesSummary = createSelector(
 
 export const selectExpectedFineTypeSummaryString = createSelector(
   selectExpectedFineTypesSummary,
-  (fineTypes) => fineTypes.map(i => `${i.name} `).join(', ')
+  (fineTypes) => fineTypes.filter(i => i.total > 0 && i.name != 'All').map(i => `${i.name} ${numberWithCommas(i.total)}`).join(', ')
 )
 
 export const selectTotalExpectedFines = createSelector(

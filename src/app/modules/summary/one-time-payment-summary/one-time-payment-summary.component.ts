@@ -9,6 +9,8 @@ import * as fromPayment from '../../../store/one-time-payment/one-time-payment.s
 import {ROUTE_ANIMATIONS_ELEMENTS} from '../../../shared/animations/router-animation';
 import {Group} from '../../../store/group/group.model';
 import * as groupSelector from '../../../store/group/group.selectors';
+import * as memberSelector from '../../../store/member/member.selectors';
+import {Member} from '../../../store/member/member.model';
 
 @Component({
   selector: 'app-one-time-payment-summary',
@@ -20,6 +22,7 @@ export class OneTimePaymentSummaryComponent implements OnInit {
   contributionTypes$: Observable<ContributionType[]>;
   contributions$: Observable<OneTimePayment[]>;
   group$: Observable<Group>;
+  member$: Observable<Member>;
 
   viewDetails = false;
   panelTitle = '';
@@ -31,6 +34,8 @@ export class OneTimePaymentSummaryComponent implements OnInit {
     this.contributionTypes$ = this.store.pipe(select(fromPayment.selectSummary));
     this.contributions$ = this.store.pipe(select(fromPayment.selectDetailed));
     this.group$ = this.store.pipe(select(groupSelector.selected));
+    this.member$ = this.store.pipe(select(groupSelector.selectCurrentMember));
+    this.member$.subscribe(console.log)
   }
 
   ngOnInit(): void {

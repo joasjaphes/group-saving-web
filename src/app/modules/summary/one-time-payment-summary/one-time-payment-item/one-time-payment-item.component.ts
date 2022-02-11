@@ -26,10 +26,12 @@ export class OneTimePaymentItemComponent implements OnInit {
   async deleteContributions() {
     const data = {
       groupId: this.group.id,
+      contributionId: this.payment.contributionId,
+      memberId: this.payment.memberId
     };
     this.loading = true;
     try {
-      await this.functionsService.saveData('deleteContribution', data);
+      await this.functionsService.saveData('deleteOneTimeContribution', data);
       this.loading = false;
       this.commonService.showSuccess('Contributions deleted Successful');
     } catch (e) {
