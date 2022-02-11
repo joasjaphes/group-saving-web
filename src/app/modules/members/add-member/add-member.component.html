@@ -10,11 +10,11 @@
       </button>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-6">
+  <div class="flex gap-2">
+    <div class="w-6/12">
       <div class="container-fluid">
-        <div class="row">
-          <div class="col-sm-4 p-0" @fadeIn>
+        <div class="flex">
+          <div class="w-4/12 p-0 phone-number" @fadeIn>
             <mat-form-field appearance="fill">
               <img
                 alt="flag"
@@ -31,7 +31,7 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-sm-8 p-0" @fadeIn>
+          <div class="w-8/12 p-0 phone-number1" @fadeIn>
             <mat-form-field appearance="fill">
               <mat-label>Phone number</mat-label>
               <input
@@ -44,26 +44,29 @@
             </mat-form-field>
           </div>
 
-          <div class="col-sm-12" *ngIf="numberTakenMember" @fadeIn>
-            <p> This number has already being added as {{numberTakenMember.name}}</p>
-          </div>
+
+        </div>
+        <div class="mt-2" *ngIf="numberTakenMember" @fadeIn>
+          <p> This number has already being added as {{numberTakenMember.name}}</p>
         </div>
       </div>
     </div>
-    <div class="col-md-6" *ngIf="phoneIsValid && !numberTakenMember" @fadeIn>
+    <div class="w-6/12" *ngIf="phoneIsValid && !numberTakenMember" @fadeIn>
       <mat-form-field appearance="fill">
         <mat-label>Member name</mat-label>
         <mat-icon matPrefix>person_outline</mat-icon>
         <input matInput [(ngModel)]="name">
       </mat-form-field>
     </div>
-    <div class="col-sm-12 mt-3" *ngIf="phoneIsValid && name" @fadeIn>
-      <app-save-area
-        [confirmFirst]="true"
-        (cancel)="closeDialog()"
-        (save)="save()"
-        [savingData]="loading"
-      ></app-save-area>
-    </div>
+
+  </div>
+
+  <div class="col-sm-12 mt-3" *ngIf="phoneIsValid && name" @fadeIn>
+    <app-save-area
+      [confirmFirst]="true"
+      (cancel)="closeDialog()"
+      (save)="save()"
+      [savingData]="loading"
+    ></app-save-area>
   </div>
 </div>
