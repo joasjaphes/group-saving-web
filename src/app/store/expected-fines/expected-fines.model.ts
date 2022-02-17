@@ -1,5 +1,4 @@
 import {Member} from '../member/member.model';
-import {ContributionType} from '../contribution-type/contribution-type.model';
 
 export interface ExpectedFine {
   id: string;

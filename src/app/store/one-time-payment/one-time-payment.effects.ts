@@ -28,6 +28,8 @@ export class OneTimePaymentEffects {
               date: pay.date,
               paymentMode: pay.paymentMode,
               referenceNumber: pay.referenceNumber,
+              confirmationMessage: pay.confirmation_message ?? '',
+              attachment: pay.attachment ?? '',
             })
           });
         }

@@ -11,6 +11,8 @@ export interface OneTimePayment {
   date: string;
   paymentMode: string;
   referenceNumber: string;
+  confirmationMessage?: string;
+  attachment?: string;
   member?: Member;
   contributionType?: ContributionType;
 }
