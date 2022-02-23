@@ -1,7 +1,7 @@
 <div class="container-fluid">
-  <div class="row">
+  <div class="grid gap-4 grid-cols-2">
 <!--    year selection-->
-    <div class="col-sm-6">
+    <div class="">
       <mat-form-field appearance="outline">
         <mat-label>Contribution Year</mat-label>
         <mat-select [(ngModel)]="year">
@@ -11,7 +11,7 @@
     </div>
 
 <!--    Month selection-->
-    <div class="col-sm-6">
+    <div>
       <mat-form-field appearance="outline">
         <mat-label>Contribution Month</mat-label>
         <mat-select [(ngModel)]="month" (selectionChange)="setMonth($event.value)">
@@ -31,7 +31,7 @@
       </mat-form-field>
     </div>
 
-    <div class="col-sm-12" *ngIf="month" @fadeIn>
+    <div class="col-span-2" *ngIf="month" @fadeIn>
       <p *ngIf="(contributions$ | async)?.length > 0">
         There are <b>{{(contributions$ | async)?.length}}</b> contributions already posted for {{monthName}}
       </p>
@@ -96,7 +96,7 @@
 
     </div>
 
-    <div class="col-sm-12 mt-3" *ngIf="grandTotal && month" @fadeIn>
+    <div class="col-span-2 mt-3" *ngIf="grandTotal && month" @fadeIn>
       <app-save-area
         [confirmFirst]="true"
         confirmText="Are you sure you want to ADD {{grandTotal | number}}  as contribution for {{month}} {{ year}}?"

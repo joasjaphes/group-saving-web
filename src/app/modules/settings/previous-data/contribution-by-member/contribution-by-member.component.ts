@@ -132,6 +132,7 @@ export class ContributionByMemberComponent implements OnInit {
 
   deleteEntry(id) {
     this.monthsDatas = this.monthsDatas.filter(i => i.id !== id);
+    this.excludedPeriods = this.monthsDatas.map(i => i.period);
     this.calculateTotal();
   }
 

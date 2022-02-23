@@ -57,6 +57,7 @@ export class PeriodSelectorComponent implements OnInit, OnChanges {
   ];
   usedMonths: { id: string; name: string; }[] = [];
   @Input() placeholder = 'Select period';
+  @Input() showPlaceholder = true;
   @Input() currentYear: any = new Date().getFullYear();
   @Input() currentMonth;
   @Input() minMonth;

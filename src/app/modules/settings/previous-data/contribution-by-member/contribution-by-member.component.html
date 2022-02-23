@@ -33,7 +33,10 @@
                   </tr>
                   <tr *ngFor="let monthData of monthsDatas">
                     <td *ngIf="group.track_contribution_period">
-                      <app-period-selector [currentMonth]="monthData.month" [currentYear]="monthData.year"></app-period-selector>
+                      <app-period-selector
+                        [showPlaceholder]="false"
+                        [currentMonth]="monthData.month"
+                        [currentYear]="monthData.year"></app-period-selector>
                     </td>
                     <th *ngIf="!group.track_contribution_period" >
                       {{monthData.date | date}}
@@ -59,6 +62,7 @@
                   <tr>
                     <td *ngIf="group.track_contribution_period">
                       <app-period-selector
+                        [showPlaceholder]="false"
                         (selected)="setMonthAndYear($event)"
                         [clearAfterSelection]="true"
                         [exclude]="excludedPeriods"
