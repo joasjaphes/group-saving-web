@@ -27,6 +27,12 @@ export class PreviousDataComponent implements OnInit {
       image: 'export-excel.png'
     },
     {
+      name: 'Import Loans',
+      route: '',
+      description: 'Add loans from excel file',
+      image: 'request-money.png'
+    },
+    {
       name: 'Contribution By Member',
       route: '',
       description: 'Add past contribution for a specific member for many periods',

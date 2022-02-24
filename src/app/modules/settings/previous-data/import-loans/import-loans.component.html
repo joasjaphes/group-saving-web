@@ -17,11 +17,11 @@
 
   <div class="col-sm-3" *ngIf="endDate" @fadeIn>
     <mat-form-field appearance="outline">
-      <mat-label>Contribution Type</mat-label>
+      <mat-label>Loan Type</mat-label>
       <mat-select
         [(ngModel)]="contributionIds"
-        (selectionChange)="setContributionType($event)">
-        <mat-option *ngFor="let contr of contributionTypes"
+        (selectionChange)="setLoanType($event)">
+        <mat-option *ngFor="let contr of loanTypes"
                     [value]="contr.id">{{contr.name}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -41,31 +41,12 @@
   </div>
 </div>
 
-<div class="grid grid-cols-2 gap-4">
-  <div  *ngIf="contributionIds && selectedContributionTypes.type == 'Share'" @fadeIn>
-    <mat-form-field appearance="outline">
-      <mat-label>Include starting share</mat-label>
-      <mat-select
-        [(ngModel)]="includeStartingShare">
-        <mat-option *ngFor="let contr of ['Yes', 'No']"
-                    [value]="contr">{{contr}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div  *ngIf="contributionIds && selectedContributionTypes.type == 'Share' && includeStartingShare == 'Yes'" @fadeIn>
-    <app-period-selector
-      [inActiveBg]="false"
-      placeholder="Starting Share Month"
-      (selected)="setStartingShare($event)"
-    ></app-period-selector>
-  </div>
-</div>
-
 <div *ngIf="months.length > 0" @fadeIn class="my-5 pt-5 pb-5 grid place-items-center">
   <p class="text-xl tracking-wider text-secondLevel">Prepare excel file with fields just like in table bellow and after filling it upload data here</p>
   <p>
     <a (click)="downloadData()" class="text-secondLevel underline cursor-pointer">Download Sample Excel</a> and do not change Headings or format before Uploading
   </p>
+  <small>Make sure the start date is formatted as date in Excel file</small>
   <div>
     <button style="font-weight: 900; border-radius: 20px;margin-top: 25px;padding: 5px 25px;font-size: 15px;border: 1px solid #FF7043;"
             mat-raised-button
@@ -92,7 +73,11 @@
     <tr>
       <th>Name</th>
       <th>Phone</th>
-      <th *ngIf="includeStartingShare == 'Yes'">Starting</th>
+      <th>Date Issued</th>
+      <th>Amount</th>
+      <th>Duration (Month)</th>
+      <th>Amount + Interest</th>
+      <th>Outstanding</th>
       <th *ngFor="let mont of months">
         {{mont.name}}
       </th>
@@ -100,7 +85,11 @@
     <tr *ngFor="let member of members">
       <td>{{member.name}}</td>
       <td>{{member.phone_number}}</td>
-      <td *ngIf="includeStartingShare == 'Yes'"></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
       <td *ngFor="let month of months"></td>
     </tr>
   </table>
@@ -113,7 +102,11 @@
     <tr>
       <th>Name</th>
       <th>Phone</th>
-      <th *ngIf="includeStartingShare == 'Yes'">Starting</th>
+      <th>Date Issued</th>
+      <th>Amount</th>
+      <th>Duration (Month)</th>
+      <th>Amount + Interest</th>
+      <th>Outstanding</th>
       <th *ngFor="let mont of excelMonths">
         {{ mont.name }}
       </th>
@@ -121,9 +114,11 @@
     <tr *ngFor="let member of excelData">
       <td>{{ member['Name'] }}</td>
       <td>{{ member['Phone'] }}</td>
-      <td *ngIf="includeStartingShare == 'Yes'">
-        {{member['Starting']}}
-      </td>
+      <td>{{member['start_date'] | date}}</td>
+      <td>{{member['Amount'] | number}}</td>
+      <td>{{member['Duration (Month)'] | number}}</td>
+      <td>{{member['Amount + Interest'] | number}}</td>
+      <td>{{member['Outstanding'] | number}}</td>
       <td *ngFor="let month of excelMonths">
         {{ member[month.name] | number }}
       </td>

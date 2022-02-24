@@ -11,9 +11,7 @@ import {select, Store} from '@ngrx/store';
 import {ApplicationState} from '../../../../store';
 import * as contributionTypeSelector from '../../../../store/contribution-type/contribution-type.selectors';
 import {Dictionary} from '@ngrx/entity';
-import {selectContributionMemberMonthSummary} from '../../../../store/payment/payment.selectors';
 import {ExcelReaderService} from '../../../../services/excel-reader.service';
-import {trimPhoneNumber} from '../../../../store/login-steps/login-steps.selectors';
 import {FunctionsService} from '../../../../services/functions.service';
 
 @Component({

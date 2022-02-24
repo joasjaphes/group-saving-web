@@ -52,5 +52,14 @@
       [members]="members$ | async"
       (closeForm)="closePanel()"
     ></app-import-contribution>
+
+    <app-import-loans
+      *ngIf="viewType == 'Import Loans'"
+      [group]="group$ | async"
+      [contributionTypes]="contributionTypes$ | async"
+      [loanTypes]="loanTypes$ | async"
+      [members]="members$ | async"
+      (closeForm)="closePanel()"
+    ></app-import-loans>
   </ng-container>
 </app-shared-layout>

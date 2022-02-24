@@ -44,6 +44,7 @@ import * as addExpectedFines from './contribution/add_expected_fines';
 import * as addLoanRequest from './loan/add_loan_request';
 import * as deleteExpectedFine from './contribution/delete-expected-fine';
 import * as deleteOneTimeContribution from './contribution/delete-one-time-contribution';
+import * as importLoanFromExcel from './loan/import_previous_loan';
 
 exports.getUserByPhoneNumber = getUserByPhoneNumber.getUserByPhoneNumber;
 
@@ -90,3 +91,4 @@ exports.addExpectedFines = addExpectedFines.addExpectedFines;
 exports.addLoanRequest = addLoanRequest.addLoanRequest;
 exports.deleteExpectedFine = deleteExpectedFine.deleteExpectedFine;
 exports.deleteOneTimeContribution = deleteOneTimeContribution.deleteOneTimeContribution;
+exports.importLoanFromExcel = importLoanFromExcel.importLoanFromExcel;

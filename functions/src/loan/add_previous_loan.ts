@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as helpers from '../helpers';
 import * as admin from 'firebase-admin';
-import {LoanModel, SingleLoanModel} from '../data-models/loan.model';
+import {LoanModel} from '../data-models/loan.model';
 import {PaymentModel} from '../data-models/payment.model';
 
 const cors = require('cors')({origin: true});
@@ -35,7 +35,7 @@ export const assignPastActiveLoanToMember = functions.https.onRequest((request, 
         const memberData: any = {...memberDoc.data()};
         const loanId = data.loanId ? data.loanId : helpers.makeid();
         const loanTypeData: any = groupData.loanTypes[data.loanUsed];
-        const loanDetails = prepareLoan(loanId, data, loanTypeData, last_update);
+        const loanDetails = helpers.prepareLoan(loanId, data, loanTypeData, last_update);
         const payments: { [id: string]: PaymentModel } = {};
         if (loanDetails.payments.length > 0) {
           for (const payment of loanDetails.payments) {
@@ -51,6 +51,7 @@ export const assignPastActiveLoanToMember = functions.https.onRequest((request, 
               memberId: data.memberId,
               fines: {},
               contributions: {},
+              startingAmount: {},
               loans: {
                 [loanDetails.id]: payment.amount,
               },
@@ -103,50 +104,3 @@ export const assignPastActiveLoanToMember = functions.https.onRequest((request, 
   });
 
 });
-
-function prepareLoan(loanId: string, data: any, currentLoanType: any, last_update: any): SingleLoanModel {
-  const loan: SingleLoanModel = {
-    id: loanId,
-    group_id: data.groupId,
-    last_update,
-    member_id: data.memberId,
-    loan_used: data.loanUsed,
-    amount_taken: data.amountTaken,
-    duration: data.duration,
-    duration_type: currentLoanType ? currentLoanType.duration_type : 'Monthly',
-    total_amount_to_pay: data.return_amount || 0,
-    amount_paid_to_date: 0,
-    amount_per_return: data.amount_per_return || 0,
-    date: helpers.formatDate(data.date),
-    expected_date_of_payment: helpers.formatDate(data.end_date),
-    start_month: helpers.getMonth(data.date),
-    start_year: helpers.getYear(data.date) + '',
-    end_month: helpers.getMonth(data.end_date),
-    end_year: helpers.getYear(data.end_date) + '',
-    account_used: currentLoanType.contribution_type_id,
-    total_profit_contribution: data.total_profit_contribution,
-    remaining_balance: data.remaining_balance || 0,
-    payments: [],
-    additional_config: {},
-  };
-  if (data.payments && data.payments.length !== 0) {
-    loan.payments = data.payments.map(
-      (payment: any) => ({
-        id: payment.id,
-        month: payment.month ?? '',
-        year: payment.year,
-        week: payment.week ?? '',
-        period: payment.period,
-        amount: payment.amount,
-        paid_on_time: true,
-        date_of_payment: helpers.formatDate(payment.date),
-        previous_balance: payment.previous_balance,
-        new_balance: payment.new_balance,
-        from_previous_loan: true,
-      })
-    );
-  }
-  loan.amount_paid_to_date = data.amount_returned;
-  loan.remaining_balance = data.remaining_balance;
-  return loan;
-}

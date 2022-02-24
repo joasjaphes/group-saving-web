@@ -1,7 +1,7 @@
 import * as Moment from 'moment';
 import * as admin from 'firebase-admin';
 import {PaymentModel} from './data-models/payment.model';
-import {LoanModel} from './data-models/loan.model';
+import {LoanModel, SingleLoanModel} from './data-models/loan.model';
 import {OneTimePaymentModel} from './data-models/one-time-payment.model';
 import {ExpectedFineModel} from './data-models/expected-fine.model';
 import {LoanRequestModel} from './data-models/loan-request.model';
@@ -291,5 +291,52 @@ export const sendNotification = (data: { groupId: any, title: any, body: any }) 
   });
 };
 
+
+export const prepareLoan = (loanId: string, data: any, currentLoanType: any, last_update: any): SingleLoanModel => {
+  const loan: SingleLoanModel = {
+    id: loanId,
+    group_id: data.groupId,
+    last_update,
+    member_id: data.memberId,
+    loan_used: data.loanUsed,
+    amount_taken: data.amountTaken,
+    duration: data.duration,
+    duration_type: currentLoanType ? currentLoanType.duration_type : 'Monthly',
+    total_amount_to_pay: data.return_amount || 0,
+    amount_paid_to_date: 0,
+    amount_per_return: data.amount_per_return || 0,
+    date: formatDate(data.date),
+    expected_date_of_payment: formatDate(data.end_date),
+    start_month: getMonth(data.date),
+    start_year: getYear(data.date) + '',
+    end_month: getMonth(data.end_date),
+    end_year: getYear(data.end_date) + '',
+    account_used: currentLoanType.contribution_type_id,
+    total_profit_contribution: data.total_profit_contribution,
+    remaining_balance: data.remaining_balance || 0,
+    payments: [],
+    additional_config: {},
+  };
+  if (data.payments && data.payments.length !== 0) {
+    loan.payments = data.payments.map(
+      (payment: any) => ({
+        id: payment.id,
+        month: payment.month ?? '',
+        year: payment.year,
+        week: payment.week ?? '',
+        period: payment.period,
+        amount: payment.amount,
+        paid_on_time: true,
+        date_of_payment: formatDate(payment.date),
+        previous_balance: payment.previous_balance,
+        new_balance: payment.new_balance,
+        from_previous_loan: true,
+      })
+    );
+  }
+  loan.amount_paid_to_date = data.amount_returned;
+  loan.remaining_balance = data.remaining_balance;
+  return loan;
+}
 
 export const token = 'groupsavings';
