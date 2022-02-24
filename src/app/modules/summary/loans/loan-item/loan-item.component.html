@@ -1,16 +1,18 @@
 <div class="single-loan content-area-shadow">
+
   <div class="gauge">
     <app-small-circular-progress
       [value]="loan.percentPaid"
       [titleText]="loan.member?.name[0].toUpperCase()"
     ></app-small-circular-progress>
   </div>
+
   <div class="textArea">
-    <h1 style="color: #ffffffb3; font-size: 25px" class="mb-0 registration-title">{{ loan.member?.name }}</h1>
+    <h1 style="color: #ffffffb3; font-size: 25px" class="!mb-0 registration-title">{{ loan.member?.name }}</h1>
     <h1 class="registration-title mb-1" style="letter-spacing: 3px" *ngIf="loan.remaining_balance <= 0">{{ loan.total_amount_to_pay | number }}</h1>
     <div *ngIf="loan.remaining_balance > 0">
       <small  style="color: #ffffff6e; font-size: 11px">Remaining</small>
-      <h1 class="registration-title mb-1" style="letter-spacing: 3px">
+      <h1 class="registration-title !mb-0" style="letter-spacing: 3px">
         {{ loan.remaining_balance | number }}
       </h1>
     </div>
