@@ -15,6 +15,8 @@ export interface PaymentModel {
       startingAmount: { [id: string]: number },
       referenceNumber: string;
       paymentMode: string;
+      fileUrl?: string;
+      confirmationMessage?: string;
       date: any
     }
   };

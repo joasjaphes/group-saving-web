@@ -69,6 +69,8 @@ export const preparePayment = (data: any, group: any, currentPayment: PaymentMod
         startingAmount: mergeObjects(memberPayments.startingAmount ?? {}, data.startingAmount, replace),
         referenceNumber: data.referenceNumber ?? '',
         paymentMode: data.paymentMode ?? '',
+        confirmationMessage: data.confirmationMessage ?? '',
+        fileUrl: data.fileUrl ?? '',
         date: formatDate(data.date),
       },
     },
