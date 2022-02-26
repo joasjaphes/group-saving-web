@@ -18,6 +18,10 @@ export class PaymentEffects {
       const fines = [];
       const paymentsToSave: Payment[] = [];
       payments.forEach(payment => {
+        const period = payment.id.split('_')[1];
+        const year = period.substring(0, 4);
+        const month = period.substring(4, 6);
+        const date = `${year}-${month}-02`;
         if ('members' in payment) {
           Object.keys(payment.members).forEach((payItem: string) => {
             const pay = payment.members[payItem];
@@ -28,7 +32,7 @@ export class PaymentEffects {
                 isActive: true,
                 last_update: payment.last_update,
                 additionalConfig: {},
-                date: pay.date,
+                date: pay.date.indexOf('NaN') > 0 ? date : pay.date,
                 month: payment.month,
                 week: payment.week,
                 year: payment.year,
