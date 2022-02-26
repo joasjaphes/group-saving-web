@@ -221,7 +221,7 @@ export class LoanByMemberComponent implements OnInit {
       month,
       week: '',
       period: `${year}${month}`,
-      date: this.commonService.formatDate(this.contributionDate),
+      date_of_payment: this.commonService.formatDate(this.contributionDate),
       memberId: this.memberId,
       amount
     });
@@ -232,7 +232,7 @@ export class LoanByMemberComponent implements OnInit {
 
   preparePayments(payments: any[]) {
     this.payments = payments.sort((a, b) => {
-      if (a.date > b.date) {
+      if (a.date_of_payment > b.date_of_payment) {
         return 1;
       } else {
         return -1;
@@ -281,7 +281,7 @@ export class LoanByMemberComponent implements OnInit {
       month: $event.month.id,
       period: `${$event.year}${$event.month.id}`,
       week: '',
-      date: this.commonService.formatDate(new Date(`${$event.year}-${$event.month.id}-01`)),
+      date_of_payment: this.commonService.formatDate(new Date(`${$event.year}-${$event.month.id}-01`)),
       memberId: this.memberId,
       amount
     });

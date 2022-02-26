@@ -153,7 +153,7 @@ export class ImportLoansComponent implements OnInit {
                 month: monthNames[splittedKey[0]],
                 period: `${splittedKey[1]}${monthNames[splittedKey[0]]}`,
                 week: '',
-                date: `${splittedKey[1]}-${monthNames[splittedKey[0]]}-02`,
+                date_of_payment: `${splittedKey[1]}-${monthNames[splittedKey[0]]}-02`,
                 memberId: member.id,
                 amount: row[key],
               };
@@ -164,7 +164,14 @@ export class ImportLoansComponent implements OnInit {
         const duration = row['Duration (Month)'];
         let balance = parseFloat(row['Amount + Interest'] + '')
         let total = 0;
-        for (const payment of payments) {
+        const sortedPayments = payments.sort((a, b) => {
+          if (a.date_of_payment > b.date_of_payment) {
+            return 1;
+          } else {
+            return -1;
+          }
+        })
+        for (const payment of sortedPayments) {
           const amount = payment.amount + '';
           if (!!amount) {
             total += parseFloat(amount);
@@ -187,8 +194,8 @@ export class ImportLoansComponent implements OnInit {
           total_profit_contribution: parseFloat(row['Amount + Interest'] + '') - parseFloat(row['Amount'] + ''),
           remaining_balance: row['Outstanding'],
           amount_returned: parseFloat(row['Amount + Interest'] + '') - parseFloat(row['Outstanding'] + ''),
-          last_return_date: this.commonService.formatDate(payments[payments.length - 1].date),
-          payments: payments
+          last_return_date: this.commonService.formatDate(sortedPayments[sortedPayments.length - 1].date_of_payment),
+          sortedPayments: sortedPayments
         }
         loans.push(loan);
       }
@@ -198,19 +205,19 @@ export class ImportLoansComponent implements OnInit {
       loans
     }));
     this.loading = true;
-    try {
-      await this.functionService.saveData('importLoanFromExcel', {
-        groupId: this.group.id,
-        loans
-      });
-      this.loading = false;
-      this.commonService.showSuccess('Loans Submitted Successful');
-      this.onClose();
-    } catch (e) {
-      this.loading = false;
-      this.commonService.showError('Loans was not assigned successful');
-      console.error(e);
-    }
+    // try {
+    //   await this.functionService.saveData('importLoanFromExcel', {
+    //     groupId: this.group.id,
+    //     loans
+    //   });
+    //   this.loading = false;
+    //   this.commonService.showSuccess('Loans Submitted Successful');
+    //   this.onClose();
+    // } catch (e) {
+    //   this.loading = false;
+    //   this.commonService.showError('Loans was not assigned successful');
+    //   console.error(e);
+    // }
   }
 
   setEndDate(date: any, duration: number): any {

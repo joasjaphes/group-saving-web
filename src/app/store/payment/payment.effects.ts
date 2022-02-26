@@ -37,6 +37,8 @@ export class PaymentEffects {
                 paymentMode: pay.paymentMode,
                 referenceNumber: pay.referenceNumber,
                 paymentType: pay.paymentType,
+                confirmationMessage: pay.confirmationMessage,
+                fileUrl: pay.fileUrl,
                 contributions: pay.contributions,
                 fines: pay.fines,
                 loans: pay.loans,

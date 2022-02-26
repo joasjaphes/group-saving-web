@@ -32,6 +32,7 @@ import { SaveLoaderComponent } from './components/save-loader/save-loader.compon
 import { PeriodSelectorComponent } from './components/period-selector/period-selector.component';
 import { ClickOutsideDirective } from './directives/click-outside.directive';
 import { ImportReminderComponent } from './components/import-reminder/import-reminder.component';
+import { ViewAttachmentComponent } from './components/view-attachment/view-attachment.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { ImportReminderComponent } from './components/import-reminder/import-rem
     PeriodSelectorComponent,
     ClickOutsideDirective,
     ImportReminderComponent,
+    ViewAttachmentComponent,
   ],
   imports: [
     CommonModule,

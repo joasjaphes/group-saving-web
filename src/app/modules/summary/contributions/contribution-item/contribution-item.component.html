@@ -14,6 +14,9 @@
       <small>{{ payment.date | date:'MMM yyyy' }}</small>
       <span style="color: #ffffffbf; font-size: 11px"> ({{payment.description}})</span>
     </p>
+    <p>
+      <a (click)="viewReceipt()" *ngIf="payment.fileUrl" style="color: #ffffffbf; font-size: 11px"> View Receipt</a>
+    </p>
 
   </div>
 

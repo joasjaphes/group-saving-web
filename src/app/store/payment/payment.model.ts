@@ -20,6 +20,8 @@ export interface Payment {
   paymentMode: string;
   paymentType: string;
   referenceNumber: string;
+  fileUrl: string;
+  confirmationMessage: string;
   contributions: any;
   contributionsDetails?: any[];
   fineDetails?: any[];
