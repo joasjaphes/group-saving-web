@@ -5,9 +5,9 @@ import * as admin from 'firebase-admin';
 const cors = require('cors')({origin: true});
 
 /**
- * input data : { frequency, groupId, fistTime  }
+ * input data : { memberId, groupId, excuse  }
  */
-export const setNextMeeting = functions.https.onRequest((request, response) => {
+export const removeNextMeetingExcuse = functions.https.onRequest((request, response) => {
   return cors(request, response, async () => {
     response.header('Access-Control-Allow-Origin', '*');
     response.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -31,24 +31,27 @@ export const setNextMeeting = functions.https.onRequest((request, response) => {
       await admin.firestore().runTransaction(async (transaction) => {
         const groupDoc = await transaction.get(groupDocRef);
         const groupData: any = {...groupDoc.data()};
-        const next_meeting = groupData.next_meeting
-          ? {
-            ...groupData.next_meeting,
-            meeting_date: helpers.formatDate(data.meetingDate),
-            meeting_place: data.meetingPlace,
-            excuses: {},
+        let next_meeting = {...groupData.next_meeting};
+        if (next_meeting.excuses && next_meeting.excuses[data.memberId]) {
+          next_meeting = {
+            ...next_meeting,
+            excuses: Object.keys(next_meeting.excuses).reduce(
+              (object: any, key: string) => {
+                if (data.memberId !== key) {
+                  object[key] = next_meeting.excuses[key];
+                }
+                return object;
+              }, {}
+            ),
           }
-          : {
-            meeting_date: helpers.formatDate(data.meetingDate),
-            meeting_place: data.meetingPlace,
-            excuses: {},
-          };
+        }
+
         transaction.update(groupDocRef, {...groupData, last_update, next_meeting });
         transaction.set(otherUpdateAtRef, { group_updated: last_update }, {merge: true});
       });
       response.status(200).send({data: 'Success'});
     } catch (e) {
-      console.log('Error setting next meeting data:', e);
+      console.log('Error setting next meeting excuse:', e);
       response.status(500).send({data: 'Fail'});
     }
   });

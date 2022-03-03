@@ -5,9 +5,9 @@ import * as admin from 'firebase-admin';
 const cors = require('cors')({origin: true});
 
 /**
- * input data : { frequency, groupId, fistTime  }
+ * input data : { memberId, groupId, excuse  }
  */
-export const setNextMeeting = functions.https.onRequest((request, response) => {
+export const setNextMeetingExcuse = functions.https.onRequest((request, response) => {
   return cors(request, response, async () => {
     response.header('Access-Control-Allow-Origin', '*');
     response.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -34,21 +34,23 @@ export const setNextMeeting = functions.https.onRequest((request, response) => {
         const next_meeting = groupData.next_meeting
           ? {
             ...groupData.next_meeting,
-            meeting_date: helpers.formatDate(data.meetingDate),
-            meeting_place: data.meetingPlace,
-            excuses: {},
+            excuses: {
+              [data.memberId]: data.excuse,
+            },
           }
           : {
             meeting_date: helpers.formatDate(data.meetingDate),
             meeting_place: data.meetingPlace,
-            excuses: {},
+            excuses: {
+              [data.memberId]: data.excuse,
+            },
           };
         transaction.update(groupDocRef, {...groupData, last_update, next_meeting });
         transaction.set(otherUpdateAtRef, { group_updated: last_update }, {merge: true});
       });
       response.status(200).send({data: 'Success'});
     } catch (e) {
-      console.log('Error setting next meeting data:', e);
+      console.log('Error setting next meeting excuse:', e);
       response.status(500).send({data: 'Fail'});
     }
   });

@@ -47,6 +47,8 @@ import * as deleteOneTimeContribution from './contribution/delete-one-time-contr
 import * as importLoanFromExcel from './loan/import_previous_loan';
 import * as updateMemberProfilePicture from './members/update-profile_picture';
 import * as setGroupProfilePicture from './group/set-group-profile-photo';
+import * as setNextMeetingExcuse from './meeting/set-next-meeting-excuse';
+import * as removeNextMeetingExcuse from './meeting/remove-next-meeting-excuse';
 
 exports.getUserByPhoneNumber = getUserByPhoneNumber.getUserByPhoneNumber;
 
@@ -96,3 +98,5 @@ exports.deleteOneTimeContribution = deleteOneTimeContribution.deleteOneTimeContr
 exports.importLoanFromExcel = importLoanFromExcel.importLoanFromExcel;
 exports.updateMemberProfilePicture = updateMemberProfilePicture.updateMemberProfilePicture;
 exports.setGroupProfilePicture = setGroupProfilePicture.setGroupProfilePicture;
+exports.setNextMeetingExcuse = setNextMeetingExcuse.setNextMeetingExcuse;
+exports.removeNextMeetingExcuse = removeNextMeetingExcuse.removeNextMeetingExcuse;
