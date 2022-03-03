@@ -1,13 +1,13 @@
 import * as functions from 'firebase-functions';
 import * as helpers from '../helpers';
 import * as admin from 'firebase-admin';
-import {ExpectedFineModel} from '../data-models/expected-fine.model';
+
 const cors = require('cors')({origin: true});
 
 /**
- * input data : { groupId, month, year, period, memberId, fineAmounts}
+ * input data : { groupId, photoURL, path }
  */
-export const addExpectedFines = functions.https.onRequest((request, response) => {
+export const setGroupProfilePicture = functions.https.onRequest((request, response) => {
   return cors(request, response, async () => {
     response.header('Access-Control-Allow-Origin', '*');
     response.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -25,27 +25,36 @@ export const addExpectedFines = functions.https.onRequest((request, response) =>
     }
     try {
       const groupId = data.groupId;
+      let filePath;
       const last_update = new Date().getTime();
       const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
       const groupDocRef = admin.firestore().doc(`groups/${groupId}`);
       await admin.firestore().runTransaction(async (transaction) => {
         const groupDoc = await transaction.get(groupDocRef);
         const groupData: any = {...groupDoc.data()};
-
-        // Prepare payment data and merge them into a correct period
-        const paymentDocRef = admin.firestore().doc(`groups/${data.groupId}/expected_fines/expected_${data.memberId}`);
-        const paymentDoc = await transaction.get(paymentDocRef);
-        const existingPaymentData = paymentDoc.exists ? paymentDoc.data() as ExpectedFineModel : {id: `expected_${data.memberId}`, groupId: data.groupId, memberId: data.memberId, fines: []};
-        const paymentData = helpers.prepareExpectedFine(data, groupData, existingPaymentData, false);
-        transaction.set(paymentDocRef, {...paymentData, last_update}, {merge: true});
-        transaction.set(otherUpdateAtRef, {
-          expected_fines_updated: last_update,
-        }, {merge: true});
+        filePath = groupData.path;
+        transaction.update(groupDocRef, {
+          ...groupData,
+          last_update,
+          logo: data.photoURL,
+          path: data.path ?? '',
+        });
+        transaction.set(otherUpdateAtRef, { group_updated: last_update }, {merge: true});
+        if(!!filePath) {
+          try {
+            const bucket = admin.storage().bucket();
+            await bucket.file(filePath).delete();
+          } catch (e) {
+            console.log('There is no file to delete');
+          }
+        }
       });
       response.status(200).send({data: 'Success'});
     } catch (e) {
       console.log('Error fetching user data:', e);
       response.status(500).send({data: 'Fail'});
     }
+
   });
+
 });

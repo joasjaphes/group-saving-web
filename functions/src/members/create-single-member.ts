@@ -59,6 +59,8 @@ function getMemberGroupMetadata(data: any, groupId: string, memberId: string, la
     phone_number: data?.phoneNumber,
     last_update,
     created_by: memberName,
+    activation_status: 'active',
+    alternative_phone_number: '',
   };
 }
 
@@ -71,6 +73,7 @@ function getMemberMetadata(data: any, groupId: string, memberId: string, last_up
     name: data?.name,
     email: `${data?.phoneNumber}@monitafrica.com`,
     phone_number: data?.phoneNumber,
+    alternative_phone_number: '',
     gender: '',
     date_joined: '',
     can_edit: false,

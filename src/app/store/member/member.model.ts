@@ -14,5 +14,6 @@ export interface Member {
   date_joined: string;
   can_edit: boolean;
   permissions: any;
+  alternative_phone_number: string;
   additional_config: any;
 }

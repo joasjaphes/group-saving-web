@@ -54,6 +54,8 @@ export const createUser = functions.https.onRequest((request, response) => {
         member_name: data?.name,
         user_id: userData.uid,
         phone_number: data?.phoneNumber,
+        activation_status: 'active',
+        alternative_phone_number: '',
         last_update,
       });
       response.status(200).send(userData.toJSON());
@@ -87,6 +89,7 @@ function createMember(data: any, memberDocRef: FirebaseFirestore.DocumentReferen
     name: data?.memberName,
     email: data?.email,
     phone_number: data?.phoneNumber,
+    alternative_phone_number: data?.phoneNumber,
     gender: '',
     date_joined: '',
     can_edit: true,

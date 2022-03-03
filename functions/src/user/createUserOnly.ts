@@ -19,8 +19,6 @@ export const createUserOnly = functions.https.onRequest((request, response) => {
       }
     }
     const data = request.body;
-    console.log(data);
-    console.log(request.get('Authorization'));
     const tokenId = request.get('Authorization')?.split('Bearer ')[1];
     if (tokenId !== helpers.token) {
       response.status(400).send('Invalid token please send a valid token');

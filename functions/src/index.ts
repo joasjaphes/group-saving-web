@@ -45,6 +45,8 @@ import * as addLoanRequest from './loan/add_loan_request';
 import * as deleteExpectedFine from './contribution/delete-expected-fine';
 import * as deleteOneTimeContribution from './contribution/delete-one-time-contribution';
 import * as importLoanFromExcel from './loan/import_previous_loan';
+import * as updateMemberProfilePicture from './members/update-profile_picture';
+import * as setGroupProfilePicture from './group/set-group-profile-photo';
 
 exports.getUserByPhoneNumber = getUserByPhoneNumber.getUserByPhoneNumber;
 
@@ -92,3 +94,5 @@ exports.addLoanRequest = addLoanRequest.addLoanRequest;
 exports.deleteExpectedFine = deleteExpectedFine.deleteExpectedFine;
 exports.deleteOneTimeContribution = deleteOneTimeContribution.deleteOneTimeContribution;
 exports.importLoanFromExcel = importLoanFromExcel.importLoanFromExcel;
+exports.updateMemberProfilePicture = updateMemberProfilePicture.updateMemberProfilePicture;
+exports.setGroupProfilePicture = setGroupProfilePicture.setGroupProfilePicture;

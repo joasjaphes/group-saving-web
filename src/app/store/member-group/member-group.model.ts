@@ -4,6 +4,8 @@ export interface MemberGroup {
   memberId: string;
   userId: string;
   phoneNumber: string;
+  activation_status: string;
+  alternative_phone_number: string;
   memberName: string;
   groupName: string;
   lastUpdate: number;

@@ -1,5 +1,6 @@
 export interface ExpectedFineModel {
   id: string;
+  groupId: string;
   fines: {
     id: string;
     groupId: string;
