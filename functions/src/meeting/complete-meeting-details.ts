@@ -67,22 +67,27 @@ function prepareMeetingDetails(data: any, nextMeeting: any): SingleMeeting {
       week: '',
       place: data.place,
       attendance: data.attendance,
-      notes: data.notes || null,
+      missed: data.missed ?? [],
+      notes: data.notes || '',
+      excuses: data.excuses ?? {},
+      meetingPhoto: data.fileUrl ?? '',
       additional_config: {},
     };
   } else {
     meeting = {
       attendance: data.attendance,
+      missed: data.missed ?? [],
       date: helpers.formatDate(data.date),
-      excuses: [],
+      excuses: data.excuses ?? {},
       id: helpers.makeid(),
       is_set: true,
       month: helpers.getMonth(data.date),
-      notes: data.notes || null,
+      notes: data.notes || '',
       week: '',
       year: helpers.getYear() + '',
       place: data.place,
       reasons: null,
+      meetingPhoto: data.fileUrl ?? '',
       additional_config: {},
     };
   }

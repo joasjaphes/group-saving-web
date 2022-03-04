@@ -62,7 +62,9 @@ export class CompleteMeetingComponent implements OnInit {
       place: this.meetingPlace,
       notes: this.notes,
       attendance: Object.keys(this.attendance)
-        .filter(i => !!this.attendance[i])
+        .filter(i => !!this.attendance[i]),
+      missed: Object.keys(this.attendance)
+        .filter(i => !this.attendance[i]),
     };
     this.loading = true;
     try {

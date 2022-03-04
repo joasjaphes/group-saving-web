@@ -1,7 +1,8 @@
 export interface SingleMeeting {
   attendance: any;
+  missed: any;
   date: string;
-  excuses: any[];
+  excuses: any;
   id: string;
   is_set: boolean;
   month: string;
@@ -10,6 +11,7 @@ export interface SingleMeeting {
   year: string;
   place: string;
   reasons: any;
+  meetingPhoto: string;
   additional_config: any;
 }
 
