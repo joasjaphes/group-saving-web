@@ -49,6 +49,7 @@ import * as updateMemberProfilePicture from './members/update-profile_picture';
 import * as setGroupProfilePicture from './group/set-group-profile-photo';
 import * as setNextMeetingExcuse from './meeting/set-next-meeting-excuse';
 import * as removeNextMeetingExcuse from './meeting/remove-next-meeting-excuse';
+import * as addNewContributionForApproval from './contribution/add_new_contribution_for_approval';
 
 exports.getUserByPhoneNumber = getUserByPhoneNumber.getUserByPhoneNumber;
 
@@ -100,3 +101,4 @@ exports.updateMemberProfilePicture = updateMemberProfilePicture.updateMemberProf
 exports.setGroupProfilePicture = setGroupProfilePicture.setGroupProfilePicture;
 exports.setNextMeetingExcuse = setNextMeetingExcuse.setNextMeetingExcuse;
 exports.removeNextMeetingExcuse = removeNextMeetingExcuse.removeNextMeetingExcuse;
+exports.addNewContributionForApproval = addNewContributionForApproval.addNewContributionForApproval;

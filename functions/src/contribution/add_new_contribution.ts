@@ -19,7 +19,8 @@ export const addNewContribution = functions.https.onRequest((request, response) 
         return;
       }
     }
-    const data = request.body;
+    const dataItem = request.body;
+    let data = request.body;
     const tokenId = request.get('Authorization')?.split('Bearer ')[1];
     if (tokenId !== helpers.token) {
       response.status(400).send('Invalid token please send a valid token');
@@ -37,6 +38,12 @@ export const addNewContribution = functions.https.onRequest((request, response) 
         const groupData: any = {...groupDoc.data()};
         const memberDoc = await transaction.get(memberRef);
         const memberData: any = {...memberDoc.data()};
+        if (dataItem.fromPending && Object.keys(memberData.pendingPayment ?? {}).length > 3) {
+          data = {
+            ...data,
+            ...memberData.pendingPayment,
+          }
+        }
         const fineTypes = groupData.fines || {};
         const contributionTypes = groupData.contributions || {};
         const loanConfigs = groupData.loanTypes || {};
@@ -99,6 +106,9 @@ export const addNewContribution = functions.https.onRequest((request, response) 
           });
         }
         memberData.active_loans = active_loans;
+        if (dataItem.fromPending) {
+          memberData.pendingPayment = {}
+        }
 
         // Add list of completed loans to the members data
         const loanRef = admin.firestore().doc(`groups/${groupId}/loans/member_${data.memberId}`);
