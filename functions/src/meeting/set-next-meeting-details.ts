@@ -36,11 +36,17 @@ export const setNextMeeting = functions.https.onRequest((request, response) => {
             ...groupData.next_meeting,
             meeting_date: helpers.formatDate(data.meetingDate),
             meeting_place: data.meetingPlace,
+            place_location_url: data.place_location_url ?? '',
+            latitude: data.latitude ?? '',
+            longitude: data.longitude ?? '',
             excuses: {},
           }
           : {
             meeting_date: helpers.formatDate(data.meetingDate),
             meeting_place: data.meetingPlace,
+            place_location_url: data.place_location_url ?? '',
+            latitude: data.latitude ?? '',
+            longitude: data.longitude ?? '',
             excuses: {},
           };
         transaction.update(groupDocRef, {...groupData, last_update, next_meeting });
