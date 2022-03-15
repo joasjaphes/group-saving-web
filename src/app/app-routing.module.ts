@@ -31,6 +31,7 @@ import {DeleteFinesComponent} from './modules/settings/delete-fines/delete-fines
 import {ContributionTypeBalanceEffects} from './store/contribution-type-balance/contribution-type-balance.effects';
 import {HisaPeriodComponent} from './modules/settings/hisa-period/hisa-period.component';
 import {OneTimePaymentSummaryComponent} from './modules/summary/one-time-payment-summary/one-time-payment-summary.component';
+import {PrivacyComponent} from './privacy/privacy.component';
 
 
 const routes: Routes = [
@@ -177,6 +178,13 @@ const routes: Routes = [
         data: { title: 'My Profile' }
       },
     ],
+  },
+  {
+    path: 'privacy',
+    component: PrivacyComponent,
+    data: {
+      title: 'Privacy'
+    }
   },
   {
     path: 'welcome',
