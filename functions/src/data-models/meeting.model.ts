@@ -13,6 +13,9 @@ export interface SingleMeeting {
   reasons: any;
   meetingPhoto: string;
   additional_config: any;
+  place_location_url: string;
+  latitude: string;
+  longitude: string;
 }
 
 export interface MeetingModel {

@@ -80,6 +80,9 @@ function prepareMeetingDetails(data: any, nextMeeting: any): SingleMeeting {
       excuses: data.excuses ?? {},
       meetingPhoto: data.fileUrl ?? '',
       additional_config: {},
+      place_location_url: data.place_location_url ?? '',
+      latitude: data.latitude ?? '',
+      longitude: data.longitude ?? '',
     };
   } else {
     meeting = {
@@ -97,6 +100,9 @@ function prepareMeetingDetails(data: any, nextMeeting: any): SingleMeeting {
       reasons: null,
       meetingPhoto: data.fileUrl ?? '',
       additional_config: {},
+      place_location_url: data.place_location_url ?? '',
+      latitude: data.latitude ?? '',
+      longitude: data.longitude ?? '',
     };
   }
   return meeting;
