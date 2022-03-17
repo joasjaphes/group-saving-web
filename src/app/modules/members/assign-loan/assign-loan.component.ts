@@ -143,8 +143,10 @@ export class AssignLoanComponent implements OnInit {
   async save() {
     const dataToSave = {
       groupId: this.group.id,
+      groupName: this.group.group_name,
       loanUsed: this.loanType,
       memberId: this.member.id,
+      memberName: this.member.name,
       amountTaken: this.loanAmount,
       duration: this.duration,
       return_amount: this.testToReturn,

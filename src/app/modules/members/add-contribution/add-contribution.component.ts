@@ -135,6 +135,8 @@ export class AddContributionComponent implements OnInit {
     // Preparing Values to save
     let dataToSave = {
       groupId: this.group.id,
+      memberName: this.member.name,
+      groupName: this.group.group_name,
       memberId: this.member.id,
       amountTaken: this.loanAmount,
       loans: this.loanAmount,

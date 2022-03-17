@@ -57,6 +57,14 @@ export const assignLoanToMember = functions.https.onRequest((request, response) 
           group_updated: last_update,
         }, {merge: true});
       });
+      helpers.sendNotification({
+        groupId: data.groupId,
+        title: `${data.groupName}: New Loan has been issued`,
+        body: `${data.memberName} has been assigned new loan of ${data.amountTaken}`,
+        type: 'new_loan',
+        id: 'new_loan',
+      }).then(() => null)
+        .catch((error) => console.log(error));
       response.status(200).send({data: 'Success'});
     } catch (e) {
       console.log('Error assigning loan to member:', e);

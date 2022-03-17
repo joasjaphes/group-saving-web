@@ -269,19 +269,22 @@ export const getNextMonth = (duration: any, startYear: string, startMonth: strin
 };
 
 
-export const sendNotification = (data: { groupId: any, title: any, body: any }) => {
+export const sendNotification = (data: { groupId: any, title: any, body: any, id: string, type: string }) => {
   const icon = 'https://sample-32870.firebaseapp.com/assets/img/donate.png';
-  const {groupId, title, body} = data;
-  let tokens = [];
+  const {groupId, title, body, id, type} = data;
+  let tokens: string | string[] = [];
   const tokensRef = admin.firestore().doc(`groups/${groupId}/devices/tokens`);
   return tokensRef.get().then((tokenDoc: any) => {
-    tokens = tokenDoc.data().tokens;
+    if (tokenDoc.exists) {
+      tokens = tokenDoc.data().tokens;
+    }
     // Notification details.
     const payload = {
       data: {
         click_action: 'FLUTTER_NOTIFICATION_CLICK',
-        title,
-        body,
+        id,
+        type,
+        groupId,
       },
       notification: {
         title,
@@ -293,6 +296,19 @@ export const sendNotification = (data: { groupId: any, title: any, body: any }) 
   });
 };
 
+export const  prettyDate = (date = new Date()) => {
+  const d = new Date(date);
+  const month_names =["Jan","Feb","Mar",
+    "Apr","May","Jun",
+    "Jul","Aug","Sep",
+    "Oct","Nov","Dec"];
+
+  const day = d.getDate();
+  const month_index = d.getMonth();
+  const year = d.getFullYear();
+
+  return "" + day + "-" + month_names[month_index] + "-" + year;
+}
 
 export const prepareLoan = (loanId: string, data: any, currentLoanType: any, last_update: any): SingleLoanModel => {
   const loan: SingleLoanModel = {

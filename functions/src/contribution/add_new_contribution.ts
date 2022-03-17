@@ -32,7 +32,7 @@ export const addNewContribution = functions.https.onRequest((request, response) 
       const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
       const memberRef = admin.firestore().doc(`groups/${data.groupId}/members/${data.memberId}`);
       const groupDocRef = admin.firestore().doc(`groups/${groupId}`);
-      const done_paying_loans = [];
+      const done_paying_loans: SingleLoanModel[] = [];
       await admin.firestore().runTransaction(async (transaction) => {
         const groupDoc = await transaction.get(groupDocRef);
         const groupData: any = {...groupDoc.data()};
@@ -143,7 +143,29 @@ export const addNewContribution = functions.https.onRequest((request, response) 
           }, {merge: true});
         }
 
+      }).then(() => {
+        helpers.sendNotification({
+          groupId: data.groupId,
+          title: `${data.groupName}: New Contribution`,
+          body: `${data.memberName} has submitted new Contribution of ${calculateTotal(data)}`,
+          type: 'new_contribution',
+          id: 'new_contribution',
+        }).then(() => null)
+          .catch((error) => console.log(error));
+        if (done_paying_loans.length > 0) {
+          done_paying_loans.forEach((loan) => {
+            helpers.sendNotification({
+              groupId: data.groupId,
+              title: `${data.memberName} Finished Paying Loan`,
+              body: `${data.memberName} has finished paying a loan of ${loan.amount_paid_to_date}`,
+              type: 'completed_loan',
+              id: loan.id ?? '',
+            }).then(() => null)
+              .catch((error) => console.log(error));
+          })
+        }
       });
+
       response.status(200).send({data: 'Success'});
     } catch (e) {
       console.log('Error fetching user data:', e);
@@ -153,6 +175,20 @@ export const addNewContribution = functions.https.onRequest((request, response) 
   });
 
 });
+
+function calculateTotal(data: any) {
+  let total  = 0;
+  for (const key in data.loans) {
+    total = parseFloat(total + '') + parseFloat(data.loans[key] + '');
+  }
+  for (const key in data.fines) {
+    total = parseFloat(total + '') + parseFloat(data.fines[key] + '');
+  }
+  for (const key in data.contributions) {
+    total = parseFloat(total + '') + parseFloat(data.contributions[key] + '');
+  }
+  return total;
+}
 
 function prepareLoanFines(data: any, fineConfig: any, loanId: string, group: any) {
   const finesArr: any = {};

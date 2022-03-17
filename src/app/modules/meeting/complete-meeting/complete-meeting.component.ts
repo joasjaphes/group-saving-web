@@ -58,6 +58,7 @@ export class CompleteMeetingComponent implements OnInit {
     const dataToSave = {
       id: this.currentMeeting ? this.currentMeeting.id : this.commonService.makeId(),
       groupId: this.group.id,
+      groupName: this.group.group_name,
       date: this.commonService.formatDate(this.meetingDate),
       place: this.meetingPlace,
       notes: this.notes,

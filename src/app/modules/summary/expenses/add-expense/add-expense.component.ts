@@ -51,7 +51,9 @@ export class AddExpenseComponent implements OnInit {
     const dataToSave = {
       id: this.currentExpense ? this.currentExpense.id : this.commonService.makeId(),
       groupId: this.group.id,
+      groupName: this.group.group_name,
       memberId: this.memberId,
+      memberName: this.memberName,
       amount: this.amount,
       associated_account: this.contributionType,
       date: this.commonService.formatDate(this.expenseDate),

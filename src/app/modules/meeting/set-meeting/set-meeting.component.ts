@@ -35,6 +35,7 @@ export class SetMeetingComponent implements OnInit {
   async save() {
     const dataToSave = {
       groupId: this.group.id,
+      groupName: this.group.group_name,
       meetingDate: this.commonService.formatDate(this.meetingDate),
       meetingPlace: this.meetingPlace
     };

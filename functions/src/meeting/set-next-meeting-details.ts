@@ -52,6 +52,14 @@ export const setNextMeeting = functions.https.onRequest((request, response) => {
         transaction.update(groupDocRef, {...groupData, last_update, next_meeting });
         transaction.set(otherUpdateAtRef, { group_updated: last_update }, {merge: true});
       });
+      helpers.sendNotification({
+        groupId: data.groupId,
+        title: `${data.groupName}: Next Meeting is set`,
+        body: `Next meeting will be on ${helpers.prettyDate(data.meetingDate)} at ${data.meetingPlace}`,
+        type: 'new_contribution',
+        id: 'new_contribution',
+      }).then(() => null)
+        .catch((error) => console.log(error));
       response.status(200).send({data: 'Success'});
     } catch (e) {
       console.log('Error setting next meeting data:', e);

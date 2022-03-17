@@ -62,6 +62,15 @@ export const createExpense = functions.https.onRequest((request, response) => {
           expense_updated: last_update,
         }, {merge: true});
       });
+      const text = data.memberName ? ` given to ${data.memberName} `: '';
+      helpers.sendNotification({
+        groupId: data.groupId,
+        title: `New Expense`,
+        body: 'New expense of ' + data.amount + ' for ' + data.reason + ' ' + text,
+        type: 'new_expense',
+        id: 'new_expense',
+      }).then(() => null)
+        .catch((error) => console.log(error));
       response.status(200).send({data: 'Success'});
     } catch (e) {
       console.log('Error fetching user data:', e);
