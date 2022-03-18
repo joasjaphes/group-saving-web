@@ -194,8 +194,9 @@ export class ImportLoansComponent implements OnInit {
           total_profit_contribution: parseFloat(row['Amount + Interest'] + '') - parseFloat(row['Amount'] + ''),
           remaining_balance: row['Outstanding'],
           amount_returned: parseFloat(row['Amount + Interest'] + '') - parseFloat(row['Outstanding'] + ''),
-          last_return_date: this.commonService.formatDate(sortedPayments[sortedPayments.length - 1].date_of_payment),
-          sortedPayments: sortedPayments
+          last_return_date: sortedPayments.length > 0 ? this.commonService.formatDate(sortedPayments[sortedPayments.length - 1].date_of_payment) : '',
+          sortedPayments: sortedPayments,
+          payments: sortedPayments ?? [],
         }
         loans.push(loan);
       }
@@ -205,19 +206,19 @@ export class ImportLoansComponent implements OnInit {
       loans
     }));
     this.loading = true;
-    // try {
-    //   await this.functionService.saveData('importLoanFromExcel', {
-    //     groupId: this.group.id,
-    //     loans
-    //   });
-    //   this.loading = false;
-    //   this.commonService.showSuccess('Loans Submitted Successful');
-    //   this.onClose();
-    // } catch (e) {
-    //   this.loading = false;
-    //   this.commonService.showError('Loans was not assigned successful');
-    //   console.error(e);
-    // }
+    try {
+      await this.functionService.saveData('importLoanFromExcel', {
+        groupId: this.group.id,
+        loans
+      });
+      this.loading = false;
+      this.commonService.showSuccess('Loans Submitted Successful');
+      this.onClose();
+    } catch (e) {
+      this.loading = false;
+      this.commonService.showError('Loans was not assigned successful');
+      console.error(e);
+    }
   }
 
   setEndDate(date: any, duration: number): any {

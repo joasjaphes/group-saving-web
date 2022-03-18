@@ -45,15 +45,17 @@ export const completeMeeting = functions.https.onRequest((request, response) => 
         transaction.update(groupDocRef, { next_meeting: null, last_update });
         transaction.set(meetingRef, { ...existingMeeting, last_update });
         transaction.set(otherUpdateAtRef, { group_updated: last_update, meeting_updated: last_update }, {merge: true});
+      }).then(() => {
+        helpers.sendNotification({
+          groupId: data.groupId,
+          title: `${data.groupName}: Meeting has just been finished`,
+          body: `Meeting has just been finished on ${helpers.prettyDate(data.date)} at ${data.place}, ${data.attendance.length} members participated`,
+          type: 'new_contribution',
+          id: 'new_contribution',
+        }).then(() => null)
+          .catch((error) => console.log(error));
       });
-      helpers.sendNotification({
-        groupId: data.groupId,
-        title: `${data.groupName}: Meeting has just been finished`,
-        body: `Meeting has just been finished on ${helpers.prettyDate(data.date)} at ${data.place}, ${data.attendance.length} members participated`,
-        type: 'new_contribution',
-        id: 'new_contribution',
-      }).then(() => null)
-        .catch((error) => console.log(error));
+
       response.status(200).send({data: 'Success'});
     } catch (e) {
       console.log('Error setting next meeting data:', e);
