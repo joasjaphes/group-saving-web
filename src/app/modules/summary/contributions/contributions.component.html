@@ -96,7 +96,7 @@
             </div>
             <div class="name-area">
 <!--              <p style="color: #ffffff6e" class="lead mb-1"><small>{{ payment.date | date:'MMM yyyy' }}</small></p>-->
-              <h1 style="color: #ffffffb3;" class="!mb-0  registration-title">{{ payment.name }}</h1>
+              <h1 style="color: #ffffffb3;font-size: 20px;" class="!mb-0  registration-title">{{ payment.name }}</h1>
               <p style="color: #ffffffbf; font-size: 11px" class="!mb-2 ">{{ payment.description }}</p>
 <!--              <p *ngFor="let item of payment.items">-->
 <!--                {{item.name}}: <b>{{item.amount}}</b>-->
@@ -109,7 +109,7 @@
             </div>
             <div class="amount-area">
               <p class="mb-0"><small class="text-muted">{{(group$ | async)?.currency}}</small> </p>
-              <h1 class="registration-title">{{ payment.total | number }}</h1>
+              <h1 class="registration-title" style="font-size: 28px">{{ payment.total | number }} </h1>
             </div>
           </div>
         </div>

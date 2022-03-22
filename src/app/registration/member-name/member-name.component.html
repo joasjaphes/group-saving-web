@@ -9,6 +9,7 @@
       <input
         (input)="setName($event)"
         [(ngModel)]="name"
+        (keyup.enter)="memberGroups.length != 0 ? goNextStep('setPassword') : goNextStep('groupName')"
         matInput
         type="text"
         placeholder="Your Name"

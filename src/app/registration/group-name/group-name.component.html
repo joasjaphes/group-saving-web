@@ -9,6 +9,7 @@
       <input
         (input)="setGroupName($event)"
         [(ngModel)]="name"
+        (keyup.enter)="name ? goNextStep() : null"
         matInput
         type="text"
         placeholder="Group Name"

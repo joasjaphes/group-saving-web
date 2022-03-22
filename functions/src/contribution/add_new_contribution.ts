@@ -123,7 +123,7 @@ export const addNewContribution = functions.https.onRequest((request, response) 
         const paymentDocRef = admin.firestore().doc(`groups/${data.groupId}/payments/period_${data.period}`);
         const paymentDoc = await transaction.get(paymentDocRef);
         const existingPaymentData = paymentDoc.exists ? paymentDoc.data() as PaymentModel : helpers.prepareEmptyPayment(data, groupData);
-        const paymentData = helpers.preparePayment(data, groupData, existingPaymentData, false);
+        const paymentData = helpers.preparePayment(data, groupData, existingPaymentData, false, false);
         transaction.update(groupDocRef, { ...groupData , last_update});
         transaction.update(memberRef, {...memberData, last_update});
         transaction.set(paymentDocRef, {...paymentData, last_update}, {merge: true});

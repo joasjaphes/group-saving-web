@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {fadeIn, ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
 import {countries, Country} from '../../store/countries';
+import {Store} from '@ngrx/store';
+import {ApplicationState} from '../../store';
+import {Go} from '../../store/router/router.action';
 
 @Component({
   selector: 'app-language-selection',
@@ -13,9 +16,21 @@ export class LanguageSelectionComponent implements OnInit {
   countries = countries;
   selectedCountryId: string;
   selectedCountry: Country;
-  constructor() { }
+  @HostListener('document:keypress', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.goNextStep();
+    }
+  }
+  constructor(
+    private store: Store<ApplicationState>
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  goNextStep() {
+    this.store.dispatch(new Go({path: ['', 'phone-number']}));
   }
 
   countrySelected($event) {

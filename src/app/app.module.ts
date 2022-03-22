@@ -112,6 +112,7 @@ import { OneTimePaymentItemComponent } from './modules/summary/one-time-payment-
 import { ListExpectedFinesComponent } from './modules/summary/fines/list-expected-fines/list-expected-fines.component';
 import { ImportLoansComponent } from './modules/settings/previous-data/import-loans/import-loans.component';
 import { PrivacyComponent } from './privacy/privacy.component';
+import { SingleLoanQueueItemComponent } from './modules/summary/loan-queue/single-loan-queue-item/single-loan-queue-item.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -219,7 +220,8 @@ const firebaseConfig = {
     OneTimePaymentItemComponent,
     ListExpectedFinesComponent,
     ImportLoansComponent,
-    PrivacyComponent
+    PrivacyComponent,
+    SingleLoanQueueItemComponent
   ],
   imports: [
     CommonModule,

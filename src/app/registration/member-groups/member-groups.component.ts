@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {MemberGroup} from '../../store/member-group/member-group.model';
 import {RegistrationSteps} from '../registration-steps';
 
@@ -12,6 +12,12 @@ export class MemberGroupsComponent implements OnInit {
   @Input() memberGroups: MemberGroup[];
   @Input() memberName: string;
   @Output() nextStep = new EventEmitter< {currentStep: string, previousStep: string}>();
+  @HostListener('document:keypress', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.goNextStep();
+    }
+  }
   constructor() { }
 
   ngOnInit(): void {

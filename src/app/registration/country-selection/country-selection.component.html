@@ -12,6 +12,7 @@
       <mat-select
         (selectionChange)="countrySelected($event.value)"
         [(ngModel)]="selectedCountryId"
+        (keyup.enter)="selectedCountry ? goNextStep() : null"
         placeholder="Select country"
         name="ampm"
         class="ampm">

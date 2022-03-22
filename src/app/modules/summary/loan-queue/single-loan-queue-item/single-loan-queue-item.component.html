@@ -1,0 +1,32 @@
+<div [ngClass]="routeAnimationsElements" class="expenseGrid content-area">
+  <div class="grid place-items-center">
+
+    <div class="img-div">
+      <h1 style="font-size: 40px;" class="registration-title">
+        {{loanQueue.member?.name[0].toUpperCase()}}
+      </h1>
+    </div>
+  </div>
+  <div class="name-area">
+    <p style="color: #ffffff6e; font-size: 20px; margin-bottom: 2px" class="lead"><small>{{ loanQueue.date | date:'MMM yyyy' }}</small></p>
+    <h1 class="!mb-1 registration-title">{{ loanQueue.member?.name }}</h1>
+    <p style="color: #ffffffbf" class="mb-0">{{ loanQueue.loanType?.name }}</p>
+  </div>
+  <div class="amount-area">
+    <p class="mb-0"><small class="text-muted">{{group.currency}}</small> </p>
+    <h1 class="registration-title">{{ loanQueue.amount | number }}</h1>
+  </div>
+  <div class="menu" *ngIf="showMenu">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon style="color: white">more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button (click)="onRemoveFromQueue(loanQueue)" mat-menu-item >
+        <mat-icon style="color: red">delete</mat-icon> Remove from queue
+      </button>
+      <button mat-menu-item (click)="onAddLoan(loanQueue)">
+        <mat-icon>money</mat-icon> Assign Loan
+      </button>
+    </mat-menu>
+  </div>
+</div>

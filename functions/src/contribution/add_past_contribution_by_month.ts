@@ -40,7 +40,7 @@ export const addPastContributions = functions.https.onRequest((request, response
             const paymentDoc = await transaction.get(paymentDocRef);
             existingPaymentData = paymentDoc.exists ? paymentDoc.data() as PaymentModel : helpers.prepareEmptyPayment(memberData, groupData);
           }
-          payments[`period_${memberData.period}`] = helpers.preparePayment(memberData, groupData, existingPaymentData);
+          payments[`period_${memberData.period}`] = helpers.preparePayment(memberData, groupData, existingPaymentData, true, false);
         }
         for (const key of Object.keys(payments)) {
           const paymentRef = admin.firestore().doc(`groups/${data.groupId}/payments/${key}`);

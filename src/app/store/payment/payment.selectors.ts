@@ -406,7 +406,14 @@ export const selectExpectedCollection = (period: string) => createSelector(
   fromLoan.selectAll,
   fromMember.selectAll,
   (contributionTypes, loans, members) => {
-    const activeLoans = loans.filter(i => `${i.end_year}${i.end_month}` <= period);
+    const activeLoans = loans.filter(i => {
+      const periodStr = `${i.end_year}${i.end_month}`;
+      console.log(parseInt(periodStr, 10) >= parseInt(period + '', 10))
+      console.log(`${i.end_year}${i.end_month} >= ${period}`)
+      return `${i.end_year}${i.end_month}` >= period;
+    });
+    // console.log(JSON.stringify(loans));
+    // console.log(JSON.stringify(loans));
     let totalLoan = 0;
     let totalExpected = 0;
     activeLoans.forEach(i => totalLoan += parseFloat(i.amount_per_return + ''));
@@ -421,8 +428,8 @@ export const selectExpectedCollection = (period: string) => createSelector(
         return null;
       }
     }).filter(i => !!i);
-    totalExpected += totalLoan;
-    return {total: totalExpected, amounts: [...contrReturs, {name: 'Loans', value:  totalLoan}]};
+    totalExpected += parseInt(totalLoan + '', 10);
+    return {total: parseInt(totalExpected + '', 10), amounts: [...contrReturs, {name: 'Loans', value:  parseInt(totalLoan + '', 10)}]};
   }
 );
 
@@ -537,7 +544,8 @@ export const selectTotalLoanPaymentByYear = (year, contributionType, memberId?) 
     for (const item of items) {
       const contr = Object.keys(item.loans)
         .map(i => ({loanUsed: loans[i] ? loanTypes[loans[i].loan_used] : null, amount: item.loans[i]}))
-        .filter(i => contributionType === 'All' || (i.loanUsed && i.loanUsed.contribution_type_id === contributionType));
+        .filter(i => !!i.loanUsed && contributionType === 'All' || (i.loanUsed && i.loanUsed.contribution_type_id === contributionType));
+      console.log(JSON.stringify(contr));
       for (const amount of contr) {
         sum += !!(amount.amount + '') ? parseFloat(amount.amount + '') : 0;
       }

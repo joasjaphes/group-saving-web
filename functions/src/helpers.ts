@@ -47,7 +47,7 @@ export const deleteKeys = (
   }, {});
 };
 
-export const preparePayment = (data: any, group: any, currentPayment: PaymentModel, replace = true): PaymentModel => {
+export const preparePayment = (data: any, group: any, currentPayment: PaymentModel, replace = true, loanReplace = false): PaymentModel => {
   const memberPayments = currentPayment.members[data.memberId] ?? {
     id: makeid(),
     memberId: data.memberId,
@@ -63,10 +63,10 @@ export const preparePayment = (data: any, group: any, currentPayment: PaymentMod
       ...currentPayment.members,
       [memberPayments.memberId]: {
         ...memberPayments,
-        fines: mergeObjects(memberPayments.fines, data.fines, replace),
-        contributions: mergeObjects(memberPayments.contributions, data.contributions, replace),
-        loans: mergeObjects(memberPayments.loans, data.loans, replace),
-        startingAmount: mergeObjects(memberPayments.startingAmount ?? {}, data.startingAmount, replace),
+        fines: mergeObjects(memberPayments.fines ?? {}, data.fines ?? {}, replace),
+        contributions: mergeObjects(memberPayments.contributions ?? {}, data.contributions ?? {}, replace),
+        loans: mergeObjects(memberPayments.loans ?? {}, data.loans ?? {}, loanReplace),
+        startingAmount: mergeObjects(memberPayments.startingAmount ?? {}, data.startingAmount ?? {}, replace),
         referenceNumber: data.referenceNumber ?? '',
         paymentMode: data.paymentMode ?? '',
         confirmationMessage: data.confirmationMessage ?? '',
@@ -345,7 +345,7 @@ export const prepareLoan = (loanId: string, data: any, currentLoanType: any, las
         period: payment.period,
         amount: payment.amount,
         paid_on_time: true,
-        date_of_payment: formatDate(payment.date),
+        date_of_payment: formatDate(payment.date_of_payment),
         previous_balance: payment.previous_balance,
         new_balance: payment.new_balance,
         from_previous_loan: true,

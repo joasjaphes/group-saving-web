@@ -1,5 +1,5 @@
 <div class="row content-area ml-0">
-  <div class="col-sm-12 title-grid">
+  <div class="col-sm-12 title-grid" *ngIf="!(nextInQueue$ | async)">
     <div style="display: grid; align-content: center">
       <h3 class="registration-title" style="color: #ffffffc7;">Loan queue</h3>
     </div>
@@ -15,5 +15,14 @@
       </div>
     </div>
 
+  </div>
+
+  <div *ngIf="nextInQueue$ | async">
+    <h2 class="text-secondLevel">Next in queue</h2>
+    <app-single-loan-queue-item
+      [group]="group$ | async"
+      [loanQueue]="nextInQueue$ | async"
+      [showMenu]="false"
+    ></app-single-loan-queue-item>
   </div>
 </div>

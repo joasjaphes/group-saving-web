@@ -26,6 +26,7 @@
             <input
               [(ngModel)]="phoneNumber"
               (input)="selectPhone($event)"
+              (keyup.enter)="phoneNumberValid && !fetchingPhoneUpdates ? verifyPhoneNumber() : null"
               matInput type="text" placeholder="OXXXXXXXXX"
               #myInput
             >

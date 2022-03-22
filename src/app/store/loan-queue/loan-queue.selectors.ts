@@ -36,3 +36,9 @@ export const selectDetailed = createSelector(
       }
     ).sort((a, b) => a.date > b.date ? 1 : -1)
 );
+
+export const selectNextInQueue = createSelector(
+  selectDetailed,
+  (allItems) =>  allItems.length > 0 ? allItems[0] : null
+);
+

@@ -55,7 +55,7 @@ export const assignPastActiveLoanToMember = functions.https.onRequest((request, 
               loans: {
                 [loanDetails.id]: payment.amount,
               },
-            }, groupData, existingPaymentData);
+            }, groupData, existingPaymentData, false, true);
           }
         }
         if (parseInt(data.remaining_balance + '', 10) === 0) {

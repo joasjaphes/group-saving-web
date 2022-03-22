@@ -81,7 +81,7 @@ export const importLoanFromExcel = functions.https.onRequest((request, response)
                 loans: {
                   [loanId]: payment.amount,
                 },
-              }, groupData, existingPaymentData);
+              }, groupData, existingPaymentData, false, true);
             }
           }
 
