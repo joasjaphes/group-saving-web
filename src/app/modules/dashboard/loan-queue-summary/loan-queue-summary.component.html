@@ -20,6 +20,7 @@
   <div *ngIf="nextInQueue$ | async">
     <h2 class="text-secondLevel">Next in queue</h2>
     <app-single-loan-queue-item
+      (click)="goToLoanQueue()"
       [group]="group$ | async"
       [loanQueue]="nextInQueue$ | async"
       [showMenu]="false"
