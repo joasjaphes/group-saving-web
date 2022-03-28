@@ -71,6 +71,14 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "ngsw-config.json"
+            },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.test.ts"
+                }
+              ]
             }
           }
         },
@@ -82,6 +90,9 @@
           "configurations": {
             "production": {
               "browserTarget": "kikoba-web:build:production"
+            },
+            "test": {
+              "browserTarget": "kikoba-web:build:test"
             }
           }
         },

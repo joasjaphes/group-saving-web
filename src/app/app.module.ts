@@ -84,6 +84,7 @@ import { DeleteExpenseComponent } from './modules/summary/expenses/delete-expens
 import { UpdateMemberBasicsComponent } from './modules/members/update-member-basics/update-member-basics.component';
 import { UpdateMemberPhoneComponent } from './modules/members/update-member-phone/update-member-phone.component';
 import { UpdateMemberEmailComponent } from './modules/members/update-member-email/update-member-email.component';
+
 import { ExportDataComponent } from './modules/summary/export-data/export-data.component';
 import { LoanItemComponent } from './modules/summary/loans/loan-item/loan-item.component';
 import { ContributionItemComponent } from './modules/summary/contributions/contribution-item/contribution-item.component';
@@ -100,17 +101,6 @@ import { MonthExportComponent } from './modules/summary/export-data/month-export
 import { LoanExportComponent } from './modules/summary/export-data/loan-export/loan-export.component';
 import { ContributionExportComponent } from './modules/summary/export-data/contribution-export/contribution-export.component';
 import {CommonModule} from '@angular/common';
-
-const firebaseConfig = {
-  apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
-  authDomain: 'group-saving.firebaseapp.com',
-  databaseURL: 'https://group-saving.firebaseio.com',
-  projectId: 'group-saving',
-  storageBucket: 'group-saving.appspot.com',
-  messagingSenderId: '444964071176',
-  appId: '1:444964071176:web:732f9c6071c5a461b5eebd',
-  measurementId: 'G-JC2DKTVF1V'
-};
 
 @NgModule({
   declarations: [
@@ -201,7 +191,7 @@ const firebaseConfig = {
     CommonModule,
     BrowserModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, // firestore
     AngularFireAuthModule, // auth
     AngularFireStorageModule, // storage
@@ -221,7 +211,10 @@ const firebaseConfig = {
     SharedModule,
     BrowserAnimationsModule,
   ],
-  providers: [{ provide: RouterStateSerializer, useClass: CustomSerializer }],
+  providers: [
+    { provide: RouterStateSerializer, useClass: CustomSerializer },
+    ...environment.useEmulator
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

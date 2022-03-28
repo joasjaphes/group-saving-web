@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FunctionsService {
 
-  SERVER_ADDRESS = 'https://us-central1-group-saving.cloudfunctions.net/';
+  SERVER_ADDRESS = environment.functionURL;
   constructor(
     private http: HttpClient
   ) { }
