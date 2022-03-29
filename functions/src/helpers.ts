@@ -1,5 +1,6 @@
 import * as Moment from 'moment';
 import * as admin from 'firebase-admin';
+import axios from 'axios';
 import {PaymentModel} from './data-models/payment.model';
 import {LoanModel} from './data-models/loan.model';
 
@@ -166,6 +167,29 @@ export const sendNotification = (data: {groupId: any, title: any, body: any}) =>
       },
     };
     return admin.messaging().sendToDevice(tokens, payload);
+  });
+};
+
+export const sendSMS = async (data: {phoneNumbers: string[], message: string}) => {
+  const {phoneNumbers, message} = data;
+  return await axios.request({
+    method: 'post',
+    url: 'https://zn9gk.api.infobip.com/sms/2/text/advanced',
+    auth: {
+      username: 'GROUPSAVING',
+      password: 'Mbwilo@20181'
+    },
+    data: {
+        "messages": [
+            {
+                "from": "GROUPSAVING",
+                "destinations": phoneNumbers.map((number)=>{
+                  return {"to" : number}
+                }),
+                "text": message
+            }
+        ]
+    }
   });
 };
 

@@ -6,6 +6,7 @@ import * as getUserByPhoneNumber from './user/get-user-by-phone';
 import * as getUserGroupsByPhoneNumber from './user/get-member-groups-by-phone';
 import * as createUser from './user/createUser';
 import * as createUserOnly from './user/createUserOnly';
+import * as resetPassword from './user/reset-password';
 import * as createMembers from './members/create-members';
 import * as createSingleMember from './members/create-single-member';
 import * as updateSingleMember from './members/update-single-member';
@@ -45,6 +46,7 @@ exports.getUserGroupsByPhoneNumber = getUserGroupsByPhoneNumber.getUserGroupsByP
 exports.createUser = createUser.createUser;
 
 exports.createUserOnly = createUserOnly.createUserOnly;
+exports.resetPassword = resetPassword.resetPassword
 exports.createMembers = createMembers.createMembers;
 exports.createSingleMember = createSingleMember.createSingleMember;
 exports.updateSingleMember = updateSingleMember.updateSingleMember;
