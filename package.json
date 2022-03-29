@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:functions": "cd functions && npm run build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "concurrently --kill-others --success first \"npm run emulators\" \"ng serve --configuration test\" \"wait-on http-get://localhost:4200 && $(npm bin)/cypress run\"",

@@ -47,6 +47,8 @@ exports.createUser = createUser.createUser;
 
 exports.createUserOnly = createUserOnly.createUserOnly;
 exports.resetPassword = resetPassword.resetPassword
+exports.requestResetPassword = resetPassword.requestResetPassword
+exports.validateResetPasswordCode = resetPassword.validateResetPasswordCode
 exports.createMembers = createMembers.createMembers;
 exports.createSingleMember = createSingleMember.createSingleMember;
 exports.updateSingleMember = updateSingleMember.updateSingleMember;

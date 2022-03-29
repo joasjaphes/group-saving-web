@@ -170,7 +170,28 @@ export const sendNotification = (data: {groupId: any, title: any, body: any}) =>
   });
 };
 
-export const sendSMS = async (data: {phoneNumbers: string[], message: string}) => {
+export const sendSMS = async (data: {phoneNumber: string, message: string}) => {
+  const {phoneNumber, message} = data;
+  return await axios.request({
+    method: 'post',
+    url: 'https://zn9gk.api.infobip.com/sms/2/text/advanced',
+    auth: {
+      username: 'GROUPSAVING',
+      password: 'Mbwilo@20181'
+    },
+    data: {
+        "messages": [
+            {
+                "from": "GROUPSAVING",
+                "destinations": {"to" : phoneNumber},
+                "text": message
+            }
+        ]
+    }
+  });
+};
+
+export const sendBulkSMS = async (data: {phoneNumbers: string[], message: string}) => {
   const {phoneNumbers, message} = data;
   return await axios.request({
     method: 'post',
