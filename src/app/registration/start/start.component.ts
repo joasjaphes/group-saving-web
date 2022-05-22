@@ -19,26 +19,26 @@ export class StartComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private excelDownloadService: ExcelReaderService,
+    private excelService: ExcelReaderService,
   ) { }
 
   ngOnInit(): void {
 
   }
 
-  downloadExcel() {
-    const columns = [{
-      name: 'Name',
-      valueType: 'TEXT',
-    }, {
-      name: 'Gender',
-      valueType: 'TEXT',
-      options: ['MALE', 'FEMALE']
-    }, {
-      name: 'Phone Number',
-      valueType: 'TEXT',
-    },
-    ];
-    this.excelDownloadService.generateExcelTemplate(columns, 'Sheet 1', 'sample').then();
+  async onFileSelected(event) {
+    const data = this.excelService.getExcelData(event.target).subscribe(
+      (data) => {
+        try {
+          const excelData = Object.values(data)[0];
+
+        } catch (e) {
+          console.error(e);
+        }
+
+
+      }
+    )
   }
 
 }

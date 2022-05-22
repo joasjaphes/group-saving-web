@@ -10,6 +10,8 @@ export interface SingleMeeting {
   notes: string;
   year: string;
   place: string;
+  time: string;
+  agenda: string;
   reasons: any;
   meetingPhoto: string;
   additional_config: any;

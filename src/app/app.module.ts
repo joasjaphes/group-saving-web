@@ -113,6 +113,9 @@ import { ListExpectedFinesComponent } from './modules/summary/fines/list-expecte
 import { ImportLoansComponent } from './modules/settings/previous-data/import-loans/import-loans.component';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { SingleLoanQueueItemComponent } from './modules/summary/loan-queue/single-loan-queue-item/single-loan-queue-item.component';
+import { ExpectedCollectionComponent } from './modules/summary/expected-collection/expected-collection.component';
+import { ExpectedCollectionItemComponent } from './modules/summary/expected-collection/expected-collection-item/expected-collection-item.component';
+import { ImportErmsDataComponent } from './registration/import-erms-data/import-erms-data.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -221,7 +224,10 @@ const firebaseConfig = {
     ListExpectedFinesComponent,
     ImportLoansComponent,
     PrivacyComponent,
-    SingleLoanQueueItemComponent
+    SingleLoanQueueItemComponent,
+    ExpectedCollectionComponent,
+    ExpectedCollectionItemComponent,
+    ImportErmsDataComponent
   ],
   imports: [
     CommonModule,

@@ -18,6 +18,18 @@
 
       <div class="mt-5 ml-5">
         <div [ngClass]="routeAnimationsElements">
+          <div>
+            <button style="font-weight: 900; border-radius: 20px;margin-top: 25px;padding: 5px 25px;font-size: 15px;border: 1px solid #FF7043;"
+                    mat-raised-button
+                    class="registration-title add-button" (click)="inputFile.click()"
+                    title="Upload associated file" type="button">
+              <mat-icon>attach_file</mat-icon>
+              <ng-template #weHaveFile> Upload A File</ng-template>
+            </button>
+            <input hidden #inputFile (change)="onFileSelected($event)" type="file"
+                   accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+
+          </div>
           <button class="zoom-on-hover" mat-raised-button [routerLink]="['', 'welcome', 'registration']">
 <!--          <button class="zoom-on-hover" (click)="downloadExcel()">-->
             Start Here
@@ -44,8 +56,8 @@
       Save Together Save Better!
     </h2>
     <div [ngClass]="routeAnimationsElements" style="text-align: center">
-<!--      <button mat-raised-button [routerLink]="['', 'welcome', 'registration']">-->
-      <button mat-raised-button (click)="downloadExcel()">
+      <button mat-raised-button [routerLink]="['', 'welcome', 'registration']">
+
         Start Here
         <mat-icon>arrow_forward</mat-icon>
       </button>

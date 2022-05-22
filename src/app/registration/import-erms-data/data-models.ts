@@ -1,0 +1,31 @@
+export interface FormattedData {
+  id?: string;
+  department: string;
+  departmentId?: string | number;
+  departmentUid?: string;
+  objectiveId?: string | number;
+  objectiveUid?: string;
+  objectiveCode: string;
+  objectiveCodeVerified: boolean;
+  objective: string;
+  objectiveName: string;
+  target: string;
+  targetId?: string | number;
+  targetUid?: string;
+  targetCode: string;
+  targetCodeVerified: boolean;
+  targetName: string;
+  activityCode: string;
+  activity: string;
+  activityId?: string | number;
+  activityUid?: string;
+  gfsCode: string;
+  gfsCodeId?: string | number;
+  gfsCodeUid?: string;
+  gfsDescription: string;
+  unitOfMeasure: string;
+  unitOfMeasureId?: string;
+  unitOfMeasureUid?: string;
+  noOfUnit: number;
+  unitOfCost: number;
+}

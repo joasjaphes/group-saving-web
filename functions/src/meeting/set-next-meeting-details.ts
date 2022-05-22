@@ -39,6 +39,8 @@ export const setNextMeeting = functions.https.onRequest((request, response) => {
             place_location_url: data.place_location_url ?? '',
             latitude: data.latitude ?? '',
             longitude: data.longitude ?? '',
+            meeting_agenda: data.meetingAgenda ?? '',
+            meeting_time: data.meetingTime ?? '',
             excuses: {},
           }
           : {

@@ -1,0 +1,77 @@
+<app-shared-layout
+  title="Expected Collection Summary"
+  image="money-transfer.png"
+  [hideAdd]="true"
+  [addIcon]="'add'"
+  (addItem)="addItem()"
+  [addText]="'Add Cash Transfers'"
+  [viewDetails]="viewDetails"
+  [smallForm]="false"
+  [animationSize]="'full'"
+  [formTitle]="panelTitle"
+  (closeDetails)="closePanel()"
+>
+  <ng-container ngProjectAs="table">
+    <div>
+      <div class="grid grid-cols-2 pr-0">
+        <div style="display: grid;align-content: center">
+          <h3 class="registration-title mb-1">
+            Expected collection
+          </h3>
+        </div>
+
+        <div style="text-align: end">
+          <mat-menu #yearMenu="matMenu">
+            <button *ngFor="let yr of useMonth" mat-menu-item (click)="setYear(yr)">{{yr.name}} {{year}}</button>
+          </mat-menu>
+          <small class="text-muted">Month</small>
+          <button style="padding-right: 0" mat-button [matMenuTriggerFor]="yearMenu" class="cursor">
+            <!--        <mat-icon>date_range</mat-icon> &nbsp;-->
+            <span>{{month.name}} {{year}}</span> &nbsp;
+            <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="col-sm-12" style="margin: 1.5em auto">
+        <div class="zoom-on-hover cursor">
+          <p style="font-size: 20px;" class="text-muted m-0">
+            Expected collections
+            <span class="currency-area">({{(group$ | async)?.currency}})</span>
+            {{monthName}}
+          </p>
+          <h1 class="registration-title big-amount mb-0">{{(expected$ | async)?.total | number}}</h1>
+        </div>
+        <div class="inner1-grid">
+          <div class="img-area "></div>
+          <p>
+            <span *ngFor="let item of (expected$ | async)?.amounts">  {{item.name}} - <b>{{item.value | number}}</b>;</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="payment-grid" >
+        <div class="one-payment" *ngFor="let payment of expectedList$ | async">
+          <div style="display: grid; align-content: center">
+            <div class="img-div">
+              <h1 style="font-size: 40px;" class="registration-title">{{payment.member?.name[0].toUpperCase()}}</h1>
+            </div>
+          </div>
+          <div class="name-area">
+            <h2 style="color: #ffffffb3;" class="mb-1 registration-title">{{payment.member.name}}</h2>
+            <h1 class="registration-title mb-0 amount-name-area">
+              {{payment.total | number}}
+              <span class="text-muted" style="font-size: 12px!important;">{{(group$ | async)?.currency}}</span>
+            </h1>
+            <p style="color: #ffffff6e" class="lead mb-1">
+              <span *ngFor="let item of (expected$ | async)?.amounts">  {{item.name}} - <b>{{item.value | number}}</b>;</span>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</app-shared-layout>

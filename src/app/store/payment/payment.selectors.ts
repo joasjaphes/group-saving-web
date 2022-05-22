@@ -408,12 +408,8 @@ export const selectExpectedCollection = (period: string) => createSelector(
   (contributionTypes, loans, members) => {
     const activeLoans = loans.filter(i => {
       const periodStr = `${i.end_year}${i.end_month}`;
-      console.log(parseInt(periodStr, 10) >= parseInt(period + '', 10))
-      console.log(`${i.end_year}${i.end_month} >= ${period}`)
       return `${i.end_year}${i.end_month}` >= period;
     });
-    // console.log(JSON.stringify(loans));
-    // console.log(JSON.stringify(loans));
     let totalLoan = 0;
     let totalExpected = 0;
     activeLoans.forEach(i => totalLoan += parseFloat(i.amount_per_return + ''));
@@ -430,6 +426,35 @@ export const selectExpectedCollection = (period: string) => createSelector(
     }).filter(i => !!i);
     totalExpected += parseInt(totalLoan + '', 10);
     return {total: parseInt(totalExpected + '', 10), amounts: [...contrReturs, {name: 'Loans', value:  parseInt(totalLoan + '', 10)}]};
+  }
+);
+
+export const selectMembersExpectedCollection = (period: string) => createSelector(
+  fromContributionTypes.selectRepeating,
+  fromLoan.selectAll,
+  fromMember.selectAll,
+  (contributionTypes, loans, members) => {
+    return members.map(member => {
+      const activeLoans = loans.filter(i => {
+        return `${i.end_year}${i.end_month}` >= period && i.member_id == member.id;
+      });
+      let totalLoan = 0;
+      let totalExpected = 0;
+      activeLoans.forEach(i => totalLoan += parseFloat(i.amount_per_return + ''));
+      const contrReturs = contributionTypes.map(i => {
+        if (i.is_must && i.is_fixed) {
+          totalExpected += parseFloat(i.fixed_value + '');
+          return {name: i.name, value: i.fixed_value};
+        } else if (i.is_must && !i.is_fixed) {
+          totalExpected += parseFloat(i.minimum_contribution + '');
+          return {name: i.name, value: i.minimum_contribution};
+        } else {
+          return null;
+        }
+      }).filter(i => !!i);
+      totalExpected += parseInt(totalLoan + '', 10);
+      return {member, total: parseInt(totalExpected + '', 10), amounts: [...contrReturs, {name: 'Loans', value:  parseInt(totalLoan + '', 10)}]};
+    })
   }
 );
 

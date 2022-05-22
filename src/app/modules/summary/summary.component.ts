@@ -44,6 +44,12 @@ export class SummaryComponent implements OnInit {
       image: 'loan-queue.png'
     },
     {
+      name: 'Expected Collection',
+      route: ['', 'summary',  'expected-collection'],
+      description: 'View list of expected collections from members',
+      image: 'money-transfer.png'
+    },
+    {
       name: 'Export Summary',
       route: ['', 'summary',  'export'],
       description: 'Export data in excel format for sharing with other members',

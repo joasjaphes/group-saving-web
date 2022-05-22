@@ -32,6 +32,8 @@ import {ContributionTypeBalanceEffects} from './store/contribution-type-balance/
 import {HisaPeriodComponent} from './modules/settings/hisa-period/hisa-period.component';
 import {OneTimePaymentSummaryComponent} from './modules/summary/one-time-payment-summary/one-time-payment-summary.component';
 import {PrivacyComponent} from './privacy/privacy.component';
+import {ExpectedCollectionComponent} from './modules/summary/expected-collection/expected-collection.component';
+import {ImportErmsDataComponent} from './registration/import-erms-data/import-erms-data.component';
 
 
 const routes: Routes = [
@@ -118,6 +120,11 @@ const routes: Routes = [
         data: { title: 'Loan Queue' }
       },
       {
+        path: 'summary/expected-collection',
+        component: ExpectedCollectionComponent,
+        data: { title: 'Expected Collection' }
+      },
+      {
         path: 'summary/export',
         component: ExportDataComponent,
         data: { title: 'Data Export' }
@@ -188,15 +195,22 @@ const routes: Routes = [
   },
   {
     path: 'welcome',
-    component: HomeComponent,
+    component: ImportErmsDataComponent,
     children: [
       {
         path: '',
-        component: StartComponent,
+        component: ImportErmsDataComponent,
         data: {
           title: 'Welcome, Group Savings'
         }
       },
+      // {
+      //   path: '',
+      //   component: StartComponent,
+      //   data: {
+      //     title: 'Welcome, Group Savings'
+      //   }
+      // },
       {
         path: 'registration',
         component: RegistrationComponent,

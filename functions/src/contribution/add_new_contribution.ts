@@ -147,7 +147,7 @@ export const addNewContribution = functions.https.onRequest((request, response) 
         helpers.sendNotification({
           groupId: data.groupId,
           title: `${data.groupName}: New Contribution`,
-          body: `${data.memberName} has submitted new Contribution of ${calculateTotal(data)}`,
+          body: `${data.memberName} has submitted new Contribution of ${calculateTotal(data)} on ${new Date(helpers.formatDate(data.date)).toUTCString().substring(0, 16)}`,
           type: 'new_contribution',
           id: 'new_contribution',
         }).then(() => null)
