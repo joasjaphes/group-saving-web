@@ -38,12 +38,15 @@ export class StartingLoanTypeComponent implements OnInit {
   maximumDuration: any;
   minimumAmount: any;
   maximumAmountType: string;
+  maximumDurationType: string;
   maximumAmount: any;
   maximumAmountBalanceFactor: any;
   profitCalculationType: string;
   paymentOption: string;
   interestRate: any;
   samePaymentPerReturn: string;
+  minimumAmountForReducingRequired: string;
+  minimumAmountForReducingPercent: any;
   allowLoanTopUp: string;
   loanFormular = '(M*(T+1)*1)/200';
   isLoanInsured: string;
@@ -87,12 +90,15 @@ export class StartingLoanTypeComponent implements OnInit {
       this.maximumDuration = this.currentLoanType.max_duration;
       this.minimumAmount = this.currentLoanType.minimum_amount;
       this.maximumAmountType = this.currentLoanType.max_amount_type;
+      this.maximumDurationType = this.currentLoanType.max_duration_type ?? 'Fixed';
       this.maximumAmount = this.currentLoanType.maximum_amount;
       this.maximumAmountBalanceFactor = this.currentLoanType.max_amount_balance_base;
       this.profitCalculationType = this.currentLoanType.profit_type;
       this.paymentOption = this.currentLoanType.payment_option;
       this.interestRate = this.currentLoanType.interest_rate;
       this.samePaymentPerReturn = this.currentLoanType.pay_same_amount_is_must ? 'Yes' : 'No';
+      this.minimumAmountForReducingRequired = this.currentLoanType.minimum_amount_for_reducing_required ? 'Yes' : 'No';
+      this.minimumAmountForReducingPercent = this.currentLoanType.minimum_amount_for_reducing_percent;
       this.allowLoanTopUp = this.currentLoanType.allow_loan_top_up ? 'Yes' : 'No';
       this.loanFormular = this.currentLoanType.loan_formular;
       this.isLoanInsured = this.currentLoanType.is_insured ? 'Yes' : 'No';
@@ -145,7 +151,11 @@ export class StartingLoanTypeComponent implements OnInit {
         this.testAmountPerReturn = this.testToReturn / this.testDuration;
       } else {
         this.testAmountPerReturn = this.testAmount * (this.interestRate / 100);
-        this.testToReturn = (parseInt(this.testAmount, 10) + (this.testAmount * (this.interestRate / 100)));
+        if (this.minimumAmountForReducingRequired === 'Yes' && this.minimumAmountForReducingPercent) {
+          this.testToReturn = parseInt(((this.testAmount * (this.minimumAmountForReducingPercent / 100)) + (this.testAmount * (this.interestRate / 100))) + '');
+        } else {
+          this.testToReturn = (parseInt(this.testAmount, 10) + (this.testAmount * (this.interestRate / 100)));
+        }
       }
     }
   }
@@ -161,12 +171,15 @@ export class StartingLoanTypeComponent implements OnInit {
       interest_rate: this.interestRate,
       loan_formular: this.loanFormular,
       pay_same_amount_is_must: this.samePaymentPerReturn,
+      minimum_amount_for_reducing_required: this.minimumAmountForReducingRequired ?? 'No',
+      minimum_amount_for_reducing_percent: this.minimumAmountForReducingPercent ?? 0,
       is_insured: this.isLoanInsured,
       insurance_percent: this.insurancePercent,
       min_duration: this.minimumDuration,
       max_duration: this.maximumDuration,
       minimum_amount: this.minimumAmount,
       max_amount_type: this.maximumAmountType,
+      max_duration_type: this.maximumDurationType ?? 'Fixed',
       max_amount_balance_base: this.maximumAmountBalanceFactor,
       maximum_amount: this.maximumAmount,
       payment_option: this.paymentOption,

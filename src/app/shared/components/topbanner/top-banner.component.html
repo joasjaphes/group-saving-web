@@ -4,7 +4,7 @@
 >
   <div class="flex">
     <div [ngClass]="{'w-full': (isHandset$ | async), 'w-10/12': !(isHandset$ | async)}">
-      <h1 style="font-size: 27px" class="registration-title flex flex-row gap-1 items-center" [ngClass]="routeAnimationsElements">
+      <h1 style="font-size: 27px" class="registration-title flex flex-row gap-1 items-baseline" [ngClass]="routeAnimationsElements">
         <img
           alt="image"
           *ngIf="image"
@@ -17,7 +17,10 @@
           <a style="color: #fbfbfba3;" [routerLink]="url">{{urlName}}</a> /
         </b>
         {{ title }}
+        <span class="text-muted" *ngIf="subtitle" style="font-size: 13px!important;">({{subtitle}})</span>
+
       </h1>
+
     </div>
     <div class="w-2/12" style="text-align: right" *ngIf="!(isHandset$ | async)">
       <button mat-icon-button title="Get Help Here" (click)="openHelp()">

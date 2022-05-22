@@ -12,6 +12,7 @@ import {map} from 'rxjs/operators';
 })
 export class TopBannerComponent implements OnInit {
   @Input() title = '';
+  @Input() subtitle = '';
   @Input() image = '';
   @Input() icon = '';
   @Input() url;

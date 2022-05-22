@@ -18,9 +18,12 @@ export interface LoanType {
   maximum_amount: number;
   max_amount_balance_base: number;
   max_amount_type: string;
+  max_duration_type: string;
   max_duration: number;
   min_duration: number;
   pay_same_amount_is_must: boolean;
+  minimum_amount_for_reducing_required: boolean;
+  minimum_amount_for_reducing_percent: number;
   profit_type: string;
   profit_percent: number;
   allow_loan_top_up: boolean;

@@ -33,7 +33,6 @@ import {HisaPeriodComponent} from './modules/settings/hisa-period/hisa-period.co
 import {OneTimePaymentSummaryComponent} from './modules/summary/one-time-payment-summary/one-time-payment-summary.component';
 import {PrivacyComponent} from './privacy/privacy.component';
 import {ExpectedCollectionComponent} from './modules/summary/expected-collection/expected-collection.component';
-import {ImportErmsDataComponent} from './registration/import-erms-data/import-erms-data.component';
 
 
 const routes: Routes = [
@@ -195,22 +194,15 @@ const routes: Routes = [
   },
   {
     path: 'welcome',
-    component: ImportErmsDataComponent,
+    component: HomeComponent,
     children: [
       {
         path: '',
-        component: ImportErmsDataComponent,
+        component: StartComponent,
         data: {
           title: 'Welcome, Group Savings'
         }
       },
-      // {
-      //   path: '',
-      //   component: StartComponent,
-      //   data: {
-      //     title: 'Welcome, Group Savings'
-      //   }
-      // },
       {
         path: 'registration',
         component: RegistrationComponent,

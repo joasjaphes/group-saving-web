@@ -49,7 +49,7 @@
       <div></div>
     </div>
 
-    <div *ngIf="(members$ | async).length > 1 && (members$ | async | search:'name':memberSearch) == 0">
+    <div *ngIf="(members$ | async).length > 1 && (members$ | async | search:'name':memberSearch).length == 0">
       <h3 class="registration-title text-center mt-3">There is no member named {{memberSearch}}</h3>
     </div>
     <!--    List of Members-->
@@ -64,7 +64,10 @@
         </div>
 
         <div *ngIf="member">
-          <h2 class="registration-title mb-1">{{member.name}}</h2>
+          <h2 class="registration-title mb-1">
+            {{member.name}}
+            <span *ngIf="member.additional_config && member.additional_config.have_other_account && !member.additional_config.is_primary"><small class="text-muted" style="font-size: 11px!important;">(Second Account)</small></span>
+          </h2>
           <p class="lead">{{member.phone_number}}</p>
           <p>
             <button mat-button class="edit-button" (click)="edit(member)">

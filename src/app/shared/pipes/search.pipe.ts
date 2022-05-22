@@ -9,7 +9,7 @@ import {Pipe, PipeTransform} from '@angular/core';
   name: 'search'
 })
 export class SearchPipe implements PipeTransform {
-  public transform(value, keys: string, term: any, strict: any = false) {
+  public transform<T>(value: Array<T>, keys: string, term: any, strict: any = false): Array<T> {
     if (!term) {  return value; }
     if (typeof term === 'string') {
       if (strict) {

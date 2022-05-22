@@ -94,12 +94,14 @@
         <th>#</th>
         <th>Phone Number</th>
         <th>Member Name</th>
+        <th>#Accounts</th>
         <th></th>
       </tr>
       <tr *ngFor="let member of members; let i = index;" @fadeIn @fadeOut>
         <td style="padding-top: 3px; padding-bottom: 3px">{{ i + 1 }}</td>
         <td style="padding-top: 3px; padding-bottom: 3px">{{ member.phoneNumber }}</td>
         <td style="padding-top: 3px; padding-bottom: 3px">{{ member.name }}</td>
+        <td style="padding-top: 3px; padding-bottom: 3px">{{ member.accounts }}</td>
         <td style="padding-top: 3px; padding-bottom: 3px">
           <button mat-icon-button (click)="deleteMember(member.phoneNumber)">
             <mat-icon style="font-size: 24px" color="warn">delete</mat-icon>

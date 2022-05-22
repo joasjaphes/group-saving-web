@@ -11,6 +11,7 @@ const cors = require('cors')({origin: true});
  * allow_loan_top_up, is_fine_for_returns,  fine_for_returns_calculation_type, fine_for_returns_amount,
  * fine_for_returns_balance_factor, is_fine_for_completion, fine_for_completion_calculation_type, fine_for_late_return_name
  * fine_for_completion_amount,  fine_for_completion_balance_factor, payment_option, fine_for_completion_name
+ * minimum_amount_for_reducing_required, minimum_amount_for_reducing_percent, max_duration_type
  */
 export const createLoanType = functions.https.onRequest((request, response) => {
   return cors(request, response, async () => {
@@ -131,7 +132,10 @@ function prepareContributionData(data: any, contributionTypeId: string, last_upd
     min_duration: data.min_duration || 0,
     max_duration: data.max_duration || 0,
     minimum_amount: data.minimum_amount || 0,
+    minimum_amount_for_reducing_required: data.minimum_amount_for_reducing_required === 'Yes',
+    minimum_amount_for_reducing_percent: data.minimum_amount_for_reducing_percent || 0,
     max_amount_type: data.max_amount_type || null,
+    max_duration_type: data.max_amount_type || 'Fixed',
     max_amount_balance_base: data.max_amount_balance_base || 0,
     maximum_amount: data.maximum_amount || 0,
     payment_option: data.payment_option || null,

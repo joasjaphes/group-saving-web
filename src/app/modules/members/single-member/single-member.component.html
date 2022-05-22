@@ -1,10 +1,12 @@
 <app-shared-layout
-  title="{{(member$ | async)?.name}}"
+  title="{{(member$ | async)?.name}} "
+  subtitle="{{((member$ | async)?.additional_config && (member$ | async)?.additional_config.have_other_account && !(member$ | async)?.additional_config.is_primary) ? 'Second Account' : '' }}"
   icon="account_circle"
   urlName="Members"
   [url]="['', 'members']"
 >
   <ng-container ngProjectAs="table">
+
     <app-view-member
       *ngIf="member$ | async"
       [member]="member$ | async"

@@ -80,6 +80,7 @@ export class StartingMembersComponent implements OnInit {
         return {
           name: member.name,
           phoneNumber: member.phoneNumber,
+          accounts: member.accounts ?? 1
         };
       }),
       memberName: this.currentMemberName,
@@ -130,7 +131,8 @@ export class StartingMembersComponent implements OnInit {
               this.members.push(
                 {
                   phoneNumber: `+${this.country.phoneCode}${trimPhoneNumber(dataInRow[1] + '')}`,
-                  name: dataInRow[0] + ''
+                  name: dataInRow[0] + '',
+                  accounts: dataInRow[2] ?? 1
                 }
               )
             }
