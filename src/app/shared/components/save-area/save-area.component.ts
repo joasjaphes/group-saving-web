@@ -30,6 +30,7 @@ export class SaveAreaComponent {
   @Input() loadingMessage = 'Saving Data Please Wait...';
   @Input() savingData = false;
   @Input() hideSave = false;
+  @Input() buttonPosition = 'right';
   showConfirm = false;
   constructor() { }
 

@@ -15,6 +15,7 @@ export interface Member {
   can_edit: boolean;
   permissions: any;
   alternative_phone_number: string;
+  subtitle?: string;
   additional_config: {
     have_other_account?: boolean;
     is_primary?: boolean;

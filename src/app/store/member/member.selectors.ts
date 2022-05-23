@@ -13,6 +13,18 @@ export const selectLoading = createSelector(selectCurrentState, fromReducer.getL
 export const selectCurrentId = createSelector(selectCurrentState, fromReducer.getSelectedId);
 export const selectError = createSelector(selectCurrentState, fromReducer.getError);
 
+export const selectDetailed = createSelector(
+  selectAll, (allItems) => allItems.map(member => ({
+    ...member,
+    subtitle: member.additional_config && member.additional_config.have_other_account && !member.additional_config.is_primary ? '(second Account)' : ''
+  }))
+);
+
+export const selectUnique = createSelector(
+  selectDetailed, (allItems) => allItems
+    .filter(item  => !item.subtitle )
+)
+
 export const selectById = (id: string) => createSelector(
   selectEntities, (entities) => entities[id]
 );
@@ -43,7 +55,7 @@ export const selectMemberFromRoute = createSelector(
 
 
 export const selectMembersSorted = createSelector(
-  selectAll,
+  selectDetailed,
   selectCurrentId,
   (allMembers, currentMemberId) => {
     const member = allMembers.find(i => i.id === currentMemberId);

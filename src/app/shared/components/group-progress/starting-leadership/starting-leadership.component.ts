@@ -29,7 +29,7 @@ export class StartingLeadershipComponent implements OnInit {
     private commonService: CommonService,
     private store: Store<ApplicationState>
   ) {
-    this.members$ = this.store.pipe(select(fromMembers.selectAll));
+    this.members$ = this.store.pipe(select(fromMembers.selectUnique));
   }
 
   ngOnInit(): void {

@@ -12,6 +12,7 @@ import {LoanType} from '../../../store/loan-type/loan-type.model';
 import * as loanSelector from '../../../store/loan-type/loan-type.selectors';
 import {FineType} from '../../../store/fine-type/fine-type.model';
 import * as fineSelector from '../../../store/fine-type/fine-type.selectors';
+import {selectUnique} from '../../../store/member/member.selectors';
 
 @Component({
   selector: 'app-previous-data',
@@ -80,6 +81,7 @@ export class PreviousDataComponent implements OnInit {
   panelTitle = '';
   viewType = '';
   members$: Observable<Member[]>;
+  uniqueMembers$: Observable<Member[]>;
   group$: Observable<Group>;
   loanTypes$: Observable<LoanType[]>;
   fineTypes$: Observable<FineType[]>;
@@ -90,7 +92,8 @@ export class PreviousDataComponent implements OnInit {
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.loanTypes$ = this.store.pipe(select(loanSelector.selectAll));
     this.contributionTypes$ = this.store.pipe(select(contributionTypeSelector.selectRepeating));
-    this.members$ = this.store.pipe(select(memberSelector.selectAll));
+    this.members$ = this.store.pipe(select(memberSelector.selectDetailed));
+    this.uniqueMembers$ = this.store.pipe(select(memberSelector.selectUnique));
     this.fineTypes$ = this.store.pipe(select(fineSelector.selectAll));
   }
 

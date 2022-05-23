@@ -11,7 +11,6 @@ import {Loan} from '../../../../store/loan/loan.model';
 import {select, Store} from '@ngrx/store';
 import {ApplicationState} from '../../../../store';
 import {selectLoanByMember} from '../../../../store/loan/loan.selectors';
-import {MatSelectChange} from '@angular/material/select';
 
 @Component({
   selector: 'app-loan-by-member',
@@ -52,6 +51,9 @@ export class LoanByMemberComponent implements OnInit {
   paymentDate = null;
   loanId;
   excludedPeriods = [];
+  newInterestRate;
+  totalInterestRate;
+  totalReturns;
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
@@ -119,7 +121,8 @@ export class LoanByMemberComponent implements OnInit {
         this.returnAmount = parseInt(this.loanAmount, 10) + parseInt(interest, 10);
         this.amountPerReturn = this.returnAmount / this.duration;
       } else {
-        this.returnAmount = (parseInt(this.loanAmount, 10) + (this.loanAmount * (interestRate / 100)));
+        this.newInterestRate = parseInt((this.loanAmount * (interestRate / 100)) + '', 10);
+        this.returnAmount = parseInt(this.loanAmount, 10);
       }
       this.setEndDate();
       if (this.currentLoanType.is_insured) {
@@ -148,6 +151,9 @@ export class LoanByMemberComponent implements OnInit {
   }
 
   async save() {
+    const total_profit_contribution = this.currentLoanType.profit_type === 'Reducing Balance'
+      ? this.totalInterestRate
+      : parseFloat(this.returnAmount + '') - parseFloat(this.loanAmount + '')
     const savedValues = {
       loanId: this.loanId ? this.loanId : this.commonService.makeId(),
       groupId: this.group.id,
@@ -159,12 +165,13 @@ export class LoanByMemberComponent implements OnInit {
       amount_per_return: this.amountPerReturn,
       date: this.commonService.formatDate(this.contributionDate),
       end_date: this.commonService.formatDate(this.endDate),
-      total_profit_contribution: parseFloat(this.returnAmount + '') - parseFloat(this.loanAmount + ''),
+      total_profit_contribution,
       remaining_balance: this.payments.length === 0 ? this.returnAmount : this.remainingBalance,
-      amount_returned: this.returnedAmount,
+      amount_returned: this.currentLoanType.profit_type === 'Reducing Balance'  ? this.totalReturns : this.returnedAmount,
       last_return_date: this.commonService.formatDate(this.lastReturnDate),
       payments: this.payments
     };
+    console.log(JSON.stringify(savedValues));
     this.loading = true;
     try {
       await this.functionsService.saveData('assignPastActiveLoanToMember', savedValues);
@@ -186,19 +193,42 @@ export class LoanByMemberComponent implements OnInit {
 
   calculateTotal() {
     let total = 0;
+    let total_interest = 0;
     let balance = this.returnAmount;
-    for (const payment of this.payments) {
-      const amount = payment.amount + '';
-      if (!!amount) {
-        total += parseFloat(amount);
-        payment.previous_balance = balance;
-        payment.new_balance = this.returnAmount - total;
-        balance = this.returnAmount - total;
+    if (this.currentLoanType.profit_type != 'Reducing Balance') {
+      for (const payment of this.payments) {
+        const amount = payment.amount + '';
+        if (!!amount) {
+          total += parseFloat(amount);
+          payment.previous_balance = balance;
+          payment.new_balance = this.returnAmount - total;
+          balance = this.returnAmount - total;
+        }
+      }
+    } else {
+      for (const payment of this.payments) {
+        const amount = payment.loan_amount + '';
+        const interest = payment.interest_rate + '';
+        if (!!amount) {
+          total += parseFloat(amount);
+          total_interest += parseFloat(interest);
+          payment.previous_balance = balance;
+          payment.new_balance = this.returnAmount - total;
+          payment.amount = parseFloat(amount) + parseFloat(interest);
+          balance = this.returnAmount - total;
+        }
       }
     }
     this.returnedAmount = total;
+    this.totalReturns = total;
+    this.totalInterestRate = total_interest;
     if (this.returnedAmount) {
-      this.remainingBalance = this.returnAmount - this.returnedAmount;
+      if (this.currentLoanType.profit_type != 'Reducing Balance') {
+        this.remainingBalance = this.returnAmount - this.returnedAmount;
+      } else {
+        this.newInterestRate = (this.loanAmount - this.totalReturns) * (this.currentLoanType.interest_rate / 100)
+        this.remainingBalance = this.loanAmount - this.totalReturns;
+      }
     }
   }
 
@@ -272,8 +302,16 @@ export class LoanByMemberComponent implements OnInit {
 
   setMonthAndYear($event: any) {
     let amount = null;
-    if (this.currentLoanType.pay_same_amount_is_must) {
-      amount = this.amountPerReturn;
+    let loan_amount = null;
+    if (this.currentLoanType.profit_type != 'Reducing Balance') {
+      if (this.currentLoanType.pay_same_amount_is_must) {
+        amount = this.amountPerReturn;
+      }
+    } else {
+      if (this.currentLoanType.minimum_amount_for_reducing_required && this.currentLoanType.minimum_amount_for_reducing_percent) {
+        amount = this.newInterestRate + this.remainingBalance;
+        loan_amount = (this.loanAmount - (this.totalReturns ?? 0)) * (this.currentLoanType.minimum_amount_for_reducing_percent / 100);
+      }
     }
     this.payments.push({
       id: this.commonService.makeId(),
@@ -281,6 +319,8 @@ export class LoanByMemberComponent implements OnInit {
       month: $event.month.id,
       period: `${$event.year}${$event.month.id}`,
       week: '',
+      interest_rate: this.newInterestRate,
+      loan_amount,
       date_of_payment: this.commonService.formatDate(new Date(`${$event.year}-${$event.month.id}-01`)),
       memberId: this.memberId,
       amount

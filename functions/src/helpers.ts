@@ -348,6 +348,8 @@ export const prepareLoan = (loanId: string, data: any, currentLoanType: any, las
         date_of_payment: formatDate(payment.date_of_payment),
         previous_balance: payment.previous_balance,
         new_balance: payment.new_balance,
+        interest_rate: payment.interest_rate || 0,
+        loan_amount: payment.loan_amount || 0,
         from_previous_loan: true,
       })
     );

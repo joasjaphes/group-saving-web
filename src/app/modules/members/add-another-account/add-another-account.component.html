@@ -1,0 +1,21 @@
+<div>
+  <h3 class="text-center !text-3xl">Your about to add another account for {{member.name}}</h3>
+
+  <p class="lead text-center text-xl text-sky-100">
+    This member will have two accounts in the group, and each account will be treated
+    as a normal member with all rights like any other member.
+  </p>
+
+  <p class="text-center">
+    <app-save-area
+      [confirmFirst]="true"
+      confirmText="{{member.name}} will have two accounts"
+      saveText="Add Other Account"
+      cancelText="Close"
+      buttonPosition="center"
+      [savingData]="loading"
+      (save)="save()"
+      (cancel)="onClose()"
+    ></app-save-area>
+  </p>
+</div>

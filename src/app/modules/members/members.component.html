@@ -66,7 +66,7 @@
         <div *ngIf="member">
           <h2 class="registration-title mb-1">
             {{member.name}}
-            <span *ngIf="member.additional_config && member.additional_config.have_other_account && !member.additional_config.is_primary"><small class="text-muted" style="font-size: 11px!important;">(Second Account)</small></span>
+            <span *ngIf="!!member.subtitle"><small class="text-muted" style="font-size: 11px!important;">{{member.subtitle}}</small></span>
           </h2>
           <p class="lead">{{member.phone_number}}</p>
           <p>
@@ -106,6 +106,9 @@
             </button>
             <button mat-menu-item (click)="editPhone(member)">
               <mat-icon style="color: #0277bd">phone</mat-icon> Update Phone
+            </button>
+            <button mat-menu-item (click)="addAnotherAccount(member)">
+              <mat-icon style="color: #0277bd">list</mat-icon> Add Another Account
             </button>
             <button mat-menu-item >
               <mat-icon style="color: red">delete</mat-icon> Delete
@@ -180,5 +183,16 @@
       [fineTypes]="fineTypes$ | async"
       (closeForm)="onClose()"
     ></app-add-expected-fine>
+
+
+    <app-add-another-account
+      *ngIf="viewType == 'add-another'"
+      [group]="group$ | async"
+      [member]="currentMember"
+      [members]="members$ | async"
+      [memberName]="memberName$ | async"
+      (closeForm)="onClose()"
+    ></app-add-another-account>
+
   </ng-container>
 </app-shared-layout>

@@ -1,52 +1,53 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-3" *ngIf="currentMember" style="border-right: 1px solid #ffffff21">
-      <p>{{currentMember?.name}} Loans</p>
-      <h3 class="registration-title" *ngIf="(memberLoans$ | async).length == 0">
-        There are no loan records for {{currentMember?.name}}
-      </h3>
-      <div *ngFor="let loan of memberLoans$ | async" class="item-grid"
-           style="margin-bottom: 20px;padding-bottom: 10px; border-bottom: 1px solid white">
-        <div>
-          <h3 class="registration-title mb-1" *ngIf="loan.remaining_balance > 0">
-            <small class="text-muted">{{group.currency}}</small>
-            {{loan.remaining_balance | number}}
-          </h3>
-          <h3 class="registration-title mb-1" *ngIf="loan.remaining_balance <= 0">
-            Paid
-          </h3>
-          <p class="secondary-text mb-0">
-            <b>{{loan.amount_paid_to_date | number}}</b> Paid of <b>{{loan.total_amount_to_pay | number}}</b>
-          </p>
-          <p class="secondary-text">
-            <small>
-              <b>{{loan.duration }}</b> {{ loan.durationName}}
-              ({{loan.date | date:'MMM YYYY'}} to {{loan.expected_date_of_payment | date| date:'MMM YYYY'}})
-            </small>
-          </p>
-        </div>
-        <div>
-          <button mat-icon-button (click)="editLoan(loan)">
-            <mat-icon style="color: white">edit</mat-icon>
-          </button>
-        </div>
+  <div class="grid gap-x-4 gap-y-2 grid-cols-2">
+<!--    <div class="col-sm-3" *ngIf="currentMember" style="border-right: 1px solid #ffffff21">-->
+<!--      <p>{{currentMember?.name}} Loans</p>-->
+<!--      <h3 class="registration-title" *ngIf="(memberLoans$ | async).length == 0">-->
+<!--        There are no loan records for {{currentMember?.name}}-->
+<!--      </h3>-->
+<!--      <div *ngFor="let loan of memberLoans$ | async" class="item-grid"-->
+<!--           style="margin-bottom: 20px;padding-bottom: 10px; border-bottom: 1px solid white">-->
+<!--        <div>-->
+<!--          <h3 class="registration-title mb-1" *ngIf="loan.remaining_balance > 0">-->
+<!--            <small class="text-muted">{{group.currency}}</small>-->
+<!--            {{loan.remaining_balance | number}}-->
+<!--          </h3>-->
+<!--          <h3 class="registration-title mb-1" *ngIf="loan.remaining_balance <= 0">-->
+<!--            Paid-->
+<!--          </h3>-->
+<!--          <p class="secondary-text mb-0">-->
+<!--            <b>{{loan.amount_paid_to_date | number}}</b> Paid of <b>{{loan.total_amount_to_pay | number}}</b>-->
+<!--          </p>-->
+<!--          <p class="secondary-text">-->
+<!--            <small>-->
+<!--              <b>{{loan.duration }}</b> {{ loan.durationName}}-->
+<!--              ({{loan.date | date:'MMM YYYY'}} to {{loan.expected_date_of_payment | date| date:'MMM YYYY'}})-->
+<!--            </small>-->
+<!--          </p>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <button mat-icon-button (click)="editLoan(loan)">-->
+<!--            <mat-icon style="color: white">edit</mat-icon>-->
+<!--          </button>-->
+<!--        </div>-->
 
-      </div>
-    </div>
-    <div [ngClass]="currentMember ? 'col-sm-9 left-bordered': 'col-sm-12'">
-      <div class="row">
-        <div [ngClass]="memberId ? 'col-sm-6' : 'col-sm-12'">
+<!--      </div>-->
+<!--    </div>-->
+    <div class="col-span-2">
+      <div class="grid gap-x-4 gap-y-2 grid-cols-2">
+        <div [ngClass]="memberId ? 'col-span-1' : 'col-span-2'">
           <mat-form-field appearance="outline">
             <mat-label>Select Member</mat-label>
             <mat-select [(ngModel)]="memberId" (selectionChange)="setMember($event.value)">
               <app-mat-select-search [(ngModel)]="searchMembers"></app-mat-select-search>
               <mat-option *ngFor="let member of members | search:'name':searchMembers" [value]="member.id">
                 {{member.name}} ({{member.phone_number}})
+                <small *ngIf="member.subtitle">{{member.subtitle}}</small>
               </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-sm-6" *ngIf="memberId" @fadeIn>
+        <div class="col-span-1" *ngIf="memberId" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Loan Type</mat-label>
             <mat-select [(ngModel)]="loanTypeId" (selectionChange)="setLoanType($event.value)">
@@ -56,7 +57,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-sm-6" *ngIf="loanTypeId" @fadeIn>
+        <div class="col-span-1" *ngIf="loanTypeId" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Loan Start Date</mat-label>
             <input (dateChange)="setEndDate()" readonly matInput [matDatepicker]="startingDate"
@@ -65,21 +66,21 @@
             <mat-datepicker #startingDate></mat-datepicker>
           </mat-form-field>
         </div>
-        <div class="col-sm-6" *ngIf="contributionDate" @fadeIn>
+        <div class="col-span-1" *ngIf="contributionDate" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Amount Loaned <span *ngIf="loanAmount">({{loanAmount | number}})</span></mat-label>
             <input type="number" (input)="calculateLoan()" matInput [(ngModel)]="loanAmount"
                    placeholder="Amount Loaned">
           </mat-form-field>
         </div>
-        <div class="col-sm-6" *ngIf="loanAmount" @fadeIn>
+        <div class="col-span-1" *ngIf="loanAmount" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Loan duration ({{duration}} {{durationTYpe}})</mat-label>
             <input type="number" (input)="calculateLoan()" matInput [(ngModel)]="duration"
                    placeholder="Loan Duration in {{durationTYpe}}">
           </mat-form-field>
         </div>
-        <div class="col-sm-6" *ngIf="duration" @fadeIn>
+        <div class="col-span-1" *ngIf="duration" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Loan End Date</mat-label>
             <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="endDate"/>
@@ -88,7 +89,7 @@
           </mat-form-field>
         </div>
         <div [ngClass]="currentLoanType && currentLoanType.is_insured ? 'col-sm-6' : 'col-sm-12'" class="col-sm-6"
-             *ngIf="duration" @fadeIn>
+             *ngIf="currentLoanType && currentLoanType.profit_type != 'Reducing Balance' && duration" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Amount to return <span *ngIf="returnAmount">({{returnAmount | number}})</span></mat-label>
             <input (input)="calculateTotal()" type="number" matInput [(ngModel)]="returnAmount"
@@ -103,7 +104,7 @@
         <!--                   placeholder="Amount returned to date">-->
         <!--          </mat-form-field>-->
         <!--        </div>-->
-        <div class="col-sm-6" *ngIf="currentLoanType && currentLoanType.is_insured && returnAmount" @fadeIn>
+        <div class="col-span-1" *ngIf="currentLoanType && currentLoanType.is_insured && returnAmount" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Insurance Amount <span *ngIf="insuranceAmount">({{insuranceAmount | number}})</span></mat-label>
             <input type="number" matInput [(ngModel)]="insuranceAmount" placeholder="Amount returned to date">
@@ -119,13 +120,16 @@
         <!--          </mat-form-field>-->
         <!--        </div>-->
 
-        <div class="col-sm-12" *ngIf="returnAmount" @fadeIn>
+        <div class="col-span-2" *ngIf="returnAmount" @fadeIn>
           <p class="registration-title">Payments</p>
           <table class="table table-bordered entry-table">
             <tr>
               <th *ngIf="group.track_contribution_period">Period</th>
               <th *ngIf="!group.track_contribution_period">Date</th>
-              <th>Amount</th>
+              <th *ngIf="currentLoanType && currentLoanType.profit_type == 'Reducing Balance'">Loan Amount</th>
+              <th *ngIf="currentLoanType && currentLoanType.profit_type == 'Reducing Balance'">Interest</th>
+              <th *ngIf="currentLoanType && currentLoanType.profit_type == 'Reducing Balance'">Total Returned</th>
+              <th *ngIf="currentLoanType && currentLoanType.profit_type != 'Reducing Balance'">Amount</th>
               <td style="width: 50px"></td>
             </tr>
             <tr *ngFor="let payment of payments">
@@ -138,7 +142,42 @@
               <th *ngIf="!group.track_contribution_period">
                 {{payment.date | date}}
               </th>
-              <td>
+              <td *ngIf="currentLoanType && currentLoanType.profit_type == 'Reducing Balance'">
+                <mat-form-field appearance="outline">
+                  <input
+                    matInput
+                    placeholder="Payment Amount"
+                    [(ngModel)]="payment.loan_amount"
+                    (input)="calculateTotal()"
+                  >
+                </mat-form-field>
+                <p class="mb-0">
+                  <small class="text-muted">
+                    From: <b>{{payment.previous_balance | number}}</b> to <b>{{payment.new_balance | number}}</b>
+                  </small>
+                </p>
+              </td>
+              <td *ngIf="currentLoanType && currentLoanType.profit_type == 'Reducing Balance'">
+                <mat-form-field appearance="outline">
+                  <input
+                    matInput
+                    placeholder="Payment Amount"
+                    [(ngModel)]="payment.interest_rate"
+                    (input)="calculateTotal()"
+                  >
+                </mat-form-field>
+              </td>
+              <td *ngIf="currentLoanType && currentLoanType.profit_type == 'Reducing Balance'">
+                <mat-form-field appearance="outline">
+                  <input
+                    matInput
+                    placeholder="Payment Amount"
+                    [(ngModel)]="payment.amount"
+                    (input)="calculateTotal()"
+                  >
+                </mat-form-field>
+              </td>
+              <td *ngIf="currentLoanType && currentLoanType.profit_type != 'Reducing Balance'">
                 <mat-form-field appearance="outline">
                   <input
                     matInput
@@ -191,19 +230,30 @@
               <th style="text-align: right">
                 Total Paid
               </th>
-              <th colspan="2">{{returnedAmount | number}}</th>
+              <th colspan="2" *ngIf="currentLoanType && currentLoanType.profit_type != 'Reducing Balance'">
+                {{returnedAmount | number}}
+              </th>
+              <th *ngIf="currentLoanType && currentLoanType.profit_type == 'Reducing Balance'">
+                {{totalReturns | number}}
+              </th>
+              <th  *ngIf="currentLoanType && currentLoanType.profit_type == 'Reducing Balance'">
+                {{totalInterestRate | number}}
+              </th>
+              <th colspan="2" *ngIf="currentLoanType && currentLoanType.profit_type == 'Reducing Balance'">
+                {{(totalReturns + totalInterestRate) | number}}
+              </th>
             </tr>
           </table>
         </div>
 
-        <div class="col-sm-12" *ngIf="returnedAmount">
+        <div class="col-span-2" *ngIf="returnedAmount">
           <mat-form-field appearance="outline">
             <mat-label>Remaining Amount <span *ngIf="remainingBalance">({{remainingBalance | number}})</span>
             </mat-label>
             <input disabled type="number" matInput [(ngModel)]="remainingBalance" placeholder="Amount Remained">
           </mat-form-field>
         </div>
-        <div class="col-sm-12 mt-3" *ngIf="returnAmount" @fadeIn>
+        <div class="col-span-2 mt-3" *ngIf="returnAmount" @fadeIn>
           <app-save-area
             [confirmFirst]="true"
             confirmText="Are you sure you want to assign a loan of {{returnAmount | number}} to {{currentMember.name}}?"

@@ -116,6 +116,7 @@ import { SingleLoanQueueItemComponent } from './modules/summary/loan-queue/singl
 import { ExpectedCollectionComponent } from './modules/summary/expected-collection/expected-collection.component';
 import { ExpectedCollectionItemComponent } from './modules/summary/expected-collection/expected-collection-item/expected-collection-item.component';
 import { ImportErmsDataComponent } from './registration/import-erms-data/import-erms-data.component';
+import { AddAnotherAccountComponent } from './modules/members/add-another-account/add-another-account.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -227,7 +228,8 @@ const firebaseConfig = {
     SingleLoanQueueItemComponent,
     ExpectedCollectionComponent,
     ExpectedCollectionItemComponent,
-    ImportErmsDataComponent
+    ImportErmsDataComponent,
+    AddAnotherAccountComponent
   ],
   imports: [
     CommonModule,

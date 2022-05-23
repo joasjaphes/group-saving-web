@@ -140,6 +140,13 @@ export class MembersComponent implements OnInit {
     this.viewType = 'update';
   }
 
+  async addAnotherAccount(member: Member) {
+    this.currentMember = member;
+    this.viewDetails = true;
+    this.panelTitle = 'Add members another account';
+    this.viewType = 'add-another';
+  }
+
   async editPhone(member: Member) {
     this.currentMember = member;
     this.viewDetails = true;

@@ -1,5 +1,5 @@
 <app-loader *ngIf="savingData" [message]="loadingMessage" @fadeIn></app-loader>
-<div style="text-align: right" class="button-div" *ngIf="!savingData && !showConfirm" @fadeIn>
+<div [ngStyle]="{'text-align': buttonPosition}" class="button-div" *ngIf="!savingData && !showConfirm" @fadeIn>
 
   <button
     @fadeIn

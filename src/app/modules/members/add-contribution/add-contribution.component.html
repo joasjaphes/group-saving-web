@@ -116,10 +116,13 @@
           <div class="menu-grid">
             <div class="img-div">
               <h1 style="font-size: 40px; color: #0d0d0d"
-                  class="registration-title">{{member.name[0].toUpperCase()}}</h1>
+                  class="registration-title">{{member.name[0].toUpperCase()}}
+                </h1>
             </div>
             <div>
-              <h3 class="registration-title mb-1">{{member.name}}</h3>
+              <h3 class="registration-title mb-1">{{member.name}}
+                <small *ngIf="member.subtitle" style="color: whitesmoke; font-size: 11px">{{member.subtitle}}</small>
+              </h3>
               <p class="lead">{{member.phone_number}}</p>
             </div>
           </div>
