@@ -8,7 +8,11 @@
   </div>
 
   <div class="textArea">
-    <h1 style="color: #ffffffb3; font-size: 25px" class="!mb-0 registration-title">{{ loan.member?.name }}</h1>
+    <h1 style="color: #ffffffb3; font-size: 25px" class="!mb-0 registration-title">
+      {{ loan.member?.name }}
+      {{(loan.member?.additional_config && loan.member?.additional_config.have_other_account && !loan.member?.additional_config.is_primary) ? '(2)' : '' }}
+
+    </h1>
     <h1 class="registration-title mb-1" style="letter-spacing: 3px" *ngIf="loan.remaining_balance <= 0">{{ loan.total_amount_to_pay | number }}</h1>
     <div *ngIf="loan.remaining_balance > 0">
       <small  style="color: #ffffff6e; font-size: 11px">Remaining</small>

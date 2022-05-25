@@ -7,6 +7,7 @@
           <app-mat-select-search [(ngModel)]="searchMembers"></app-mat-select-search>
           <mat-option *ngFor="let member of members | search:'name':searchMembers" [value]="member.id">
             {{member.name}} ({{member.phone_number}})
+            <small *ngIf="member.subtitle">{{member.subtitle}}</small>
           </mat-option>
         </mat-select>
       </mat-form-field>

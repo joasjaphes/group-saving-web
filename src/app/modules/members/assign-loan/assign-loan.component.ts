@@ -111,14 +111,17 @@ export class AssignLoanComponent implements OnInit {
       if (profitCalculationType === 'Fixed Percent') {
         this.testToReturn = (parseInt(this.loanAmount, 10) + (this.loanAmount * (interestRate / 100)));
         this.testAmountPerReturn = this.testToReturn / this.duration;
+        this.totalProfitContribution = this.testToReturn - this.loanAmount;
       } else if (profitCalculationType === 'Custom Formula') {
         // tslint:disable-next-line:no-eval
         const interest = eval(loanFormular.replace('M', this.loanAmount + '').replace('T', this.duration + ''));
         this.testToReturn = parseInt(this.loanAmount, 10) + parseInt(interest, 10);
         this.testAmountPerReturn = this.testToReturn / this.duration;
+        this.totalProfitContribution = this.testToReturn - this.loanAmount;
       } else {
-        this.testAmountPerReturn = this.loanAmount * (interestRate / 100);
-        this.testToReturn = (parseInt(this.loanAmount, 10) + (this.loanAmount * (interestRate / 100)));
+        this.testAmountPerReturn = 0;
+        this.testToReturn = (parseInt(this.loanAmount, 10));
+        this.totalProfitContribution = 0;
       }
 
       if (this.currentLoanType.is_insured) {

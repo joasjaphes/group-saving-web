@@ -125,7 +125,8 @@ export class ImportContributionComponent implements OnInit {
     let dataItems = [];
     for( const row of this.excelData) {
       const phoneNumber = row['Phone'];
-      const member = this.members.find(i => i.phone_number === phoneNumber);
+      const systemID = row['SystemID'];
+      const member = this.members.find(i => i.id === systemID);
       Object.keys(row).forEach(key => {
         if (key === 'Phone' || key === 'Name') {}
         else if (key === 'Starting' && row[key] && this.startingShareDate && this.includeStartingShare === 'Yes') {
@@ -211,16 +212,24 @@ export class ImportContributionComponent implements OnInit {
   downloadData() {
     const columns: {name: string, valueType: string, key: string}[] = [];
     const data = [];
-    this.members.forEach((member) => {
+    this.members
+      .sort((a, b) => {
+        const seconda = !!a.additional_config && a.additional_config.have_other_account && !a.additional_config.is_primary
+        const secondb = !!b.additional_config && b.additional_config.have_other_account && !b.additional_config.is_primary
+        return a.name + (seconda ? '(2)' : '') > b.name + (secondb ? '(2)' : '') ? 1 : -1;
+      })
+      .forEach((member) => {
+      const second = !!member.additional_config && member.additional_config.have_other_account && !member.additional_config.is_primary
       const item: any = {};
-      item.name = member.name;
+      item.id = member.id;
+      item.name = member.name + (second ? '(2)' : '');
       item.phone = member.phone_number;
       this.months.forEach(month => {
         item[month.id] = '';
       });
       data.push(item);
     });
-    columns.push({name: 'Name', valueType: 'TEXT', key: 'name'}, {name: 'Phone', valueType: 'TEXT', key: 'phone'});
+    columns.push({name: 'SystemID', valueType: 'TEXT', key: 'id'},{name: 'Name', valueType: 'TEXT', key: 'name'}, {name: 'Phone', valueType: 'TEXT', key: 'phone'});
     if (this.includeStartingShare === 'Yes') {
       columns.push({name: 'Starting', valueType: 'TEXT', key: 'starting'});
     }

@@ -135,7 +135,7 @@ function prepareContributionData(data: any, contributionTypeId: string, last_upd
     minimum_amount_for_reducing_required: data.minimum_amount_for_reducing_required === 'Yes',
     minimum_amount_for_reducing_percent: data.minimum_amount_for_reducing_percent || 0,
     max_amount_type: data.max_amount_type || null,
-    max_duration_type: data.max_amount_type || 'Fixed',
+    max_duration_type: data.max_duration_type || 'Fixed',
     max_amount_balance_base: data.max_amount_balance_base || 0,
     maximum_amount: data.maximum_amount || 0,
     payment_option: data.payment_option || null,

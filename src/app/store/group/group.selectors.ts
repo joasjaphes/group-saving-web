@@ -110,7 +110,7 @@ export const selectProgressPercent = createSelector(
         const difference1 = 5 - parseInt(steps1 + '', 10) * contr_need_balance.length;
         percent += difference1;
         for (const contr of contr_need_balance) {
-          if (selectedGroup.contribution_balances && selectedGroup.contribution_balances[contr.id]) {
+          if (selectedGroup.contribution_balances && !!(selectedGroup.contribution_balances[contr.id] + '')) {
             percent += parseInt(steps1 + '', 10);
           }
         }
@@ -170,7 +170,7 @@ export const selectProgress = createSelector(
       const social_exist = !!contributionTypes.find(i => i.type === 'Social');
       const other_exist = !!contributionTypes.find(i => i.type === 'Other');
       const contributionNeedsBalance = contributionTypes.filter(i => i.track_balance);
-      const contributionHasBalance = contributionTypes.filter(i => i.track_balance && selectedGroup.contribution_balances && selectedGroup.contribution_balances[i.id]);
+      const contributionHasBalance = contributionTypes.filter(i => i.track_balance && selectedGroup.contribution_balances && !!(selectedGroup.contribution_balances[i.id] + ''));
       const uncreatedLoans = contributionTypes
         .filter(i => i.allow_loan)
         .filter(i => !loanTypes.find(k => k.contribution_type_id === i.id));
@@ -240,6 +240,8 @@ export const selectProgress = createSelector(
         contributionTypes.length > 0
         && contributionNeedsBalance.length !== contributionHasBalance.length
       ) {
+        console.log(contributionHasBalance)
+        console.log(contributionNeedsBalance)
         title = 'To help to track group information fill the current balances';
         buttonLabel = 'Add starting balances';
         key = GroupProgressEnum.AddContributionBalances;

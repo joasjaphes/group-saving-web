@@ -5,7 +5,10 @@
     </div>
   </div>
   <div class="name-area">
-    <h2 style="color: #ffffffb3;" class="mb-1 registration-title">{{payment.member.name}}</h2>
+    <h2 style="color: #ffffffb3;" class="mb-1 registration-title">
+      {{payment.member.name}}
+      {{(payment.member?.additional_config && payment.member?.additional_config.have_other_account && !payment.member?.additional_config.is_primary) ? '(2)' : '' }}
+    </h2>
     <h1 class="registration-title mb-0 amount-name-area">
       {{payment.totalContributions | number}}
       <span class="text-muted" style="font-size: 12px!important;">{{group?.currency}}</span>
