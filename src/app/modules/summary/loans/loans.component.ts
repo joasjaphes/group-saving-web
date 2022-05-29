@@ -9,6 +9,7 @@ import {Group} from '../../../store/group/group.model';
 import * as memberSelector from '../../../store/member/member.selectors';
 import * as groupSelector from '../../../store/group/group.selectors';
 import {ROUTE_ANIMATIONS_ELEMENTS} from '../../../shared/animations/router-animation';
+import {selectDetailed} from '../../../store/member/member.selectors';
 
 
 @Component({
@@ -33,7 +34,7 @@ export class LoansComponent implements OnInit {
   constructor(
     private store: Store<ApplicationState>
   ) {
-    this.members$ = this.store.pipe(select(memberSelector.selectAll));
+    this.members$ = this.store.pipe(select(memberSelector.selectDetailed));
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.activeLoans$ = this.store.pipe(select(loanSelector.selectActiveLoans));
     this.completedLoans$ = this.store.pipe(select(loanSelector.selectDetailed));

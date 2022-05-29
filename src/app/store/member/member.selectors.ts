@@ -25,6 +25,11 @@ export const selectUnique = createSelector(
     .filter(item  => !item.subtitle )
 )
 
+export const selectExceptMember = (phoneNumber: string) => createSelector(
+  selectDetailed, (allItems) => allItems
+    .filter(item => item.phone_number !== phoneNumber )
+)
+
 export const selectById = (id: string) => createSelector(
   selectEntities, (entities) => entities[id]
 );

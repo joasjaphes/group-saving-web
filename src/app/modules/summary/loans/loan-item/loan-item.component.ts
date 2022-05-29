@@ -3,6 +3,7 @@ import {Loan} from '../../../../store/loan/loan.model';
 import {CommonService} from '../../../../services/common.service';
 import {FunctionsService} from '../../../../services/functions.service';
 import {Group} from '../../../../store/group/group.model';
+import {Member} from '../../../../store/member/member.model';
 
 @Component({
   selector: 'app-loan-item',
@@ -13,6 +14,7 @@ export class LoanItemComponent implements OnInit {
 
   @Input() loan: Loan;
   @Input() group: Group;
+  @Input() members: Member[] = [];
   @Input() showDelete = false;
   loading = false;
   constructor(
@@ -21,6 +23,29 @@ export class LoanItemComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+  }
+
+  get hasGuarantors(): boolean {
+    const firstMemberId = this.loan.additional_config && this.loan.additional_config.firstMemberId;
+    const secondMemberId = this.loan.additional_config && this.loan.additional_config.secondMemberId;
+    const thirdMemberId = this.loan.additional_config && this.loan.additional_config.thirdMemberId;
+
+    return !!firstMemberId || !!secondMemberId || !!thirdMemberId;
+  }
+
+  get guarantors(): string {
+    const firstMemberId = this.loan.additional_config && this.loan.additional_config.firstMemberId;
+    const secondMemberId = this.loan.additional_config && this.loan.additional_config.secondMemberId;
+    const thirdMemberId = this.loan.additional_config && this.loan.additional_config.thirdMemberId;
+    const arr = [firstMemberId, secondMemberId, thirdMemberId]
+      .filter(i => !!i)
+      .map(item => {
+        const member = this.members.find(i => i.id == item);
+        if (member) {
+          return member.name + (member.subtitle ? '(' + member.subtitle + ')' : '');
+        }
+      })
+    return arr.join(', ');
   }
 
   async deleteLoan() {

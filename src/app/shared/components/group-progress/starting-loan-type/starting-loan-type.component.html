@@ -120,7 +120,7 @@
 
 
         <!--      Payment Option-->
-        <div class="col-span-1" *ngIf="samePaymentPerReturn || minimumAmountForReducingRequired" @fadeIn>
+        <div class="col-span-2" *ngIf="samePaymentPerReturn || minimumAmountForReducingRequired" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Loan Option</mat-label>
             <mat-select [(ngModel)]="paymentOption" placeholder="Payment Option">
@@ -193,7 +193,7 @@
 
 
         <!--      Maximum Duration Type-->
-        <div class="col-span-2">
+        <div  [ngClass]="maximumDurationType == 'Fixed' ? 'col-span-1': 'col-span-2'">
           <mat-form-field appearance="outline">
             <mat-label>Maximum Duration Type</mat-label>
             <mat-select [(ngModel)]="maximumDurationType" placeholder="Maximum Amount Type">
@@ -206,7 +206,7 @@
         </div>
 
         <!--      Maximum Duration-->
-        <div *ngIf="maximumDurationType == 'Fixed'" class="col-span-2">
+        <div *ngIf="maximumDurationType == 'Fixed'" class="col-span-1">
           <mat-form-field appearance="outline">
             <mat-label>Maximum Duration <span *ngIf="durationTYpe">({{maximumDuration | number}} {{durationTYpe}}
               )</span>
@@ -227,7 +227,7 @@
         </div>
 
         <!--      Maximum Amount Type-->
-        <div class="col-span-2">
+        <div [ngClass]="maximumAmountType == 'No Limit' ? 'col-span-2': 'col-span-1'">
           <mat-form-field appearance="outline">
             <mat-label>Maximum Amount Type</mat-label>
             <mat-select [(ngModel)]="maximumAmountType" placeholder="Maximum Amount Type">
@@ -239,7 +239,7 @@
         </div>
 
         <!--      Maximum Loan Amount-->
-        <div class="col-span-2" *ngIf="maximumAmountType == 'Fixed'" @fadeIn>
+        <div class="col-span-1" *ngIf="maximumAmountType == 'Fixed'" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Maximum Loan Amount <span *ngIf="group">({{maximumAmount | number}} {{group.currency}})</span>
             </mat-label>
@@ -248,7 +248,7 @@
         </div>
 
         <!--      Maximum Loan Amount Balance Factor-->
-        <div class="col-span-2" *ngIf="maximumAmountType == 'Relative to Balance'" @fadeIn>
+        <div class="col-span-1" *ngIf="maximumAmountType == 'Relative to Balance'" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Balance Factor <small>(This number times members current contribution balance will be maximum
               amount )</small></mat-label>
@@ -264,6 +264,35 @@
             <mat-select [(ngModel)]="allowLoanTopUp">
               <mat-option value="Yes">Yes</mat-option>
               <mat-option value="No">No</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!--      Loan Guaranters-->
+        <div [ngClass]="requiresGuarantee == 'Yes' ? 'col-span-1': 'col-span-2'">
+          <mat-form-field appearance="outline">
+            <mat-label>
+              Requires loan guarantee
+              <span *ngIf="group.country == 'TZ'">(Wazamini)</span>
+            </mat-label>
+            <mat-select [(ngModel)]="requiresGuarantee">
+              <mat-option value="Yes">Yes</mat-option>
+              <mat-option value="No">No</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!--      Loan Guaranters-->
+        <div *ngIf="requiresGuarantee == 'Yes'" class="col-span-1">
+          <mat-form-field appearance="outline">
+            <mat-label>
+              Number of guarantee
+              <span *ngIf="group.country == 'TZ'">(Idadi ya wazamini)</span>
+            </mat-label>
+            <mat-select [(ngModel)]="numberOfGuarantee">
+              <mat-option value="ONE">One</mat-option>
+              <mat-option value="TWO">Two</mat-option>
+              <mat-option value="THREE">Three</mat-option>
             </mat-select>
           </mat-form-field>
         </div>

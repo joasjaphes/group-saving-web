@@ -59,6 +59,7 @@
           <app-loan-item
             *ngFor="let loan of activeLoans$ | async | search:'memberName': memberSearch"
             [loan]="loan"
+            [members]="members$ | async"
             class="zoom-on-hover cursor"
             [ngClass]="routeAnimationsElements"
             (click)="viewItem(loan)"
@@ -73,6 +74,7 @@
     <app-single-loan
       *ngIf="viewType == 'view'"
       [loan]="currentLoan"
+      [members]="members$ | async"
       [showDelete]="enableDelete"
       [group]="group$ | async"
       (closeForm)="closePanel()"

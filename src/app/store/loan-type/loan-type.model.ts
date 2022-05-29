@@ -27,5 +27,7 @@ export interface LoanType {
   profit_type: string;
   profit_percent: number;
   allow_loan_top_up: boolean;
+  requires_guarantee: boolean;
+  number_of_guarantee: string;
   textDescription?: string;
 }

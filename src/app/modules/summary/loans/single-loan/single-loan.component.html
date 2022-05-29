@@ -134,7 +134,69 @@
       </table>
     </div>
 
-    <div class="col-span-12" *ngIf="!showDelete">
+    <div class="col-span-12" *ngIf="loan.loanType.requires_guarantee">
+      <div *ngIf="hasGuarantors && !showAddGuarantors">
+        <p class="registration-title" style="color: #ffffffb3;">
+          Guarantors: {{guarantors}}
+          &nbsp; <button mat-stroked-button (click)="showAddGuarantors = true">
+          <mat-icon>edit</mat-icon> Update
+        </button>
+        </p>
+      </div>
+      <div class="grid place-items-center" *ngIf="!showAddGuarantors && !hasGuarantors" @fadeIn>
+        <button mat-flat-button (click)="showAddGuarantors = true">
+          <mat-icon>group_add</mat-icon> Add Guarantors
+        </button>
+      </div>
+      <div class="mt-3" *ngIf="showAddGuarantors && showOne" @fadeIn>
+        <mat-form-field appearance="outline">
+          <mat-label>First Guarantor</mat-label>
+          <mat-select [(ngModel)]="firstMemberId">
+            <app-mat-select-search [(ngModel)]="firstMemberSearch"></app-mat-select-search>
+            <mat-option *ngFor="let member of members$ | async | search:'name':firstMemberSearch" [value]="member.id">
+              {{member.name}}
+              <span *ngIf="member.subtitle">{{member.subtitle}}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="mt-3" *ngIf="showAddGuarantors && showTwo" @fadeIn>
+        <mat-form-field appearance="outline">
+          <mat-label>Second Guarantor</mat-label>
+          <mat-select [(ngModel)]="secondMemberId">
+            <app-mat-select-search [(ngModel)]="secondMemberSearch"></app-mat-select-search>
+            <mat-option *ngFor="let member of members$ | async | search:'name':secondMemberSearch" [value]="member.id">
+              {{member.name}}
+              <span *ngIf="member.subtitle">{{member.subtitle}}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="mt-3" *ngIf="showAddGuarantors && showThree" @fadeIn>
+        <mat-form-field appearance="outline">
+          <mat-label>Third Guarantor</mat-label>
+          <mat-select [(ngModel)]="thirdMemberId">
+            <app-mat-select-search [(ngModel)]="thirdMemberSearch"></app-mat-select-search>
+            <mat-option *ngFor="let member of members$ | async | search:'name':thirdMemberSearch" [value]="member.id">
+              {{member.name}}
+              <span *ngIf="member.subtitle">{{member.subtitle}}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="mt-3" *ngIf="showAddGuarantors && (showThree || showOne || showTwo)" @fadeIn>
+        <app-save-area
+          [confirmFirst]="true"
+          [saveDisabled]="!showSave"
+          confirmText="You are about to add guarantors for this loan"
+          loadingMessage="Adding guarantors, please wait..."
+          (cancel)="showAddGuarantors = false"
+          (save)="saveGuarantors()"
+        ></app-save-area>
+      </div>
+    </div>
+
+    <div class="col-span-12 mt-5" *ngIf="!showDelete && !showAddGuarantors" @fadeIn>
       <app-save-area
         [showCancel]="false"
         saveIcon="close"
@@ -143,7 +205,7 @@
       ></app-save-area>
     </div>
 
-    <div class="col-span-12" *ngIf="showDelete">
+    <div class="col-span-12" *ngIf="showDelete && !showAddGuarantors" @fadeIn>
       <div *ngIf="showDelete" style="grid-column: span 2">
         <app-save-area
           saveText="delete"

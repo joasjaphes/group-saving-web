@@ -61,6 +61,8 @@ export class StartingLoanTypeComponent implements OnInit {
   fineForCompleteAmount: number;
   fineForCompleteBalanceFactor: number;
   fineForCompleteType: string;
+  requiresGuarantee: string = 'No';
+  numberOfGuarantee: string = 'TWO';
 
   testAmount: any;
   testDuration: any;
@@ -102,6 +104,8 @@ export class StartingLoanTypeComponent implements OnInit {
       this.allowLoanTopUp = this.currentLoanType.allow_loan_top_up ? 'Yes' : 'No';
       this.loanFormular = this.currentLoanType.loan_formular;
       this.isLoanInsured = this.currentLoanType.is_insured ? 'Yes' : 'No';
+      this.requiresGuarantee = this.currentLoanType.requires_guarantee ? 'Yes' : 'No';
+      this.numberOfGuarantee = this.currentLoanType.number_of_guarantee ?? 'TWO';
       this.insurancePercent = this.currentLoanType.insurance_percent;
 
       if (this.fineTypes) {
@@ -194,6 +198,8 @@ export class StartingLoanTypeComponent implements OnInit {
       fine_for_completion_balance_factor: this.fineForCompleteBalanceFactor,
       fine_for_late_return_name: this.fineForReturnName,
       fine_for_completion_name: this.fineForCompleteName,
+      requires_guarantee: this.requiresGuarantee,
+      number_of_guarantee: this.numberOfGuarantee,
     };
     this.loading = true;
     try {
