@@ -54,6 +54,8 @@ export const preparePayment = (data: any, group: any, currentPayment: PaymentMod
     fines: {},
     contributions: {},
     loans: {},
+    baseAmount: {},
+    interestRate: {},
     startingAmount: {},
   };
 
@@ -66,6 +68,8 @@ export const preparePayment = (data: any, group: any, currentPayment: PaymentMod
         fines: mergeObjects(memberPayments.fines ?? {}, data.fines ?? {}, replace),
         contributions: mergeObjects(memberPayments.contributions ?? {}, data.contributions ?? {}, replace),
         loans: mergeObjects(memberPayments.loans ?? {}, data.loans ?? {}, loanReplace),
+        interestRate: mergeObjects(memberPayments.interestRate ?? {}, data.interestRate ?? {}, loanReplace),
+        baseAmount: mergeObjects(memberPayments.baseAmount ?? {}, data.baseAmount ?? {}, loanReplace),
         startingAmount: mergeObjects(memberPayments.startingAmount ?? {}, data.startingAmount ?? {}, replace),
         referenceNumber: data.referenceNumber ?? '',
         paymentMode: data.paymentMode ?? '',

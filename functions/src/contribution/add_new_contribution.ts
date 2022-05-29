@@ -222,37 +222,42 @@ function prepareLoanPayment(
   group: any): { active_loans: { [id: string]: SingleLoanModel }, done_paying: string[] } {
   const active_loans: any = {};
   const loanReturn = data.loans;
+  const interestRate = data.interestRate ?? {};
+  const baseAmount = data.baseAmount ?? {};
   const done_paying: any[] = [];
   member_active_loans.forEach((loan: any) => {
     const loan_fines = prepareLoanFines(data, fineConfig, loan.loan_used, group);
     let total_profit_contribution = loan.total_profit_contribution;
     let amount_per_return = loan.amount_per_return;
     let remaining_balance = loan.remaining_balance;
-    let total_amount_to_pay = loan.total_amount_to_pay;
+    const total_amount_to_pay = loan.total_amount_to_pay;
     let amount_paid_to_date = loan.amount_paid_to_date;
     const fines = loan.fines || [];
     const payments = [...loan.payments];
     const previous_balance = loan.remaining_balance;
+    const profitType = loanConfigs[loan.loan_used] ? loanConfigs[loan.loan_used].profit_type : 'Fixed Percent';
     if (loanReturn[loan.id] && loanReturn[loan.id] !== null && parseInt(loanReturn[loan.id] + '', 10) !== 0 ) {
-      remaining_balance = loan.remaining_balance - loanReturn[loan.id]; // calculate remaining balance
-      amount_paid_to_date = parseFloat(loan.amount_paid_to_date + '') + parseFloat(loanReturn[loan.id] + '');
-      // if loan is of type reducing balance add to profit contribution
-      if ( loanConfigs[loan.loan_used] && loanConfigs[loan.loan_used].profit_type === 'Reducing Balance') {
-        total_profit_contribution = parseFloat(loan.total_profit_contribution + '') + parseFloat(loan.amount_per_return + '');
-        amount_per_return = remaining_balance * (loanConfigs[loan.loan_used].profit_percent / 100);
-        remaining_balance = remaining_balance + (amount_per_return - 0);
-        total_amount_to_pay = total_amount_to_pay + (amount_per_return - 0);
-      }else {
+      if (profitType === 'Reducing Balance') {
+        remaining_balance = loan.remaining_balance - baseAmount[loan.id] ?? 0; // calculate remaining balance
+        total_profit_contribution = parseFloat(loan.total_profit_contribution + '') + interestRate[loan.id] ?? 0;
+        amount_per_return = Math.ceil(remaining_balance * (loanConfigs[loan.loan_used].profit_percent / 100));
+        amount_paid_to_date = parseFloat(loan.amount_paid_to_date + '') + parseFloat(baseAmount[loan.id] + '');
+      } else {
+        remaining_balance = loan.remaining_balance - loanReturn[loan.id]; // calculate remaining balance
+        amount_paid_to_date = parseFloat(loan.amount_paid_to_date + '') + parseFloat(loanReturn[loan.id] + '');
         if ( remaining_balance <= 0 ) {
           total_profit_contribution = loan.total_amount_to_pay - loan.amount_taken;
         }
       }
+      // if loan is of type reducing balance add to profit contribution
       const payment: any = {
         id: helpers.makeid(),
         period: group.track_contribution_period ? data.year + '' + data.month : helpers.getYear(data.date) + '' + helpers.getMonth(data.date),
         month: group.track_contribution_period ? data.month : helpers.getMonth(data.date),
         year: group.track_contribution_period ? data.year : helpers.getYear(data.date),
         amount: loanReturn[loan.id],
+        interest_rate: interestRate[loan.id] || 0,
+        loan_amount: baseAmount[loan.id] || 0,
         paid_on_time: true,
         payment_mode: data.paymentMode || '',
         payment_type: data.paymentType || '',

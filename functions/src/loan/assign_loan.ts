@@ -99,7 +99,11 @@ function prepareLoan(loanId: string, data: any, currentLoanType: any, last_updat
     total_profit_contribution: data.total_profit_contribution,
     remaining_balance: data.return_amount,
     payments: [],
-    additional_config: {},
+    additional_config: {
+      firstMemberId: data.first_member_id ?? '',
+      secondMemberId: data.second_member_id ?? '',
+      thirdMemberId: data.third_member_id ?? '',
+    },
   };
   let total_amount_to_cut = 0;
   if (currentLoanType && currentLoanType.is_insured && currentLoanType.insurance_percent) {
