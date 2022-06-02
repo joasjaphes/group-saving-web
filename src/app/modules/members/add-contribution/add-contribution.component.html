@@ -43,17 +43,58 @@
             {{loan.loanType?.name}} remaining {{loan.remaining_balance | number}}
             <b *ngIf="loanAmount[loan.id]">(now paying {{loanAmount[loan.id] | number}})</b>
           </mat-checkbox>
-          <mat-form-field appearance="outline" *ngIf="loanSelected[loan.id]" @fadeIn>
-            <mat-label>Amount for {{loan.loanType?.name}}</mat-label>
-            <input
-              [(ngModel)]="loanAmount[loan.id]"
-              matInput
-              type="number"
-              min="0"
-              placeholder="Amount for {{loan.loanType?.name}}"
-              (input)="findTotal()"
-            >
-          </mat-form-field>
+          <div class="grid grid-cols-2 gap-2">
+            <div *ngIf="loan.loanType?.profit_type == 'Reducing Balance'">
+              <mat-form-field appearance="outline" *ngIf="loanSelected[loan.id]" @fadeIn>
+                <mat-label>
+                  Loan Amount
+                  <span *ngIf="baseLoanAmount[loan.id]">({{baseLoanAmount[loan.id] | number}})</span>
+                </mat-label>
+                <input
+                  [(ngModel)]="baseLoanAmount[loan.id]"
+                  matInput
+                  type="number"
+                  min="0"
+                  placeholder="Amount for {{loan.loanType?.name}}"
+                  (input)="findTotalAmount(loan)"
+                >
+                <mat-hint *ngIf="minLoanAmount[loan.id]">
+                  Minimum of {{minLoanAmount[loan.id] | number}}
+                </mat-hint>
+              </mat-form-field>
+            </div>
+            <div *ngIf="loan.loanType?.profit_type == 'Reducing Balance'">
+              <mat-form-field appearance="outline" *ngIf="loanSelected[loan.id]" @fadeIn>
+                <mat-label>
+                  Interest
+                  <span *ngIf="interestAmount[loan.id]">({{baseLoanAmount[loan.id] | number}})</span>
+                </mat-label>
+                <input
+                  readonly
+                  [(ngModel)]="interestAmount[loan.id]"
+                  matInput
+                  type="number"
+                  min="0"
+                  placeholder="Amount for {{loan.loanType?.name}}"
+                  (input)="findTotalAmount(loan)"
+                >
+              </mat-form-field>
+            </div>
+            <div class="col-span-2">
+              <mat-form-field appearance="outline" *ngIf="loanSelected[loan.id]" @fadeIn>
+                <mat-label>Amount for {{loan.loanType?.name}}</mat-label>
+                <input
+                  [(ngModel)]="loanAmount[loan.id]"
+                  matInput
+                  type="number"
+                  min="0"
+                  placeholder="Amount for {{loan.loanType?.name}}"
+                  (input)="findBaseAmount(loan)"
+                >
+              </mat-form-field>
+            </div>
+          </div>
+
         </div>
 
         <!--        Fine payments-->

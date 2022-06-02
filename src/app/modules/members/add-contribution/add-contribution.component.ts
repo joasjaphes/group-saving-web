@@ -35,6 +35,9 @@ export class AddContributionComponent implements OnInit {
   loanSelected: any = {};
   contributionAmount: any = {};
   loanAmount: any = {};
+  baseLoanAmount: any = {};
+  minLoanAmount: any = {};
+  interestAmount: any = {};
   fineAmounts: any = {};
   memberLoans$: Observable<Loan[]>;
   fineTypes$: Observable<FineType[]>;
@@ -140,6 +143,8 @@ export class AddContributionComponent implements OnInit {
       memberId: this.member.id,
       amountTaken: this.loanAmount,
       loans: this.loanAmount,
+      interestRate: this.interestAmount,
+      baseAmount: this.baseLoanAmount,
       fines: this.fineAmounts,
       contributions: this.contributionAmount,
       startingAmount: {},
@@ -188,19 +193,45 @@ export class AddContributionComponent implements OnInit {
     }
   }
 
+  findTotalAmount(loan: Loan) {
+    if (this.baseLoanAmount[loan.id] && this.interestAmount[loan.id]) {
+      this.loanAmount[loan.id] = this.baseLoanAmount[loan.id] + this.interestAmount[loan.id];
+    }
+    this.findTotal();
+  }
+
+  findBaseAmount(loan: Loan) {
+    const loanType = loan.loanType;
+    if (loanType.profit_type === 'Reducing Balance' && this.loanAmount[loan.id] && this.interestAmount[loan.id]) {
+      this.baseLoanAmount[loan.id] = this.loanAmount[loan.id] - this.interestAmount[loan.id];
+    }
+    this.findTotal();
+  }
+
   enableLoanPayment(checked: boolean, loan: Loan) {
     const loanType = loan.loanType;
-    if (checked && loanType.pay_same_amount_is_must) {
-      this.loanAmount[loan.id] = loan.amount_per_return;
-      this.findTotal();
-    } else {
-      this.loanAmount = Object.keys(this.loanAmount).reduce((object: any, key: string) => {
-        if (key !== loan.id) {
-          object[key] = this.loanAmount[key];
+    if (checked) {
+      if (loanType.profit_type === 'Reducing Balance') {
+        this.interestAmount[loan.id] = Math.ceil((loanType.interest_rate / 100) * loan.remaining_balance);
+        if (loanType.minimum_amount_for_reducing_required && loanType.minimum_amount_for_reducing_percent) {
+          this.baseLoanAmount[loan.id] = Math.ceil(loan.remaining_balance * (loanType.minimum_amount_for_reducing_percent / 100));
+          this.minLoanAmount[loan.id] = Math.ceil(loan.remaining_balance * (loanType.minimum_amount_for_reducing_percent / 100));
         }
-        return object;
-      }, {});
-      this.findTotal();
+        this.findTotalAmount(loan);
+      } else {
+        if (loanType.pay_same_amount_is_must) {
+          this.loanAmount[loan.id] = loan.amount_per_return;
+          this.findTotal();
+        } else {
+          this.loanAmount = Object.keys(this.loanAmount).reduce((object: any, key: string) => {
+            if (key !== loan.id) {
+              object[key] = this.loanAmount[key];
+            }
+            return object;
+          }, {});
+          this.findTotal();
+        }
+      }
     }
   }
 

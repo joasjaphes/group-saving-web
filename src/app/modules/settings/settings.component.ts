@@ -69,6 +69,12 @@ export class SettingsComponent implements OnInit {
       image: 'money.png'
     },
     {
+      name: 'Loan Requests Rules',
+      route: '',
+      description: 'Set rules for requesting loan from members',
+      image: 'request-money.png'
+    },
+    {
       name: 'Member Permissions',
       route: '',
       description: 'Manage which member will manage meetings, contributions and other group settings',
@@ -175,6 +181,11 @@ export class SettingsComponent implements OnInit {
       this.panelTitle = 'Set Key Members Permissions';
       this.viewDetails = true;
       this.viewType = 'memberPermission';
+    }
+    if (clickedMenu.name === 'Loan Requests Rules') {
+      this.panelTitle = 'Set Loan requests rules';
+      this.viewDetails = true;
+      this.viewType = 'loan_request';
     }
   }
 

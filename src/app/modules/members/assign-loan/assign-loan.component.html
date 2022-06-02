@@ -91,6 +91,45 @@
             <input matInput [(ngModel)]="insuranceAmount" placeholder="Insurance Amount" (input)="setAmountPerReturn()">
           </mat-form-field>
         </div>
+
+        <div class="col-sm-12 mt-2" *ngIf="currentLoanType?.requires_guarantee && showOne && loanAmount && duration" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>First Guarantor</mat-label>
+            <mat-select [(ngModel)]="firstMemberId">
+              <app-mat-select-search [(ngModel)]="firstMemberSearch"></app-mat-select-search>
+              <mat-option *ngFor="let member of members$ | async | search:'name':firstMemberSearch" [value]="member.id">
+                {{member.name}}
+                <span *ngIf="member.subtitle">{{member.subtitle}}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-12 mt-2" *ngIf="currentLoanType?.requires_guarantee && showTwo && loanAmount && duration" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Second Guarantor</mat-label>
+            <mat-select [(ngModel)]="secondMemberId">
+              <app-mat-select-search [(ngModel)]="secondMemberSearch"></app-mat-select-search>
+              <mat-option *ngFor="let member of members$ | async | search:'name':secondMemberSearch" [value]="member.id">
+                {{member.name}}
+                <span *ngIf="member.subtitle">{{member.subtitle}}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-12 mt-2" *ngIf="currentLoanType?.requires_guarantee && showThree && loanAmount && duration" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Third Guarantor</mat-label>
+            <mat-select [(ngModel)]="thirdMemberId">
+              <app-mat-select-search [(ngModel)]="thirdMemberSearch"></app-mat-select-search>
+              <mat-option *ngFor="let member of members$ | async | search:'name':thirdMemberSearch" [value]="member.id">
+                {{member.name}}
+                <span *ngIf="member.subtitle">{{member.subtitle}}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
     </div>
     <div class="col-sm-6" >

@@ -47,6 +47,15 @@
       *ngIf="viewType == 'leadership'"
     ></app-starting-leadership>
 
+
+    <app-loan-request-setting
+      [group]="group$ | async"
+      (closeForm)="closePanel()"
+      *ngIf="viewType == 'loan_request'"
+    ></app-loan-request-setting>
+
+
+
     <app-group-starting-info
       *ngIf="viewType == 'basic'"
       [group]="group$ | async"

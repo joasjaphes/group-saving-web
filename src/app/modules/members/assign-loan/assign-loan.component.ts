@@ -7,6 +7,10 @@ import {fadeIn} from '../../../shared/animations/router-animation';
 import {CommonService} from '../../../services/common.service';
 import {FunctionsService} from '../../../services/functions.service';
 import {Loan} from '../../../store/loan/loan.model';
+import {Observable} from 'rxjs';
+import {select, Store} from '@ngrx/store';
+import {ApplicationState} from '../../../store';
+import * as memberSelector from '../../../store/member/member.selectors';
 
 @Component({
   selector: 'app-assign-loan',
@@ -40,14 +44,24 @@ export class AssignLoanComponent implements OnInit {
   maximumAmount;
   loanDescription = '';
   amountGiven = 0;
+  firstMemberId: string;
+  secondMemberId: string;
+  thirdMemberId: string;
+  firstMemberSearch: string;
+  secondMemberSearch: string;
+  thirdMemberSearch: string;
+  members$: Observable<Member[]>;
 
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
+    private store: Store<ApplicationState>,
   ) {
   }
 
   ngOnInit(): void {
+    this.members$ = this.store.pipe(select(memberSelector.selectExceptMember(this.member?.phone_number)));
+
     if (this.initialLoanType) {
       this.loanType = this.initialLoanType;
       this.loanTypeSelected(this.loanType);
@@ -157,7 +171,10 @@ export class AssignLoanComponent implements OnInit {
       date: this.commonService.formatDate(this.loanStartDate),
       end_date: this.commonService.formatDate(this.newDate),
       total_profit_contribution: this.totalProfitContribution,
-      insurance_amount: this.insuranceAmount || 0
+      insurance_amount: this.insuranceAmount || 0,
+      first_member_id: this.firstMemberId || '',
+      second_member_id: this.secondMemberId || '',
+      third_member_id: this.thirdMemberId || '',
     };
     this.loading = true;
     try {
@@ -199,4 +216,21 @@ export class AssignLoanComponent implements OnInit {
     }
     this.calculateLoan();
   }
+
+
+  get showTwo(): boolean {
+    const count = this.currentLoanType?.number_of_guarantee;
+    return count == 'TWO' || count == 'THREE';
+  }
+
+  get showOne(): boolean {
+    const count = this.currentLoanType?.number_of_guarantee;
+    return count == 'ONE' || count == 'TWO' || count == 'THREE';
+  }
+
+  get showThree(): boolean {
+    const count = this.currentLoanType?.number_of_guarantee;
+    return count == 'THREE';
+  }
+
 }

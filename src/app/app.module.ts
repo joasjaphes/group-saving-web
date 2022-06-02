@@ -117,6 +117,7 @@ import { ExpectedCollectionComponent } from './modules/summary/expected-collecti
 import { ExpectedCollectionItemComponent } from './modules/summary/expected-collection/expected-collection-item/expected-collection-item.component';
 import { ImportErmsDataComponent } from './registration/import-erms-data/import-erms-data.component';
 import { AddAnotherAccountComponent } from './modules/members/add-another-account/add-another-account.component';
+import { LoanRequestSettingComponent } from './modules/settings/loan-request-setting/loan-request-setting.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -229,7 +230,8 @@ const firebaseConfig = {
     ExpectedCollectionComponent,
     ExpectedCollectionItemComponent,
     ImportErmsDataComponent,
-    AddAnotherAccountComponent
+    AddAnotherAccountComponent,
+    LoanRequestSettingComponent
   ],
   imports: [
     CommonModule,

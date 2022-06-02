@@ -1,0 +1,69 @@
+<div class="grid grid-cols-2 gap-2">
+  <div class="col-span-2">
+    <mat-form-field appearance="outline">
+      <mat-label>Does group allow loan request</mat-label>
+      <mat-select [(ngModel)]="loan_request_allowed">
+        <mat-option [value]="'Yes'">Yes <small>(Members are allowed to request loan)</small></mat-option>
+        <mat-option [value]="'No'">No <small>(Leaders will assign members loan)</small></mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="col-span-2" *ngIf="loan_request_allowed == 'Yes'" @fadeIn>
+    <mat-form-field appearance="outline">
+      <mat-label>Number of approvals</mat-label>
+      <mat-select [(ngModel)]="number_of_approval">
+        <mat-option [value]="'ONE'">One <small>(Loan request will be approved by one members)</small></mat-option>
+        <mat-option [value]="'TWO'">Two <small>(Loan request will be approved by two members)</small></mat-option>
+        <mat-option [value]="'THREE'">Three <small>(Loan request will be approved by three members)</small></mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="col-span-2" *ngIf="loan_request_allowed == 'Yes' && showOne" @fadeIn>
+    <mat-form-field appearance="outline">
+      <mat-label>First Approve</mat-label>
+      <mat-select [(ngModel)]="first_approval" multiple>
+        <app-mat-select-search [(ngModel)]="firstMemberSearch"></app-mat-select-search>
+        <mat-option [value]="'ONE'" *ngFor="let member of members$ | async | search:'name':firstMemberSearch">
+          {{member.name}}
+        </mat-option>
+        </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="col-span-2" *ngIf="loan_request_allowed == 'Yes' && showTwo" @fadeIn>
+    <mat-form-field appearance="outline">
+      <mat-label>Second Approve</mat-label>
+      <mat-select [(ngModel)]="second_approval" multiple>
+        <app-mat-select-search [(ngModel)]="firstMemberSearch"></app-mat-select-search>
+        <mat-option [value]="'ONE'" *ngFor="let member of members$ | async | search:'name':secondMemberSearch">
+          {{member.name}}
+        </mat-option>
+        </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="col-span-2" *ngIf="loan_request_allowed == 'Yes' && showThree" @fadeIn>
+    <mat-form-field appearance="outline">
+      <mat-label>Third Approve</mat-label>
+      <mat-select [(ngModel)]="third_approval" multiple>
+        <app-mat-select-search [(ngModel)]="firstMemberSearch"></app-mat-select-search>
+        <mat-option [value]="'ONE'" *ngFor="let member of members$ | async | search:'name':thirdMemberSearch">
+          {{member.name}}
+        </mat-option>
+        </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="col-span-2 mt-2">
+    <app-save-area
+      [saveDisabled]="!loan_request_allowed"
+      [confirmFirst]="true"
+      (cancel)="onClose()"
+      (save)="save()"
+      [savingData]="loading"
+    ></app-save-area>
+  </div>
+
+</div>

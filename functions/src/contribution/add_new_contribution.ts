@@ -240,7 +240,7 @@ function prepareLoanPayment(
       if (profitType === 'Reducing Balance') {
         remaining_balance = loan.remaining_balance - baseAmount[loan.id] ?? 0; // calculate remaining balance
         total_profit_contribution = parseFloat(loan.total_profit_contribution + '') + interestRate[loan.id] ?? 0;
-        amount_per_return = Math.ceil(remaining_balance * (loanConfigs[loan.loan_used].profit_percent / 100));
+        amount_per_return = 0;
         amount_paid_to_date = parseFloat(loan.amount_paid_to_date + '') + parseFloat(baseAmount[loan.id] + '');
       } else {
         remaining_balance = loan.remaining_balance - loanReturn[loan.id]; // calculate remaining balance
