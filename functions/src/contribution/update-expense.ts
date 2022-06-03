@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as helpers from '../helpers';
 import * as admin from 'firebase-admin';
+import {ExpenseModel} from '../data-models/expense.model';
 
 const cors = require('cors')({origin: true});
 
@@ -25,13 +26,20 @@ export const updateExpense = functions.https.onRequest((request, response) => {
     }
     try {
       const groupId = data.groupId;
+      const year = helpers.getYear(data.date);
       const last_update = new Date().getTime();
       const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
       const groupDocRef = admin.firestore().doc(`groups/${groupId}`);
-      const expenseRef = admin.firestore().doc(`groups/${groupId}/expense/${data.id}`);
+      const expenseRef = admin.firestore().doc(`groups/${data.groupId}/expense/${data.groupId}_${year}`);
       await admin.firestore().runTransaction(async (transaction) => {
         const groupDoc = await transaction.get(groupDocRef);
         const expenseDoc = await transaction.get(expenseRef);
+        const existingExpense: ExpenseModel = expenseDoc.exists ? expenseDoc.data() as ExpenseModel : {
+          id: `${data.groupId}_${year}`,
+          group_id: data.groupId,
+          year: year + '',
+          expenses: {},
+        };
         const groupData: any = {...groupDoc.data()};
         const expenseData: any = {...expenseDoc.data()};
         const contributionTypes = groupData.contributions || {};
@@ -54,8 +62,9 @@ export const updateExpense = functions.https.onRequest((request, response) => {
           }
         }
         const expense: any = prepareExpenseDetails(data, last_update);
+        existingExpense.expenses[expense.id] = expense;
         transaction.update(groupDocRef, { ...groupData , last_update});
-        transaction.set(expenseRef, {...expense, last_update});
+        transaction.set(expenseRef, {...existingExpense, last_update});
         transaction.set(otherUpdateAtRef, {
           group_updated: last_update,
           expense_updated: last_update,
