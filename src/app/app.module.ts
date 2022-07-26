@@ -10,7 +10,7 @@ import { reducers, metaReducers } from './store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import {effects} from './store/app.effects';
-import {DefaultRouterStateSerializer, RouterStateSerializer, StoreRouterConnectingModule} from '@ngrx/router-store';
+import {FullRouterStateSerializer, RouterStateSerializer, StoreRouterConnectingModule} from '@ngrx/router-store';
 import {CustomSerializer} from './store/router/router.reducer';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {SharedModule} from './shared/shared.module';
@@ -252,7 +252,7 @@ const firebaseConfig = {
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot(effects),
     StoreRouterConnectingModule.forRoot(
-      {serializer: DefaultRouterStateSerializer}
+      {serializer: FullRouterStateSerializer}
     ),
     SharedModule,
     BrowserAnimationsModule,

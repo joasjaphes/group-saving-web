@@ -3,7 +3,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import * as moment from 'moment';
 import {timer as observableTimer, Observable, of, BehaviorSubject} from 'rxjs';
 import {switchMap, tap} from 'rxjs/operators';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -71,12 +71,12 @@ export class CommonService {
   }
 
 
-  validateAllFormFields(formGroup: FormGroup) {
+  validateAllFormFields(formGroup: UntypedFormGroup) {
     Object.keys(formGroup.controls).forEach((field) => {
       const control = formGroup.get(field);
-      if (control instanceof FormControl) {
+      if (control instanceof UntypedFormControl) {
         control.markAsTouched({ onlySelf: true });
-      } else if (control instanceof FormGroup) {
+      } else if (control instanceof UntypedFormGroup) {
         this.validateAllFormFields(control);
       }
     });

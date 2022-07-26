@@ -129,9 +129,10 @@
       }
     }
   },
-  "defaultProject": "kikoba-web",
   "cli": {
     "analytics": "b70f5cb9-1e05-411a-b9f8-8c869684111a",
-    "defaultCollection": "@ngrx/schematics"
+    "schematicCollections": [
+      "@ngrx/schematics"
+    ]
   }
 }
