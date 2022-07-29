@@ -96,6 +96,13 @@
                    placeholder="Amount to return">
           </mat-form-field>
         </div>
+        <div class="col-sm-6" *ngIf="currentLoanType && currentLoanType.profit_type != 'Reducing Balance' && duration" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Amount per return <span *ngIf="amountPerReturn">({{amountPerReturn | number}})</span></mat-label>
+            <input (input)="calculateTotal()" type="number" matInput [(ngModel)]="amountPerReturn"
+                   placeholder="Amount to return">
+          </mat-form-field>
+        </div>
         <!--        <div class="col-sm-6" *ngIf="returnAmount">-->
         <!--          <mat-form-field appearance="outline">-->
         <!--            <mat-label>Amount returned to date <span *ngIf="returnedAmount">({{returnedAmount | number}})</span>-->

@@ -51,12 +51,12 @@ export class StartingMembersComponent implements OnInit {
   }
 
   get phoneIsValid() {
-    return this.checkPhoneValidity(this.phoneNumber)
+    return this.checkPhoneValidity(this.phoneNumber);
   }
 
   checkPhoneValidity(phoneNumber: any) {
     const phone = `+${this.country.phoneCode}${trimPhoneNumber(phoneNumber)}`;
-    const testRegex = /^\+\d\d\d\d\d\d\d\d\d\d\d\d$/;
+    const testRegex = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
     return testRegex.test(phone);
   }
 

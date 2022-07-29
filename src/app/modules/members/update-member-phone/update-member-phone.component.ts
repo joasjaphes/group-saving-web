@@ -52,7 +52,7 @@ export class UpdateMemberPhoneComponent implements OnInit {
 
   get phoneIsValid() {
     const phone = `+${this.country.phoneCode}${trimPhoneNumber(this.phoneNumber)}`;
-    const testRegex = /^\+\d\d\d\d\d\d\d\d\d\d\d\d$/;
+    const testRegex = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
     return testRegex.test(phone);
   }
 

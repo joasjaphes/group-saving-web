@@ -48,7 +48,7 @@ export const phoneNumberValid = createSelector(
   selectPhoneCountry,
   (phoneNumber, phoneCountry) => {
     const phone = `+${phoneCountry.phoneCode}${trimPhoneNumber(phoneNumber)}`;
-    const testRegex = /^\+\d\d\d\d\d\d\d\d\d\d\d\d$/;
+    const testRegex = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
     return testRegex.test(phone);
   }
 );
