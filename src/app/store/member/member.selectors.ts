@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromReducer from './member.reducer';
 import * as fromGroup from '../group/group.selectors';
 import {getRouteState} from '../index';
+import {selectGroupId} from '../user/user.selectors';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.membersFeatureKey);
 
@@ -13,8 +14,14 @@ export const selectLoading = createSelector(selectCurrentState, fromReducer.getL
 export const selectCurrentId = createSelector(selectCurrentState, fromReducer.getSelectedId);
 export const selectError = createSelector(selectCurrentState, fromReducer.getError);
 
+export const selectByCurrentGroup = createSelector(
+  selectAll,
+  selectGroupId,
+  (allItems, groupId) => allItems.filter(member => member.group_id === groupId)
+);
+
 export const selectDetailed = createSelector(
-  selectAll, (allItems) => allItems.map(member => ({
+  selectByCurrentGroup, (allItems) => allItems.map(member => ({
     ...member,
     subtitle: member.additional_config && member.additional_config.have_other_account && !member.additional_config.is_primary ? '(second Account)' : ''
   }))
@@ -23,12 +30,12 @@ export const selectDetailed = createSelector(
 export const selectUnique = createSelector(
   selectDetailed, (allItems) => allItems
     .filter(item  => !item.subtitle )
-)
+);
 
 export const selectExceptMember = (phoneNumber: string) => createSelector(
   selectDetailed, (allItems) => allItems
     .filter(item => item.phone_number !== phoneNumber )
-)
+);
 
 export const selectById = (id: string) => createSelector(
   selectEntities, (entities) => entities[id]

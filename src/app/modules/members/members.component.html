@@ -53,6 +53,7 @@
       <h3 class="registration-title text-center mt-3">There is no member named {{memberSearch}}</h3>
     </div>
     <!--    List of Members-->
+<!--    {{(members$ | async) | json}}-->
     <div *ngIf="(members$ | async).length > 1" class="main-menu-container">
       <div
         [ngClass]="routeAnimationsElements"
@@ -80,7 +81,7 @@
           </p>
         </div>
 
-        <div class="menu">
+        <div class="menu" *ngIf="member">
           <button mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon style="color: white">more_vert</mat-icon>
           </button>

@@ -2,6 +2,7 @@ import {createFeatureSelector, createSelector} from '@ngrx/store';
 import * as fromReducer from './loan-queue.reducer';
 import * as fromMembers from '../member/member.selectors';
 import * as fromLoanTypes from '../loan-type/loan-type.selectors';
+import {selectGroupId} from '../user/user.selectors';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.loanQueuesFeatureKey);
 
@@ -21,8 +22,14 @@ export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
 
-export const selectDetailed = createSelector(
+export const selectByCurrentGroup = createSelector(
   selectAll,
+  selectGroupId,
+  (allItems, groupId) => allItems.filter(i => i.group_id === groupId)
+);
+
+export const selectDetailed = createSelector(
+  selectByCurrentGroup,
   fromMembers.selectEntities,
   fromLoanTypes.selectEntities,
   (allItems, members, loanTypes) => allItems

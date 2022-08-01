@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromReducer from './expense.reducer';
 import * as fromMember from '../member/member.selectors';
+import {selectGroupId} from '../user/user.selectors';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.expensesFeatureKey);
 
@@ -20,8 +21,14 @@ export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
 
-export const selectDetailed = createSelector(
+export const selectByCurrentGroup = createSelector(
   selectAll,
+  selectGroupId,
+  (allItems, groupId) => allItems.filter(i => i.group_id === groupId)
+);
+
+export const selectDetailed = createSelector(
+  selectByCurrentGroup,
   fromMember.selectEntities,
   (allItems, memberEntities) => allItems.map(i => ({
     ...i,
@@ -30,7 +37,7 @@ export const selectDetailed = createSelector(
 );
 
 export const selectTotalByYear = (year, contributionType, memberId) => createSelector(
-  selectAll,
+  selectByCurrentGroup,
   (allItems) => {
     const items = allItems
       .filter(i => year === 'All' || i.year + '' === year + '')

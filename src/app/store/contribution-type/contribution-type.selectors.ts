@@ -2,6 +2,7 @@ import {createFeatureSelector, createSelector} from '@ngrx/store';
 import * as fromReducer from './contribution-type.reducer';
 import {numberWithCommas} from '../fine-type/fine-type.selectors';
 import {ContributionTypes} from './contribution-type.enum';
+import {selectGroupId} from '../user/user.selectors';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.contributionTypesFeatureKey);
 
@@ -21,20 +22,26 @@ export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
 
+export const selectByCurrentGroup = createSelector(
+  selectAll,
+  selectGroupId,
+  (allItems, groupId) => allItems.filter(i => i.group_id === groupId)
+);
+
 export const selectedWithLoan = createSelector(
-  selectAll, (allItems) => allItems.filter(i => i.allow_loan)
+  selectByCurrentGroup, (allItems) => allItems.filter(i => i.allow_loan)
 );
 
 export const selectRepeating = createSelector(
-  selectAll, (allItems) => allItems.filter(i => !i.is_one_time_contribution)
+  selectByCurrentGroup, (allItems) => allItems.filter(i => !i.is_one_time_contribution)
 );
 
 export const selectOneTime = createSelector(
-  selectAll, (allItems) => allItems.filter(i => i.is_one_time_contribution)
+  selectByCurrentGroup, (allItems) => allItems.filter(i => i.is_one_time_contribution)
 );
 
 export const selectDetailed = createSelector(
-  selectAll,
+  selectByCurrentGroup,
   (allItems) => allItems.map(item => {
     let textDescription = '';
     if (item.is_must && item.is_fixed) {

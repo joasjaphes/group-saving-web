@@ -82,10 +82,12 @@ export class HisaPeriodComponent implements OnInit, OnDestroy {
     }
   }
 
-  addPeriod() {
+  async addPeriod() {
+    this.group = await this.group$.pipe(first()).toPromise();
     const dataToSave: SharePeriod = {
       id: this.commonService.makeId(),
       isCurrent: false,
+      groupId: this.group.id,
       startMonth: this.startMonth,
       endMonth: this.endMonth,
       start: this.startMonthDetailed,

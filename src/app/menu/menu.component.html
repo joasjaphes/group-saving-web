@@ -146,14 +146,19 @@
 
     <div class="grid pt-3 pb-3 m-0">
 
-      <div style="cursor: pointer" title="Switch Group" class="col-sm-12 titleArea" *ngIf="(user$ | async)" @fadeIn>
-        <div class="flex items-center gap-2">
+      <div style="cursor: pointer" title="Switch Group" (click)="openSwitchGroups()" class="col-sm-12 titleArea" *ngIf="(user$ | async)" @fadeIn>
+        <div class="flex items-center gap-2 ">
           <div class="flex-none">
             <img alt="logo" style="height: 30px; border-radius: 50%; vertical-align: middle"
                  src="assets/icons/icon-72x72.png">
           </div>
           <div class="text-ellipsis">
-            <span>{{(group$ | async)?.group_name}}</span>
+            <div class="text-ellipsis">
+              <span>{{(group$ | async)?.group_name}}</span>
+            </div>
+            <div class="mt-1">
+              <small class="text-muted font-extralight">Change Group </small>
+            </div>
           </div>
         </div>
       </div>

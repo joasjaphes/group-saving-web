@@ -5,6 +5,7 @@ import * as fromLoan from '../loan-type/loan-type.selectors';
 import * as fromContribution from '../contribution-type/contribution-type.selectors';
 import {GroupProgressEnum} from './group-progress.enum';
 import {ContributionTypes} from '../contribution-type/contribution-type.enum';
+import {selectGroupId} from '../user/user.selectors';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.groupsFeatureKey);
 
@@ -22,7 +23,7 @@ export const selectById = (id: string) => createSelector(
 
 export const selected = createSelector(
   selectEntities,
-  selectCurrentId,
+  selectGroupId,
   fromMember.selectEntities,
   (entities, id, members) => {
     const group = entities[id];
@@ -46,13 +47,13 @@ export const nextMeeting = createSelector(
 export const selectSharePeriod = createSelector(
   selected,
   (group) => group.share_periods
-)
+);
 
 export const selectProgressPercent = createSelector(
   selected,
-  fromLoan.selectAll,
-  fromContribution.selectAll,
-  fromMember.selectAll,
+  fromLoan.selectByCurrentGroup,
+  fromContribution.selectByCurrentGroup,
+  fromMember.selectByCurrentGroup,
   (
     selectedGroup,
     loanTypes,
@@ -149,9 +150,9 @@ export const selectProgressPercent = createSelector(
  */
 export const selectProgress = createSelector(
   selected,
-  fromLoan.selectAll,
-  fromContribution.selectAll,
-  fromMember.selectAll,
+  fromLoan.selectByCurrentGroup,
+  fromContribution.selectByCurrentGroup,
+  fromMember.selectByCurrentGroup,
   (
     selectedGroup,
     loanTypes,
@@ -240,8 +241,6 @@ export const selectProgress = createSelector(
         contributionTypes.length > 0
         && contributionNeedsBalance.length !== contributionHasBalance.length
       ) {
-        console.log(contributionHasBalance)
-        console.log(contributionNeedsBalance)
         title = 'To help to track group information fill the current balances';
         buttonLabel = 'Add starting balances';
         key = GroupProgressEnum.AddContributionBalances;
@@ -268,7 +267,7 @@ export const selectProgress = createSelector(
 
 export const selectNeedBalance = createSelector(
   selected,
-  fromContribution.selectAll, (currentGroup, allItems) => allItems
+  fromContribution.selectByCurrentGroup, (currentGroup, allItems) => allItems
     .filter(i => {
       const hasBalance = currentGroup && currentGroup.current_balances && !!currentGroup.current_balances[i.id];
       return i.track_balance && !hasBalance;
@@ -285,15 +284,15 @@ export const selectCurrentMember = createSelector(
   selectEntities,
   (members, groups) => {
     const memberId = localStorage.getItem('group_savings_current_member');
-    let member = members[memberId]
+    let member = members[memberId];
     if (member) {
       const group = groups[member.group_id];
       console.log({group});
       member = {
         ...member,
         can_edit: group ? group.chairperson === member.id || group.secretary === member.id || group.treasure === member.id :  false,
-      }
+      };
     }
     return member;
   }
-)
+);

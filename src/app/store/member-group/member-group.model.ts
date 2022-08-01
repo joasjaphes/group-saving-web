@@ -1,13 +1,13 @@
 export interface MemberGroup {
   id: string;
-  groupId: string;
-  memberId: string;
-  userId: string;
-  phoneNumber: string;
+  group_id: string;
+  member_id: string;
+  user_id: string;
+  phone_number: string;
   activation_status: string;
   alternative_phone_number: string;
-  memberName: string;
-  groupName: string;
+  member_name: string;
+  group_name: string;
   lastUpdate: number;
   createdBy: string;
 }

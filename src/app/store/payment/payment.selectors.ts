@@ -8,6 +8,7 @@ import * as fromExpense from '../expense/expense.selectors';
 import * as fromMember from '../member/member.selectors';
 import {Payment} from './payment.model';
 import {numberWithCommas} from '../fine-type/fine-type.selectors';
+import {selectGroupId} from '../user/user.selectors';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.paymentsFeatureKey);
 
@@ -23,12 +24,17 @@ export const selectById = (id: string) => createSelector(
   selectEntities, (entities) => entities[id]
 );
 
+export const selectByGroup = createSelector(
+  selectAll, selectGroupId,
+  (allItems, groupId) => allItems.filter(i => i.groupId === groupId)
+);
+
 export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
 
 export const selectDetailed = createSelector(
-  selectAll,
+  selectByGroup,
   fromContributionTypes.selectEntities,
   fromFineTypes.selectEntities,
   fromLoanTypes.selectEntities,
@@ -436,7 +442,7 @@ export const selectMembersExpectedCollection = (period: string) => createSelecto
   (contributionTypes, loans, members) => {
     return members.map(member => {
       const activeLoans = loans.filter(i => {
-        return `${i.end_year}${i.end_month}` >= period && i.member_id == member.id;
+        return `${i.end_year}${i.end_month}` >= period && i.member_id === member.id;
       });
       let totalLoan = 0;
       let totalExpected = 0;
@@ -454,7 +460,7 @@ export const selectMembersExpectedCollection = (period: string) => createSelecto
       }).filter(i => !!i);
       totalExpected += parseInt(totalLoan + '', 10);
       return {member, total: parseInt(totalExpected + '', 10), amounts: [...contrReturs, {name: 'Loans', value:  parseInt(totalLoan + '', 10)}]};
-    })
+    });
   }
 );
 
@@ -570,7 +576,6 @@ export const selectTotalLoanPaymentByYear = (year, contributionType, memberId?) 
       const contr = Object.keys(item.loans)
         .map(i => ({loanUsed: loans[i] ? loanTypes[loans[i].loan_used] : null, amount: item.loans[i]}))
         .filter(i => !!i.loanUsed && contributionType === 'All' || (i.loanUsed && i.loanUsed.contribution_type_id === contributionType));
-      console.log(JSON.stringify(contr));
       for (const amount of contr) {
         sum += !!(amount.amount + '') ? parseFloat(amount.amount + '') : 0;
       }

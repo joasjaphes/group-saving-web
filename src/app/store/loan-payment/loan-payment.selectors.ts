@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromReducer from './loan-payment.reducer';
+import {selectGroupId} from '../user/user.selectors';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.loanPaymentsFeatureKey);
 
@@ -17,4 +18,10 @@ export const selectById = (id: string) => createSelector(
 
 export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
+);
+
+export const selectByCurrentGroup = createSelector(
+  selectAll,
+  selectGroupId,
+  (allItems, groupId) => allItems.filter(i => i.groupId === groupId)
 );

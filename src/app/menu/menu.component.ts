@@ -20,10 +20,13 @@ import {MatSidenav} from '@angular/material/sidenav';
 import {DataKeys, GET_METHODS, UpdatedDataKeys} from '../store/data-keys';
 import {LastUpdatedAt} from '../store/last-updated-at/last-updated-at.model';
 import {getGroups, setSelectedGroup} from '../store/group/group.actions';
-import {addCurrentUser, logout} from '../store/user/user.actions';
+import {addCurrentUser, logout, setSelectedGroupId} from '../store/user/user.actions';
 import {Group} from '../store/group/group.model';
 import * as groupSelector from '../store/group/group.selectors';
 import {setSelectedMember} from '../store/member/member.actions';
+import {GroupProgressDialogComponent} from '../shared/components/group-progress/group-progress-dialog/group-progress-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {SwitchGroupsComponent} from './switch-groups/switch-groups.component';
 
 @Component({
   selector: 'app-menu',
@@ -94,7 +97,8 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     private location: Location,
     private afs: AngularFirestore,
     private offlineService: OfflineManagerService,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    public dialog: MatDialog,
   ) {
     this.user$ = this.userService.getLoginUser();
     this.helpOpened$ = this.commonService.showHElp1;
@@ -115,6 +119,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
           })
         );
         this.getMemberGroups(user.uid).then();
+        this.keepMembersGroupInSync(user.uid);
       }
     });
   }
@@ -192,11 +197,13 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     const currentMember = localStorage.getItem('group_savings_current_member');
     if (activeGroup) {
       this.store.dispatch(setSelectedGroup({groupId: activeGroup}));
+      this.store.dispatch(setSelectedGroupId({groupId: activeGroup}));
       this.store.dispatch(setSelectedMember({memberId: currentMember}));
     } else {
       localStorage.setItem('group_savings_active_group', memberGroup.group_id);
       localStorage.setItem('group_savings_current_member', memberGroup.member_id);
       this.store.dispatch(setSelectedGroup({groupId: memberGroup.group_id}));
+      this.store.dispatch(setSelectedGroupId({groupId: memberGroup.group_id}));
       this.store.dispatch(setSelectedMember({memberId: memberGroup.member_id}));
     }
   }
@@ -300,5 +307,14 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.memberGroupSub) {
       this.memberGroupSub.unsubscribe();
     }
+  }
+
+  openSwitchGroups() {
+    const dialogRef = this.dialog.open(SwitchGroupsComponent, {
+      width: '60%',
+      minHeight: '60vh',
+      data: {},
+      disableClose: true,
+    });
   }
 }

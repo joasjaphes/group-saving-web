@@ -1,6 +1,7 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 import * as fromReducer from './meeting.reducer';
 import * as fromMember from '../member/member.selectors';
+import {selectGroupId} from '../user/user.selectors';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.meetingsFeatureKey);
 
@@ -21,8 +22,14 @@ export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
 
-export const selectDetailed = createSelector(
+export const selectByCurrentGroup = createSelector(
   selectAll,
+  selectGroupId,
+  (allItems, groupId) => allItems.filter(i => i.group_id === groupId)
+);
+
+export const selectDetailed = createSelector(
+  selectByCurrentGroup,
   fromMember.selected,
   fromMember.selectEntities,
   (allItems, member, memberEntities) => allItems.map(item => {

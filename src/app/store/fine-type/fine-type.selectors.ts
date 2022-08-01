@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromReducer from './fine-type.reducer';
+import {selectGroupId} from '../user/user.selectors';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.fineTypesFeatureKey);
 
@@ -19,8 +20,14 @@ export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
 
-export const selectDetailed = createSelector(
+export const selectByCurrentGroup = createSelector(
   selectAll,
+  selectGroupId,
+  (allItems, groupId) => allItems.filter(i => i.group_id === groupId)
+);
+
+export const selectDetailed = createSelector(
+  selectByCurrentGroup,
   (allItems) => allItems.map(item => {
     let textDescription = '';
     if (item.calculation === 'Fixed') {

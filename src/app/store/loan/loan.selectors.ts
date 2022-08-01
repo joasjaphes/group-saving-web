@@ -3,6 +3,7 @@ import * as fromReducer from './loan.reducer';
 import * as fromLoanTypes from '../loan-type/loan-type.selectors';
 import * as fromMember from '../member/member.selectors';
 import {getRouteState} from '../index';
+import {selectGroupId} from '../user/user.selectors';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.loansFeatureKey);
 
@@ -22,8 +23,14 @@ export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
 
-export const selectDetailed = createSelector(
+export const selectByCurrentGroup = createSelector(
   selectAll,
+  selectGroupId,
+  (allItems, groupId) => allItems.filter(i => i.group_id === groupId)
+);
+
+export const selectDetailed = createSelector(
+  selectByCurrentGroup,
   fromLoanTypes.selectEntities,
   fromMember.selectEntities,
   (allItems, loanTypes, members) => allItems

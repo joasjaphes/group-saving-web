@@ -4,6 +4,7 @@ import * as fromMember from '../member/member.selectors';
 import * as fromContributionTypes from '../contribution-type/contribution-type.selectors';
 import * as fromReducer from './one-time-payment.reducer';
 import {ContributionType} from '../contribution-type/contribution-type.model';
+import {selectGroupId} from '../user/user.selectors';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.oneTimePaymentsFeatureKey);
 
@@ -23,8 +24,14 @@ export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
 
-export const selectDetailed = createSelector(
+export const selectByCurrentGroup = createSelector(
   selectAll,
+  selectGroupId,
+  (allItems, groupId) => allItems.filter(i => i.groupId === groupId)
+);
+
+export const selectDetailed = createSelector(
+  selectByCurrentGroup,
   fromContributionTypes.selectEntities,
   fromMember.selectEntities,
   (

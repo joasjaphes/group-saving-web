@@ -26,6 +26,11 @@ export const setSelectedUser = createAction(
   props<{ userId: string }>()
 );
 
+export const setSelectedGroupId = createAction(
+  '[User/API] Set Selected Group Id',
+  props<{ groupId: string }>()
+);
+
 export const loadUsers = createAction(
   '[User/API] Load Users',
   props<{ users: User[] }>()

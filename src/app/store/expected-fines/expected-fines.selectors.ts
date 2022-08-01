@@ -4,6 +4,7 @@ import * as fromFineTypes from '../fine-type/fine-type.selectors';
 import * as fromMember from '../member/member.selectors';
 import {ExpectedFine} from './expected-fines.model';
 import {numberWithCommas} from '../fine-type/fine-type.selectors';
+import {selectGroupId} from '../user/user.selectors';
 
 export const selectCurrentState = createFeatureSelector<fromReducer.State>(fromReducer.expectedFinesFeatureKey);
 
@@ -23,8 +24,14 @@ export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
 
-export const selectDetailed = createSelector(
+export const selectByCurrentGroup = createSelector(
   selectAll,
+  selectGroupId,
+  (allItems, groupId) => allItems.filter(i => i.groupId === groupId)
+);
+
+export const selectDetailed = createSelector(
+  selectByCurrentGroup,
   fromFineTypes.selectEntities,
   fromMember.selectEntities,
   (
@@ -60,7 +67,7 @@ export const selectDetailed = createSelector(
 
 export const selectExpectedFineTypesSummary = createSelector(
   selectDetailed,
-  fromFineTypes.selectAll,
+  fromFineTypes.selectByCurrentGroup,
   (allItems, contributionTypes) => {
     const summary = {};
     summary['All'] = {name: 'All', total: 0, id: 'All'};
@@ -82,13 +89,13 @@ export const selectExpectedFineTypesSummary = createSelector(
 
 export const selectExpectedFineTypeSummaryString = createSelector(
   selectExpectedFineTypesSummary,
-  (fineTypes) => fineTypes.filter(i => i.total > 0 && i.name != 'All').map(i => `${i.name} ${numberWithCommas(i.total)}`).join(', ')
-)
+  (fineTypes) => fineTypes.filter(i => i.total > 0 && i.name !== 'All').map(i => `${i.name} ${numberWithCommas(i.total)}`).join(', ')
+);
 
 export const selectTotalExpectedFines = createSelector(
   selectDetailed,
   (allItems) => allItems.reduce((a, b) => a + parseFloat(b.totalFines + ''), 0)
-)
+);
 
 export function findFineTotal(payment: ExpectedFine) {
   let sum = 0;

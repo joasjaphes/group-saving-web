@@ -1,6 +1,6 @@
 export interface LastUpdatedAt {
   id: number;
-  group_id: number;
+  group_id: string;
   adjustment_updated: number;
   buying_investment_updated: number;
   buying_investment_item_updated: number;

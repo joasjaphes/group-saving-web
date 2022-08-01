@@ -9,6 +9,7 @@ export const selectAll = createSelector(selectCurrentState, fromReducer.selectAl
 export const selectTotal = createSelector(selectCurrentState, fromReducer.selectTotal);
 export const selectLoading = createSelector(selectCurrentState, fromReducer.getLoading);
 export const selectCurrentId = createSelector(selectCurrentState, fromReducer.getSelectedId);
+export const selectGroupId = createSelector(selectCurrentState, fromReducer.getSelectedGroupId);
 export const selectError = createSelector(selectCurrentState, fromReducer.getError);
 
 export const selectById = (id: string) => createSelector(
@@ -18,3 +19,4 @@ export const selectById = (id: string) => createSelector(
 export const selected = createSelector(
   selectEntities, selectCurrentId, (entities, id) => entities[id]
 );
+

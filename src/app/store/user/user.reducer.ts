@@ -7,6 +7,7 @@ export const usersFeatureKey = 'users';
 
 export interface State extends EntityState<User> {
   selected: string;
+  selectedGroupId: string;
   loading: boolean;
   loaded: boolean;
   error: any;
@@ -16,6 +17,7 @@ export const adapter: EntityAdapter<User> = createEntityAdapter<User>();
 
 export const initialState: State = adapter.getInitialState({
   selected: null,
+  selectedGroupId: null,
   loading: false,
   loaded: false,
   error: null,
@@ -38,6 +40,10 @@ export const reducer = createReducer(
   ),
   on(UserActions.setSelectedUser, ((state, action) => {
       return {...state, selected: action.userId};
+    })
+  ),
+  on(UserActions.setSelectedGroupId, ((state, action) => {
+      return {...state, selectedGroupId: action.groupId};
     })
   ),
   on(UserActions.addUser,
@@ -80,6 +86,7 @@ export const {
   selectTotal,
 } = adapter.getSelectors();
 export const getSelectedId = (state: State) => state.selected;
+export const getSelectedGroupId = (state: State) => state.selectedGroupId;
 export const getLoading = (state: State) => state.loading;
 export const getLoaded = (state: State) => state.loaded;
 export const getError = (state: State) => state.error;
