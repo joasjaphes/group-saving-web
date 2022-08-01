@@ -27,6 +27,8 @@ import {setSelectedMember} from '../store/member/member.actions';
 import {GroupProgressDialogComponent} from '../shared/components/group-progress/group-progress-dialog/group-progress-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {SwitchGroupsComponent} from './switch-groups/switch-groups.component';
+import {getLastUpdatedAts} from '../store/last-updated-at/last-updated-at.actions';
+import {getMemberGroups} from '../store/member-group/member-group.actions';
 
 @Component({
   selector: 'app-menu',
@@ -258,7 +260,9 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
             this.offlineService.saveLastUpdatedTimes({
               ...updateTimes,
               id: 'times'
-            }).then();
+            }).then(() => {
+              this.store.dispatch(getMemberGroups());
+            });
           } catch (e) {
             console.error(e);
           }
@@ -289,7 +293,9 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         for (const mem of member_groups) {
           this.offlineService.saveItem({
             ...mem,
-          }, DataKeys.MemberGroup).then();
+          }, DataKeys.MemberGroup).then(() => {
+            this.store.dispatch(getMemberGroups());
+          });
         }
       });
   }
