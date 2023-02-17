@@ -154,6 +154,13 @@ export class MembersComponent implements OnInit {
     this.viewType = 'updatePhone';
   }
 
+  async updatePassword(member: Member) {
+    this.currentMember = member;
+    this.viewDetails = true;
+    this.panelTitle = 'Update Member Password';
+    this.viewType = 'updatePassword';
+  }
+
   onClose() {
     this.viewDetails = false;
     this.panelTitle = '';

@@ -108,6 +108,9 @@
             <button mat-menu-item (click)="editPhone(member)">
               <mat-icon style="color: #0277bd">phone</mat-icon> Update Phone
             </button>
+            <button mat-menu-item (click)="updatePassword(member)">
+              <mat-icon style="color: #0277bd">lock</mat-icon> Update Password
+            </button>
             <button mat-menu-item (click)="addAnotherAccount(member)">
               <mat-icon style="color: #0277bd">list</mat-icon> Add Another Account
             </button>
@@ -175,6 +178,15 @@
       [memberName]="memberName$ | async"
       (closeForm)="onClose()"
     ></app-update-member-phone>
+
+    <app-update-member-password
+    *ngIf="viewType == 'updatePassword'"
+    [group]="group$ | async"
+    [member]="currentMember"
+    [members]="members$ | async"
+    [memberName]="memberName$ | async"
+    (closeForm)="onClose()"
+  ></app-update-member-password>
 
     <app-add-expected-fine
       *ngIf="viewType == 'fine'"
