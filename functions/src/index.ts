@@ -54,6 +54,7 @@ import * as setNextMeetingExcuse from './meeting/set-next-meeting-excuse';
 import * as removeNextMeetingExcuse from './meeting/remove-next-meeting-excuse';
 import * as addNewContributionForApproval from './contribution/add_new_contribution_for_approval';
 import * as cancelNewContributionForApproval from './contribution/cancel_new_contribution_for_approval';
+import * as updatePassword from './members/update-password';
 
 exports.getUserByPhoneNumber = getUserByPhoneNumber.getUserByPhoneNumber;
 
@@ -110,3 +111,4 @@ exports.removeNextMeetingExcuse = removeNextMeetingExcuse.removeNextMeetingExcus
 exports.addNewContributionForApproval = addNewContributionForApproval.addNewContributionForApproval;
 exports.cancelNewContributionForApproval = cancelNewContributionForApproval.cancelNewContributionForApproval;
 exports.createNewGroup = createNewGroup.createNewGroup;
+exports.updatePassword = updatePassword.updatePassword;
