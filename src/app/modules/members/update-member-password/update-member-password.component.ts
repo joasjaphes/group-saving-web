@@ -30,7 +30,9 @@ export class UpdateMemberPasswordComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  closeDialog() {}
+  closeDialog() {
+    this.closeForm.emit();
+  }
 
   async save() {
     this.loading = true;
@@ -42,6 +44,7 @@ export class UpdateMemberPasswordComponent implements OnInit {
       };
       await this.functionsService.saveData('updatePassword', dataToSave);
       this.commonService.showSuccess('Members password updated successful');
+      this.closeDialog();
     } catch (e) {
       console.error(e);
       this.commonService.showError('Failed to update password');
