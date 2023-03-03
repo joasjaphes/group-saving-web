@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CommonService } from 'src/app/services/common.service';
 import { FunctionsService } from 'src/app/services/functions.service';
+import { fadeIn } from 'src/app/shared/animations/router-animation';
 import { ApplicationState } from 'src/app/store';
 import { Group } from 'src/app/store/group/group.model';
 import { Member } from 'src/app/store/member/member.model';
@@ -10,6 +11,7 @@ import { Member } from 'src/app/store/member/member.model';
   selector: 'app-update-member-password',
   templateUrl: './update-member-password.component.html',
   styleUrls: ['./update-member-password.component.scss'],
+  animations: [fadeIn],
 })
 export class UpdateMemberPasswordComponent implements OnInit {
   @Input() group: Group;
