@@ -1,9 +1,12 @@
 <div class="container-fluid">
   <div class="flex">
     <div class="w-10/12">
-      <h2 class="registration-title text-center">Change Account</h2>
+      <h2 class="registration-title text-center">
+        <span *ngIf="!data?.selectGroup">Change Account</span>
+        <span *ngIf="data?.selectGroup">Select Group</span>
+      </h2>
     </div>
-    <div class="w-2/12 pr-0" style="text-align: right">
+    <div class="w-2/12 pr-0" style="text-align: right" *ngIf="!data?.selectGroup">
       <button mat-button (click)="closeDialog()">
         <mat-icon>close</mat-icon>
         <span> Close</span>
@@ -11,14 +14,12 @@
     </div>
   </div>
   <div class="w-full">
-    <div >
-      <div
-        class="menu-grid content-area"
-        *ngFor="let memberGroup of memberGroups$ | async"
-        (click)="setCurrentGroup(memberGroup)"
-      >
-        <div class="img-div" *ngIf="memberGroup" >
-          <h1 style="font-size: 40px; color: white" class="registration-title">{{memberGroup.group_name[0].toUpperCase()}}</h1>
+    <div>
+      <div class="menu-grid content-area" *ngFor="let memberGroup of memberGroups$ | async"
+        (click)="setCurrentGroup(memberGroup)">
+        <div class="img-div" *ngIf="memberGroup">
+          <h1 style="font-size: 40px; color: white" class="registration-title">
+            {{memberGroup.group_name[0].toUpperCase()}}</h1>
         </div>
 
         <div *ngIf="memberGroup" class="grid items-center">
@@ -40,14 +41,10 @@
         </mat-form-field>
       </div>
       <div *ngIf="newGroupMode" @fadeIn>
-        <app-save-area
-          [confirmFirst]="true"
+        <app-save-area [confirmFirst]="true"
           confirmText="This will create a new group, Currently we are allowing you to have only two group"
-          (save)="save()"
-          (cancel)="newGroupMode = false;"
-          [savingData]="loading"
-          loadingMessage="Creating new Group, data please wait..."
-        ></app-save-area>
+          (save)="save()" (cancel)="newGroupMode = false;" [savingData]="loading"
+          loadingMessage="Creating new Group, data please wait..."></app-save-area>
       </div>
     </div>
   </div>
