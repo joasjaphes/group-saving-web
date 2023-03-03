@@ -519,8 +519,13 @@ export const selectContributionAndLoanForSingleMonth = (period: string) => creat
 
 export const selectContributionByMonth = (month, year) => createSelector(
   selectDetailed,
-  (allItems) => allItems
-    .filter(i => month === i.month && i.contributionsDetails.length > 0 && year + '' === i.year + '')
+  (allItems) =>  {
+    const items = 
+    allItems
+      .filter(i => month === i.month && i.contributionsDetails.length > 0 && year + '' === i.year + '');
+    console.log('Items', items);
+      return items;
+  }
 );
 
 

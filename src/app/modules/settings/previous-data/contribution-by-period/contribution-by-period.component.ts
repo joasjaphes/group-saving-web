@@ -1,24 +1,24 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import {Member} from '../../../../store/member/member.model';
-import {ContributionType} from '../../../../store/contribution-type/contribution-type.model';
-import {Group} from '../../../../store/group/group.model';
-import {fadeIn} from '../../../../shared/animations/router-animation';
-import {CommonService} from '../../../../services/common.service';
-import {FunctionsService} from '../../../../services/functions.service';
-import {Observable} from 'rxjs';
-import {Payment} from '../../../../store/payment/payment.model';
-import {select, Store} from '@ngrx/store';
-import {ApplicationState} from '../../../../store';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Member } from '../../../../store/member/member.model';
+import { ContributionType } from '../../../../store/contribution-type/contribution-type.model';
+import { Group } from '../../../../store/group/group.model';
+import { fadeIn } from '../../../../shared/animations/router-animation';
+import { CommonService } from '../../../../services/common.service';
+import { FunctionsService } from '../../../../services/functions.service';
+import { Observable } from 'rxjs';
+import { Payment } from '../../../../store/payment/payment.model';
+import { select, Store } from '@ngrx/store';
+import { ApplicationState } from '../../../../store';
 import * as paymentSelector from '../../../../store/payment/payment.selectors';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-contribution-by-period',
   templateUrl: './contribution-by-period.component.html',
   styleUrls: ['./contribution-by-period.component.scss'],
-  animations: [fadeIn]
+  animations: [fadeIn],
 })
 export class ContributionByPeriodComponent implements OnInit {
-
   @Input() members: Member[];
   @Input() contributionTypes: ContributionType[];
   @Input() group: Group;
@@ -40,35 +40,57 @@ export class ContributionByPeriodComponent implements OnInit {
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
-    private store: Store<ApplicationState>,
+    private store: Store<ApplicationState>
   ) {
-    this.contributions$ = this.store.pipe(select(paymentSelector.selectContributionByMonth(this.month, this.year)));
+    this.contributions$ = this.store.pipe(
+      select(paymentSelector.selectContributionByMonth(this.month, this.year))
+    );
   }
 
   ngOnInit(): void {
+    console.log('members', this.members);
     if (this.contributionTypes && this.contributionTypes.length === 1) {
       this.contributionType = this.contributionTypes[0].id;
       this.setContributionType(this.contributionType);
     }
     this.generateYears();
-    this.initiateMembers();
+    this.initiateMembers().then();
   }
 
-  initiateMembers() {
-    this.members.forEach(i => {
+  async initiateMembers() {
+    const contributions = await this.contributions$
+      .pipe(first((i) => !!i))
+      .toPromise();
+    this.members.forEach((i) => {
+      const memberContribution = contributions.filter(
+        (contr) => contr.memberId === i.id
+      );
       this.membersAmount[i.id] = {};
       this.memberTotals[i.id] = 0;
-      this.contributionTypes.forEach(contr => {
-        if (contr.is_must && contr.is_fixed) {
-          this.membersAmount[i.id][contr.id] = contr.fixed_value;
+      this.contributionTypes.forEach((contr) => {
+        if (memberContribution.length) {
+          for (const c of memberContribution) {
+            if (c?.contributions[contr.id]) {
+              this.membersAmount[i.id][contr.id] = c?.contributions[contr.id];
+            } else {
+              this.membersAmount[i.id][contr.id] = 0;
+            }
+          }
+        } else {
+          this.membersAmount[i.id][contr.id] = 0;
         }
+        // if (contr.is_must && contr.is_fixed) {
+        //   this.membersAmount[i.id][contr.id] = contr.fixed_value;
+        // }
       });
     });
     this.calculateTotal();
   }
 
   setContributionType(value: any) {
-    this.currentContributionType = this.contributionTypes.find(i => i.id === value);
+    this.currentContributionType = this.contributionTypes.find(
+      (i) => i.id === value
+    );
   }
 
   generateYears() {
@@ -81,9 +103,9 @@ export class ContributionByPeriodComponent implements OnInit {
 
   calculateTotal() {
     this.grandTotal = 0;
-    this.members.forEach(member => {
+    this.members.forEach((member) => {
       this.memberTotals[member.id] = 0;
-      this.contributionTypes.forEach(contr => {
+      this.contributionTypes.forEach((contr) => {
         const amount = this.membersAmount[member.id][contr.id] + '';
         if (!!amount) {
           this.memberTotals[member.id] += parseFloat(amount);
@@ -94,7 +116,7 @@ export class ContributionByPeriodComponent implements OnInit {
   }
 
   async save() {
-    const membersData = Object.keys(this.membersAmount).map(i => {
+    const membersData = Object.keys(this.membersAmount).map((i) => {
       return {
         groupId: this.group.id,
         memberId: i,
@@ -102,7 +124,9 @@ export class ContributionByPeriodComponent implements OnInit {
         loans: {},
         fines: {},
         contributions: this.membersAmount[i],
-        date: this.commonService.formatDate(new Date(`${this.year}-${this.month}-01`)),
+        date: this.commonService.formatDate(
+          new Date(`${this.year}-${this.month}-01`)
+        ),
         year: this.year,
         month: this.month,
         period: `${this.year}${this.month}`,
@@ -114,7 +138,7 @@ export class ContributionByPeriodComponent implements OnInit {
     try {
       await this.functionsService.saveData('addPastContributions', {
         groupId: this.group.id,
-        membersData
+        membersData,
       });
       this.loading = false;
       this.commonService.showSuccess('Contributions Submitted Successful');
@@ -131,9 +155,26 @@ export class ContributionByPeriodComponent implements OnInit {
   }
 
   setMonth(value: any) {
-    const monts = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov',  'Dec'];
+    const monts = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
     const monthValue = parseInt(value, 10);
     this.monthName = monts[monthValue - 1] + ' ' + this.year;
-    this.contributions$ = this.store.pipe(select(paymentSelector.selectContributionByMonth(this.month, this.year)));
+    this.contributions$ = this.store.pipe(
+      select(paymentSelector.selectContributionByMonth(this.month, this.year)),
+      first((i) => !!i)
+    );
+    this.initiateMembers().then();
   }
 }
