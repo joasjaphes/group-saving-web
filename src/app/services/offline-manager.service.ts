@@ -44,8 +44,8 @@ export class OfflineManagerService {
     return this.localDbService.update(dataKey, {...item} );
   }
 
-  getLastUpdatedTimes(): Promise<LastUpdatedAt> {
-    return this.localDbService.getByKey(DataKeys.LastUpdatedTable, 'times');
+  getLastUpdatedTimes(groupId = 'times'): Promise<LastUpdatedAt> {
+    return this.localDbService.getByKey(DataKeys.LastUpdatedTable, groupId);
   }
 
   saveLastUpdatedTimes(lastUpdated: LastUpdatedAt) {

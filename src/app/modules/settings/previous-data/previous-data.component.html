@@ -25,6 +25,6 @@
       [contributionTypes]="contributionTypes$ | async" [loanTypes]="loanTypes$ | async" [members]="members$ | async"
       (closeForm)="closePanel()"></app-import-loans>
     <app-expense-by-period *ngIf="viewType == 'Expense By Period'" [contributionTypes]="contributionTypes$ | async"
-      [members]="members$ | async" (close)="closePanel()"></app-expense-by-period>
+      [members]="members$ | async" [group]="group$ | async" (close)="closePanel()"></app-expense-by-period>
   </ng-container>
 </app-shared-layout>

@@ -1756,3 +1756,40 @@ Issues? Report them at https://github.com/firebase/firebase-tools/issues and att
 [info] i  functions: Finished "us-central1-updatePassword" in 3832.195803ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-updatePassword"},"extension":{},"message":"Finished \"us-central1-updatePassword\" in 3832.195803ms"}}
 [debug] [2023-03-02T13:28:07.554Z] [worker-us-central1-updatePassword-4131db33-f53e-46da-85af-3efba4ce6283]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-updatePassword"},"extension":{},"message":"[worker-us-central1-updatePassword-4131db33-f53e-46da-85af-3efba4ce6283]: IDLE"}}
 [debug] [2023-03-02T13:28:07.554Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2023-03-08T09:09:02.033Z] ----------------------------------------------------------------------
+[debug] [2023-03-08T09:09:02.034Z] Command:       /home/joas/.nvm/versions/node/v16.15.1/bin/node /home/joas/.nvm/versions/node/v16.15.1/bin/firebase emulators:start --only functions
+[debug] [2023-03-08T09:09:02.035Z] CLI Version:   11.24.0
+[debug] [2023-03-08T09:09:02.035Z] Platform:      linux
+[debug] [2023-03-08T09:09:02.035Z] Node Version:  v16.15.1
+[debug] [2023-03-08T09:09:02.035Z] Time:          Wed Mar 08 2023 12:09:02 GMT+0300 (East Africa Time)
+[debug] [2023-03-08T09:09:02.035Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-03-08T09:09:02.091Z] Field ".hosting" in "firebase.json" is possibly invalid: should be object
+[debug] [2023-03-08T09:09:02.092Z] Object ".hosting[0]" in "firebase.json" is missing required property: {"missingProperty":"target"}
+[debug] [2023-03-08T09:09:02.092Z] Object ".hosting[0]" in "firebase.json" is missing required property: {"missingProperty":"site"}
+[debug] [2023-03-08T09:09:02.092Z] Field ".hosting[0]" in "firebase.json" is possibly invalid: should match some schema in anyOf
+[debug] [2023-03-08T09:09:02.092Z] Field ".hosting" in "firebase.json" is possibly invalid: should match some schema in anyOf
+[debug] [2023-03-08T09:09:02.095Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-03-08T09:09:02.096Z] > authorizing via signed-in user (jjaphes@monitafrica.com)
+[info] i  emulators: Starting emulators: functions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions"}}
+[warn] ⚠  ui: Port 4001 is not open on localhost (127.0.0.1,::1), could not start Emulator UI. {"metadata":{"emulator":{"name":"ui"},"message":"Port 4001 is not open on localhost (127.0.0.1,::1), could not start Emulator UI."}}
+[warn] ⚠  ui: To select a different host/port, specify that host/port in a firebase.json config file:
+      {
+        // ...
+        "emulators": {
+          "ui": {
+            "host": "HOST",
+            "port": "PORT"
+          }
+        }
+      } {"metadata":{"emulator":{"name":"ui"},"message":"To select a different host/port, specify that host/port in a firebase.json config file:\n      {\n        // ...\n        \"emulators\": {\n          \"ui\": {\n            \"host\": \"\u001b[33mHOST\u001b[39m\",\n            \"port\": \"\u001b[33mPORT\u001b[39m\"\n          }\n        }\n      }"}}
+[info] i  emulators: Shutting down emulators. {"metadata":{"emulator":{"name":"hub"},"message":"Shutting down emulators."}}
+[warn] ⚠  hub: emulator hub unable to start on port 4400, starting on 4401 instead. {"metadata":{"emulator":{"name":"hub"},"message":"emulator hub unable to start on port 4400, starting on 4401 instead."}}
+[warn] ⚠  logging: Logging Emulator unable to start on port 4500, starting on 4501 instead. {"metadata":{"emulator":{"name":"logging"},"message":"Logging Emulator unable to start on port 4500, starting on 4501 instead."}}
+[debug] [2023-03-08T09:09:02.108Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-03-08T09:09:07.110Z] Error: Timed out.
+    at Timeout._onTimeout (/home/joas/.nvm/versions/node/v16.15.1/lib/node_modules/firebase-tools/lib/utils.js:253:49)
+    at listOnTimeout (node:internal/timers:559:17)
+    at processTimers (node:internal/timers:502:7)
+[error] 
+[error] Error: An unexpected error has occurred.

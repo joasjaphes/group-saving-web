@@ -1,31 +1,48 @@
-<app-shared-layout
-  title="Expenses"
-  image="cash-in-hand.png"
-  [hideAdd]="(expenses$ | async).length == 0"
-  [addIcon]="'add'"
-  (addItem)="addExpense()"
-  [addText]="'Create Expense'"
-  [viewDetails]="viewDetails"
-  [smallForm]="false"
-  [animationSize]="'full'"
-  [formTitle]="panelTitle"
-  (closeDetails)="closePanel()"
-  urlName="Summary"
-  [url]="['', 'summary']"
->
+<app-shared-layout title="Expenses" image="cash-in-hand.png" [hideAdd]="(expenses$ | async).length == 0"
+  [addIcon]="'add'" (addItem)="addExpense()" [addText]="'Create Expense'" [viewDetails]="viewDetails"
+  [smallForm]="false" [animationSize]="'full'" [formTitle]="panelTitle" (closeDetails)="closePanel()" urlName="Summary"
+  [url]="['', 'summary']">
   <ng-container ngProjectAs="table">
-    <app-empty-summary
-      incompleteText="Some information needed to process expenses have not been defined yet!"
-      [infoNotComplete]="(contributionTypes$ | async)?.length == 0"
-      [itemsExists]="(expenses$ | async)?.length > 0"
-      imageSrc="investments.jpg"
-      title="No expenses posted"
-      subTitle="You can add new expense for a group or specific member."
-      addTitle="Create Expense"
-      (addClicked)="addExpense()"
-    ></app-empty-summary>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="top-grid1">
+          <div>
+            <button class="zoom-on-hover selector" mat-flat-button (click)="currentView = 'group'; getData()"
+              [ngClass]="{'active': currentView == 'group'}">
+              Group
+            </button>
+            <button class="zoom-on-hover selector" mat-flat-button (click)="currentView = 'members'; getData()"
+              [ngClass]="{'active': currentView == 'members'}">
+              <mat-icon>person_outline</mat-icon>
+              Members
+            </button>
+          </div>
+          <div></div>
+          <div style="text-align: end;">
+            <mat-menu #yearMenu="matMenu">
+              <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setYear(yr)">{{yr}}</button>
+            </mat-menu>
+
+            <small class="text-muted">For</small>
+            <button mat-button [matMenuTriggerFor]="yearMenu" class="cursor">
+              <mat-icon>date_range</mat-icon> &nbsp;
+              <span>{{currentYear}}</span> &nbsp;
+              <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+            </button>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-empty-summary incompleteText="Some information needed to process expenses have not been defined yet!"
+      [infoNotComplete]="(contributionTypes$ | async)?.length == 0" [itemsExists]="(expenses$ | async)?.length > 0"
+      imageSrc="investments.jpg" title="No expenses posted for the selected year"
+      subTitle="You can add new expense for a group or specific member." addTitle="Create Expense"
+      (addClicked)="addExpense()"></app-empty-summary>
 
     <div class="main-expense-grid">
+
       <div *ngFor="let expense of expenses$ | async" class="expenseGrid">
         <div>
           <mat-icon>money</mat-icon>
@@ -58,20 +75,11 @@
   </ng-container>
 
   <ng-container ngProjectAs="form">
-    <app-add-expense
-      *ngIf="viewType == 'add'"
-      [group]="group$ | async"
-      [members]="members$ | async"
-      [contributionTypes]="contributionTypes$ | async"
-      (closeForm)="closePanel()"
-      [currentExpense]="currentExpense"
-    ></app-add-expense>
+    <app-add-expense *ngIf="viewType == 'add'" [group]="group$ | async" [members]="members$ | async"
+      [contributionTypes]="contributionTypes$ | async" (closeForm)="closePanel()" [currentExpense]="currentExpense">
+    </app-add-expense>
 
-    <app-delete-expense
-      *ngIf="viewType == 'delete'"
-      [group]="group$ | async"
-      [currentExpense]="currentExpense"
-      (closeForm)="closePanel()"
-    ></app-delete-expense>
+    <app-delete-expense *ngIf="viewType == 'delete'" [group]="group$ | async" [currentExpense]="currentExpense"
+      (closeForm)="closePanel()"></app-delete-expense>
   </ng-container>
 </app-shared-layout>

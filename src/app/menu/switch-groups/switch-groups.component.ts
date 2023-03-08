@@ -186,7 +186,7 @@ export class SwitchGroupsComponent implements OnInit {
           try {
             // Get Last Updated Times from the local database
             const localTimes: LastUpdatedAt =
-              await this.offlineService.getLastUpdatedTimes();
+              await this.offlineService.getLastUpdatedTimes(group1.group_id);
             // get group Information
             this.firestoreService
               .getUpdatedData(
@@ -227,7 +227,7 @@ export class SwitchGroupsComponent implements OnInit {
             this.offlineService
               .saveLastUpdatedTimes({
                 ...updateTimes,
-                id: 'times',
+                id: group1.group_id /*'times'*/,
               })
               .then();
           } catch (e) {
