@@ -308,6 +308,8 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
                 )
                 .then();
             }
+
+            // Investigate why id has to be times, what obout overwriting
             this.offlineService
               .saveLastUpdatedTimes({
                 ...updateTimes,

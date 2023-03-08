@@ -48,7 +48,6 @@ export class ContributionByPeriodComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('members', this.members);
     if (this.contributionTypes && this.contributionTypes.length === 1) {
       this.contributionType = this.contributionTypes[0].id;
       this.setContributionType(this.contributionType);

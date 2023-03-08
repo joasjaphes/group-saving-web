@@ -120,6 +120,7 @@ import { AddAnotherAccountComponent } from './modules/members/add-another-accoun
 import { LoanRequestSettingComponent } from './modules/settings/loan-request-setting/loan-request-setting.component';
 import { SwitchGroupsComponent } from './menu/switch-groups/switch-groups.component';
 import { UpdateMemberPasswordComponent } from './modules/members/update-member-password/update-member-password.component';
+import { ExpenseByPeriodComponent } from './modules/settings/previous-data/expense-by-period/expense-by-period.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -235,7 +236,8 @@ const firebaseConfig = {
     AddAnotherAccountComponent,
     LoanRequestSettingComponent,
     SwitchGroupsComponent,
-    UpdateMemberPasswordComponent
+    UpdateMemberPasswordComponent,
+    ExpenseByPeriodComponent
   ],
   imports: [
     CommonModule,

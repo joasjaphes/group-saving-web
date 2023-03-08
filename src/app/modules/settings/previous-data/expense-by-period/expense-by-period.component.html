@@ -1,0 +1,179 @@
+<div class="container-fluid">
+    <div class="grid gap-4 grid-cols-2">
+        <div class="">
+            <mat-form-field appearance="outline">
+                <mat-label>Year</mat-label>
+                <mat-select [(ngModel)]="year">
+                    <mat-option *ngFor="let y of years" [value]="y">{{y}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Expense Month</mat-label>
+                <mat-select [(ngModel)]="month" (selectionChange)="setMonth($event.value)">
+                    <mat-option value="01">Jan {{year}}</mat-option>
+                    <mat-option value="02">Feb {{year}}</mat-option>
+                    <mat-option value="03">Mar {{year}}</mat-option>
+                    <mat-option value="04">Apr {{year}}</mat-option>
+                    <mat-option value="05">May {{year}}</mat-option>
+                    <mat-option value="06">Jun {{year}}</mat-option>
+                    <mat-option value="07">Jul {{year}}</mat-option>
+                    <mat-option value="08">Aug {{year}}</mat-option>
+                    <mat-option value="09">Sep {{year}}</mat-option>
+                    <mat-option value="10">Oct {{year}}</mat-option>
+                    <mat-option value="11">Nov {{year}}</mat-option>
+                    <mat-option value="12">Dec {{year}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <!--    Expense Date-->
+        <!-- <div class="col-sm-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Expense date</mat-label>
+            <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="expenseDate"/>
+            <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
+            <mat-datepicker #endingDate></mat-datepicker>
+          </mat-form-field>
+        </div> -->
+    
+        <!--    Expense for-->
+        <div class="mt-2" [ngClass]="expenseFor == 'MEMBER' ? 'col-sm-6' : 'col-sm-12'" *ngIf="month" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Expense For</mat-label>
+            <mat-icon matPrefix>people_outline</mat-icon>
+            <mat-select [(ngModel)]="expenseFor">
+              <mat-option value="GROUP">
+                 Group
+              </mat-option>
+              <mat-option value="MEMBER">
+                Specific Member <small>(The amount was given to a specific member)</small>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+    
+        <!--    Members-->
+        <div class="col-sm-6 mt-2" *ngIf="expenseFor == 'MEMBER'" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Amount will be given to</mat-label>
+            <mat-icon matPrefix>person_outline</mat-icon>
+            <mat-select [(ngModel)]="memberId" (selectionChange)="selectMember($event.value)">
+              <app-mat-select-search [(ngModel)]="memberSearch"></app-mat-select-search>
+              <mat-option [value]="member.id" *ngFor="let member of members | search:'name':memberSearch">
+                {{member.name}}
+              </mat-option>
+            </mat-select>
+            <mat-hint *ngIf="memberName">This expense will be given to {{memberName}}</mat-hint>
+          </mat-form-field>
+        </div>
+    
+        <!--    Contribution Types-->
+        <div class="col-sm-12 mt-2" *ngIf="month && expenseFor" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Contribution Type</mat-label>
+            <mat-select [(ngModel)]="contributionType" (selectionChange)="selectContributionType($event.value)">
+              <mat-option [value]="contr.id" *ngFor="let contr of contributionTypes">
+                {{contr.name}}
+              </mat-option>
+            </mat-select>
+            <mat-hint>This expense will come from which account?</mat-hint>
+          </mat-form-field>
+        </div>
+    
+        <!--    Contribution Amount-->
+        <div class="col-sm-12 mt-2" *ngIf="contributionType" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Amount <b *ngIf="amount">({{amount | number}})</b> </mat-label>
+            <input type="number" matInput [(ngModel)]="amount" placeholder="Expense amount">
+            <!-- <mat-hint *ngIf="balanceLimit">Amount available is <b>{{balanceLimit | number}}</b></mat-hint> -->
+          </mat-form-field>
+        </div>
+    
+        <!--    Contribution Amount-->
+        <div class="col-sm-12 mt-2" *ngIf="amount" @fadeIn>
+          <mat-form-field appearance="outline">
+            <mat-label>Expense description</mat-label>
+            <textarea rows="4" matInput [(ngModel)]="description" placeholder="Expense description"></textarea>
+          </mat-form-field>
+        </div>
+    
+        <div class="col-sm-12 mt-3" *ngIf="description && contributionType" @fadeIn>
+          <app-save-area
+            [confirmFirst]="true"
+            (cancel)="closeDialog()"
+            (save)="save()"
+            [savingData]="loading"
+          ></app-save-area>
+        </div>
+      </div>
+    <!-- <div class="grid gap-4 grid-cols-1 overflow-auto">
+        <table class="table entry-table table-bordered">
+            <tr>
+                <th>Expense For</th>
+                <th>Amount Given To</th>
+                <th>Contribution Type</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>
+                    <mat-form-field appearance="outline">
+                        <mat-select [(ngModel)]="expenseFor" placeholder="This is expense was for">
+                            <mat-option value="GROUP">
+                                Group
+                            </mat-option>
+                            <mat-option value="MEMBER">
+                                Specific Member <small>(The amount was given to a specific member)</small>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field appearance="outline">
+                        <mat-select [(ngModel)]="memberId" (selectionChange)="selectMember($event.value)"
+                            [disabled]="expenseFor == 'GROUP'" placeholder="This amount was given to">
+                            <app-mat-select-search [(ngModel)]="memberSearch"></app-mat-select-search>
+                            <mat-option [value]="member.id" *ngFor="let member of members | search:'name':memberSearch">
+                                {{member.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field appearance="outline">
+                        <mat-select [(ngModel)]="contributionType"
+                            (selectionChange)="selectContributionType($event.value)"
+                            placeholder="This expense will come from which account?">
+                            <mat-option [value]="contr.id" *ngFor="let contr of contributionTypes">
+                                {{contr.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field appearance="outline">
+                        <input type="number" matInput [(ngModel)]="amount" placeholder="Expense amount">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field appearance="outline">
+                        <textarea rows="2" matInput [(ngModel)]="description"
+                            placeholder="Expense description"></textarea>
+                    </mat-form-field>
+                </td>
+                <td>
+                    <button @fadeIn class="zoom-on-hover" mat-raised-button color="primary"
+                        style="font-weight: 900; border-radius: 10px;border: 1px solid #FF7043; color:  #FF7043!important;"
+                        [disabled]="addDisabled">
+                        Add
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div> -->
+</div>

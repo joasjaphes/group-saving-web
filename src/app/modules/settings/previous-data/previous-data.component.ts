@@ -46,6 +46,12 @@ export class PreviousDataComponent implements OnInit {
       image: 'contribution1.png'
     },
     {
+      name: 'Expense By Period',
+      route: '',
+      description: 'Add all past group expenses for a specific period',
+      image: 'cash-in-hand.png'
+    },
+    {
       name: 'Loans',
       route: '',
       description: 'Add current active and past completed loans to members',
