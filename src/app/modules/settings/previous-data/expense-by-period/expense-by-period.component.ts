@@ -12,7 +12,7 @@ import { Group } from 'src/app/store/group/group.model';
   animations: [fadeIn],
 })
 export class ExpenseByPeriodComponent implements OnInit {
-  year: string;
+  year = new Date().getFullYear();
   month: string;
   years = [];
   expenseFor = 'GROUP';

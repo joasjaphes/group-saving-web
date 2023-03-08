@@ -79,7 +79,7 @@ export const selectTotalByYear = (year, contributionType, memberId) =>
   });
 
 export const selectExpensesByYear = (year) =>
-  createSelector(selectByCurrentGroup, (allItems) => {
+  createSelector(selectDetailed, (allItems) => {
     const items = allItems.filter(
       (i) => year === 'All' || i.year + '' === year + ''
     );
@@ -87,7 +87,7 @@ export const selectExpensesByYear = (year) =>
     return items;
   });
 
-export const selectYearsWithExpenses = createSelector(selectAll, (allItems) => {
+export const selectYearsWithExpenses = createSelector(selectDetailed, (allItems) => {
   const years = [new Date().getFullYear() + ''];
   allItems.forEach((item) => {
     if (years.indexOf(item.year + '') === -1) {
@@ -98,7 +98,7 @@ export const selectYearsWithExpenses = createSelector(selectAll, (allItems) => {
 });
 
 export const selectMembersExpenseByYear = (year) =>
-  createSelector(selectByCurrentGroup, (allItems) => {
+  createSelector(selectDetailed, (allItems) => {
     const items = allItems.filter(
       (i) => (year === 'All' || i.year + '' === year + '') && !!i.member
     );
@@ -106,7 +106,7 @@ export const selectMembersExpenseByYear = (year) =>
   });
 
   export const selectGroupExpenseByYear = (year) =>
-  createSelector(selectByCurrentGroup, (allItems) => {
+  createSelector(selectDetailed, (allItems) => {
     const items = allItems.filter(
       (i) => (year === 'All' || i.year + '' === year + '') && !i.member
     );
