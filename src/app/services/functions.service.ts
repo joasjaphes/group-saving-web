@@ -6,9 +6,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 })
 export class FunctionsService {
 
-  // SERVER_ADDRESS = 'https://us-central1-group-saving.cloudfunctions.net/';
-  SERVER_ADDRESS = 'http://127.0.0.1:5001/group-saving/us-central1/';
-  // http://127.0.0.1:5001/group-saving/us-central1/addPastExpenseByMonth
+  SERVER_ADDRESS = 'https://us-central1-group-saving.cloudfunctions.net/';
   constructor(
     private http: HttpClient
   ) { }
