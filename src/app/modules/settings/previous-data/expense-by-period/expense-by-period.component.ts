@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonService } from 'src/app/services/common.service';
+import { FirestoreService } from 'src/app/services/firestore.service';
+import { FunctionsService } from 'src/app/services/functions.service';
 import { fadeIn } from 'src/app/shared/animations/router-animation';
 import { Group } from 'src/app/store/group/group.model';
 
@@ -23,15 +25,17 @@ export class ExpenseByPeriodComponent implements OnInit {
   @Input() members = [];
   @Input() contributionTypes = [];
   @Input() group: Group;
+  @Output() close = new EventEmitter();
   loading = false;
   expenses = [];
-  constructor(private commonService: CommonService) {}
+  constructor(
+    private commonService: CommonService,
+    private functionsService: FunctionsService
+  ) {}
 
   ngOnInit(): void {
     this.generateYears();
   }
-
-  setMonth(event) {}
 
   get addDisabled() {
     return (
@@ -50,25 +54,33 @@ export class ExpenseByPeriodComponent implements OnInit {
     }
   }
 
-  selectMember(event) {}
-
-  selectContributionType(event) {}
-
-  save() {
-    const currentExpense = {
-      id: this.commonService.makeId(),
-      groupId: this.group.id,
-      groupName: this.group.group_name,
-      memberId: this.memberId,
-      memberName: this.memberName,
-      amount: this.amount,
-      associated_account: this.contributionType,
-      date: this.commonService.formatDate(
-        new Date(`${this.year}-${this.month}-01`)
-      ),
-      reason: this.description,
-    };
+  async save() {
+    this.loading = true;
+    try {
+      const currentExpense = {
+        id: this.commonService.makeId(),
+        groupId: this.group.id,
+        groupName: this.group.group_name,
+        memberId: this.memberId,
+        memberName: this.memberName,
+        amount: this.amount,
+        associated_account: this.contributionType,
+        date: this.commonService.formatDate(
+          new Date(`${this.year}-${this.month}-01`)
+        ),
+        reason: this.description,
+      };
+      await this.functionsService.saveData('addPastExpenseByMonth',currentExpense);
+      this.commonService.showSuccess('Expense recorded successfully');
+      this.closeDialog();
+    }catch(e) {
+      console.error('Failed to save expense',e);
+      this.commonService.showError('Failed to save expenses');
+    }
+    this.loading = false;
   }
 
-  closeDialog() {}
+  closeDialog() {
+    this.close.emit();
+  }
 }

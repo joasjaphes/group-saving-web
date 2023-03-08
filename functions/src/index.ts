@@ -55,10 +55,12 @@ import * as removeNextMeetingExcuse from './meeting/remove-next-meeting-excuse';
 import * as addNewContributionForApproval from './contribution/add_new_contribution_for_approval';
 import * as cancelNewContributionForApproval from './contribution/cancel_new_contribution_for_approval';
 import * as updatePassword from './members/update-password';
+import * as addPastExpenseByMonth from './contribution/add_past_expense_by_month';
 
 exports.getUserByPhoneNumber = getUserByPhoneNumber.getUserByPhoneNumber;
 
-exports.getUserGroupsByPhoneNumber = getUserGroupsByPhoneNumber.getUserGroupsByPhoneNumber;
+exports.getUserGroupsByPhoneNumber =
+  getUserGroupsByPhoneNumber.getUserGroupsByPhoneNumber;
 
 exports.createUser = createUser.createUser;
 
@@ -69,7 +71,8 @@ exports.updateSingleMember = updateSingleMember.updateSingleMember;
 exports.addAnotherAccount = addAnotherAccount.addAnotherAccount;
 exports.updatePhoneNumber = updatePhoneNumber.updatePhoneNumber;
 exports.setMeetingFrequency = setMeetingFrequency.setMeetingFrequency;
-exports.setAvailableContributionType = setAvailableContributionType.setAvailableContributionType;
+exports.setAvailableContributionType =
+  setAvailableContributionType.setAvailableContributionType;
 exports.updateNeedToAddMember = updateNeedToAddMember.updateNeedToAddMember;
 exports.confirmCurrency = confirmCurrency.confirmCurrency;
 exports.createContributionType = createContributionType.createContributionType;
@@ -89,26 +92,35 @@ exports.deleteLoan = deleteLoan.deleteLoan;
 exports.addLoanGuarantors = addLoanGuarantors.addLoanGuarantors;
 exports.assignLoanToMember = assignLoanToMember.assignLoanToMember;
 exports.createLoanQueue = createLoanQueue.createLoanQueue;
-exports.removeMemberFromLoanQueue = removeMemberFromLoanQueue.removeMemberFromLoanQueue;
+exports.removeMemberFromLoanQueue =
+  removeMemberFromLoanQueue.removeMemberFromLoanQueue;
 exports.addNewContribution = addNewContribution.addNewContribution;
-exports.setContributionBalances = setContributionBalances.setContributionBalances;
+exports.setContributionBalances =
+  setContributionBalances.setContributionBalances;
 exports.createExpense = createExpense.createExpense;
 exports.updateExpense = updateExpense.updateExpense;
 exports.deleteExpense = deleteExpense.deleteExpense;
 exports.addPastContributions = addPastContributions.addPastContributions;
 exports.addOneTimeContribution = addOneTimeContribution.addOneTimeContribution;
 exports.deleteContribution = deleteContribution.deleteContribution;
-exports.assignPastActiveLoanToMember = assignPastActiveLoanToMember.assignPastActiveLoanToMember;
+exports.assignPastActiveLoanToMember =
+  assignPastActiveLoanToMember.assignPastActiveLoanToMember;
 exports.addExpectedFines = addExpectedFines.addExpectedFines;
 exports.addLoanRequest = addLoanRequest.addLoanRequest;
 exports.deleteExpectedFine = deleteExpectedFine.deleteExpectedFine;
-exports.deleteOneTimeContribution = deleteOneTimeContribution.deleteOneTimeContribution;
+exports.deleteOneTimeContribution =
+  deleteOneTimeContribution.deleteOneTimeContribution;
 exports.importLoanFromExcel = importLoanFromExcel.importLoanFromExcel;
-exports.updateMemberProfilePicture = updateMemberProfilePicture.updateMemberProfilePicture;
+exports.updateMemberProfilePicture =
+  updateMemberProfilePicture.updateMemberProfilePicture;
 exports.setGroupProfilePicture = setGroupProfilePicture.setGroupProfilePicture;
 exports.setNextMeetingExcuse = setNextMeetingExcuse.setNextMeetingExcuse;
-exports.removeNextMeetingExcuse = removeNextMeetingExcuse.removeNextMeetingExcuse;
-exports.addNewContributionForApproval = addNewContributionForApproval.addNewContributionForApproval;
-exports.cancelNewContributionForApproval = cancelNewContributionForApproval.cancelNewContributionForApproval;
+exports.removeNextMeetingExcuse =
+  removeNextMeetingExcuse.removeNextMeetingExcuse;
+exports.addNewContributionForApproval =
+  addNewContributionForApproval.addNewContributionForApproval;
+exports.cancelNewContributionForApproval =
+  cancelNewContributionForApproval.cancelNewContributionForApproval;
 exports.createNewGroup = createNewGroup.createNewGroup;
 exports.updatePassword = updatePassword.updatePassword;
+exports.addPastExpenseByMonth = addPastExpenseByMonth.addPastExpenseByMonth;

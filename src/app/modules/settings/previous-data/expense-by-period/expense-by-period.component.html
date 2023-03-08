@@ -11,7 +11,7 @@
         <div>
             <mat-form-field appearance="outline">
                 <mat-label>Expense Month</mat-label>
-                <mat-select [(ngModel)]="month" (selectionChange)="setMonth($event.value)">
+                <mat-select [(ngModel)]="month">
                     <mat-option value="01">Jan {{year}}</mat-option>
                     <mat-option value="02">Feb {{year}}</mat-option>
                     <mat-option value="03">Mar {{year}}</mat-option>
@@ -59,15 +59,14 @@
         <!--    Members-->
         <div class="col-sm-6 mt-2" *ngIf="expenseFor == 'MEMBER'" @fadeIn>
           <mat-form-field appearance="outline">
-            <mat-label>Amount will be given to</mat-label>
+            <mat-label>Amount was given to</mat-label>
             <mat-icon matPrefix>person_outline</mat-icon>
-            <mat-select [(ngModel)]="memberId" (selectionChange)="selectMember($event.value)">
+            <mat-select [(ngModel)]="memberId">
               <app-mat-select-search [(ngModel)]="memberSearch"></app-mat-select-search>
               <mat-option [value]="member.id" *ngFor="let member of members | search:'name':memberSearch">
                 {{member.name}}
               </mat-option>
             </mat-select>
-            <mat-hint *ngIf="memberName">This expense will be given to {{memberName}}</mat-hint>
           </mat-form-field>
         </div>
     
@@ -75,7 +74,7 @@
         <div class="col-sm-12 mt-2" *ngIf="month && expenseFor" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Contribution Type</mat-label>
-            <mat-select [(ngModel)]="contributionType" (selectionChange)="selectContributionType($event.value)">
+            <mat-select [(ngModel)]="contributionType">
               <mat-option [value]="contr.id" *ngFor="let contr of contributionTypes">
                 {{contr.name}}
               </mat-option>
