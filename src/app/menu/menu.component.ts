@@ -40,6 +40,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { SwitchGroupsComponent } from './switch-groups/switch-groups.component';
 import { getLastUpdatedAts } from '../store/last-updated-at/last-updated-at.actions';
 import { getMemberGroups } from '../store/member-group/member-group.actions';
+import { setNextStep } from '../store/login-steps/login-steps.actions';
+import { RegistrationSteps } from '../registration/registration-steps';
+import { Go } from '../store/router/router.action';
+import { selectPhoneCountry } from '../store/login-steps/login-steps.selectors';
 
 @Component({
   selector: 'app-menu',
@@ -158,10 +162,13 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  logout() {
+  async logout() {
+    console.log('Loging out')
     // this action will clear the store data first before logging user out
     // TODO: make sure user cannot logout if there is no network
     this.store.dispatch(logout());
+    this.store.dispatch(setNextStep({currentStep: RegistrationSteps.PhoneNumber, previousStep: RegistrationSteps.CountrySelection}))
+    this.store.dispatch(new Go({path: ['', 'welcome', 'registration']}));
     this.userService.logout().then();
   }
 

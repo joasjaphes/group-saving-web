@@ -27,6 +27,7 @@ export class CountrySelectionComponent implements OnInit {
 
   countrySelected($event) {
     const selectedCountry = this.countries.find(i => i.phoneCode === $event);
+    localStorage.setItem('group-saving-country-code', $event);
     this.setSelectedCountry.emit(selectedCountry);
   }
 

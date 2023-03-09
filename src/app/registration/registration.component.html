@@ -24,7 +24,7 @@
 
 <!--  Country Selection-->
   <app-country-selection
-    *ngIf="(currentStep$ | async) == registrationSteps.CountrySelection"
+    *ngIf="(currentStep$ | async) == registrationSteps.CountrySelection && !hideCountrySelection"
     [selectedCountry]="country$ | async"
     (setSelectedCountry)="setCountry($event)"
     (nextStep)="goNextStep($event)"
