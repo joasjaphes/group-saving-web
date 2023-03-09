@@ -12,6 +12,7 @@ import * as groupSelector from '../../../store/group/group.selectors';
 import * as contributionTypeSelector from '../../../store/contribution-type/contribution-type.selectors';
 import { Expense } from '../../../store/expense/expense.model';
 import * as expenseSelector from '../../../store/expense/expense.selectors';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-expenses',
@@ -32,8 +33,14 @@ export class ExpensesComponent implements OnInit {
   currentView = 'group';
   constructor(
     private store: Store<ApplicationState>,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private route: ActivatedRoute
   ) {
+    this.route.params.subscribe(param => {
+      if(param?.year) {
+        this.currentYear = param?.year;
+      }
+    })
     this.expenses$ = this.store.pipe(
       select(expenseSelector.selectGroupExpenseByYear(this.currentYear))
     );

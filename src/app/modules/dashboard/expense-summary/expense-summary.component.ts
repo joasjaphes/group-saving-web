@@ -43,7 +43,7 @@ export class ExpenseSummaryComponent implements OnInit {
   }
 
   goToExpense() {
-    this.store.dispatch(new Go({path: ['', 'summary', 'expenses' ]}));
+    this.store.dispatch(new Go({path: ['', 'summary', 'expenses', this.year ]}));
   }
 
 }

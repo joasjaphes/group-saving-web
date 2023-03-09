@@ -48,6 +48,6 @@ export class ContributionSummaryComponent implements OnInit {
   }
 
   goToContribution() {
-    this.store.dispatch(new Go({path: ['', 'summary', 'contributions' ]}));
+    this.store.dispatch(new Go({path: ['', 'summary', 'contributions', this.year ]}));
   }
 }

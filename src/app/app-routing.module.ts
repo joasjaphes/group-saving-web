@@ -83,6 +83,12 @@ const routes: Routes = [
         component: ExpensesComponent,
         data: { title: 'Expenses' }
       },
+
+      {
+        path: 'summary/expenses/:year',
+        component: ExpensesComponent,
+        data: { title: 'Expenses' }
+      },
       {
         path: 'summary/loans',
         component: LoansComponent,
@@ -90,6 +96,11 @@ const routes: Routes = [
       },
       {
         path: 'summary/contributions',
+        component: ContributionsComponent,
+        data: { title: 'Contribution' }
+      },
+      {
+        path: 'summary/contributions/:year',
         component: ContributionsComponent,
         data: { title: 'Contribution' }
       },

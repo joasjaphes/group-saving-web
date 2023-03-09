@@ -99,8 +99,9 @@ export const selectDetailedGroupByMember = (year) => createSelector(
   (allItems, members) => {
     const memberData = {};
     for (const member of members) {
+      console.log('year', year)
       memberData[member.id] = {type: 'member', id: member.id, name: member.name, total: 0, totals: {}, items: []};
-      allItems.filter(i => i.year + '' === year + '')
+      allItems.filter(i => i.year + '' === year + '' || year === 'All')
         .forEach(item => {
           if (item.memberId === member.id) {
             memberData[member.id].total += parseFloat(item.totalContributions + '');
