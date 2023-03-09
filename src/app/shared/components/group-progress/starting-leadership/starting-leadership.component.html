@@ -26,9 +26,9 @@
 
 
   <div class="col-sm-12">
-    <h4 class="registration-title !mb-0">Treasure</h4>
+    <h4 class="registration-title !mb-0">Treasurer</h4>
     <mat-form-field appearance="outline">
-      <mat-label>Select Treasury</mat-label>
+      <mat-label>Select Treasurer</mat-label>
       <mat-select [(ngModel)]="treasure" placeholder="Select Treasury">
         <mat-option [value]="member.id" *ngFor="let member of members$ | async">
           {{member.name}} <small>({{member.phone_number}})</small>
