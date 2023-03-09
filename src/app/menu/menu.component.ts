@@ -163,12 +163,20 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async logout() {
-    console.log('Loging out')
+    console.log('Loging out');
     // this action will clear the store data first before logging user out
     // TODO: make sure user cannot logout if there is no network
     this.store.dispatch(logout());
-    this.store.dispatch(setNextStep({currentStep: RegistrationSteps.PhoneNumber, previousStep: RegistrationSteps.CountrySelection}))
-    this.store.dispatch(new Go({path: ['', 'welcome', 'registration']}));
+    const countryCode = localStorage.getItem('group-saving-country-code');
+    if (countryCode) {
+      this.store.dispatch(
+        setNextStep({
+          currentStep: RegistrationSteps.PhoneNumber,
+          previousStep: RegistrationSteps.CountrySelection,
+        })
+      );
+      this.store.dispatch(new Go({ path: ['', 'welcome', 'registration'] }));
+    }
     this.userService.logout().then();
   }
 

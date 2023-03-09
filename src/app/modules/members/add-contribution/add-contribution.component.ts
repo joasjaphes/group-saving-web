@@ -1,29 +1,35 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
-import {Group} from '../../../store/group/group.model';
-import {Member} from '../../../store/member/member.model';
-import {FineType} from '../../../store/fine-type/fine-type.model';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { Group } from '../../../store/group/group.model';
+import { Member } from '../../../store/member/member.model';
+import { FineType } from '../../../store/fine-type/fine-type.model';
 import * as fineSelector from '../../../store/fine-type/fine-type.selectors';
-import {ContributionType} from '../../../store/contribution-type/contribution-type.model';
-import {fadeIn} from '../../../shared/animations/router-animation';
-import {Observable} from 'rxjs';
-import {Loan} from '../../../store/loan/loan.model';
-import {select, Store} from '@ngrx/store';
-import {ApplicationState} from '../../../store';
-import {selectLoanByMember} from '../../../store/loan/loan.selectors';
-import {MatSelectChange} from '@angular/material/select';
-import {first} from 'rxjs/operators';
-import {CommonService} from '../../../services/common.service';
-import {FunctionsService} from '../../../services/functions.service';
-import {MatCheckboxChange} from '@angular/material/checkbox';
+import { ContributionType } from '../../../store/contribution-type/contribution-type.model';
+import { fadeIn } from '../../../shared/animations/router-animation';
+import { Observable } from 'rxjs';
+import { Loan } from '../../../store/loan/loan.model';
+import { select, Store } from '@ngrx/store';
+import { ApplicationState } from '../../../store';
+import { selectLoanByMember } from '../../../store/loan/loan.selectors';
+import { MatSelectChange } from '@angular/material/select';
+import { first } from 'rxjs/operators';
+import { CommonService } from '../../../services/common.service';
+import { FunctionsService } from '../../../services/functions.service';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-add-contribution',
   templateUrl: './add-contribution.component.html',
   styleUrls: ['./add-contribution.component.scss'],
-  animations: [fadeIn]
+  animations: [fadeIn],
 })
 export class AddContributionComponent implements OnInit {
-
   @Input() group: Group;
   @Input() contributionTypes: ContributionType[];
   @Input() fineTypes: FineType[];
@@ -52,14 +58,17 @@ export class AddContributionComponent implements OnInit {
   month: string;
   paymentMode: string;
   referenceNumber: string;
+  inputErrors = {};
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
     private store: Store<ApplicationState>
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.memberLoans$ = this.store.pipe(select(selectLoanByMember(this.member?.id)));
+    this.memberLoans$ = this.store.pipe(
+      select(selectLoanByMember(this.member?.id))
+    );
     this.fineTypes$ = this.store.pipe(select(fineSelector.selectAll));
     this.generateYears();
     // this.memberLoans$.subscribe(i => console.log(i));
@@ -76,14 +85,17 @@ export class AddContributionComponent implements OnInit {
   getMonth() {
     const month = new Date().getMonth();
     const monthValue = month + 1;
-    this.month = (monthValue + '').length === 1 ? '0' + monthValue : monthValue + '';
+    this.month =
+      (monthValue + '').length === 1 ? '0' + monthValue : monthValue + '';
   }
 
   async setSelectedFines($event: MatSelectChange) {
     const fineTypes = await this.fineTypes$.pipe(first()).toPromise();
-    this.selectedFineTypes = $event.value.map(i => fineTypes.find(k => k.id === i));
+    this.selectedFineTypes = $event.value.map((i) =>
+      fineTypes.find((k) => k.id === i)
+    );
     this.fineAmounts = {};
-    this.selectedFineTypes.forEach(fineType => {
+    this.selectedFineTypes.forEach((fineType) => {
       if (fineType.calculation === 'Fixed') {
         this.fineAmounts[fineType.id] = fineType.fixed_amount;
         this.findTotal();
@@ -93,19 +105,19 @@ export class AddContributionComponent implements OnInit {
 
   findTotal() {
     let sum = 0;
-    Object.keys(this.contributionAmount).forEach(item => {
+    Object.keys(this.contributionAmount).forEach((item) => {
       const val = this.contributionAmount[item];
       if (val) {
         sum += parseFloat(val);
       }
     });
-    Object.keys(this.loanAmount).forEach(item => {
+    Object.keys(this.loanAmount).forEach((item) => {
       const val = this.loanAmount[item];
       if (val) {
         sum += parseFloat(val);
       }
     });
-    Object.keys(this.fineAmounts).forEach(item => {
+    Object.keys(this.fineAmounts).forEach((item) => {
       const val = this.fineAmounts[item];
       if (val) {
         sum += parseFloat(val);
@@ -116,24 +128,33 @@ export class AddContributionComponent implements OnInit {
 
   async save() {
     // Making sure that I am not sending empty or zeros to the server to cause issues
-    this.fineAmounts = Object.keys(this.fineAmounts).reduce((object: any, key: string) => {
-      if (!!this.fineAmounts[key]) {
-        object[key] = this.fineAmounts[key];
-      }
-      return object;
-    }, {});
-    this.loanAmount = Object.keys(this.loanAmount).reduce((object: any, key: string) => {
-      if (!!this.loanAmount[key]) {
-        object[key] = this.loanAmount[key];
-      }
-      return object;
-    }, {});
-    this.contributionAmount = Object.keys(this.contributionAmount).reduce((object: any, key: string) => {
-      if (!!this.contributionAmount[key]) {
-        object[key] = this.contributionAmount[key];
-      }
-      return object;
-    }, {});
+    this.fineAmounts = Object.keys(this.fineAmounts).reduce(
+      (object: any, key: string) => {
+        if (!!this.fineAmounts[key]) {
+          object[key] = this.fineAmounts[key];
+        }
+        return object;
+      },
+      {}
+    );
+    this.loanAmount = Object.keys(this.loanAmount).reduce(
+      (object: any, key: string) => {
+        if (!!this.loanAmount[key]) {
+          object[key] = this.loanAmount[key];
+        }
+        return object;
+      },
+      {}
+    );
+    this.contributionAmount = Object.keys(this.contributionAmount).reduce(
+      (object: any, key: string) => {
+        if (!!this.contributionAmount[key]) {
+          object[key] = this.contributionAmount[key];
+        }
+        return object;
+      },
+      {}
+    );
 
     // Preparing Values to save
     let dataToSave = {
@@ -157,19 +178,21 @@ export class AddContributionComponent implements OnInit {
     };
 
     // Check to see if the current value is the starting share and add its value
-    Object.keys(this.startingShareSelected).forEach(key => {
-      if(this.startingShareSelected[key]) {
+    Object.keys(this.startingShareSelected).forEach((key) => {
+      if (this.startingShareSelected[key]) {
         dataToSave = {
           ...dataToSave,
-          startingAmount: {[key]: this.contributionAmount[key]}
-        }
+          startingAmount: { [key]: this.contributionAmount[key] },
+        };
       }
     });
     this.loading = true;
     try {
       await this.functionsService.saveData('addNewContribution', dataToSave);
       this.loading = false;
-      this.commonService.showSuccess('Contribution from ' + this.member.name + ' Submitted Successful');
+      this.commonService.showSuccess(
+        'Contribution from ' + this.member.name + ' Submitted Successful'
+      );
       this.closeDialog();
     } catch (e) {
       this.loading = false;
@@ -180,30 +203,48 @@ export class AddContributionComponent implements OnInit {
 
   enableContribution(checked: boolean, contributionType: ContributionType) {
     if (checked && contributionType.is_must && contributionType.is_fixed) {
-      this.contributionAmount[contributionType.id] = contributionType.fixed_value;
+      this.contributionAmount[contributionType.id] =
+        contributionType.fixed_value;
       this.findTotal();
     } else {
-      this.contributionAmount = Object.keys(this.contributionAmount).reduce((object: any, key: string) => {
-        if (key !== contributionType.id) {
-          object[key] = this.contributionAmount[key];
-        }
-        return object;
-      }, {});
+      this.contributionAmount = Object.keys(this.contributionAmount).reduce(
+        (object: any, key: string) => {
+          if (key !== contributionType.id) {
+            object[key] = this.contributionAmount[key];
+          }
+          return object;
+        },
+        {}
+      );
       this.findTotal();
     }
   }
 
   findTotalAmount(loan: Loan) {
     if (this.baseLoanAmount[loan.id] && this.interestAmount[loan.id]) {
-      this.loanAmount[loan.id] = this.baseLoanAmount[loan.id] + this.interestAmount[loan.id];
+      this.loanAmount[loan.id] =
+        this.baseLoanAmount[loan.id] + this.interestAmount[loan.id];
     }
     this.findTotal();
   }
 
   findBaseAmount(loan: Loan) {
     const loanType = loan.loanType;
-    if (loanType.profit_type === 'Reducing Balance' && this.loanAmount[loan.id] && this.interestAmount[loan.id]) {
-      this.baseLoanAmount[loan.id] = this.loanAmount[loan.id] - this.interestAmount[loan.id];
+    if (
+      loanType.pay_same_amount_is_must &&
+      this.loanAmount[loan.id] < loan.amount_per_return
+    ) {
+      this.inputErrors[loan.id] = true;
+    } else {
+      delete this.inputErrors[loan.id];
+    }
+    if (
+      loanType.profit_type === 'Reducing Balance' &&
+      this.loanAmount[loan.id] &&
+      this.interestAmount[loan.id]
+    ) {
+      this.baseLoanAmount[loan.id] =
+        this.loanAmount[loan.id] - this.interestAmount[loan.id];
     }
     this.findTotal();
   }
@@ -212,31 +253,52 @@ export class AddContributionComponent implements OnInit {
     const loanType = loan.loanType;
     if (checked) {
       if (loanType.profit_type === 'Reducing Balance') {
-        this.interestAmount[loan.id] = Math.ceil((loanType.interest_rate / 100) * loan.remaining_balance);
-        if (loanType.minimum_amount_for_reducing_required && loanType.minimum_amount_for_reducing_percent) {
-          this.baseLoanAmount[loan.id] = Math.ceil(loan.remaining_balance * (loanType.minimum_amount_for_reducing_percent / 100));
-          this.minLoanAmount[loan.id] = Math.ceil(loan.remaining_balance * (loanType.minimum_amount_for_reducing_percent / 100));
+        this.interestAmount[loan.id] = Math.ceil(
+          (loanType.interest_rate / 100) * loan.remaining_balance
+        );
+        if (
+          loanType.minimum_amount_for_reducing_required &&
+          loanType.minimum_amount_for_reducing_percent
+        ) {
+          this.baseLoanAmount[loan.id] = Math.ceil(
+            loan.remaining_balance *
+              (loanType.minimum_amount_for_reducing_percent / 100)
+          );
+          this.minLoanAmount[loan.id] = Math.ceil(
+            loan.remaining_balance *
+              (loanType.minimum_amount_for_reducing_percent / 100)
+          );
         }
         this.findTotalAmount(loan);
       } else {
         if (loanType.pay_same_amount_is_must) {
           this.loanAmount[loan.id] = loan.amount_per_return;
           this.findTotal();
-        } else {
-          this.loanAmount = Object.keys(this.loanAmount).reduce((object: any, key: string) => {
-            if (key !== loan.id) {
-              object[key] = this.loanAmount[key];
-            }
-            return object;
-          }, {});
-          this.findTotal();
         }
       }
+    } else {
+      if (this.inputErrors[loan.id]) {
+        delete this.inputErrors[loan.id];
+      }
+      this.loanAmount = Object.keys(this.loanAmount).reduce(
+        (object: any, key: string) => {
+          if (key !== loan.id) {
+            object[key] = this.loanAmount[key];
+          }
+          return object;
+        },
+        {}
+      );
+      this.findTotal();
     }
   }
 
   closeDialog() {
     this.closeForm.emit();
+  }
+
+  get hasError(): boolean {
+    return Object.keys(this.inputErrors).length > 0;
   }
 
   setHaveFines($event: MatCheckboxChange) {

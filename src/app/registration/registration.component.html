@@ -1,8 +1,8 @@
 <div class="nav-bars">
   <div class="left-title" [ngClass]="routeAnimationsElements">
-    <button (click)="goBack()" mat-flat-button>
+    <button (click)="goBack()" mat-flat-button *ngIf="!hideCountrySelection">
       <mat-icon>arrow_back</mat-icon>&nbsp;
-      <span  *ngIf="!(isHandset$ | async)">{{previousStep$ | async}}</span>
+      <span *ngIf="!(isHandset$ | async)">{{previousStep$ | async}}</span>
     </button>
   </div>
 
@@ -11,7 +11,8 @@
       <mat-progress-spinner color="primary" mode="determinate" [value]="progressValue$ | async"></mat-progress-spinner>
       <span>{{progressValue$ | async}}%</span>
     </div>
-    <div style="margin-top: 20px; font-size: 17px" class="text-progress registration-title" *ngIf="!(isHandset$ | async)" [ngClass]="routeAnimationsElements">
+    <div style="margin-top: 20px; font-size: 17px" class="text-progress registration-title"
+      *ngIf="!(isHandset$ | async)" [ngClass]="routeAnimationsElements">
       {{currentStep$ | async}}
     </div>
   </div>
@@ -22,74 +23,41 @@
 </div>
 <div class="grid-area">
 
-<!--  Country Selection-->
-  <app-country-selection
-    *ngIf="(currentStep$ | async) == registrationSteps.CountrySelection && !hideCountrySelection"
-    [selectedCountry]="country$ | async"
-    (setSelectedCountry)="setCountry($event)"
-    (nextStep)="goNextStep($event)"
-  ></app-country-selection>
+  <!--  Country Selection-->
+  <app-country-selection *ngIf="(currentStep$ | async) == registrationSteps.CountrySelection && !hideCountrySelection"
+    [selectedCountry]="country$ | async" (setSelectedCountry)="setCountry($event)" (nextStep)="goNextStep($event)">
+  </app-country-selection>
 
-<!--  Phone Number -->
-  <app-phone-number
-    *ngIf="(currentStep$ | async) == registrationSteps.PhoneNumber"
-    [country]="phoneCountry$ | async"
-    [currentPhoneNumber]="phoneNumber$ | async"
-    [phoneNumberValid]="phoneNumberValid$ | async"
-    (setPhoneNumber)="setPhoneNumber($event)"
-    (nextStep)="goNextStep($event)"
-    @fadeIn
-  ></app-phone-number>
+  <!--  Phone Number -->
+  <app-phone-number *ngIf="(currentStep$ | async) == registrationSteps.PhoneNumber" [country]="phoneCountry$ | async"
+    [currentPhoneNumber]="phoneNumber$ | async" [phoneNumberValid]="phoneNumberValid$ | async"
+    (setPhoneNumber)="setPhoneNumber($event)" (nextStep)="goNextStep($event)" @fadeIn></app-phone-number>
 
-<!--  If member has groups already they will show here-->
- <app-member-groups
-   *ngIf="(currentStep$ | async) == registrationSteps.MemberGroup"
-   @fadeIn
-   [memberGroups]="memberGroups$ | async"
-   [memberName]="memberName$ | async"
-   (nextStep)="goNextStep($event)"
- ></app-member-groups>
-<!--  Password Registration-->
-  <app-enter-password
-    *ngIf="(currentStep$ | async) == registrationSteps.EnterPassword"
-    [email]="email$ | async"
-    [memberName]="memberName$ | async"
-    (nextStep)="goNextStep($event)"
-  ></app-enter-password>
+  <!--  If member has groups already they will show here-->
+  <app-member-groups *ngIf="(currentStep$ | async) == registrationSteps.MemberGroup" @fadeIn
+    [memberGroups]="memberGroups$ | async" [memberName]="memberName$ | async" (nextStep)="goNextStep($event)">
+  </app-member-groups>
+  <!--  Password Registration-->
+  <app-enter-password *ngIf="(currentStep$ | async) == registrationSteps.EnterPassword" [email]="email$ | async"
+    [memberName]="memberName$ | async" (nextStep)="goNextStep($event)"></app-enter-password>
 
-<!--  Member Name-->
-  <app-member-name
-    *ngIf="(currentStep$ | async) == registrationSteps.MemberName"
-    [memberName]="memberName$ | async"
-    [memberGroups]="memberGroups$ | async"
-    (nextStep)="goNextStep($event)"
-  ></app-member-name>
+  <!--  Member Name-->
+  <app-member-name *ngIf="(currentStep$ | async) == registrationSteps.MemberName" [memberName]="memberName$ | async"
+    [memberGroups]="memberGroups$ | async" (nextStep)="goNextStep($event)"></app-member-name>
 
-<!--  Group Name-->
-  <app-group-name
-    *ngIf="(currentStep$ | async) == registrationSteps.GroupName"
-    [groupName]="groupName$ | async"
-    (nextStep)="goNextStep($event)"
-  ></app-group-name>
+  <!--  Group Name-->
+  <app-group-name *ngIf="(currentStep$ | async) == registrationSteps.GroupName" [groupName]="groupName$ | async"
+    (nextStep)="goNextStep($event)"></app-group-name>
 
   <!--  Password Registration-->
-  <app-set-password
-    *ngIf="(currentStep$ | async) == registrationSteps.SetPassword"
-    [memberName]="memberName$ | async"
-    (nextStep)="goNextStep($event)"
-  ></app-set-password>
+  <app-set-password *ngIf="(currentStep$ | async) == registrationSteps.SetPassword" [memberName]="memberName$ | async"
+    (nextStep)="goNextStep($event)"></app-set-password>
 
   <!--  Password Registration-->
-  <app-confirm-password
-    *ngIf="(currentStep$ | async) == registrationSteps.ConfirmPassword"
-    [firstPassword]="firstPassword$ | async"
-    [memberName]="memberName$ | async"
-    [secondPassword]="secondPassword$ | async"
-    (nextStep)="goNextStep($event)"
-  ></app-confirm-password>
+  <app-confirm-password *ngIf="(currentStep$ | async) == registrationSteps.ConfirmPassword"
+    [firstPassword]="firstPassword$ | async" [memberName]="memberName$ | async"
+    [secondPassword]="secondPassword$ | async" (nextStep)="goNextStep($event)"></app-confirm-password>
 
-  <app-creating-group
-    *ngIf="(currentStep$ | async) == registrationSteps.CreatingGroup"
-  ></app-creating-group>
+  <app-creating-group *ngIf="(currentStep$ | async) == registrationSteps.CreatingGroup"></app-creating-group>
 
 </div>

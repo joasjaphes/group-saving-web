@@ -10,14 +10,15 @@
         <!--        Contribution Types-->
         <div class="col-sm-12" *ngFor="let contr of contributionTypes">
           <div class="flex justify-between">
-            <div >
+            <div>
               <mat-checkbox [(ngModel)]="contributionSelected[contr.id]"
-                            (change)="enableContribution($event.checked, contr)">
+                (change)="enableContribution($event.checked, contr)">
                 {{contr.name}} <b *ngIf="contributionAmount[contr.id]">({{contributionAmount[contr.id] | number}})</b>
               </mat-checkbox>
             </div>
             <div>
-              <mat-checkbox *ngIf="contr.is_starting_share && contributionSelected[contr.id]">Is Starting Share</mat-checkbox>
+              <mat-checkbox *ngIf="contr.is_starting_share && contributionSelected[contr.id]">Is Starting Share
+              </mat-checkbox>
 
             </div>
           </div>
@@ -25,14 +26,8 @@
 
           <mat-form-field appearance="outline" *ngIf="contributionSelected[contr.id]" @fadeIn>
             <mat-label>Amount for {{contr.name}}</mat-label>
-            <input
-              [(ngModel)]="contributionAmount[contr.id]"
-              matInput
-              type="number"
-              min="0"
-              placeholder="Amount for {{contr.name}}"
-              (input)="findTotal()"
-            >
+            <input [(ngModel)]="contributionAmount[contr.id]" matInput type="number" min="0"
+              placeholder="Amount for {{contr.name}}" (input)="findTotal()">
           </mat-form-field>
 
         </div>
@@ -41,7 +36,8 @@
         <div class="col-sm-12" *ngFor="let loan of memberLoans$ | async">
           <mat-checkbox [(ngModel)]="loanSelected[loan.id]" (change)="enableLoanPayment($event.checked, loan)">
             {{loan.loanType?.name}} remaining {{loan.remaining_balance | number}}
-            <b *ngIf="loanAmount[loan.id]">(now paying {{loanAmount[loan.id] | number}})</b>
+            <b *ngIf="loanAmount[loan.id]">(now paying {{loanAmount[loan.id] ? (loanAmount[loan.id] | number ):
+              (loan?.amount_per_return | number) }})</b>
           </mat-checkbox>
           <div class="grid grid-cols-2 gap-2">
             <div *ngIf="loan.loanType?.profit_type == 'Reducing Balance'">
@@ -50,14 +46,8 @@
                   Loan Amount
                   <span *ngIf="baseLoanAmount[loan.id]">({{baseLoanAmount[loan.id] | number}})</span>
                 </mat-label>
-                <input
-                  [(ngModel)]="baseLoanAmount[loan.id]"
-                  matInput
-                  type="number"
-                  min="0"
-                  placeholder="Amount for {{loan.loanType?.name}}"
-                  (input)="findTotalAmount(loan)"
-                >
+                <input [(ngModel)]="baseLoanAmount[loan.id]" matInput type="number" min="0"
+                  placeholder="Amount for {{loan.loanType?.name}}" (input)="findTotalAmount(loan)">
                 <mat-hint *ngIf="minLoanAmount[loan.id]">
                   Minimum of {{minLoanAmount[loan.id] | number}}
                 </mat-hint>
@@ -69,28 +59,18 @@
                   Interest
                   <span *ngIf="interestAmount[loan.id]">({{baseLoanAmount[loan.id] | number}})</span>
                 </mat-label>
-                <input
-                  readonly
-                  [(ngModel)]="interestAmount[loan.id]"
-                  matInput
-                  type="number"
-                  min="0"
-                  placeholder="Amount for {{loan.loanType?.name}}"
-                  (input)="findTotalAmount(loan)"
-                >
+                <input readonly [(ngModel)]="interestAmount[loan.id]" matInput type="number" min="0"
+                  placeholder="Amount for {{loan.loanType?.name}}" (input)="findTotalAmount(loan)">
               </mat-form-field>
             </div>
             <div class="col-span-2">
               <mat-form-field appearance="outline" *ngIf="loanSelected[loan.id]" @fadeIn>
                 <mat-label>Amount for {{loan.loanType?.name}}</mat-label>
-                <input
-                  [(ngModel)]="loanAmount[loan.id]"
-                  matInput
-                  type="number"
-                  min="0"
-                  placeholder="Amount for {{loan.loanType?.name}}"
-                  (input)="findBaseAmount(loan)"
-                >
+                <input [(ngModel)]="loanAmount[loan.id]" matInput type="number" min="0"
+                  placeholder="Amount for {{loan.loanType?.name}}" (input)="findBaseAmount(loan)">
+                <mat-hint *ngIf="inputErrors[loan.id]" style="color: red; font-weight:bold">
+                  *Amount is less than
+                  required amount ({{loan.amount_per_return | number}})</mat-hint>
               </mat-form-field>
             </div>
           </div>
@@ -99,7 +79,8 @@
 
         <!--        Fine payments-->
         <div class="col-sm-12">
-          <mat-checkbox (change)="setHaveFines($event)" [(ngModel)]="haveFines">{{member.name}} has any fine?</mat-checkbox>
+          <mat-checkbox (change)="setHaveFines($event)" [(ngModel)]="haveFines">{{member.name}} has any fine?
+          </mat-checkbox>
         </div>
 
         <!--        Fine Types selector-->
@@ -118,22 +99,16 @@
         <div class="col-sm-12" *ngFor="let toBePaid of selectedFineTypes" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Amount for {{toBePaid?.description}}</mat-label>
-            <input
-              [(ngModel)]="fineAmounts[toBePaid?.id]"
-              matInput
-              type="number"
-              min="0"
-              placeholder="Amount for {{toBePaid?.description}}"
-              (input)="findTotal()"
-            >
+            <input [(ngModel)]="fineAmounts[toBePaid?.id]" matInput type="number" min="0"
+              placeholder="Amount for {{toBePaid?.description}}" (input)="findTotal()">
           </mat-form-field>
         </div>
 
         <!--        Payment Reference-->
-<!--        <div class="col-sm-12 mt-2" *ngIf="total" @fadeIn>-->
-<!--          <h4 class="registration-title mb-0">Payment Reference</h4>-->
-<!--          <p><small class="text-muted">Payment mode and reference number</small></p>-->
-<!--        </div>-->
+        <!--        <div class="col-sm-12 mt-2" *ngIf="total" @fadeIn>-->
+        <!--          <h4 class="registration-title mb-0">Payment Reference</h4>-->
+        <!--          <p><small class="text-muted">Payment mode and reference number</small></p>-->
+        <!--        </div>-->
 
         <!--        Payment Mode-->
 
@@ -141,24 +116,23 @@
     </div>
 
     <div class="col-span-5">
-<!--      <div class="menu-grid">-->
-<!--        <div class="img-div">-->
-<!--          <h1 style="font-size: 40px; color: #0d0d0d"-->
-<!--              class="registration-title">{{member.name[0].toUpperCase()}}</h1>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--          <h2 class="registration-title mb-1">{{member.name}}</h2>-->
-<!--          <p class="lead">{{member.phone_number}}</p>-->
-<!--        </div>-->
-<!--      </div>-->
+      <!--      <div class="menu-grid">-->
+      <!--        <div class="img-div">-->
+      <!--          <h1 style="font-size: 40px; color: #0d0d0d"-->
+      <!--              class="registration-title">{{member.name[0].toUpperCase()}}</h1>-->
+      <!--        </div>-->
+      <!--        <div>-->
+      <!--          <h2 class="registration-title mb-1">{{member.name}}</h2>-->
+      <!--          <p class="lead">{{member.phone_number}}</p>-->
+      <!--        </div>-->
+      <!--      </div>-->
       <div class="grid grid-cols-2 gap-4 summary-area">
 
         <div class="col-sm-6">
           <div class="menu-grid">
             <div class="img-div">
-              <h1 style="font-size: 40px; color: #0d0d0d"
-                  class="registration-title">{{member.name[0].toUpperCase()}}
-                </h1>
+              <h1 style="font-size: 40px; color: #0d0d0d" class="registration-title">{{member.name[0].toUpperCase()}}
+              </h1>
             </div>
             <div>
               <h3 class="registration-title mb-1">{{member.name}}
@@ -181,21 +155,18 @@
           <!--        Start Date-->
           <mat-form-field appearance="outline">
             <mat-label>Date</mat-label>
-            <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="contributionDate"/>
+            <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="contributionDate" />
             <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
             <mat-datepicker #endingDate></mat-datepicker>
           </mat-form-field>
         </div>
         <div class="col-span-12 mb-3" *ngIf="group.track_contribution_period" @fadeIn>
-          <app-period-selector
-          [currentYear]="year"
-          [currentMonth]="month"
-          (selected)="setPeriod($event)"
-          ></app-period-selector>
+          <app-period-selector [currentYear]="year" [currentMonth]="month" (selected)="setPeriod($event)">
+          </app-period-selector>
         </div>
 
-        <div [ngClass]="paymentMode == 'Bank Deposit' || paymentMode == 'Mobile Money' ? 'col-span-6' : 'col-span-12'"
-             class="col-span-4" *ngIf="!!total" @fadeIn>
+        <div [ngClass]="paymentMode == 'Bank Deposit' || paymentMode == 'Mobile Money' ? 'col-span-12' : 'col-span-12'"
+          class="col-span-12" *ngIf="!!total" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Payment Mode</mat-label>
             <mat-select [(ngModel)]="paymentMode" placeholder="Payment Mode">
@@ -207,22 +178,19 @@
         </div>
 
         <!--        Payment Reference Number-->
-        <div class="col-span-6" *ngIf="paymentMode == 'Bank Deposit' || paymentMode == 'Mobile Money'" @fadeIn>
+        <div class="col-span-12" *ngIf="paymentMode == 'Bank Deposit' || paymentMode == 'Mobile Money'" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Reference Number <small class="text-muted">(Optional)</small> </mat-label>
-            <input matInput [(ngModel)]="referenceNumber" placeholder="Payment Reference Number">
+            <textarea name="" id="" [(ngModel)]="referenceNumber" cols="30" rows="4" placeholder="Payment Reference Number" matInput></textarea>
+            <!-- <input matInput [(ngModel)]="referenceNumber" placeholder="Payment Reference Number"> -->
           </mat-form-field>
         </div>
 
         <div class="col-span-12 mt-3" *ngIf="total" @fadeIn>
-          <app-save-area
-            [confirmFirst]="true"
+          <app-save-area [confirmFirst]="true"
             confirmText="Are you sure you want to ADD {{total | number}}  as contribution for {{member.name}}?"
-            [saveDisabled]="(group.track_contribution_period && !month) || !paymentMode"
-            (cancel)="closeDialog()"
-            (save)="save()"
-            [savingData]="loading"
-          ></app-save-area>
+            [saveDisabled]="(group.track_contribution_period && !month) || !paymentMode || hasError" (cancel)="closeDialog()"
+            (save)="save()" [savingData]="loading"></app-save-area>
         </div>
 
       </div>

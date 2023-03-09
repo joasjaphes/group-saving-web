@@ -54,7 +54,7 @@ export class LocalStorageService {
   _initiateStoreObjects() {
     return this.db.createStore(3, (evt) => {
       Object.keys(this.offlineKeys).forEach((key) => {
-        console.log(`creating ${key} table`);
+        // console.log(`creating ${key} table`);
         this.createStore(evt, this.offlineKeys[key], 'id');
       });
     });
@@ -145,7 +145,7 @@ export class LocalStorageService {
   async clearEverything( ) {
     await this._initiateStoreObjects();
     Object.keys(this.offlineKeys).forEach((key) => {
-      console.log(`removing items in ${key} table`);
+      // console.log(`removing items in ${key} table`);
       this.clearAll(this.offlineKeys[key]);
     });
   }
@@ -158,7 +158,7 @@ export class LocalStorageService {
    */
   async delete( store_key: string, index: string ) {
     await this._initiateStoreObjects();
-    console.log(this.db);
+    // console.log(this.db);
     return this.db.delete(store_key, index);
   }
 
