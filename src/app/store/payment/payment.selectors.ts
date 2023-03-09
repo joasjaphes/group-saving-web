@@ -99,7 +99,6 @@ export const selectDetailedGroupByMember = (year) => createSelector(
   (allItems, members) => {
     const memberData = {};
     for (const member of members) {
-      console.log('year', year)
       memberData[member.id] = {type: 'member', id: member.id, name: member.name, total: 0, totals: {}, items: []};
       allItems.filter(i => i.year + '' === year + '' || year === 'All')
         .forEach(item => {
@@ -524,7 +523,6 @@ export const selectContributionByMonth = (month, year) => createSelector(
     const items = 
     allItems
       .filter(i => month === i.month && i.contributionsDetails.length > 0 && year + '' === i.year + '');
-    console.log('Items', items);
       return items;
   }
 );
