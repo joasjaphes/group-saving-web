@@ -44,8 +44,8 @@ export const deleteExpense = functions.https.onRequest((request, response) => {
           if (prevContrType && prevContrType.track_balance && !!expenseAmount && groupData.contribution_balances && !!prevBalance) {
             groupData.contribution_balances[expenseData.associated_account] = parseFloat(prevBalance) + parseFloat(expenseAmount);
           }
+          groupExpense.expenses[data.id] = {...expenseData, deleted: true, last_update}
         }
-        groupExpense.expenses[data.id] = {...expenseData, deleted: true, last_update}
         transaction.update(groupDocRef, { ...groupData , last_update});
         transaction.set(expenseRef, {...groupExpense, last_update});
         transaction.set(otherUpdateAtRef, {
