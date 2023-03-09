@@ -28,12 +28,14 @@ export const deleteExpense = functions.https.onRequest((request, response) => {
       const last_update = new Date().getTime();
       const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
       const groupDocRef = admin.firestore().doc(`groups/${groupId}`);
-      const expenseRef = admin.firestore().doc(`groups/${groupId}/expense/${data.id}`);
+      // const expenseRef = admin.firestore().doc(`groups/${groupId}/expense/${data.id}`);
+      const expenseRef = admin.firestore().doc(`groups/${groupId}/expense/${groupId}_${data.year}`);
       await admin.firestore().runTransaction(async (transaction) => {
         const groupDoc = await transaction.get(groupDocRef);
         const expenseDoc = await transaction.get(expenseRef);
         const groupData: any = {...groupDoc.data()};
-        const expenseData: any = {...expenseDoc.data()};
+        const groupExpense: any = {...expenseDoc.data()};
+        const expenseData = groupExpense.expenses[data.id];
         const contributionTypes = groupData.contributions || {};
         if (expenseData) {
           const prevContrType = contributionTypes[expenseData.associated_account];
@@ -43,8 +45,9 @@ export const deleteExpense = functions.https.onRequest((request, response) => {
             groupData.contribution_balances[expenseData.associated_account] = parseFloat(prevBalance) + parseFloat(expenseAmount);
           }
         }
+        groupExpense.expenses[data.id] = {...expenseData, deleted: true, last_update}
         transaction.update(groupDocRef, { ...groupData , last_update});
-        transaction.set(expenseRef, {...expenseData, deleted: true, last_update});
+        transaction.set(expenseRef, {...groupExpense, last_update});
         transaction.set(otherUpdateAtRef, {
           group_updated: last_update,
           expense_updated: last_update,
