@@ -98,9 +98,9 @@ export class AddContributionComponent implements OnInit {
     this.selectedFineTypes.forEach((fineType) => {
       if (fineType.calculation === 'Fixed') {
         this.fineAmounts[fineType.id] = fineType.fixed_amount;
-        this.findTotal();
       }
     });
+    this.findTotal();
   }
 
   findTotal() {
@@ -305,6 +305,8 @@ export class AddContributionComponent implements OnInit {
     if (!$event.checked) {
       this.fineAmounts = {};
       this.finesToBePaid = [];
+      this.findTotal();
+      this.selectedFineTypes = [];
     }
   }
 
