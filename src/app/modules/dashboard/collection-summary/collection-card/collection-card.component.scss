@@ -11,6 +11,9 @@
     border-radius: 20px;
     padding: 40px 0 29px 5px;
     width: 50px;
+    .mat-icon {
+      overflow: visible;
+    }
   }
   mat-icon {
     font-size: 40px;

@@ -18,9 +18,9 @@
             </button>
           </div>
           <div class="search-area">
-            <mat-form-field *ngIf="currentView == 'members'" @fadeIn>
+            <mat-form-field @fadeIn>
               <mat-icon matSuffix>search </mat-icon>
-              <input [(ngModel)]="memberSearch" matInput placeholder=" Type member name to search">
+              <input [(ngModel)]="memberSearch" matInput [placeholder]=" currentView == 'members' ?  'Type member name  to search' : 'Type expense reason to search'">
             </mat-form-field>
           </div>
           <div style="text-align: end;">
@@ -48,7 +48,7 @@
 
     <div class="main-expense-grid">
 
-      <div *ngFor="let expense of (expenses$ | async) | search:'member_name': memberSearch" class="expenseGrid">
+      <div *ngFor="let expense of (expenses$ | async) | search:'member_name,reason': memberSearch" class="expenseGrid">
         <div>
           <mat-icon>money</mat-icon>
         </div>
