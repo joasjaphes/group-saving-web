@@ -29,7 +29,7 @@ export class DeleteExpenseComponent implements OnInit {
 
   async save() {
     const dataToSave = {
-      id: this.currentExpense.id,
+      ...this.currentExpense,
       groupId: this.group.id,
     };
     this.loading = true;

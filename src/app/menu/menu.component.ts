@@ -286,6 +286,8 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
             // Get Last Updated Times from the local database
             const localTimes: LastUpdatedAt =
               await this.offlineService.getLastUpdatedTimes(group1.group_id);
+            // const expenses =  await this.offlineService.getItems(DataKeys.Expense).toPromise();
+            // console.log('expenses',JSON.stringify(expenses))
             // get group Information
             this.firestoreService
               .getUpdatedData(

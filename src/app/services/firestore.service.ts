@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { TypedAction } from '@ngrx/store/src/models';
 import { map } from 'rxjs/operators';
 import { CommonService } from './common.service';
+import { DataKeys } from '../store/data-keys';
 
 @Injectable({
   providedIn: 'root',
@@ -36,13 +37,31 @@ export class FirestoreService {
       .toPromise();
     // console.log({collection});
     currentClass.commonService.setIsLoading(false);
-    for (const item of collection) {
-      if (item.deleted) {
-        await currentClass.offlineService.removeItem(dataKey, item.id);
-      } else {
-        await currentClass.offlineService.saveItem(item, dataKey);
+    if (dataKey === DataKeys.Expense) {
+      console.log('expenses', collection);
+      for (const item of collection) {
+        if(item?.expenses) {
+          await currentClass.removeDeletedExpenses(item, currentClass);
+        }
+      }
+    } else {
+      for (const item of collection) {
+        if (item.deleted) {
+          await currentClass.offlineService.removeItem(dataKey, item.id);
+        } else {
+          await currentClass.offlineService.saveItem(item, dataKey);
+        }
       }
     }
+  }
+
+  async removeDeletedExpenses(expenseData, currentClass) {
+    for (const key of Object.keys(expenseData?.expenses)) {
+      if (expenseData.expenses[key].deleted) {
+        delete expenseData.expenses[key];
+      }
+    }
+    await currentClass.offlineService.saveItem(expenseData, DataKeys.Expense);
   }
 
   async getGroupData(

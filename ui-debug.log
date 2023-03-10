@@ -1,17 +1,17 @@
 Web / API server started at 127.0.0.1:4005
 Web / API server started at ::1:4005
-node[31058]: ../src/node.cc:765:void node::ResetStdio(): Assertion `!(err != 0) || (err == -1 && (*__errno_location ()) == 1)' failed.
+node[63988]: ../src/node.cc:765:void node::ResetStdio(): Assertion `!(err != 0) || (err == -1 && (*__errno_location ()) == 1)' failed.
  1: 0xb09c10 node::Abort() [node]
  2: 0xb09c8e  [node]
  3: 0xac99b4 node::ResetStdio() [node]
  4: 0xac9a70 node::SignalExit(int, siginfo_t*, void*) [node]
- 5: 0x7f39bac42520  [/lib/x86_64-linux-gnu/libc.so.6]
- 6: 0x7f39bad25fde epoll_wait [/lib/x86_64-linux-gnu/libc.so.6]
+ 5: 0x7f6fc9e42520  [/lib/x86_64-linux-gnu/libc.so.6]
+ 6: 0x7f6fc9f25fde epoll_wait [/lib/x86_64-linux-gnu/libc.so.6]
  7: 0x1577227  [node]
  8: 0x15652a8 uv_run [node]
  9: 0xa43dd5 node::SpinEventLoop(node::Environment*) [node]
 10: 0xb4bdb6 node::NodeMainInstance::Run(node::EnvSerializeInfo const*) [node]
 11: 0xacd592 node::Start(int, char**) [node]
-12: 0x7f39bac29d90  [/lib/x86_64-linux-gnu/libc.so.6]
-13: 0x7f39bac29e40 __libc_start_main [/lib/x86_64-linux-gnu/libc.so.6]
+12: 0x7f6fc9e29d90  [/lib/x86_64-linux-gnu/libc.so.6]
+13: 0x7f6fc9e29e40 __libc_start_main [/lib/x86_64-linux-gnu/libc.so.6]
 14: 0xa4067c  [node]
