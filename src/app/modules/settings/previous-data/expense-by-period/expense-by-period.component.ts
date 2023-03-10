@@ -69,12 +69,16 @@ export class ExpenseByPeriodComponent implements OnInit {
           new Date(`${this.year}-${this.month}-01`)
         ),
         reason: this.description,
+        is_previous_expense: true,
       };
-      await this.functionsService.saveData('addPastExpenseByMonth',currentExpense);
+      await this.functionsService.saveData(
+        'addPastExpenseByMonth',
+        currentExpense
+      );
       this.commonService.showSuccess('Expense recorded successfully');
       this.closeDialog();
-    }catch(e) {
-      console.error('Failed to save expense',e);
+    } catch (e) {
+      console.error('Failed to save expense', e);
       this.commonService.showError('Failed to save expenses');
     }
     this.loading = false;
