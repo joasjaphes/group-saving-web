@@ -37,6 +37,18 @@
     </mat-form-field>
   </div>
 
+  <div class="col-sm-12" *ngIf="loanTypes.length > 0">
+    <h4 class="registration-title !mb-0">Reset Member Password</h4>
+    <mat-form-field appearance="outline">
+      <mat-label>Select Member(s) Who will be able to reset other member(s) password(s)</mat-label>
+      <mat-select multiple [(ngModel)]="passwordReset" placeholder="Select Members Who will approval loan requests">
+        <mat-option [value]="member.id" *ngFor="let member of members">
+          {{member.name}} <small>({{member.phone_number}})</small>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
   <div class="col-sm-12 mt-2">
     <app-save-area
       [saveDisabled]="contributions.length == 0"

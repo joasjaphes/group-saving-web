@@ -30,6 +30,7 @@ export interface Group {
     contributions: string[],
     meetings: string[],
     loan_approval: string[],
+    passwordReset?:string[],
   }
   meeting_settings: {
     meeting_frequency: string;
