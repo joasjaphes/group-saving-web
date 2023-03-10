@@ -27,45 +27,48 @@ export const updatePassword = functions.https.onRequest((request, response) => {
     }
     try {
       const last_update = new Date().getTime();
-      await admin.firestore().runTransaction(async (transaction) => {
-        const groupMemberRef = await admin
-          .firestore()
-          .collection('member_group')
-          .where('phone_number', '==', data.phoneNumber)
-          .get();
-        const userRecords = await admin
-          .auth()
-          .getUserByPhoneNumber(data.phoneNumber);
-        await admin.auth().updateUser(userRecords.uid, {
-          email: userRecords.email,
-          emailVerified: userRecords.emailVerified,
-          password: data.password,
-        });
-        if (groupMemberRef && groupMemberRef.docs) {
-          groupMemberRef.docs.forEach((doc) => {
-            const memberData = doc.data();
-            if (memberData) {
-              const otherUpdateAtRef = admin
-                .firestore()
-                .doc(`groups/${memberData.group_id}/updated/others`);
-              const groupMemberDocRef = admin
-                .firestore()
-                .collection('member_group')
-                .doc(doc.id);
-              transaction.update(groupMemberDocRef, {
-                last_update,
-                should_reset_password: true,
-              });
-              transaction.set(
-                otherUpdateAtRef,
-                { member_updated: last_update },
-                { merge: true }
-              );
-            }
-          });
-        }
-      });
-      response.status(200).send({ data: 'Success' });
+
+      // await admin.firestore().runTransaction(async (transaction) => {
+      //   const groupMemberRef = await admin
+      //     .firestore()
+      //     .collection('member_group')
+      //     .where('phone_number', '==', data.phoneNumber)
+      //     .get();
+      //   const userRecords = await admin
+      //     .auth()
+      //     .getUserByPhoneNumber(data.phoneNumber);
+      //   await admin.auth().updateUser(userRecords.uid, {
+      //     email: userRecords.email,
+      //     emailVerified: userRecords.emailVerified,
+      //     password: data.password,
+      //   });
+      //   if (groupMemberRef && groupMemberRef.docs) {
+      //     groupMemberRef.docs.forEach((doc) => {
+      //       const memberData = doc.data();
+      //       if (memberData) {
+      //         const otherUpdateAtRef = admin
+      //           .firestore()
+      //           .doc(`groups/${memberData.group_id}/updated/others`);
+      //         const groupMemberDocRef = admin
+      //           .firestore()
+      //           .collection('member_group')
+      //           .doc(doc.id);
+      //         transaction.update(groupMemberDocRef, {
+      //           last_update,
+      //           should_reset_password: true,
+      //         });
+      //         transaction.set(
+      //           otherUpdateAtRef,
+      //           { member_updated: last_update },
+      //           { merge: true }
+      //         );
+      //       }
+      //     });
+      //   }
+      // });
+      response
+        .status(200)
+        .send({ data: 'Success', last_update, dataObject: data });
     } catch (e) {
       console.log('Failed to update member passsword', e);
       response.status(500).send({ data: 'Fail' });

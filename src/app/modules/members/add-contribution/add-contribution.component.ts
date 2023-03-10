@@ -22,6 +22,8 @@ import { first } from 'rxjs/operators';
 import { CommonService } from '../../../services/common.service';
 import { FunctionsService } from '../../../services/functions.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { DomSanitizer } from '@angular/platform-browser';
+import { FirestoreService } from 'src/app/services/firestore.service';
 
 @Component({
   selector: 'app-add-contribution',
@@ -59,9 +61,12 @@ export class AddContributionComponent implements OnInit {
   paymentMode: string;
   referenceNumber: string;
   inputErrors = {};
+  selectedFile: File;
+  fileUrl;
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
+    private firestoreService: FirestoreService,
     private store: Store<ApplicationState>
   ) {}
 
@@ -175,6 +180,7 @@ export class AddContributionComponent implements OnInit {
       period: this.period ?? `${this.year}${this.month}`,
       referenceNumber: this.referenceNumber,
       paymentMode: this.paymentMode,
+      fileUrl: '',
     };
 
     // Check to see if the current value is the starting share and add its value
@@ -188,6 +194,13 @@ export class AddContributionComponent implements OnInit {
     });
     this.loading = true;
     try {
+      if (this.selectedFile) {
+        const fileUrl = await this.firestoreService.uploadFile(
+          `files/${dataToSave.groupId}/${this.commonService.makeId()}`,
+          this.selectedFile
+        );
+        dataToSave.fileUrl = fileUrl;
+      }
       await this.functionsService.saveData('addNewContribution', dataToSave);
       this.loading = false;
       this.commonService.showSuccess(
@@ -314,5 +327,28 @@ export class AddContributionComponent implements OnInit {
     this.year = $event.year;
     this.month = $event.month.id;
     this.period = `${$event.year}${$event.month.id}`;
+  }
+
+  onFile(event) {
+    this.removeAttachment();
+    const file: File = event?.target?.files[0];
+    if (file.type == 'image/png' || file.type == 'image/jpeg') {
+      this.selectedFile = file;
+      var reader = new FileReader();
+      reader.onloadend = () => {
+        this.fileUrl = reader.result;
+        console.log('RESULT', reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      this.commonService.showError(
+        'Attachment should either be jpeg or png file'
+      );
+    }
+  }
+
+  removeAttachment() {
+    this.selectedFile = null;
+    this.fileUrl = null;
   }
 }

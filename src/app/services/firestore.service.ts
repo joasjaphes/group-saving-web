@@ -7,6 +7,7 @@ import { TypedAction } from '@ngrx/store/src/models';
 import { map } from 'rxjs/operators';
 import { CommonService } from './common.service';
 import { DataKeys } from '../store/data-keys';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Injectable({
   providedIn: 'root',
@@ -14,10 +15,17 @@ import { DataKeys } from '../store/data-keys';
 export class FirestoreService {
   constructor(
     private afs: AngularFirestore,
+    private storage: AngularFireStorage,
     private offlineService: OfflineManagerService,
     private store: Store<ApplicationState>,
     private commonService: CommonService
   ) {}
+  
+  async uploadFile(path:string,file:File) {
+    const storageRef = this.storage.ref(path);
+    await this.storage.upload(path,file).snapshotChanges().toPromise();
+    return await storageRef.getDownloadURL().toPromise();
+  } 
 
   async getData(
     last_update_time,
@@ -40,7 +48,7 @@ export class FirestoreService {
     if (dataKey === DataKeys.Expense) {
       console.log('expenses', collection);
       for (const item of collection) {
-        if(item?.expenses) {
+        if (item?.expenses) {
           await currentClass.removeDeletedExpenses(item, currentClass);
         }
       }

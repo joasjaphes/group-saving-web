@@ -178,19 +178,43 @@
         </div>
 
         <!--        Payment Reference Number-->
-        <div class="col-span-12" *ngIf="paymentMode == 'Bank Deposit' || paymentMode == 'Mobile Money'" @fadeIn>
+        <!-- TODO add attachment for bank -->
+        <div class="col-span-12" *ngIf="paymentMode == 'Mobile Money'" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Reference Number <small class="text-muted">(Optional)</small> </mat-label>
-            <textarea name="" id="" [(ngModel)]="referenceNumber" cols="30" rows="4" placeholder="Payment Reference Number" matInput></textarea>
+            <textarea name="" id="" [(ngModel)]="referenceNumber" cols="30" rows="4"
+              placeholder="Payment Reference Number" matInput></textarea>
             <!-- <input matInput [(ngModel)]="referenceNumber" placeholder="Payment Reference Number"> -->
           </mat-form-field>
+        </div>
+        <div class="col-span-12" *ngIf="paymentMode == 'Bank Deposit'">
+          <div class="mb-2" style="width: 100%;">
+            <span style="font-weight: bold;">Bank slip/receipt (jpeg/png)</span>
+            <mat-icon style="float: right; margin-right: 10px; cursor: pointer;" *ngIf="selectedFile"
+              title="Remomve Attachment" (click)="removeAttachment()">close</mat-icon>
+          </div>
+          <div
+            style="width: 100%;min-height: 100px; background-color: #ffffff2e; border: gray; border-style: dotted; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;"
+            @fadeIn title="Attach bank slip" (click)="inputFile.click();">
+            <div style="width: 100%;" align="center">
+              <div>
+                <mat-icon> attach_file</mat-icon>
+              </div>
+              <div style="font-weight: bold;">
+                <span *ngIf="!selectedFile">Add attachment</span>
+                <span *ngIf="selectedFile">{{selectedFile.name}}</span>
+              </div>
+              <img [src]="fileUrl" alt="" *ngIf="fileUrl">
+            </div>
+            <input type="file" style="display: none;" (change)="onFile($event)" #inputFile>
+          </div>
         </div>
 
         <div class="col-span-12 mt-3" *ngIf="total" @fadeIn>
           <app-save-area [confirmFirst]="true"
             confirmText="Are you sure you want to ADD {{total | number}}  as contribution for {{member.name}}?"
-            [saveDisabled]="(group.track_contribution_period && !month) || !paymentMode || hasError" (cancel)="closeDialog()"
-            (save)="save()" [savingData]="loading"></app-save-area>
+            [saveDisabled]="(group.track_contribution_period && !month) || !paymentMode || hasError"
+            (cancel)="closeDialog()" (save)="save()" [savingData]="loading"></app-save-area>
         </div>
 
       </div>
