@@ -37,7 +37,7 @@ export const deleteExpense = functions.https.onRequest((request, response) => {
         const groupExpense: any = {...expenseDoc.data()};
         const expenseData = groupExpense.expenses[data.id];
         const contributionTypes = groupData.contributions || {};
-        if (expenseData) {
+        if (expenseData && !expenseData?.is_previous_expense) {
           const prevContrType = contributionTypes[expenseData.associated_account];
           const expenseAmount = expenseData.amount + '';
           const prevBalance = groupData.contribution_balances[expenseData.associated_account] + '';
