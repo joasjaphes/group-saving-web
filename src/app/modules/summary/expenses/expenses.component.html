@@ -17,7 +17,12 @@
               Members
             </button>
           </div>
-          <div></div>
+          <div class="search-area">
+            <mat-form-field *ngIf="currentView == 'members'" @fadeIn>
+              <mat-icon matSuffix>search </mat-icon>
+              <input [(ngModel)]="memberSearch" matInput placeholder=" Type member name to search">
+            </mat-form-field>
+          </div>
           <div style="text-align: end;">
             <mat-menu #yearMenu="matMenu">
               <button *ngFor="let yr of years$ | async" mat-menu-item (click)="setYear(yr)">{{yr}}</button>
@@ -43,13 +48,13 @@
 
     <div class="main-expense-grid">
 
-      <div *ngFor="let expense of expenses$ | async" class="expenseGrid">
+      <div *ngFor="let expense of (expenses$ | async) | search:'member_name': memberSearch" class="expenseGrid">
         <div>
           <mat-icon>money</mat-icon>
         </div>
         <div>
           <h3 class="mb-1 registration-title">{{ expense.reason }}</h3>
-          <p *ngIf="expense.member" class="text-muted mb-0 name-area">{{ expense.member.name }}</p>
+          <p *ngIf="expense.member" class="text-muted mb-0 name-area">{{ expense?.member_name }}</p>
           <p *ngIf="!expense.member" class="text-muted mb-0 name-area">Group Expense</p>
           <p class="text-muted"><small>{{ expense.date | date }}</small></p>
         </div>

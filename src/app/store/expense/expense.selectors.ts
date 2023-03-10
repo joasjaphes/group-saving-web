@@ -87,25 +87,33 @@ export const selectExpensesByYear = (year) =>
     return items;
   });
 
-export const selectYearsWithExpenses = createSelector(selectDetailed, (allItems) => {
-  const years = [new Date().getFullYear() + ''];
-  allItems.forEach((item) => {
-    if (years.indexOf(item.year + '') === -1) {
-      years.push(item.year + '');
-    }
-  });
-  return years;
-});
+export const selectYearsWithExpenses = createSelector(
+  selectDetailed,
+  (allItems) => {
+    const years = [new Date().getFullYear() + ''];
+    allItems.forEach((item) => {
+      if (years.indexOf(item.year + '') === -1) {
+        years.push(item.year + '');
+      }
+    });
+    return years;
+  }
+);
 
 export const selectMembersExpenseByYear = (year) =>
   createSelector(selectDetailed, (allItems) => {
     const items = allItems.filter(
       (i) => (year === 'All' || i.year + '' === year + '') && !!i.member
     );
-    return items;
+    return items.map((i) => {
+      return {
+        ...i,
+        member_name: i.member?.name,
+      };
+    });
   });
 
-  export const selectGroupExpenseByYear = (year) =>
+export const selectGroupExpenseByYear = (year) =>
   createSelector(selectDetailed, (allItems) => {
     const items = allItems.filter(
       (i) => (year === 'All' || i.year + '' === year + '') && !i.member

@@ -13,11 +13,13 @@ import * as contributionTypeSelector from '../../../store/contribution-type/cont
 import { Expense } from '../../../store/expense/expense.model';
 import * as expenseSelector from '../../../store/expense/expense.selectors';
 import { ActivatedRoute } from '@angular/router';
+import { fadeIn } from 'src/app/shared/animations/router-animation';
 
 @Component({
   selector: 'app-expenses',
   templateUrl: './expenses.component.html',
   styleUrls: ['./expenses.component.scss'],
+  animations:[fadeIn]
 })
 export class ExpensesComponent implements OnInit {
   members$: Observable<Member[]>;
@@ -31,6 +33,7 @@ export class ExpensesComponent implements OnInit {
   years$: Observable<string[]>;
   currentYear = new Date().getFullYear();
   currentView = 'group';
+  memberSearch = '';
   constructor(
     private store: Store<ApplicationState>,
     public dialog: MatDialog,
