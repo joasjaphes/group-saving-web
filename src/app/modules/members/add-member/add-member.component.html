@@ -40,6 +40,7 @@
                 matInput type="text" placeholder="OXXXXXXXXX"
                 #myInput
               >
+              <mat-hint *ngIf="phoneNumber && !phoneIsValid" style="color: red;">*Invalid phone number</mat-hint>
               <mat-icon matSuffix>phone</mat-icon>
             </mat-form-field>
           </div>

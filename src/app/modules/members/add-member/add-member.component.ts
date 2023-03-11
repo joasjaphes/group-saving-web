@@ -1,20 +1,20 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {countries, Country} from '../../../store/countries';
-import {trimPhoneNumber} from '../../../store/login-steps/login-steps.selectors';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {CommonService} from '../../../services/common.service';
-import {FunctionsService} from '../../../services/functions.service';
-import {Store} from '@ngrx/store';
-import {ApplicationState} from '../../../store';
-import {Group} from '../../../store/group/group.model';
-import {fadeIn} from '../../../shared/animations/router-animation';
-import {Member} from '../../../store/member/member.model';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { countries, Country } from '../../../store/countries';
+import { trimPhoneNumber } from '../../../store/login-steps/login-steps.selectors';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { CommonService } from '../../../services/common.service';
+import { FunctionsService } from '../../../services/functions.service';
+import { Store } from '@ngrx/store';
+import { ApplicationState } from '../../../store';
+import { Group } from '../../../store/group/group.model';
+import { fadeIn } from '../../../shared/animations/router-animation';
+import { Member } from '../../../store/member/member.model';
 
 @Component({
   selector: 'app-add-member',
   templateUrl: './add-member.component.html',
   styleUrls: ['./add-member.component.scss'],
-  animations: [fadeIn]
+  animations: [fadeIn],
 })
 export class AddMemberComponent implements OnInit {
   @Input() group: Group;
@@ -33,24 +33,28 @@ export class AddMemberComponent implements OnInit {
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
-    private store: Store<ApplicationState>,
-  ) { }
+    private store: Store<ApplicationState>
+  ) {}
 
   ngOnInit(): void {
     if (this.group) {
-      this.country = this.countries.find(i => i.isoCode === this.group.country);
+      this.country = this.countries.find(
+        (i) => i.isoCode === this.group.country
+      );
       this.selectedCountry = this.country.phoneCode;
     }
   }
 
   setPhoneCountry(event) {
-    this.country = this.countries.find(i => i.phoneCode === event.value);
+    this.country = this.countries.find((i) => i.phoneCode === event.value);
     this.selectedCountry = this.country.phoneCode;
   }
 
   setPhoneNumber(value) {
-    const phone = `+${this.country.phoneCode}${trimPhoneNumber(this.phoneNumber)}`;
-    const member = this.members.find(i => i.phone_number === phone);
+    const phone = `+${this.country.phoneCode}${trimPhoneNumber(
+      this.phoneNumber
+    )}`;
+    const member = this.members.find((i) => i.phone_number === phone);
     if (member) {
       this.numberTakenMember = member;
     } else {
@@ -59,8 +63,14 @@ export class AddMemberComponent implements OnInit {
   }
 
   get phoneIsValid() {
-    const phone = `+${this.country.phoneCode}${trimPhoneNumber(this.phoneNumber)}`;
-    const testRegex = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
+    // const phone = `+${this.country.phoneCode}${trimPhoneNumber(
+    //   this.phoneNumber
+    // )}`;
+    const phone = `+${this.country.phoneCode}${this.country.trimPhoneNumber(this.phoneNumber)}`
+    const testRegex =
+      this.country.regex ??
+      /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
+
     return testRegex.test(phone);
   }
 
@@ -69,7 +79,9 @@ export class AddMemberComponent implements OnInit {
   }
 
   async save() {
-    const phoneNumber = `+${this.country.phoneCode}${trimPhoneNumber(this.phoneNumber)}`;
+    const phoneNumber = `+${this.country.phoneCode}${trimPhoneNumber(
+      this.phoneNumber
+    )}`;
     const dataToSave = {
       name: this.name,
       phoneNumber,

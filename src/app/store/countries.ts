@@ -4,6 +4,9 @@ export interface Country {
   iso3Code: string;
   phoneCode: string;
   currency: string;
+  regex?: RegExp;
+  startWithZero?: boolean;
+  trimPhoneNumber?: Function;
   currencyName: string;
 }
 
@@ -14,7 +17,16 @@ export const countries: Country[] = [
     name: 'Tanzania',
     iso3Code: 'TZA',
     currency: 'TSH',
+    regex: /^(0|255|\+255)[1-9]{1}\d{8}$/,
+    startWithZero: false,
     currencyName: 'Tanzanian shilling',
+    trimPhoneNumber: (phone: string) => {
+      if (phone && phone.charAt(0) === '0') {
+        return phone.slice(1);
+      } else {
+        return phone;
+      }
+    },
   },
   {
     isoCode: 'KE',
@@ -451,7 +463,7 @@ export const countries: Country[] = [
   {
     isoCode: 'CI',
     phoneCode: '225',
-    name: 'Côte d\'Ivoire',
+    name: "Côte d'Ivoire",
     iso3Code: 'CIV',
     currency: '',
     currencyName: '',
@@ -1083,7 +1095,7 @@ export const countries: Country[] = [
   {
     isoCode: 'KP',
     phoneCode: '850',
-    name: 'Korea, Democratic People\'s Republic of',
+    name: "Korea, Democratic People's Republic of",
     iso3Code: 'PRK',
     currency: '',
     currencyName: '',
@@ -1123,7 +1135,7 @@ export const countries: Country[] = [
   {
     isoCode: 'LA',
     phoneCode: '',
-    name: 'Lao People\'s Democratic Republic',
+    name: "Lao People's Democratic Republic",
     iso3Code: 'LAO',
     currency: '',
     currencyName: '',
