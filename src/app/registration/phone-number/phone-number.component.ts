@@ -46,6 +46,7 @@ export class PhoneNumberComponent implements OnInit, AfterViewInit {
     previousStep: string;
   }>();
   @Output() setPhoneNumber = new EventEmitter<string>();
+  @Output() resetPassword = new EventEmitter();
   fetchingPhoneUpdates = false;
   phoneNumber: string;
   @ViewChild('myInput') myInputField: ElementRef;
@@ -57,7 +58,7 @@ export class PhoneNumberComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     const localPhone = localStorage.getItem('group-saving-user-phone-number');
-    if(localPhone) {
+    if (localPhone) {
       this.phoneNumber = localPhone;
     }
     this.store.select(loginStepSelector.selectCountry).subscribe((country) => {
@@ -90,19 +91,29 @@ export class PhoneNumberComponent implements OnInit, AfterViewInit {
         'getUserByPhoneNumber',
         { phoneNumber }
       );
-      console.log(JSON.stringify(response));
+
       this.fetchingPhoneUpdates = false;
       // User has already registered promt user to enter password
       if (response.userRecord !== null) {
+        const groupResponse: any = await this.functionsService.saveData(
+          'getUserGroupsByPhoneNumber',
+          { phoneNumber }
+        );
+        const shouldResetPassword =
+          groupResponse?.length > 0 && groupResponse[0].should_reset_password;
         this.store.dispatch(setMemberGroups({ memberGroups: [] }));
         this.store.dispatch(
           setMemberName({ memberName: response.userRecord.displayName })
         );
         this.store.dispatch(setEmail({ email: response.userRecord.email }));
-        this.goNextStep({
-          currentStep: RegistrationSteps.EnterPassword,
-          previousStep: RegistrationSteps.PhoneNumber,
-        });
+        if (shouldResetPassword) {
+          this.resetPassword.emit();
+        } else {
+          this.goNextStep({
+            currentStep: RegistrationSteps.EnterPassword,
+            previousStep: RegistrationSteps.PhoneNumber,
+          });
+        }
       } else if (response.userData !== null) {
         if (response.userData.length === 0) {
           this.store.dispatch(setMemberGroups({ memberGroups: [] }));

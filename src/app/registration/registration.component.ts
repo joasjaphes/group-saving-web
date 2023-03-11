@@ -64,6 +64,7 @@ export class RegistrationComponent implements OnInit {
   showThird = false;
   showForth = false;
   hideCountrySelection = false;
+  shouldResetPassword = false;
   constructor(
     private breakpointObserver: BreakpointObserver,
     private store: Store<ApplicationState>,
@@ -164,7 +165,15 @@ export class RegistrationComponent implements OnInit {
     await this.authService.login(data.email, data.password);
   }
 
+  async changePassword() {
+
+  }
+
   setPhoneNumber(phoneNumber: string) {
     this.store.dispatch(setPhoneNumber({ phoneNumber }));
+  }
+
+  resetPassword() {
+    this.shouldResetPassword = true;
   }
 }

@@ -29,9 +29,10 @@
   </app-country-selection>
 
   <!--  Phone Number -->
-  <app-phone-number *ngIf="(currentStep$ | async) == registrationSteps.PhoneNumber" [country]="phoneCountry$ | async"
+  <app-phone-number *ngIf="(currentStep$ | async) == registrationSteps.PhoneNumber && !shouldResetPassword" [country]="phoneCountry$ | async"
     [currentPhoneNumber]="phoneNumber$ | async" [phoneNumberValid]="phoneNumberValid$ | async"
-    (setPhoneNumber)="setPhoneNumber($event)" (nextStep)="goNextStep($event)" @fadeIn></app-phone-number>
+    (setPhoneNumber)="setPhoneNumber($event)" (resetPassword)="resetPassword()" (nextStep)="goNextStep($event)" @fadeIn>
+  </app-phone-number>
 
   <!--  If member has groups already they will show here-->
   <app-member-groups *ngIf="(currentStep$ | async) == registrationSteps.MemberGroup" @fadeIn
@@ -39,7 +40,8 @@
   </app-member-groups>
   <!--  Password Registration-->
   <app-enter-password *ngIf="(currentStep$ | async) == registrationSteps.EnterPassword" [email]="email$ | async"
-    [memberName]="memberName$ | async" (nextStep)="goNextStep($event)"></app-enter-password>
+    [memberName]="memberName$ | async" [phoneNumber]="phoneNumber$ | async" (nextStep)="goNextStep($event)">
+  </app-enter-password>
 
   <!--  Member Name-->
   <app-member-name *ngIf="(currentStep$ | async) == registrationSteps.MemberName" [memberName]="memberName$ | async"
@@ -52,6 +54,7 @@
   <!--  Password Registration-->
   <app-set-password *ngIf="(currentStep$ | async) == registrationSteps.SetPassword" [memberName]="memberName$ | async"
     (nextStep)="goNextStep($event)"></app-set-password>
+
 
   <!--  Password Registration-->
   <app-confirm-password *ngIf="(currentStep$ | async) == registrationSteps.ConfirmPassword"
