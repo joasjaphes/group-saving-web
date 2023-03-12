@@ -25,13 +25,27 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
-    localStorage.removeItem('group-saving-user');
-    localStorage.removeItem('group_savings_active_group');
-    localStorage.removeItem('group_savings_current_member');
-    const result = await this.afAuth.signInWithEmailAndPassword(
-      email,
-      password
-    );
+    try {
+      localStorage.removeItem('group-saving-user');
+      localStorage.removeItem('group_savings_active_group');
+      localStorage.removeItem('group_savings_current_member');
+      const result = await this.afAuth.signInWithEmailAndPassword(
+        email,
+        password
+      );
+    } catch (e) {
+      throw e;
+    }
+
+    // .catch(function(error) {
+    //   // Handle Errors here.
+    //   var errorCode = error.code;
+    //   var errorMessage = error.message;
+    //   if (errorCode === 'auth/wrong-password') {
+    //     alert('Wrong password.');
+    //   } else {
+    //     alert(errorMessage);
+    //   }
   }
 
   async logout() {
@@ -49,15 +63,18 @@ export class AuthService {
       : this.afAuth.authState;
   }
 
-  async changePassword(currentPassword:string, newPassword: string) {
+  async changePassword(currentPassword: string, newPassword: string) {
     try {
       const user = await this.afAuth.currentUser;
-      const cred = firebase.auth.EmailAuthProvider.credential(user.email, currentPassword);
+      const cred = firebase.auth.EmailAuthProvider.credential(
+        user.email,
+        currentPassword
+      );
       await user.reauthenticateWithCredential(cred);
       await user.updatePassword(newPassword);
     } catch (e) {
       console.error('Failed to change password', e);
-      throw e
+      throw e;
     }
   }
 }

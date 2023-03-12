@@ -54,7 +54,7 @@ export const updatePassword = functions.https.onRequest((request, response) => {
                 .doc(doc.id);
               transaction.update(groupMemberDocRef, {
                 last_update,
-                should_reset_password: true,
+                should_reset_password: data.should_reset_password ??  true,
               });
               transaction.set(
                 otherUpdateAtRef,

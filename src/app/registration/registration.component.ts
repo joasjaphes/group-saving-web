@@ -8,7 +8,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { first, map } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
 import { ApplicationState } from '../store';
-import { Back } from '../store/router/router.action';
+import { Back, Go } from '../store/router/router.action';
 import { countries, Country } from '../store/countries';
 import { Group } from '../store/group/group.model';
 import * as loginSelector from '../store/login-steps/login-steps.selectors';
@@ -175,5 +175,6 @@ export class RegistrationComponent implements OnInit {
 
   resetPassword() {
     this.shouldResetPassword = true;
+    this.store.dispatch(new Go({path: ['','welcome','reset-password']}))
   }
 }

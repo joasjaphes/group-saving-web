@@ -24,6 +24,7 @@ import {
   setMemberGroups,
   setMemberName,
   setPhoneCountry,
+  setPhoneNumber,
 } from '../../store/login-steps/login-steps.actions';
 import { trimPhoneNumber } from '../../store/login-steps/login-steps.selectors';
 import { RegistrationSteps } from '../registration-steps';
@@ -92,7 +93,6 @@ export class PhoneNumberComponent implements OnInit, AfterViewInit {
         { phoneNumber }
       );
 
-      this.fetchingPhoneUpdates = false;
       // User has already registered promt user to enter password
       if (response.userRecord !== null) {
         const groupResponse: any = await this.functionsService.saveData(
@@ -106,6 +106,7 @@ export class PhoneNumberComponent implements OnInit, AfterViewInit {
           setMemberName({ memberName: response.userRecord.displayName })
         );
         this.store.dispatch(setEmail({ email: response.userRecord.email }));
+        this.store.dispatch(setPhoneNumber({ phoneNumber }));
         if (shouldResetPassword) {
           this.resetPassword.emit();
         } else {
@@ -143,6 +144,7 @@ export class PhoneNumberComponent implements OnInit, AfterViewInit {
           });
         }
       }
+      this.fetchingPhoneUpdates = false;
       console.log(JSON.stringify(response));
     } catch (e) {
       console.error(e);
