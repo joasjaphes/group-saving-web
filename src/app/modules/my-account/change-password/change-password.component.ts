@@ -9,7 +9,7 @@ import { fadeIn } from 'src/app/shared/animations/router-animation';
   animations: [fadeIn],
 })
 export class ChangePasswordComponent implements OnInit {
-  passWord: string;
+  password: string;
   confirmPassword: string;
   currentPassword: string;
   loading = false;
@@ -23,7 +23,7 @@ export class ChangePasswordComponent implements OnInit {
     try {
       await this.authService.changePassword(
         this.currentPassword,
-        this.passWord
+        this.password
       );
       await this.authService.logout();
     } catch (e) {
