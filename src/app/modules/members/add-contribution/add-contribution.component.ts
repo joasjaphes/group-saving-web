@@ -244,8 +244,9 @@ export class AddContributionComponent implements OnInit {
   findBaseAmount(loan: Loan) {
     const loanType = loan.loanType;
     if (
-      loanType.pay_same_amount_is_must &&
-      this.loanAmount[loan.id] < loan.amount_per_return
+      (loanType.pay_same_amount_is_must &&
+        this.loanAmount[loan.id] < loan.amount_per_return) ||
+      this.loanAmount[loan.id] > loan.remaining_balance
     ) {
       this.inputErrors[loan.id] = true;
     } else {

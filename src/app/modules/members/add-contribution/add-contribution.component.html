@@ -68,9 +68,14 @@
                 <mat-label>Amount for {{loan.loanType?.name}}</mat-label>
                 <input [(ngModel)]="loanAmount[loan.id]" matInput type="number" min="0"
                   placeholder="Amount for {{loan.loanType?.name}}" (input)="findBaseAmount(loan)">
-                <mat-hint *ngIf="inputErrors[loan.id]" style="color: red; font-weight:bold">
+                <mat-hint *ngIf="inputErrors[loan.id] && (loan.loanType.pay_same_amount_is_must &&
+                this.loanAmount[loan.id] < loan.amount_per_return)" style="color: red; font-weight:bold">
                   *Amount is less than
                   required amount ({{loan.amount_per_return | number}})</mat-hint>
+                <mat-hint *ngIf="inputErrors[loan.id] && (loanAmount[loan.id] > loan.remaining_balance)"
+                  style="color: red; font-weight:bold">
+                  *Amount is Greater than
+                  remaining balance ({{loan.remaining_balance | number}})</mat-hint>
               </mat-form-field>
             </div>
           </div>
