@@ -12,6 +12,7 @@ export class ViewAttachmentComponent implements OnInit {
     public dialogRef: MatDialogRef<ViewAttachmentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
       fileUrl: string;
+      secondFileUrl:string;
       title: string;
       subtitle: string;
       description: string;

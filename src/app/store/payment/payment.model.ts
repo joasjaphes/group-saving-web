@@ -21,6 +21,7 @@ export interface Payment {
   paymentType: string;
   referenceNumber: string;
   fileUrl: string;
+  secondFileUrl?:string;
   confirmationMessage: string;
   contributions: any;
   contributionsDetails?: any[];

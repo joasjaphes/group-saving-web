@@ -8,6 +8,7 @@
   </mat-card-header>
   <div style="min-height: 350px;">
     <img mat-card-image [src]="data.fileUrl" alt="{{data.title}}">
+    <img mat-card-image *ngIf="data.secondFileUrl" [src]="data.secondFileUrl" alt="{{data.title}}">
   </div>
   <mat-card-content>
     <p>

@@ -49,6 +49,7 @@ export class ContributionItemComponent implements OnInit {
       minHeight: '60vh',
       data: {
         fileUrl: this.payment.fileUrl,
+        secondFileUrl: this.payment?.secondFileUrl,
         title: this.payment.member.name,
         subtitle: this.payment.totalAmount,
         description: this.payment.description,
