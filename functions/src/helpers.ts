@@ -75,6 +75,7 @@ export const preparePayment = (data: any, group: any, currentPayment: PaymentMod
         paymentMode: data.paymentMode ?? '',
         confirmationMessage: data.confirmationMessage ?? '',
         fileUrl: data.fileUrl ?? '',
+        secondFileUrl: data.secondFileUrl?? '',
         date: formatDate(data.date),
       },
     },

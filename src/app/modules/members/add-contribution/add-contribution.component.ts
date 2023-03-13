@@ -61,8 +61,12 @@ export class AddContributionComponent implements OnInit {
   paymentMode: string;
   referenceNumber: string;
   inputErrors = {};
-  selectedFile: File;
-  fileUrl;
+  selectedFiles: File[] = [];
+  fileUrls = [];
+  firstFile: File;
+  firstFileUrl: any;
+  secondFile: File;
+  secondFileUrl: any;
   constructor(
     private commonService: CommonService,
     private functionsService: FunctionsService,
@@ -181,6 +185,7 @@ export class AddContributionComponent implements OnInit {
       referenceNumber: this.referenceNumber,
       paymentMode: this.paymentMode,
       fileUrl: '',
+      secondFileUrl: '',
     };
 
     // Check to see if the current value is the starting share and add its value
@@ -194,13 +199,21 @@ export class AddContributionComponent implements OnInit {
     });
     this.loading = true;
     try {
-      if (this.selectedFile) {
+      if (this.firstFile) {
         const fileUrl = await this.firestoreService.uploadFile(
           `files/${dataToSave.groupId}/${this.commonService.makeId()}`,
-          this.selectedFile
+          this.firstFile
         );
         dataToSave.fileUrl = fileUrl;
       }
+      if (this.secondFile) {
+        const fileUrl = await this.firestoreService.uploadFile(
+          `files/${dataToSave.groupId}/${this.commonService.makeId()}`,
+          this.secondFile
+        );
+        dataToSave.secondFileUrl = fileUrl;
+      }
+      console.log('Data to save', dataToSave);
       await this.functionsService.saveData('addNewContribution', dataToSave);
       this.loading = false;
       this.commonService.showSuccess(
@@ -330,15 +343,21 @@ export class AddContributionComponent implements OnInit {
     this.period = `${$event.year}${$event.month.id}`;
   }
 
-  onFile(event) {
-    this.removeAttachment();
+  onFile(event, index) {
     const file: File = event?.target?.files[0];
     if (file.type == 'image/png' || file.type == 'image/jpeg') {
-      this.selectedFile = file;
+      if (index === 0) {
+        this.firstFile = file;
+      } else {
+        this.secondFile = file;
+      }
       var reader = new FileReader();
       reader.onloadend = () => {
-        this.fileUrl = reader.result;
-        console.log('RESULT', reader.result);
+        if (index === 0) {
+          this.firstFileUrl = reader.result;
+        } else {
+          this.secondFileUrl = reader.result;
+        }
       };
       reader.readAsDataURL(file);
     } else {
@@ -348,8 +367,18 @@ export class AddContributionComponent implements OnInit {
     }
   }
 
-  removeAttachment() {
-    this.selectedFile = null;
-    this.fileUrl = null;
+  removeAttachment(index) {
+    if (index == 0) {
+      this.firstFile = null;
+      this.firstFileUrl = null;
+    } else {
+      this.secondFile = null;
+      this.secondFileUrl = null;
+    }
+  }
+
+  clickInputFile(id) {
+    const input = document.getElementById(id);
+    input?.click();
   }
 }

@@ -18,6 +18,7 @@ export interface PaymentModel {
       referenceNumber: string;
       paymentMode: string;
       fileUrl?: string;
+      secondFileUrl?:string;
       confirmationMessage?: string;
       date: any
     }
