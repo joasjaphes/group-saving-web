@@ -43,6 +43,7 @@ export class PaymentEffects {
                 paymentType: pay.paymentType,
                 confirmationMessage: pay.confirmationMessage,
                 fileUrl: pay.fileUrl,
+                secondFileUrl:pay?.secondFileUrl,
                 contributions: pay.contributions,
                 fines: pay.fines,
                 loans: pay.loans,
