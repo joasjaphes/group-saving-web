@@ -22,7 +22,7 @@ export class UpdateMemberPasswordComponent implements OnInit {
 
   loading = false;
 
-  passWord: string;
+  password: string;
   confirmPassword: string;
   constructor(
     private commonService: CommonService,
@@ -42,7 +42,7 @@ export class UpdateMemberPasswordComponent implements OnInit {
       const dataToSave = {
         memberId: this.member.id,
         phoneNumber: this.member.phone_number,
-        password: this.passWord,
+        password: this.password,
       };
       await this.functionsService.saveData('updatePassword', dataToSave);
       this.commonService.showSuccess('Members password updated successful');

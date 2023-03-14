@@ -72,7 +72,7 @@ export class MembersPermissionComponent implements OnInit {
     };
     this.loading = true;
     try {
-      await this.functionsService.saveData('setPermission', dataToSave);
+      await this.functionsService.saveData('setGroupPermission', dataToSave);
       this.loading = false;
       this.commonService.showSuccess('Group Permission set successful');
       this.close();

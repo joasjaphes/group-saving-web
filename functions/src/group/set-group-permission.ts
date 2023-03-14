@@ -34,6 +34,7 @@ export const setGroupPermission = functions.https.onRequest((request, response) 
           contributions: data.contributions,
           meetings: data.meetings,
           loan_approval: data.loan_approval,
+          password_reset: data?.passwordReset,
         },
         last_update,
       });
