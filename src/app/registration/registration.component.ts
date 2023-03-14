@@ -115,9 +115,9 @@ export class RegistrationComponent implements OnInit {
     const localPhone = localStorage.getItem('group-saving-user-phone-number');
     const localName = localStorage.getItem('group-saving-user-name');
     const logedInBefore = localStorage.getItem('group-saving-arleady-loged-in');
-    if (countryCode && localName) {
+    this.alreadyLogedInBefore = logedInBefore == '1';
+    if (this.alreadyLogedInBefore) {
       this.hideCountrySelection = true;
-      this.alreadyLogedInBefore = logedInBefore == '1';
       const country = countries.find((c) => c.phoneCode === countryCode);
       this.store.dispatch(setMemberName({ memberName: localName }));
       this.setCountry(country);

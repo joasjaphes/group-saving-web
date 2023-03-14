@@ -72,7 +72,6 @@ export class EnterPasswordComponent implements OnInit, AfterViewInit {
     this.loading = true;
     try {
       await this.authService.login(this.email, this.password);
-      localStorage.setItem('group-saving-arleady-loged-in', '1');
       this.loading = false;
     } catch (e) {
       this.loading = false;
