@@ -29,9 +29,10 @@
   </app-country-selection>
 
   <!--  Phone Number -->
-  <app-phone-number *ngIf="(currentStep$ | async) == registrationSteps.PhoneNumber && !shouldResetPassword" [country]="phoneCountry$ | async"
-    [currentPhoneNumber]="phoneNumber$ | async" [phoneNumberValid]="phoneNumberValid$ | async"
-    (setPhoneNumber)="setPhoneNumber($event)" (resetPassword)="resetPassword()" (nextStep)="goNextStep($event)" @fadeIn>
+  <app-phone-number *ngIf="(currentStep$ | async) == registrationSteps.PhoneNumber && !shouldResetPassword"
+    [country]="phoneCountry$ | async" [currentPhoneNumber]="phoneNumber$ | async"
+    [phoneNumberValid]="phoneNumberValid$ | async" (setPhoneNumber)="setPhoneNumber($event)"
+    (resetPassword)="resetPassword()" (nextStep)="goNextStep($event)" @fadeIn>
   </app-phone-number>
 
   <!--  If member has groups already they will show here-->
@@ -40,7 +41,8 @@
   </app-member-groups>
   <!--  Password Registration-->
   <app-enter-password *ngIf="(currentStep$ | async) == registrationSteps.EnterPassword" [email]="email$ | async"
-    [memberName]="memberName$ | async" [phoneNumber]="phoneNumber$ | async" (nextStep)="goNextStep($event)">
+    [memberName]="memberName$ | async" [phoneNumber]="phoneNumber$ | async" (nextStep)="goNextStep($event)"
+    [alreadyLogedInBefore]="alreadyLogedInBefore">
   </app-enter-password>
 
   <!--  Member Name-->

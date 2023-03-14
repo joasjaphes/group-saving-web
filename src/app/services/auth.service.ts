@@ -33,6 +33,7 @@ export class AuthService {
         email,
         password
       );
+      console.log('User result', result);
     } catch (e) {
       throw e;
     }

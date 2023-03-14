@@ -63,7 +63,6 @@ export class PhoneNumberComponent implements OnInit, AfterViewInit {
       this.phoneNumber = localPhone;
     }
     this.store.select(loginStepSelector.selectCountry).subscribe((country) => {
-      console.log(country);
       if (country) {
         this.selectedCountry = this.country.phoneCode;
       }
@@ -104,6 +103,14 @@ export class PhoneNumberComponent implements OnInit, AfterViewInit {
         this.store.dispatch(setMemberGroups({ memberGroups: [] }));
         this.store.dispatch(
           setMemberName({ memberName: response.userRecord.displayName })
+        );
+        localStorage.setItem(
+          'group-saving-user-name',
+          response.userRecord.displayName
+        );
+        localStorage.setItem(
+          'group-saving-user-email',
+          response.userRecord.email
         );
         this.store.dispatch(setEmail({ email: response.userRecord.email }));
         this.store.dispatch(setPhoneNumber({ phoneNumber }));

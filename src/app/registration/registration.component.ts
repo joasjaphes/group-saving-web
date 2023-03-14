@@ -16,6 +16,7 @@ import {
   goNextStep,
   goPreviousStep,
   setCountry,
+  setMemberName,
   setNextStep,
   setPhoneNumber,
 } from '../store/login-steps/login-steps.actions';
@@ -64,6 +65,7 @@ export class RegistrationComponent implements OnInit {
   showThird = false;
   showForth = false;
   hideCountrySelection = false;
+  alreadyLogedInBefore = false;
   shouldResetPassword = false;
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -111,20 +113,24 @@ export class RegistrationComponent implements OnInit {
   ngOnInit(): void {
     const countryCode = localStorage.getItem('group-saving-country-code');
     const localPhone = localStorage.getItem('group-saving-user-phone-number');
-    if (countryCode) {
+    const localName = localStorage.getItem('group-saving-user-name');
+    const logedInBefore = localStorage.getItem('group-saving-arleady-loged-in');
+    if (countryCode && localName) {
       this.hideCountrySelection = true;
+      this.alreadyLogedInBefore = logedInBefore == '1';
       const country = countries.find((c) => c.phoneCode === countryCode);
+      this.store.dispatch(setMemberName({ memberName: localName }));
       this.setCountry(country);
       this.store.dispatch(
         setNextStep({
-          currentStep: RegistrationSteps.PhoneNumber,
-          previousStep: RegistrationSteps.CountrySelection,
+          currentStep: RegistrationSteps.EnterPassword,
+          previousStep: RegistrationSteps.PhoneNumber,
         })
       );
     }
 
     if (localPhone) {
-      this.setPhoneNumber(localPhone);
+      this.store.dispatch(setPhoneNumber({ phoneNumber: localPhone }));
     }
     setTimeout(() => (this.showFirst = true), 100);
     setTimeout(() => (this.showSecond = true), 2000);
@@ -165,16 +171,15 @@ export class RegistrationComponent implements OnInit {
     await this.authService.login(data.email, data.password);
   }
 
-  async changePassword() {
-
-  }
+  async changePassword() {}
 
   setPhoneNumber(phoneNumber: string) {
+    this.alreadyLogedInBefore = false;
     this.store.dispatch(setPhoneNumber({ phoneNumber }));
   }
 
   resetPassword() {
     this.shouldResetPassword = true;
-    this.store.dispatch(new Go({path: ['','welcome','reset-password']}))
+    this.store.dispatch(new Go({ path: ['', 'welcome', 'reset-password'] }));
   }
 }
