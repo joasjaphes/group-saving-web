@@ -67,11 +67,12 @@ export class MembersPermissionComponent implements OnInit {
       groupId: this.group.id,
       contributions: this.contributions,
       meetings: this.meetings,
-      loan_approvals: this.loanApproval,
+      loan_approval: this.loanApproval,
       passwordReset: this.passwordReset,
     };
     this.loading = true;
     try {
+      console.log('data to save', dataToSave);
       await this.functionsService.saveData('setGroupPermission', dataToSave);
       this.loading = false;
       this.commonService.showSuccess('Group Permission set successful');
