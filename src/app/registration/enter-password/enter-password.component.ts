@@ -17,6 +17,9 @@ import { CommonService } from '../../services/common.service';
 import { FunctionsService } from 'src/app/services/functions.service';
 import { trimPhoneNumber } from 'src/app/store/login-steps/login-steps.selectors';
 import { RegistrationSteps } from '../registration-steps';
+import { ApplicationState } from 'src/app/store';
+import { Store } from '@ngrx/store';
+import { Go } from 'src/app/store/router/router.action';
 
 @Component({
   selector: 'app-enter-password',
@@ -42,7 +45,8 @@ export class EnterPasswordComponent implements OnInit, AfterViewInit {
 
   constructor(
     private authService: AuthService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private store: Store<ApplicationState>
   ) {}
 
   ngOnInit(): void {
@@ -69,7 +73,7 @@ export class EnterPasswordComponent implements OnInit, AfterViewInit {
   }
 
   forgotPassword() {
-    
+    this.store.dispatch(new Go({ path: ['', 'welcome', 'forgot-password'] }));
   }
 
   async login() {

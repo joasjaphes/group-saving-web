@@ -122,6 +122,7 @@ import { SwitchGroupsComponent } from './menu/switch-groups/switch-groups.compon
 import { UpdateMemberPasswordComponent } from './modules/members/update-member-password/update-member-password.component';
 import { ExpenseByPeriodComponent } from './modules/settings/previous-data/expense-by-period/expense-by-period.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -239,7 +240,8 @@ const firebaseConfig = {
     SwitchGroupsComponent,
     UpdateMemberPasswordComponent,
     ExpenseByPeriodComponent,
-    PasswordResetComponent
+    PasswordResetComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     CommonModule,

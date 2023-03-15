@@ -34,6 +34,7 @@ import { OneTimePaymentSummaryComponent } from './modules/summary/one-time-payme
 import { PrivacyComponent } from './privacy/privacy.component';
 import { ExpectedCollectionComponent } from './modules/summary/expected-collection/expected-collection.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
   {
@@ -213,6 +214,13 @@ const routes: Routes = [
         data: {
           title: 'Welcome, Group Savings',
         },
+      },
+      {
+        path:'forgot-password',
+        component:ForgotPasswordComponent,
+        data:{
+          title:'Forgot password'
+        }
       },
       {
         path: 'registration',
