@@ -301,6 +301,10 @@ export const sendNotification = (data: { groupId: any, title: any, body: any, id
   });
 };
 
+export const sendMessage = (phoneNumber:string, message:string) => {
+  console.log('Sending messages', phoneNumber);
+}
+
 export const  prettyDate = (date = new Date()) => {
   const d = new Date(date);
   const month_names =["Jan","Feb","Mar",

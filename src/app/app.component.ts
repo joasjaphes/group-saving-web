@@ -52,7 +52,8 @@ export class AppComponent implements OnInit, AfterViewInit {
           if (this.router.url === '/welcome/registration') {
             this.store.dispatch(new Go({ path: ['welcome', 'registration'] }));
           } else {
-            this.store.dispatch(new Go({ path: ['welcome'] }));
+            this.store.dispatch(new Go({ path: [this.router.url] }));
+            // this.store.dispatch(new Go({ path: ['welcome'] }));
           }
         }
       },
