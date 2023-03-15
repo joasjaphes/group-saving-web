@@ -68,6 +68,10 @@ export class EnterPasswordComponent implements OnInit, AfterViewInit {
     });
   }
 
+  forgotPassword() {
+    
+  }
+
   async login() {
     this.loading = true;
     try {
