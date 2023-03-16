@@ -1,16 +1,22 @@
 import * as Moment from 'moment';
 import * as admin from 'firebase-admin';
-import {PaymentModel} from './data-models/payment.model';
-import {LoanModel, SingleLoanModel} from './data-models/loan.model';
-import {OneTimePaymentModel} from './data-models/one-time-payment.model';
-import {ExpectedFineModel} from './data-models/expected-fine.model';
-import {LoanRequestModel} from './data-models/loan-request.model';
+import { PaymentModel } from './data-models/payment.model';
+import { LoanModel, SingleLoanModel } from './data-models/loan.model';
+import { OneTimePaymentModel } from './data-models/one-time-payment.model';
+import { ExpectedFineModel } from './data-models/expected-fine.model';
+import { LoanRequestModel } from './data-models/loan-request.model';
+import * as axs from 'axios';
+
+const httpReq = axs.default;
 
 export const makeid = () => {
   let text = '';
-  const possible_combinations = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const possible_combinations =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   for (let i = 0; i < 11; i++) {
-    text += possible_combinations.charAt(Math.floor(Math.random() * possible_combinations.length));
+    text += possible_combinations.charAt(
+      Math.floor(Math.random() * possible_combinations.length)
+    );
   }
   return text;
 };
@@ -37,7 +43,7 @@ export const mergeObjects = (
 
 export const deleteKeys = (
   oldPaymentItem: { [id: string]: number },
-  paymentItem: string[],
+  paymentItem: string[]
 ) => {
   return Object.keys(oldPaymentItem).reduce((object: any, key: string) => {
     if (paymentItem.indexOf(key) === -1) {
@@ -47,7 +53,13 @@ export const deleteKeys = (
   }, {});
 };
 
-export const preparePayment = (data: any, group: any, currentPayment: PaymentModel, replace = true, loanReplace = false): PaymentModel => {
+export const preparePayment = (
+  data: any,
+  group: any,
+  currentPayment: PaymentModel,
+  replace = true,
+  loanReplace = false
+): PaymentModel => {
   const memberPayments = currentPayment.members[data.memberId] ?? {
     id: makeid(),
     memberId: data.memberId,
@@ -65,24 +77,53 @@ export const preparePayment = (data: any, group: any, currentPayment: PaymentMod
       ...currentPayment.members,
       [memberPayments.memberId]: {
         ...memberPayments,
-        fines: mergeObjects(memberPayments.fines ?? {}, data.fines ?? {}, replace),
-        contributions: mergeObjects(memberPayments.contributions ?? {}, data.contributions ?? {}, replace),
-        loans: mergeObjects(memberPayments.loans ?? {}, data.loans ?? {}, loanReplace),
-        interestRate: mergeObjects(memberPayments.interestRate ?? {}, data.interestRate ?? {}, loanReplace),
-        baseAmount: mergeObjects(memberPayments.baseAmount ?? {}, data.baseAmount ?? {}, loanReplace),
-        startingAmount: mergeObjects(memberPayments.startingAmount ?? {}, data.startingAmount ?? {}, replace),
+        fines: mergeObjects(
+          memberPayments.fines ?? {},
+          data.fines ?? {},
+          replace
+        ),
+        contributions: mergeObjects(
+          memberPayments.contributions ?? {},
+          data.contributions ?? {},
+          replace
+        ),
+        loans: mergeObjects(
+          memberPayments.loans ?? {},
+          data.loans ?? {},
+          loanReplace
+        ),
+        interestRate: mergeObjects(
+          memberPayments.interestRate ?? {},
+          data.interestRate ?? {},
+          loanReplace
+        ),
+        baseAmount: mergeObjects(
+          memberPayments.baseAmount ?? {},
+          data.baseAmount ?? {},
+          loanReplace
+        ),
+        startingAmount: mergeObjects(
+          memberPayments.startingAmount ?? {},
+          data.startingAmount ?? {},
+          replace
+        ),
         referenceNumber: data.referenceNumber ?? '',
         paymentMode: data.paymentMode ?? '',
         confirmationMessage: data.confirmationMessage ?? '',
         fileUrl: data.fileUrl ?? '',
-        secondFileUrl: data.secondFileUrl?? '',
+        secondFileUrl: data.secondFileUrl ?? '',
         date: formatDate(data.date),
       },
     },
   };
 };
 
-export const prepareOneTimePayment = (data: any, group: any, currentPayment: OneTimePaymentModel, replace = true): OneTimePaymentModel => {
+export const prepareOneTimePayment = (
+  data: any,
+  group: any,
+  currentPayment: OneTimePaymentModel,
+  replace = true
+): OneTimePaymentModel => {
   const memberPayments = currentPayment.members[data.memberId] ?? {
     id: makeid(),
     memberId: data.memberId,
@@ -107,7 +148,12 @@ export const prepareOneTimePayment = (data: any, group: any, currentPayment: One
   } as OneTimePaymentModel;
 };
 
-export const prepareExpectedFine = (data: any, group: any, currentFines: ExpectedFineModel, replace = true): ExpectedFineModel => {
+export const prepareExpectedFine = (
+  data: any,
+  group: any,
+  currentFines: ExpectedFineModel,
+  replace = true
+): ExpectedFineModel => {
   return {
     ...currentFines,
     fines: [
@@ -124,10 +170,15 @@ export const prepareExpectedFine = (data: any, group: any, currentFines: Expecte
         date: data.date ?? '',
       },
     ],
-  }
+  };
 };
 
-export const prepareLoanRequest = (data: any, group: any, currentFines: LoanRequestModel, replace = true): LoanRequestModel => {
+export const prepareLoanRequest = (
+  data: any,
+  group: any,
+  currentFines: LoanRequestModel,
+  replace = true
+): LoanRequestModel => {
   return {
     ...currentFines,
     loans: [
@@ -143,13 +194,13 @@ export const prepareLoanRequest = (data: any, group: any, currentFines: LoanRequ
         guarantors: [],
       },
     ],
-  }
+  };
 };
 
 export const deleteContribution = (
-  data: { memberId: string, keys: string[] },
+  data: { memberId: string; keys: string[] },
   group: any,
-  currentPayment: PaymentModel,
+  currentPayment: PaymentModel
 ) => {
   const memberPayments = currentPayment.members[data.memberId];
   if (memberPayments) {
@@ -162,12 +213,15 @@ export const deleteContribution = (
           fines: deleteKeys(memberPayments.fines, data.keys),
           contributions: deleteKeys(memberPayments.contributions, data.keys),
           loans: deleteKeys(memberPayments.loans, data.keys),
-          startingAmount: deleteKeys(memberPayments.startingAmount ?? {}, data.keys),
+          startingAmount: deleteKeys(
+            memberPayments.startingAmount ?? {},
+            data.keys
+          ),
         },
       },
     };
   } else {
-    return {...currentPayment};
+    return { ...currentPayment };
   }
 };
 
@@ -185,7 +239,10 @@ export const prepareEmptyPayment = (data: any, group: any): PaymentModel => {
 };
 
 // This function is used to prepare empty payment if not exist
-export const prepareEmptyOneTimePayment = (data: any, group: any): OneTimePaymentModel => {
+export const prepareEmptyOneTimePayment = (
+  data: any,
+  group: any
+): OneTimePaymentModel => {
   return {
     id: `contribution_${data.contributionId}`,
     groupId: group.id,
@@ -203,7 +260,6 @@ export const prepareEmptyLoan = (data: any, group: any): LoanModel => {
     loans: {},
   };
 };
-
 
 // helper method to get month
 export const getMonth = (date = new Date()) => {
@@ -237,31 +293,47 @@ export const formatDate = (date: any) => {
   return [year, month, day].join('-');
 };
 
-export const calculateLoan = (amountTaken: any, duration: any, currentLoanType: any) => {
+export const calculateLoan = (
+  amountTaken: any,
+  duration: any,
+  currentLoanType: any
+) => {
   let return_amount = 0;
   let amount_per_return = 0;
   let total_profit_contribution = 0;
   if (amountTaken !== '' && duration !== '') {
     if (currentLoanType.profit_type === 'Fixed Percent') {
-      return_amount = (parseInt(amountTaken, 10) + (amountTaken * (currentLoanType.profit_percent / 100)));
+      return_amount =
+        parseInt(amountTaken, 10) +
+        amountTaken * (currentLoanType.profit_percent / 100);
       amount_per_return = return_amount / duration;
       total_profit_contribution = return_amount - amountTaken;
     } else if (currentLoanType.profit_type === 'Custom Formula') {
       // tslint:disable-next-line:no-eval
-      const interest = eval(currentLoanType.loan_formular.replace('M', amountTaken + '').replace('T', duration + ''));
+      const interest = eval(
+        currentLoanType.loan_formular
+          .replace('M', amountTaken + '')
+          .replace('T', duration + '')
+      );
       return_amount = parseInt(amountTaken, 10) + parseInt(interest, 10);
       amount_per_return = return_amount / duration;
       total_profit_contribution = return_amount - amountTaken;
     } else {
       amount_per_return = amountTaken * (currentLoanType.profit_percent / 100);
-      return_amount = (parseInt(amountTaken, 10) + (amountTaken * (currentLoanType.profit_percent / 100)));
+      return_amount =
+        parseInt(amountTaken, 10) +
+        amountTaken * (currentLoanType.profit_percent / 100);
       total_profit_contribution = 0;
     }
   }
-  return {return_amount, amount_per_return, total_profit_contribution};
+  return { return_amount, amount_per_return, total_profit_contribution };
 };
 
-export const getNextMonth = (duration: any, startYear: string, startMonth: string) => {
+export const getNextMonth = (
+  duration: any,
+  startYear: string,
+  startMonth: string
+) => {
   const loan_month = Moment(new Date(startYear + '-' + startMonth + '-01'));
   const return_date = loan_month.add(duration, 'M').format('MMMM YYYY');
   const end_year = return_date.split(' ')[1];
@@ -273,10 +345,15 @@ export const getNextMonth = (duration: any, startYear: string, startMonth: strin
   };
 };
 
-
-export const sendNotification = (data: { groupId: any, title: any, body: any, id: string, type: string }) => {
+export const sendNotification = (data: {
+  groupId: any;
+  title: any;
+  body: any;
+  id: string;
+  type: string;
+}) => {
   const icon = 'https://sample-32870.firebaseapp.com/assets/img/donate.png';
-  const {groupId, title, body, id, type} = data;
+  const { groupId, title, body, id, type } = data;
   let tokens: string | string[] = [];
   const tokensRef = admin.firestore().doc(`groups/${groupId}/devices/tokens`);
   return tokensRef.get().then((tokenDoc: any) => {
@@ -301,25 +378,73 @@ export const sendNotification = (data: { groupId: any, title: any, body: any, id
   });
 };
 
-export const sendMessage = (phoneNumber:string, message:string) => {
-  console.log('Sending messages', phoneNumber);
-}
+export const sendMessage = async (messagePayload: SMSmodel) => {
+  const auth = {
+    username: 'MiratecApp',
+    password: 'Mtech@1234#',
+  };
+  console.log('message', messagePayload);
+  try {
+    const response =  await httpReq.post(
+      'https://zn9gk.api.infobip.com/sms/1/text/single',
+      messagePayload,
+      { auth }
+    );
+    console.log('response',response?.data);
+    // return await axios({
+    //   method: 'post',
+    //   url: 'https://zn9gk.api.infobip.com/sms/1/text/single',
+    //   data: messagePayload,
+    // auth: {
+    //   username: 'MiratecApp',
+    //   password: 'Mtech@1234#',
+    // },
+    // });
+  } catch (e) {
+    console.log('Failed to send message', e);
+    throw e;
+  }
+};
 
-export const  prettyDate = (date = new Date()) => {
+export const otp = () => {
+  let str = '';
+  while (str.length < 6) {
+    const ran = Math.floor(Math.random() * 10);
+    str += ran + '';
+  }
+  return str;
+};
+
+export const prettyDate = (date = new Date()) => {
   const d = new Date(date);
-  const month_names =["Jan","Feb","Mar",
-    "Apr","May","Jun",
-    "Jul","Aug","Sep",
-    "Oct","Nov","Dec"];
+  const month_names = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
 
   const day = d.getDate();
   const month_index = d.getMonth();
   const year = d.getFullYear();
 
-  return "" + day + "-" + month_names[month_index] + "-" + year;
-}
+  return '' + day + '-' + month_names[month_index] + '-' + year;
+};
 
-export const prepareLoan = (loanId: string, data: any, currentLoanType: any, last_update: any): SingleLoanModel => {
+export const prepareLoan = (
+  loanId: string,
+  data: any,
+  currentLoanType: any,
+  last_update: any
+): SingleLoanModel => {
   const loan: SingleLoanModel = {
     id: loanId,
     group_id: data.groupId,
@@ -345,27 +470,32 @@ export const prepareLoan = (loanId: string, data: any, currentLoanType: any, las
     additional_config: {},
   };
   if (data.payments && data.payments.length !== 0) {
-    loan.payments = data.payments.map(
-      (payment: any) => ({
-        id: payment.id,
-        month: payment.month ?? '',
-        year: payment.year,
-        week: payment.week ?? '',
-        period: payment.period,
-        amount: payment.amount,
-        paid_on_time: true,
-        date_of_payment: formatDate(payment.date_of_payment),
-        previous_balance: payment.previous_balance,
-        new_balance: payment.new_balance,
-        interest_rate: payment.interest_rate || 0,
-        loan_amount: payment.loan_amount || 0,
-        from_previous_loan: true,
-      })
-    );
+    loan.payments = data.payments.map((payment: any) => ({
+      id: payment.id,
+      month: payment.month ?? '',
+      year: payment.year,
+      week: payment.week ?? '',
+      period: payment.period,
+      amount: payment.amount,
+      paid_on_time: true,
+      date_of_payment: formatDate(payment.date_of_payment),
+      previous_balance: payment.previous_balance,
+      new_balance: payment.new_balance,
+      interest_rate: payment.interest_rate || 0,
+      loan_amount: payment.loan_amount || 0,
+      from_previous_loan: true,
+    }));
   }
   loan.amount_paid_to_date = data.amount_returned;
   loan.remaining_balance = data.remaining_balance;
   return loan;
-}
+};
 
 export const token = 'groupsavings';
+export const smsAuth = 'Basic TWlyYXRlY0FwcDpNdGVjaEAxMjM0Iw==';
+
+export interface SMSmodel {
+  from: string;
+  to: string;
+  text: string;
+}

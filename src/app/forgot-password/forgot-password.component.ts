@@ -26,6 +26,7 @@ import { Go } from '../store/router/router.action';
 export class ForgotPasswordComponent implements OnInit {
   memberName$: Observable<string>;
   phoneNumber: string;
+  messagePhoneNumber: string;
   countryCode: string;
   country;
   countries = countries;
@@ -39,6 +40,13 @@ export class ForgotPasswordComponent implements OnInit {
   newPassword: string;
   confirmNewPassword: string;
   changingPassword = false;
+  memberName: string;
+  firstOtp: string;
+  secondOtp: string;
+  thirdOtp: string;
+  fourthOtp: string;
+  fifthOtp: string;
+  sixthOtp: string;
 
   constructor(
     private store: Store<ApplicationState>,
@@ -53,10 +61,12 @@ export class ForgotPasswordComponent implements OnInit {
       select(selectMemberName),
       first((i) => !!i)
     );
+    this.memberName = localStorage.getItem('group-saving-user-name');
     const localPhone = localStorage.getItem('group-saving-user-phone-number');
     const localCode = localStorage.getItem('group-saving-country-code');
     this.selectedCountry = localCode;
     this.phoneNumber = localPhone;
+    this.messagePhoneNumber = localPhone;
     this.angularFire.authState.subscribe((user) => {
       if (user) {
         console.log('User', user);
@@ -65,28 +75,58 @@ export class ForgotPasswordComponent implements OnInit {
     // this.authService
   }
 
+  get otpString() {
+    return `${this.firstOtp}${this.secondOtp}${this.thirdOtp}${this.fourthOtp}${this.fifthOtp}${this.sixthOtp}`;
+  }
+
   get trimmedPhoneNumber() {
     return `+${this.selectedCountry}${trimPhoneNumber(this.phoneNumber)}`;
+  }
+
+  get trimmedMessagePhoneNumber() {
+    return `+${this.selectedCountry}${trimPhoneNumber(
+      this.messagePhoneNumber
+    )}`;
+  }
+
+  get generatedOtp() {
+    let str = '';
+    while (str.length < 6) {
+      const ran = Math.floor(Math.random() * 10);
+      str += ran + '';
+    }
+    return str;
+  }
+
+  goBack() {
+    this.store.dispatch(new Go({ path: ['', 'welcome', 'registration'] }));
   }
 
   async sendMessage() {
     this.isCorrectOtp = false;
     this.loading = true;
-    const otp = '123456';
-    const dataToSave = {
-      phoneNumber: this.trimmedPhoneNumber,
-      password: otp,
-      should_reset_password: false,
-    };
-    await this.functionsService.saveData('updatePassword', dataToSave);
-    document.getElementById('firstOtp')?.focus();
+    try {
+      const dataToSave = {
+        phoneNumber: this.trimmedPhoneNumber,
+        messagePhoneNumber: this.trimmedMessagePhoneNumber,
+        memberName: this.memberName,
+        password: this.generatedOtp,
+        sendNotification: true,
+        should_reset_password: false,
+      };
+      console.log('phone number', this.trimmedPhoneNumber);
+      await this.functionsService.saveData('updatePassword', dataToSave);
+      document.getElementById('firstOtp')?.focus();
+
+      this.messageReceived = true;
+    } catch (e) {
+      console.error(e);
+    }
     this.loading = false;
-    this.messageReceived = true;
   }
 
   onOtpInput(currentId, nextId, value) {
     if (value) {
-      this.otp += value;
       document.getElementById(currentId).blur();
       document.getElementById(nextId).focus();
     }
@@ -94,10 +134,9 @@ export class ForgotPasswordComponent implements OnInit {
 
   async onSubmitOtp() {
     this.sendingOtp = true;
-    console.log('OTP', this.otp);
     try {
       const email = `${this.trimmedPhoneNumber}@monitafrica.com`;
-      const result = await this.authService.login(email, this.otp);
+      const result = await this.authService.login(email, this.otpString);
       this.isCorrectOtp = true;
     } catch (e) {
       console.error('Failed', e);
@@ -109,7 +148,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.changingPassword = true;
     try {
       const email = `${this.trimmedPhoneNumber}@monitafrica.com`;
-      await this.authService.changePassword(this.otp, this.newPassword);
+      await this.authService.changePassword(this.otpString, this.newPassword);
       await this.authService.login(email, this.newPassword);
       this.store.dispatch(new Go({ path: [''] }));
       this.commonService.showSuccess('Password changed successfully');

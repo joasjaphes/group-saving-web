@@ -25,6 +25,7 @@ export const updatePassword = functions.https.onRequest((request, response) => {
         .send({ data: 'Invalid token please send a valid token' });
       return;
     }
+    console.log('data', data);
     try {
       const last_update = new Date().getTime();
       await admin.firestore().runTransaction(async (transaction) => {
@@ -54,7 +55,7 @@ export const updatePassword = functions.https.onRequest((request, response) => {
                 .doc(doc.id);
               transaction.update(groupMemberDocRef, {
                 last_update,
-                should_reset_password: data.should_reset_password ??  true,
+                should_reset_password: data.should_reset_password ?? true,
               });
               transaction.set(
                 otherUpdateAtRef,
@@ -65,6 +66,14 @@ export const updatePassword = functions.https.onRequest((request, response) => {
           });
         }
       });
+      if (data.sendNotification) {
+        console.log('sending message');
+        await helpers.sendMessage({
+          from: 'GROUPSAVING',
+          to: data.messagePhoneNumber,
+          text: `Hello, ${data.memberName} your OTP is ${data.password}`,
+        });
+      }
       response
         .status(200)
         .send({ data: 'Success', last_update, dataObject: data });
