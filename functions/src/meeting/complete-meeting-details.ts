@@ -2,6 +2,7 @@ import * as functions from 'firebase-functions';
 import * as helpers from '../helpers';
 import * as admin from 'firebase-admin';
 import { MeetingModel, SingleMeeting } from '../data-models/meeting.model';
+import { ExpectedFineModel } from '../data-models/expected-fine.model';
 
 const cors = require('cors')({ origin: true });
 
@@ -32,7 +33,9 @@ export const completeMeeting = functions.https.onRequest(
         console.log('group id', groupId);
         // response.status(200).send()
         const last_update = new Date().getTime();
-        const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
+        const otherUpdateAtRef = admin
+          .firestore()
+          .doc(`groups/${groupId}/updated/others`);
         const groupDocRef = admin.firestore().doc(`groups/${groupId}`);
         await admin
           .firestore()
@@ -62,21 +65,39 @@ export const completeMeeting = functions.https.onRequest(
                 };
             existingMeeting.meetings[next_meeting.id] = next_meeting;
             console.log('existing meeting', existingMeeting);
-            transaction.update(groupDocRef, { next_meeting: null, last_update });
+
+            if (data.membersFines?.length) {
+              for (const fine of data.membersFines) {
+                await setFines(fine, groupData, last_update);
+              }
+            }
+            transaction.update(groupDocRef, {
+              next_meeting: null,
+              last_update,
+            });
             transaction.set(meetingRef, { ...existingMeeting, last_update });
-            transaction.set(otherUpdateAtRef, { group_updated: last_update, meeting_updated: last_update }, {merge: true});
+            transaction.set(
+              otherUpdateAtRef,
+              { group_updated: last_update, meeting_updated: last_update },
+              { merge: true }
+            );
           })
           .then(() => {
-            helpers.sendNotification({
-              groupId: data.groupId,
-              title: `${data.groupName}: Meeting has just been finished`,
-              body: `Meeting has just been finished on ${helpers.prettyDate(data.date)} at ${data.place}, ${data.attendance.length} members participated`,
-              type: 'new_contribution',
-              id: 'new_contribution',
-            }).then(() => null)
+            helpers
+              .sendNotification({
+                groupId: data.groupId,
+                title: `${data.groupName}: Meeting has just been finished`,
+                body: `Meeting has just been finished on ${helpers.prettyDate(
+                  data.date
+                )} at ${data.place}, ${
+                  data.attendance.length
+                } members participated`,
+                type: 'new_contribution',
+                id: 'new_contribution',
+              })
+              .then(() => null)
               .catch((error) => console.log(error));
           });
-
         response.status(200).send({ data: 'Success' });
       } catch (e) {
         console.log('Error setting next meeting data:', e);
@@ -85,6 +106,38 @@ export const completeMeeting = functions.https.onRequest(
     });
   }
 );
+
+async function setFines(fine: any, groupData: any, last_update: any) {
+  try {
+    await admin.firestore().runTransaction(async (transaction) => {
+      const paymentDocRef = admin
+        .firestore()
+        .doc(`groups/${fine.groupId}/expected_fines/expected_${fine.memberId}`);
+      const paymentDoc = await paymentDocRef.get();
+      const existingPaymentData = paymentDoc.exists
+        ? (paymentDoc.data() as ExpectedFineModel)
+        : {
+            id: `expected_${fine?.memberId}`,
+            groupId: fine?.groupId,
+            memberId: fine?.memberId,
+            fines: [],
+          };
+      const paymentData = helpers.prepareExpectedFine(
+        fine,
+        groupData,
+        existingPaymentData,
+        false
+      );
+      transaction.set(
+        paymentDocRef,
+        { ...paymentData, last_update },
+        { merge: true }
+      );
+    });
+  } catch (e) {
+    throw e;
+  }
+}
 
 function prepareMeetingDetails(data: any, nextMeeting: any): SingleMeeting {
   let meeting: SingleMeeting;
