@@ -42,52 +42,6 @@ export const selectError = createSelector(
   fromReducer.getError
 );
 
-export const selectExpectedFinesFromMeeting = (year = 'All', month = 'All') =>
-  createSelector(
-    fromGroup.selected,
-    fromMeeting.selectDetailed,
-    fromMember.selectEntities,
-    fromFineTypes.selectMeetingNotAttendingFineType,
-    fromPayment.selectFinesByMonthByYear(year, month, 'All'),
-    (group, meetings, memberEntities, fineType, payments) => {
-      let absentMembers = [];
-      let fines = {};
-      const allMembersIds = Object.keys(memberEntities);
-      // return payments;
-      for (const member of allMembersIds) {
-        let expectedFines = [];
-        const memberPayments = payments
-          .filter(
-            (pay) =>
-              pay.memberId === member &&
-              !!pay.fineDetails.find((k) => k.id === fineType.id)
-          )
-          .map((i) => i.totalFines);
-        for (const meeting of meetings) {
-          if (
-            !meeting.attendance.includes(member) &&
-            group.meeting_settings.allow_not_attending_fine
-          ) {
-            if (fines[member]) {
-              fines[member] +=
-                group.meeting_settings?.not_attending_fine_amount;
-            } else {
-              fines[member] = group.meeting_settings?.not_attending_fine_amount;
-            }
-          }
-        }
-        if (memberPayments.length) {
-          const totalPaid = memberPayments.reduce((i, j) => i + j);
-          fines[member] = fines[member] - totalPaid;
-        }
-        if (fines[member] && fines[member] <= 0) {
-          delete fines[member];
-        }
-      }
-      console.log('fines', fines);
-    }
-  );
-
 export const selectById = (id: string) =>
   createSelector(selectEntities, (entities) => entities[id]);
 
@@ -107,9 +61,7 @@ export const selectDetailed = createSelector(
   selectByCurrentGroup,
   fromFineTypes.selectEntities,
   fromMember.selectEntities,
-  selectExpectedFinesFromMeeting(),
-  (allItems, fineTypes, members, fines) => {
-    console.log('fines', fines);
+  (allItems, fineTypes, members) => {
     return allItems.map((item) => {
       const contrDetails = [];
       const paymentItems = [];
