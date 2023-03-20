@@ -39,6 +39,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       (user) => {
         // verify if user is authenticated and redirect
         if (user) {
+          console.log('user', user)
           localStorage.setItem('group-saving-arleady-loged-in', '1');
           if (
             this.router.url === '/welcome/registration' ||
@@ -52,8 +53,7 @@ export class AppComponent implements OnInit, AfterViewInit {
           if (this.router.url === '/welcome/registration') {
             this.store.dispatch(new Go({ path: ['welcome', 'registration'] }));
           } else {
-            this.store.dispatch(new Go({ path: [this.router.url] }));
-            // this.store.dispatch(new Go({ path: ['welcome'] }));
+            this.store.dispatch(new Go({ path: ['welcome'] }));
           }
         }
       },

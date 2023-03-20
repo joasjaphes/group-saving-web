@@ -103,7 +103,7 @@ export class CompleteMeetingComponent implements OnInit {
             };
             membersFines.push(fine);
           }
-          dataToSave['membersFines'] = membersFines;
+          // dataToSave['membersFines'] = membersFines;
         }
         await this.functionsService.saveData('completeMeeting', dataToSave);
       }
