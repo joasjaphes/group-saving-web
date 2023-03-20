@@ -52,6 +52,11 @@ export const selectDetailed = createSelector(
   })
 );
 
+export const selectMeetingNotAttendingFineType = createSelector(
+  selectDetailed,
+  (items) => items.find(item => item.type == 'Meeting' && item.meeting_type  == 'not_attending')
+)
+
 export function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }

@@ -53,7 +53,7 @@ export const selectDetailed = createSelector(
     return {
       ...item,
       members: membersNames,
-      truncatedNotes: item.notes.length > 40 ? item.notes.substr(0, 40) + '...' : item.notes,
+      truncatedNotes: item?.notes?.length > 40 ? item?.notes?.substr(0, 40) + '...' : item.notes,
       memberAttended,
     };
   })

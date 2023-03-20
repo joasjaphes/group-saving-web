@@ -188,7 +188,7 @@ export const selectFinesDetailedGroupByMember = (year, fineType) => createSelect
     const memberData = {};
     for (const member of members) {
       memberData[member.id] = {type: 'member', id: member.id, name: member.name, total: 0, totals: {}, items: [], fineKeys: []};
-      allItems.filter(i => i.year + '' === year + '')
+      allItems.filter(i => i.year + '' === year + '' || year === 'All')
         .forEach(item => {
           if (item.memberId === member.id) {
             for (const contr of item.fineDetails) {
@@ -206,13 +206,15 @@ export const selectFinesDetailedGroupByMember = (year, fineType) => createSelect
         });
       memberData[member.id].items = Object.keys(memberData[member.id].totals).map(i => memberData[member.id].totals[i]);
     }
-    return Object
+    const payments = Object
       .keys(memberData)
       .map(i => ({
         ...memberData[i],
         description: memberData[i].items.map(k => `${k.name} ${numberWithCommas(k.amount)}`).join(', ')
       }))
       .filter(i => !!i.total);
+    console.log('Payments', payments);
+    return payments;
   }
 );
 
