@@ -14,6 +14,7 @@ import { first, map } from "rxjs/operators";
 import { addExpectedFines, deleteExpectedFines, upsertExpectedFines } from "../store/expected-fines/expected-fines.actions";
 import * as fromContributionType from "../store/contribution-type/contribution-type.selectors";
 import * as moment from "moment";
+import { FineCalculationType } from "../store/fine/fine.model";
 
 @Injectable({
   providedIn: "root",
@@ -106,6 +107,25 @@ export class FineService {
     } catch (e) {}
   }
 
+  fineAmount(calculationType, amount, month, year = new Date().getFullYear()) {
+    const currentDate = moment(new Date());
+    const fineDate = moment(`${year}-${month}-28`);
+    let diff = 1;
+    switch (calculationType) {
+      case FineCalculationType.DAILY:
+        diff = currentDate.diff(fineDate, "days");
+        return amount * diff;
+      case FineCalculationType.MONTHLY:
+        diff = currentDate.diff(fineDate, "months");
+        return amount * diff;
+      case FineCalculationType.WEEKLY:
+        diff = currentDate.diff(fineDate, "weeks");
+        return amount * diff;
+      default:
+        return amount * diff;
+    }
+  }
+
   async setExpectedFinesForLateContribution(year = "All", month = "All") {
     try {
       const group = await this.store
@@ -160,11 +180,12 @@ export class FineService {
               const payment = await this.store
                 .pipe(
                   select(fromPayment.selectContributionByMonthByMember(month, year, id)),
+                  map((items) => items.filter((item) => new Date(item.date).getTime() <= new Date(`${item.year}-${item.month}-${contribution_end}`).getTime())),
                   first((i) => !!i)
                 )
                 .toPromise();
               if (!payment.length || (payment.length && !payment[0]?.contributions[type.id])) {
-                total += parseFloat("" + type.fine_amount_per_period);
+                total += this.fineAmount(type.fine_period_type, parseFloat("" + type.fine_amount_per_period), month, year);
               }
             }
             const totalFine = total - totalPaid;

@@ -1,4 +1,4 @@
-import {FineType} from '../fine-type/fine-type.model';
+import { FineType } from "../fine-type/fine-type.model";
 
 export interface Fine {
   id: string;
@@ -17,4 +17,11 @@ export interface Fine {
   fine_id: string;
   fineType?: FineType;
   amount: number;
+}
+
+export enum FineCalculationType {
+  FIXED = "Fixed",
+  DAILY = "Amount per day",
+  WEEKLY = "Amount per week",
+  MONTHLY = "Amount per month",
 }
