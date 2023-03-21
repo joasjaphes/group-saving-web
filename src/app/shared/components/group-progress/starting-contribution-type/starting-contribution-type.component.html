@@ -263,7 +263,7 @@
           <mat-form-field appearance="outline">
             <mat-label>Contribution end day</mat-label>
             <mat-select [(ngModel)]="contributionDeadline">
-              <mat-option *ngFor="let day of monthDays">{{day}}</mat-option>
+              <mat-option *ngFor="let day of monthDays" [value]="day">{{day}}</mat-option>
             </mat-select>
             <mat-hint>Deadline for collecting contributions (Each month) </mat-hint>
           </mat-form-field>
