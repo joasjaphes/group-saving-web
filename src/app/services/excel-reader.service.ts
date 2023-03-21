@@ -1,14 +1,13 @@
-import {Injectable} from '@angular/core';
-import * as XLSX from 'xlsx';
-import {Workbook} from 'exceljs';
-import {Observable} from 'rxjs';
+import { Injectable } from "@angular/core";
+import * as XLSX from "xlsx";
+import { Workbook } from "exceljs";
+import { Observable } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ExcelReaderService {
-
-  constructor() { }
+  constructor() {}
 
   async formatSheet(ws, columns) {
     for (let i = 2; i <= 1000; i++) {
@@ -18,20 +17,20 @@ export class ExcelReaderService {
           const cell = row.getCell(col.key);
           if (col.options?.length) {
             cell.dataValidation = {
-              type: 'list',
+              type: "list",
               allowBlank: true,
               showErrorMessage: true,
-              formulae: [`"${col.options.join()}"`]
+              formulae: [`"${col.options.join()}"`],
             };
           }
-          if (col?.valueType === 'DATE') {
-            cell.note = 'mm/dd/yyyy';
+          if (col?.valueType === "DATE") {
+            cell.note = "mm/dd/yyyy";
             cell.dataValidation = {
-              type: 'date',
-              operator: 'lessThan',
+              type: "date",
+              operator: "lessThan",
               showErrorMessage: true,
               // allowBlank: true,
-              formulae: [new Date()]
+              formulae: [new Date()],
             };
           }
         }
@@ -39,18 +38,18 @@ export class ExcelReaderService {
     }
   }
 
-  getExcelData(file): Observable<{[sheetName: string]: any[]}> {
-    return new Observable(observer => {
+  getExcelData(file): Observable<{ [sheetName: string]: any[] }> {
+    return new Observable((observer) => {
       const excelData: { [sheetName: string]: any[] } = {};
-      const target: DataTransfer = (file) as DataTransfer;
+      const target: DataTransfer = file as DataTransfer;
       if (target.files.length !== 1) {
-        observer.error('Cannot use multiple files');
+        observer.error("Cannot use multiple files");
       }
       const reader: FileReader = new FileReader();
       reader.readAsBinaryString(target.files[0]);
       reader.onload = (e: any) => {
         const binarystr: string = e.target.result;
-        const wb: XLSX.WorkBook = XLSX.read(binarystr, { type: 'binary' });
+        const wb: XLSX.WorkBook = XLSX.read(binarystr, { type: "binary" });
         for (const sheetName of Object.keys(wb.Sheets)) {
           const ws: XLSX.WorkSheet = wb.Sheets[sheetName];
           excelData[sheetName] = XLSX.utils.sheet_to_json(ws);
@@ -84,23 +83,23 @@ export class ExcelReaderService {
       await this.addSheets(workbook, sheetNames, columns);
     }
     const buffer = await workbook.xlsx.writeBuffer();
-    const dlink = document.createElement('a');
+    const dlink = document.createElement("a");
     dlink.href = URL.createObjectURL(new Blob([buffer]));
-    dlink.setAttribute('download', `${fileName}.xlsx`);
+    dlink.setAttribute("download", `${fileName}.xlsx`);
     dlink.click();
     dlink.remove();
   }
 
   async generateExcelTemplateWithData(columns: { name: string; valueType: string; key?: string; options?: string[] }[], sheetNames: string, fileName: string, data: any[]) {
     const workbook = new Workbook();
-    const worksheet =  await this.addSheets(workbook, sheetNames, columns, 20);
-    data.forEach(dataItem => {
-      const row = worksheet.addRow(dataItem)
+    const worksheet = await this.addSheets(workbook, sheetNames, columns, 20);
+    data.forEach((dataItem) => {
+      const row = worksheet.addRow(dataItem);
     });
     const buffer = await workbook.xlsx.writeBuffer();
-    const dlink = document.createElement('a');
+    const dlink = document.createElement("a");
     dlink.href = URL.createObjectURL(new Blob([buffer]));
-    dlink.setAttribute('download', `${fileName}.xlsx`);
+    dlink.setAttribute("download", `${fileName}.xlsx`);
     dlink.click();
     dlink.remove();
   }
@@ -110,21 +109,21 @@ export class ExcelReaderService {
     ws.columns = columns.map((col) => {
       return { header: col.name, key: col.key, width };
     });
-    ws.columns.forEach(column => {
+    ws.columns.forEach((column) => {
       column.eachCell((cell, num) => {
         cell.font = {
-          name: 'Arial',
+          name: "Arial",
           family: 2,
           bold: true,
           size: 12,
         };
         cell.alignment = {
-          vertical: 'middle', horizontal: 'center'
+          vertical: "middle",
+          horizontal: "center",
         };
       });
     });
     return ws;
     // await this.formatSheet(ws, columns);
   }
-
 }

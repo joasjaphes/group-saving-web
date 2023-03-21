@@ -1,24 +1,23 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import {Group} from '../../../../store/group/group.model';
-import {GroupProgress} from '../../../../store/group/group-progress.model';
-import {fadeIn} from '../../../animations/router-animation';
-import {FunctionsService} from '../../../../services/functions.service';
-import {CommonService} from '../../../../services/common.service';
-import {MatSelectChange} from '@angular/material/select';
-import {ContributionType} from '../../../../store/contribution-type/contribution-type.model';
-import {FineType} from '../../../../store/fine-type/fine-type.model';
-import {Fine} from '../../../../store/fine/fine.model';
-import {ContributionTypes} from '../../../../store/contribution-type/contribution-type.enum';
-import {Member} from '../../../../store/member/member.model';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Group } from '../../../../store/group/group.model';
+import { GroupProgress } from '../../../../store/group/group-progress.model';
+import { fadeIn } from '../../../animations/router-animation';
+import { FunctionsService } from '../../../../services/functions.service';
+import { CommonService } from '../../../../services/common.service';
+import { MatSelectChange } from '@angular/material/select';
+import { ContributionType } from '../../../../store/contribution-type/contribution-type.model';
+import { FineType } from '../../../../store/fine-type/fine-type.model';
+import { Fine } from '../../../../store/fine/fine.model';
+import { ContributionTypes } from '../../../../store/contribution-type/contribution-type.enum';
+import { Member } from '../../../../store/member/member.model';
 
 @Component({
   selector: 'app-starting-contribution-type',
   templateUrl: './starting-contribution-type.component.html',
   styleUrls: ['./starting-contribution-type.component.scss'],
-  animations: [fadeIn]
+  animations: [fadeIn],
 })
 export class StartingContributionTypeComponent implements OnInit {
-
   @Input() group: Group;
   @Input() members: Member[] = [];
   @Input() progressDetails: GroupProgress;
@@ -26,6 +25,7 @@ export class StartingContributionTypeComponent implements OnInit {
   @Input() currentContributionType: ContributionType;
   @Input() fineTypes: FineType[];
   @Input() fines: Fine[];
+  @Input() monthDays = [];
 
   @Output() closeForm = new EventEmitter();
 
@@ -46,18 +46,19 @@ export class StartingContributionTypeComponent implements OnInit {
   fineName: string;
   trackBalance: string;
   loading;
-  fineHasData =  false;
+  fineHasData = false;
   contributionHasDeadline = 'Yes';
   isGivenToMember = 'Yes';
   memberId: string;
   memberSearch: string;
   contributionStartDate: any;
   contributionEndDate: any;
+  contributionDeadline: any;
   contributionTypeEnums = ContributionTypes;
   constructor(
     private functionsService: FunctionsService,
-    private commonService: CommonService,
-  ) { }
+    private commonService: CommonService
+  ) {}
 
   ngOnInit(): void {
     if (this.progressDetails) {
@@ -71,19 +72,39 @@ export class StartingContributionTypeComponent implements OnInit {
       this.isMandatory = this.currentContributionType.is_must ? 'Yes' : 'No';
       this.isAmountSame = this.currentContributionType.is_fixed ? 'Yes' : 'No';
       this.amount = this.currentContributionType.fixed_value;
-      this.minimumStartingAmount = this.currentContributionType.minimum_starting_share;
-      this.isStartingShare = this.currentContributionType.is_starting_share ? 'Yes' : 'No';
+      this.minimumStartingAmount =
+        this.currentContributionType.minimum_starting_share;
+      this.isStartingShare = this.currentContributionType.is_starting_share
+        ? 'Yes'
+        : 'No';
       this.minimumAmount = this.currentContributionType.minimum_contribution;
-      this.allowFine = this.currentContributionType.allow_late_fine ? 'Yes' : 'No';
+      this.allowFine = this.currentContributionType.allow_late_fine
+        ? 'Yes'
+        : 'No';
       this.allowLoan = this.currentContributionType.allow_loan ? 'Yes' : 'No';
-      this.trackBalance = this.currentContributionType.track_balance ? 'Yes' : 'No';
-      this.contributionHasDeadline = this.currentContributionType.contribution_has_deadline ? 'Yes' : 'No';
-      this.contributionStartDate = this.currentContributionType.contribution_start_date;
-      this.contributionEndDate = this.currentContributionType.contribution_end_date;
-      this.isGivenToMember = this.currentContributionType.is_given_to_member ? 'Yes' : 'No';
+      this.trackBalance = this.currentContributionType.track_balance
+        ? 'Yes'
+        : 'No';
+      this.contributionHasDeadline = this.currentContributionType
+        .contribution_has_deadline
+        ? 'Yes'
+        : 'No';
+      this.contributionStartDate =
+        this.currentContributionType.contribution_start_date;
+      this.contributionEndDate =
+        this.currentContributionType.contribution_end_date;
+      this.contributionDeadline =
+        this.currentContributionType.contribution_deadline;
+      this.isGivenToMember = this.currentContributionType.is_given_to_member
+        ? 'Yes'
+        : 'No';
       this.memberId = this.currentContributionType.member_id;
       if (this.fineTypes) {
-        const lateFine = this.fineTypes.find(i => i.type === 'Contribution' && i.contribution_type_id === this.currentContributionType.id);
+        const lateFine = this.fineTypes.find(
+          (i) =>
+            i.type === 'Contribution' &&
+            i.contribution_type_id === this.currentContributionType.id
+        );
         this.allowFine = !!lateFine ? 'Yes' : 'No';
         if (lateFine) {
           this.fineCalculationType = lateFine.calculation;
@@ -91,7 +112,8 @@ export class StartingContributionTypeComponent implements OnInit {
           this.fineName = lateFine.description;
           // check if the fine has data already
           if (this.fines) {
-            this.fineHasData = this.fines.filter(i => i.fine_id === lateFine.id).length > 0;
+            this.fineHasData =
+              this.fines.filter((i) => i.fine_id === lateFine.id).length > 0;
           }
         }
       }
@@ -100,7 +122,6 @@ export class StartingContributionTypeComponent implements OnInit {
         this.frequency = this.group.contribution_frequency;
       }
     }
-
   }
 
   setIsMandatory(value: any) {
@@ -112,7 +133,9 @@ export class StartingContributionTypeComponent implements OnInit {
 
   async sendData() {
     const dataToSave = {
-      id: this.currentContributionType ? this.currentContributionType.id : this.commonService.makeId(),
+      id: this.currentContributionType
+        ? this.currentContributionType.id
+        : this.commonService.makeId(),
       groupId: this.group.id,
       name: this.name,
       frequency: this.frequency,
@@ -120,7 +143,9 @@ export class StartingContributionTypeComponent implements OnInit {
       valuePerShare: this.pricePerShare || 0,
       minimumAmount: this.minimumAmount,
       isMandatory: this.isMandatory,
-      isOneTime: this.contributionType === 'Entry Fee' || this.contributionType === 'One Time',
+      isOneTime:
+        this.contributionType === 'Entry Fee' ||
+        this.contributionType === 'One Time',
       isFineAllowed: this.allowFine,
       contributionKey: this.contributionType,
       isAmountTheSame: this.isAmountSame,
@@ -135,13 +160,20 @@ export class StartingContributionTypeComponent implements OnInit {
       contributionHasDeadline: this.contributionHasDeadline,
       isGivenToMember: this.isGivenToMember,
       memberId: this.memberId,
-      contributionStartDate: this.commonService.formatDate(this.contributionStartDate),
-      contributionEndDate: this.commonService.formatDate(this.contributionEndDate),
-
+      contributionStartDate: this.commonService.formatDate(
+        this.contributionStartDate
+      ),
+      contributionEndDate: this.commonService.formatDate(
+        this.contributionEndDate
+      ),
+      contributionDeadline: this.contributionDeadline,
     };
     this.loading = true;
     try {
-      await this.functionsService.saveData('createContributionType', dataToSave);
+      await this.functionsService.saveData(
+        'createContributionType',
+        dataToSave
+      );
       this.loading = false;
       this.commonService.showSuccess('Contribution information successful');
       this.close();

@@ -9,12 +9,14 @@
         <div class="">
           <mat-form-field appearance="outline">
             <mat-label>Type</mat-label>
-            <mat-select [(ngModel)]="contributionType" [disabled]="!editing" (selectionChange)="setContributionType($event)">
+            <mat-select [(ngModel)]="contributionType" [disabled]="!editing"
+              (selectionChange)="setContributionType($event)">
               <mat-option [value]="contributionTypeEnums.Share">{{contributionTypeEnums.Share}}</mat-option>
               <mat-option [value]="contributionTypeEnums.Social">{{contributionTypeEnums.Social}}</mat-option>
               <mat-option [value]="contributionTypeEnums.EntryFee">{{contributionTypeEnums.EntryFee}}</mat-option>
               <mat-option [value]="contributionTypeEnums.Other">{{contributionTypeEnums.Other}}</mat-option>
-              <mat-option *ngIf="members.length > 0" [value]="contributionTypeEnums.OneTime">{{contributionTypeEnums.OneTime}}</mat-option>
+              <mat-option *ngIf="members.length > 0"
+                [value]="contributionTypeEnums.OneTime">{{contributionTypeEnums.OneTime}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -47,12 +49,13 @@
             <mat-select [(ngModel)]="trackBalance">
               <mat-option value="Yes">Yes <small> (Keep track of balance with every transaction)</small></mat-option>
               <mat-option value="No">No <small> (Do not keep track of balance, Record only in and out
-                transactions)</small></mat-option>
+                  transactions)</small></mat-option>
             </mat-select>
           </mat-form-field>
         </div>
         <!--      Track balances for this contribution-->
-        <div class="col-span-2" [ngClass]="isGivenToMember == 'Yes' ? 'col-span-1' : 'col-span-2'" *ngIf="contributionType == contributionTypeEnums.OneTime">
+        <div class="col-span-2" [ngClass]="isGivenToMember == 'Yes' ? 'col-span-1' : 'col-span-2'"
+          *ngIf="contributionType == contributionTypeEnums.OneTime">
           <mat-form-field appearance="outline">
             <mat-label>This is contribution will be given a specific member</mat-label>
             <mat-select [(ngModel)]="isGivenToMember">
@@ -87,19 +90,21 @@
           </mat-form-field>
         </div>
 
-        <div class="col-span-1" *ngIf="contributionType == contributionTypeEnums.OneTime && contributionHasDeadline == 'Yes'">
+        <div class="col-span-1"
+          *ngIf="contributionType == contributionTypeEnums.OneTime && contributionHasDeadline == 'Yes'">
           <mat-form-field appearance="outline">
             <mat-label>Start Date</mat-label>
-            <input readonly matInput [matDatepicker]="startingDate" [(ngModel)]="contributionStartDate"/>
+            <input readonly matInput [matDatepicker]="startingDate" [(ngModel)]="contributionStartDate" />
             <mat-datepicker-toggle matSuffix [for]="startingDate"></mat-datepicker-toggle>
             <mat-datepicker #startingDate></mat-datepicker>
           </mat-form-field>
         </div>
 
-        <div class="col-span-1" *ngIf="contributionType == contributionTypeEnums.OneTime && contributionHasDeadline == 'Yes'">
+        <div class="col-span-1"
+          *ngIf="contributionType == contributionTypeEnums.OneTime && contributionHasDeadline == 'Yes'">
           <mat-form-field appearance="outline">
             <mat-label>Deadline Date</mat-label>
-            <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="contributionEndDate"/>
+            <input readonly matInput [matDatepicker]="endingDate" [(ngModel)]="contributionEndDate" />
             <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
             <mat-datepicker #endingDate></mat-datepicker>
           </mat-form-field>
@@ -109,7 +114,7 @@
         <!--      Next step for first step-->
         <div class="col-span-2">
           <button [disabled]="!name || !frequency" class="next-btn zoom-on-hover" style="float: right" mat-button
-                  matStepperNext>
+            matStepperNext>
             Next
             <mat-icon>arrow_forward</mat-icon>
           </button>
@@ -134,12 +139,12 @@
         </div>
 
         <!--      Is Mandantory-->
-        <div [ngClass]="{'col-span-1': contributionType == 'Share', 'col-span-2': contributionType != 'Share'}"
-             class="" *ngIf="pricePerShare || contributionType != 'Share'" @fadeIn>
+        <div [ngClass]="{'col-span-1': contributionType == 'Share', 'col-span-2': contributionType != 'Share'}" class=""
+          *ngIf="pricePerShare || contributionType != 'Share'" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Is Mandatory?</mat-label>
             <mat-select [(ngModel)]="isMandatory" placeholder="Is this contribution mandatory"
-                        (selectionChange)="setIsMandatory($event.value)">
+              (selectionChange)="setIsMandatory($event.value)">
               <mat-option value="Yes">Yes <small> (Each member must contribute)</small></mat-option>
               <mat-option value="No">No <small> (This contribution is optional)</small></mat-option>
             </mat-select>
@@ -180,8 +185,8 @@
         <div class="col-sm-6" *ngIf="contributionType && contributionType == 'Share'" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Is There starting share amount {{group.country}} <span *ngIf="group.country == 'TZ'">
-              (Kuna Hisa Anzia?)
-            </span></mat-label>
+                (Kuna Hisa Anzia?)
+              </span></mat-label>
             <mat-select [(ngModel)]="isStartingShare">
               <mat-option value="Yes">Yes </mat-option>
               <mat-option value="No">No </mat-option>
@@ -194,8 +199,8 @@
         <div class="col-sm-6" *ngIf="isStartingShare == 'Yes'" @fadeIn>
           <mat-form-field appearance="outline">
             <mat-label>Minimum Starting Amount <span *ngIf="group.country == 'TZ'">
-              (Kiasi cha chini cha Kuanzia?)
-            </span><b *ngIf="minimumStartingAmount">({{minimumStartingAmount | number}})</b></mat-label>
+                (Kiasi cha chini cha Kuanzia?)
+              </span><b *ngIf="minimumStartingAmount">({{minimumStartingAmount | number}})</b></mat-label>
             <input matInput type="number" [(ngModel)]="minimumStartingAmount">
             <mat-hint *ngIf="minimumStartingAmount" @fadeIn>Each member will contribute a minimum of
               <b>{{minimumStartingAmount | number}}</b> at the start of share period</mat-hint>
@@ -203,7 +208,7 @@
         </div>
         <div class="col-span-2">
           <button [disabled]="!(!!amount || !!minimumAmount)" class="next-btn zoom-on-hover" style="float: right"
-                  mat-button matStepperNext>
+            mat-button matStepperNext>
             Next
             <mat-icon>arrow_forward</mat-icon>
           </button>
@@ -225,7 +230,7 @@
         <div class="col-span-2">
           <mat-form-field appearance="outline">
             <mat-label>Is loan allowed?</mat-label>
-            <mat-select [(ngModel)]="allowLoan" >
+            <mat-select [(ngModel)]="allowLoan">
               <mat-option value="Yes">Yes <small>(members are allowed to take loan from this contribution)</small>
               </mat-option>
               <mat-option value="No">No <small>(members are cannot take loan from this contribution)</small>
@@ -241,6 +246,26 @@
               <mat-option value="Yes">Yes</mat-option>
               <mat-option value="No">No</mat-option>
             </mat-select>
+          </mat-form-field>
+        </div>
+
+
+        <!-- <div class="col-sm-3" *ngIf="allowFine && allowFine == 'Yes' && frequency == 'Monthly'">
+          <mat-form-field appearance="outline">
+            <mat-label>Contribution start day</mat-label>
+            <mat-select [(ngModel)]="frequency">
+              <mat-option *ngFor="let day of monthDays">{{day}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div> -->
+
+        <div class="col-sm-3" *ngIf="allowFine && allowFine == 'Yes' && frequency == 'Monthly'">
+          <mat-form-field appearance="outline">
+            <mat-label>Contribution end day</mat-label>
+            <mat-select [(ngModel)]="contributionDeadline">
+              <mat-option *ngFor="let day of monthDays">{{day}}</mat-option>
+            </mat-select>
+            <mat-hint>Deadline for collecting contributions (Each month) </mat-hint>
           </mat-form-field>
         </div>
 
@@ -264,10 +289,10 @@
               <mat-option value="Amount per day">Amount per day <small> (Member will pay for each day delayed)</small>
               </mat-option>
               <mat-option value="Amount per week">Amount per week <small> (Member will pay for each week
-                delayed)</small>
+                  delayed)</small>
               </mat-option>
               <mat-option value="Amount per month">Amount per month <small> (Member will pay for each month
-                delayed)</small></mat-option>
+                  delayed)</small></mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -278,7 +303,7 @@
             <mat-label>Fine Amount <b *ngIf="fineAmount"> ({{fineAmount | number}}) </b></mat-label>
             <input matInput placeholder="Fine amount" type="number" [(ngModel)]="fineAmount">
             <mat-hint *ngIf="fineAmount" @fadeIn>Member will pay a fine of <b>{{fineAmount | number}}
-              ( {{fineCalculationType}} )</b></mat-hint>
+                ( {{fineCalculationType}} )</b></mat-hint>
           </mat-form-field>
         </div>
 
@@ -290,13 +315,8 @@
           </button>
         </div>
         <div class="col-span-2 mt-2">
-          <app-save-area
-            [confirmFirst]="true"
-            [saveDisabled]="!allowLoan || !allowFine || !frequency"
-            (cancel)="close()"
-            [savingData]="loading"
-            (save)="sendData()"
-          ></app-save-area>
+          <app-save-area [confirmFirst]="true" [saveDisabled]="!allowLoan || !allowFine || !frequency"
+            (cancel)="close()" [savingData]="loading" (save)="sendData()"></app-save-area>
         </div>
       </div>
 

@@ -86,6 +86,7 @@ export class FinesComponent implements OnInit {
       select(expectedFineSelector.selectExpectedFineTypeSummaryString)
     );
     this.fineService.setExpectedFinesForNotAttendingMeetings().then();
+    this.fineService.setExpectedFinesForLateContribution().then();
   }
 
   ngOnInit(): void {

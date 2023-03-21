@@ -2,93 +2,130 @@ import * as functions from 'firebase-functions';
 import * as helpers from '../helpers';
 import * as admin from 'firebase-admin';
 
-const cors = require('cors')({origin: true});
+const cors = require('cors')({ origin: true });
 
 /**
  * input data : { groupId, contributionKey, name, valuePerShare, amount, minimumAmount, frequency, isMandatory, isAmountTheSame,  isLoanAllowed, isFineAllowed, fineAmount, fineCalculationType, fineName}
  */
-export const createContributionType = functions.https.onRequest((request, response) => {
-  return cors(request, response, async () => {
-    response.header('Access-Control-Allow-Origin', '*');
-    response.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    if (request.method !== 'POST') {
-      if (request.method !== 'OPTIONS') {
-        response.status(400).send('Please send a POST request');
+export const createContributionType = functions.https.onRequest(
+  (request, response) => {
+    return cors(request, response, async () => {
+      response.header('Access-Control-Allow-Origin', '*');
+      response.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+      if (request.method !== 'POST') {
+        if (request.method !== 'OPTIONS') {
+          response.status(400).send('Please send a POST request');
+          return;
+        }
+      }
+      const data = request.body;
+      const tokenId = request.get('Authorization')?.split('Bearer ')[1];
+      if (tokenId !== helpers.token) {
+        response
+          .status(400)
+          .send({ data: 'Invalid token please send a valid token' });
         return;
       }
-    }
-    const data = request.body;
-    const tokenId = request.get('Authorization')?.split('Bearer ')[1];
-    if (tokenId !== helpers.token) {
-      response.status(400).send({data: 'Invalid token please send a valid token'});
-      return;
-    }
-    try {
-      const groupId = data.groupId;
-      const last_update = new Date().getTime();
-      const otherUpdateAtRef = admin.firestore().doc(`groups/${groupId}/updated/others`);
-      const groupDocRef = admin.firestore().doc(`groups/${groupId}`);
-      const contributionTypeId = data.id ? data.id : helpers.makeid();
-      // const contributionTypeDocRef = admin.firestore().doc(`groups/${groupId}/contribution_type/${contributionTypeId}`);
-      await admin.firestore().runTransaction(async transaction => {
-        const groupDoc = await transaction.get(groupDocRef);
-        if (!groupDoc.exists) {
-          response.status(500).send({data: 'Fail'});
-        }
-        const groupData = {...groupDoc.data()};
-        const fine_types = groupData.fines ? Object.keys(groupData.fines).map(i => groupData.fines[i]) : [];
-        // Here I am preparing and dealing with fine types
-        if (data.isFineAllowed === 'Yes') {
-          const fineToUse = fine_types.find(i => i.type === 'Contribution' && i.contribution_type_id === contributionTypeId);
-          const fineId = fineToUse ? fineToUse.id : helpers.makeid();
-          // const fineDocRef = admin.firestore().doc(`groups/${groupId}/fine_type/${fineId}`);
-          const fine = prepareFineData(fineId, data, fineToUse, last_update, contributionTypeId);
-          if (groupData.fines) {
-            groupData.fines[fineId] = fine;
-          } else {
-            groupData.fines = {[fineId]: fine};
+      try {
+        const groupId = data.groupId;
+        const last_update = new Date().getTime();
+        const otherUpdateAtRef = admin
+          .firestore()
+          .doc(`groups/${groupId}/updated/others`);
+        const groupDocRef = admin.firestore().doc(`groups/${groupId}`);
+        const contributionTypeId = data.id ? data.id : helpers.makeid();
+        // const contributionTypeDocRef = admin.firestore().doc(`groups/${groupId}/contribution_type/${contributionTypeId}`);
+        await admin.firestore().runTransaction(async (transaction) => {
+          const groupDoc = await transaction.get(groupDocRef);
+          if (!groupDoc.exists) {
+            response.status(500).send({ data: 'Fail' });
           }
-          // transaction.set(fineDocRef, prepareFineData(fineId, data, fineToUse, last_update, contributionTypeId), {merge: true});
-        } else {
-          const fineToUse = fine_types.find(i => i.type === 'Contribution' && i.contribution_type_id === contributionTypeId);
-          const fineId = fineToUse ? fineToUse.id : null;
-          if (!!fineToUse) {
-            if (data.fineHasData) {
-              groupData.fines[fineId] = {
-                ...groupData.fines[fineId],
-                is_active: false,
-              };
+          const groupData = { ...groupDoc.data() };
+          const fine_types = groupData.fines
+            ? Object.keys(groupData.fines).map((i) => groupData.fines[i])
+            : [];
+          // Here I am preparing and dealing with fine types
+          if (data.isFineAllowed === 'Yes') {
+            const fineToUse = fine_types.find(
+              (i) =>
+                i.type === 'Contribution' &&
+                i.contribution_type_id === contributionTypeId
+            );
+            const fineId = fineToUse ? fineToUse.id : helpers.makeid();
+            // const fineDocRef = admin.firestore().doc(`groups/${groupId}/fine_type/${fineId}`);
+            const fine = prepareFineData(
+              fineId,
+              data,
+              fineToUse,
+              last_update,
+              contributionTypeId
+            );
+            if (groupData.fines) {
+              groupData.fines[fineId] = fine;
             } else {
-              groupData.fines = Object.keys(groupData.fines).reduce((object: any, key: string) => {
-                if (key !== fineId) {
-                  object[key] = groupData.fines[key];
-                }
-                return object;
-              }, {});
+              groupData.fines = { [fineId]: fine };
+            }
+            // transaction.set(fineDocRef, prepareFineData(fineId, data, fineToUse, last_update, contributionTypeId), {merge: true});
+          } else {
+            const fineToUse = fine_types.find(
+              (i) =>
+                i.type === 'Contribution' &&
+                i.contribution_type_id === contributionTypeId
+            );
+            const fineId = fineToUse ? fineToUse.id : null;
+            if (!!fineToUse) {
+              if (data.fineHasData) {
+                groupData.fines[fineId] = {
+                  ...groupData.fines[fineId],
+                  is_active: false,
+                };
+              } else {
+                groupData.fines = Object.keys(groupData.fines).reduce(
+                  (object: any, key: string) => {
+                    if (key !== fineId) {
+                      object[key] = groupData.fines[key];
+                    }
+                    return object;
+                  },
+                  {}
+                );
+              }
             }
           }
-        }
-        const contr = prepareContributionData(data, contributionTypeId, last_update);
-        if (groupData.contributions) {
-          groupData.contributions[contributionTypeId] = contr;
-        } else {
-          groupData.contributions = {[contributionTypeId]: contr};
-        }
-        // Start of saving data
-        transaction.update(groupDocRef, {...groupData, last_update});
-        transaction.set(otherUpdateAtRef, { group_updated: last_update }, {merge: true});
-      });
-      response.status(200).send({data: 'Success'});
-    } catch (e) {
-      console.log('Error fetching user data:', e);
-      response.status(500).send({data: 'Fail'});
-    }
+          const contr = prepareContributionData(
+            data,
+            contributionTypeId,
+            last_update
+          );
+          if (groupData.contributions) {
+            groupData.contributions[contributionTypeId] = contr;
+          } else {
+            groupData.contributions = { [contributionTypeId]: contr };
+          }
+          // Start of saving data
+          transaction.update(groupDocRef, { ...groupData, last_update });
+          transaction.set(
+            otherUpdateAtRef,
+            { group_updated: last_update },
+            { merge: true }
+          );
+        });
+        response.status(200).send({ data: 'Success' });
+      } catch (e) {
+        console.log('Error fetching user data:', e);
+        response.status(500).send({ data: 'Fail' });
+      }
+    });
+  }
+);
 
-  });
-
-});
-
-function prepareFineData(fineId: string, data: any, fineData: any, last_update: any, contribution_type_id: any) {
+function prepareFineData(
+  fineId: string,
+  data: any,
+  fineData: any,
+  last_update: any,
+  contribution_type_id: any
+) {
   return {
     id: fineId,
     group_id: data.groupId,
@@ -113,7 +150,11 @@ function prepareFineData(fineId: string, data: any, fineData: any, last_update: 
   };
 }
 
-function prepareContributionData(data: any, contributionTypeId: string, last_update: any) {
+function prepareContributionData(
+  data: any,
+  contributionTypeId: string,
+  last_update: any
+) {
   return {
     id: contributionTypeId,
     group_id: data.groupId,
@@ -151,6 +192,7 @@ function prepareContributionData(data: any, contributionTypeId: string, last_upd
     contribution_has_deadline: data.contributionHasDeadline === 'Yes',
     contribution_start_date: data.contributionStartDate || '',
     contribution_end_date: data.contributionEndDate || '',
+    contribution_deadline: data.contributionDeadline || '',
     is_given_to_member: data.isGivenToMember === 'Yes',
     member_id: data.memberId || '',
     additional_config: {},
