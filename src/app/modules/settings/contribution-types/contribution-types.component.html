@@ -1,21 +1,11 @@
-<app-shared-layout
-  title="Contribution Types"
-  image="contribution.png"
-  [hideAdd]="false"
-  [addIcon]="'add'"
-  (addItem)="addItem()"
-  [addText]="'New Contribution Type'"
-  [viewDetails]="viewDetails"
-  [smallForm]="false"
-  [animationSize]="'full'"
-  [formTitle]="panelTitle"
-  (closeDetails)="closePanel()"
-  urlName="Group Settings"
-  [url]="['', 'settings']"
->
+<app-shared-layout title="Contribution Types" image="contribution.png" [hideAdd]="false" [addIcon]="'add'"
+  (addItem)="addItem()" [addText]="'New Contribution Type'" [viewDetails]="viewDetails" [smallForm]="false"
+  [animationSize]="'full'" [formTitle]="panelTitle" (closeDetails)="closePanel()" urlName="Group Settings"
+  [url]="['', 'settings']">
   <ng-container ngProjectAs="table">
     <div class="settings-grid">
-      <div [ngClass]="routeAnimationsElements" *ngFor="let contr of contributionTypes$ | async" class="settingGrid content-area">
+      <div [ngClass]="routeAnimationsElements" *ngFor="let contr of contributionTypes$ | async"
+        class="settingGrid content-area">
         <div class="name-area">
           <div class="img-div">
             <h1 style="font-size: 40px;" class="registration-title">{{contr.name[0].toUpperCase()}}</h1>
@@ -39,16 +29,9 @@
   </ng-container>
 
   <ng-container ngProjectAs="form">
-    <app-starting-contribution-type
-      *ngIf="viewType == 'add'"
-      [group]="group$ | async"
-      [editing]="true"
-      [fineTypes]="fineTypes$ | async"
-      [fines]="fines$ | async"
-      [members]="members$ | async"
-      [currentContributionType]="currentContributionType"
-      [monthDays]="monthDays"
-      (closeForm)="closePanel()"
-    ></app-starting-contribution-type>
+    <app-starting-contribution-type *ngIf="viewType == 'add'" [group]="group$ | async" [editing]="true"
+      [fineTypes]="fineTypes$ | async" [fines]="fines$ | async" [members]="members$ | async"
+      [currentContributionType]="currentContributionType" [monthDays]="monthDays"
+      (closeForm)="closePanel()"></app-starting-contribution-type>
   </ng-container>
 </app-shared-layout>
