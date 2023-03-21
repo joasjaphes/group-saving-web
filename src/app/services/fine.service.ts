@@ -10,7 +10,7 @@ import { selectGroupId } from "../store/user/user.selectors";
 import * as fromMeeting from "../store/meeting/meeting.selectors";
 import * as fromPayment from "../store/payment/payment.selectors";
 import * as fromGroup from "../store/group/group.selectors";
-import { first } from "rxjs/operators";
+import { first, map } from "rxjs/operators";
 import { addExpectedFines, deleteExpectedFines, upsertExpectedFines } from "../store/expected-fines/expected-fines.actions";
 import * as fromContributionType from "../store/contribution-type/contribution-type.selectors";
 import * as moment from "moment";
@@ -131,7 +131,16 @@ export class FineService {
       let fines = [];
       for (const id of memberIds) {
         for (const type of contributionTypes) {
+          const deadline = type.contribution_deadline;
+          const contribution_end = deadline ?? "28";
+          const today = new Date().getDate();
+          const currentMonth = new Date().getMonth() + 1;
+          let months = [...this.months];
+          if (today < parseFloat("" + contribution_end)) {
+            months = [...this.months.filter((m) => parseFloat("" + m) < currentMonth)];
+          }
           let total = 0;
+          let totalPaid = 0;
           if (type.allow_late_fine) {
             const fineType = await this.store
               .pipe(
@@ -139,21 +148,32 @@ export class FineService {
                 first((i) => !!i)
               )
               .toPromise();
-            for (const month of this.months) {
+            const finePayments = await this.store
+              .pipe(
+                select(fromPayment.selectFinesDetailedGroupByMember(year, "All")),
+                first((i) => !!i),
+                map((items) => items.filter((item) => item.id === id && !!item.totals[fineType.id]).map((i) => i.totals[fineType.id]?.amount))
+              )
+              .toPromise();
+            totalPaid = !finePayments.length ? 0 : finePayments.map((pay) => pay.totals[fineType.id].amount).reduce((a, b) => a + b);
+            for (const month of months) {
               const payment = await this.store
                 .pipe(
                   select(fromPayment.selectContributionByMonthByMember(month, year, id)),
                   first((i) => !!i)
                 )
                 .toPromise();
-              let typeFines = {};
-              const deadline = type.contribution_deadline;
               if (!payment.length || (payment.length && !payment[0]?.contributions[type.id])) {
                 total += parseFloat("" + type.fine_amount_per_period);
               }
             }
-
-            if (total) {
+            const totalFine = total - totalPaid;
+            this.store.dispatch(
+              deleteExpectedFines({
+                ids: memberIds.map((i) => `${i}_${fineType.id}`),
+              })
+            );
+            if (totalFine > 0) {
               fines.push({
                 id: `${id}_${fineType.id}`,
                 memberId: id,
@@ -165,7 +185,7 @@ export class FineService {
                 period: ``,
                 week: "",
                 fines: {
-                  [fineType.id]: total,
+                  [fineType.id]: totalFine,
                 },
               });
             }
