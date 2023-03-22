@@ -30,4 +30,13 @@ export interface LoanType {
   requires_guarantee: boolean;
   number_of_guarantee: string;
   textDescription?: string;
+  is_fine_for_returns?:boolean;
+  is_fine_for_completion?:boolean;
+  fine_for_returns_calculation_type?:string;
+  fine_for_returns_amount?:number;
+  fine_for_returns_balance_factor?:number;
+  fine_for_completion_calculation_type?:string;
+  fine_for_completion_amount?:number;
+  fine_for_completion_balance_factor?:number;
+
 }

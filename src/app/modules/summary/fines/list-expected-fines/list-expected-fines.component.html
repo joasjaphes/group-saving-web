@@ -1,8 +1,13 @@
+<div style="width:100%">
+  <div class="search-area">
+    <mat-form-field @fadeIn>
+      <mat-icon matSuffix>search </mat-icon>
+      <input [(ngModel)]="memberSearch" matInput placeholder=" Type member name to search">
+    </mat-form-field>
+  </div>
+</div>
 <div class="payment-grid">
-  <div
-    class="one-payment"
-    *ngFor="let contr of contributions"
-  >
+  <div class="one-payment" *ngFor="let contr of contributions | search:'member_name': memberSearch">
     <div style="display: grid; align-content: center">
       <div class="img-div">
         <h1 style="font-size: 40px;" class="registration-title">{{contr.member?.name[0].toUpperCase()}} </h1>
@@ -15,14 +20,14 @@
       <!--        <span class="text-muted" style="font-size: 12px!important;">{{group?.currency}}</span>-->
       <!--      </h1>-->
       <p style="color: #ffffff6e" class="lead !mb-0"><small>
-<!--        <span style="color: #ffffffbf; font-size: 11px"> ({{contr.description}})</span>-->
-        {{ contr.date | date:'MMM yyyy' }}
-      </small>
+          <!--        <span style="color: #ffffffbf; font-size: 11px"> ({{contr.description}})</span>-->
+          {{ contr.date | date:'MMM yyyy' }}
+        </small>
       </p>
       <p style="color: #ffffff6e" class="lead mb-1"><small>
-        <span style="color: #ffffffbf; font-size: 11px"> ({{contr.description}})</span>
-<!--        {{ contr.date | date:'MMM yyyy' }}-->
-      </small></p>
+          <span style="color: #ffffffbf; font-size: 11px"> ({{contr.description}})</span>
+          <!--        {{ contr.date | date:'MMM yyyy' }}-->
+        </small></p>
 
     </div>
     <div class="amount-area">
@@ -31,15 +36,9 @@
     </div>
 
     <div style="grid-column: span 3" *ngIf="showDelete">
-      <app-save-area
-        saveText="Remove"
-        saveIcon="delete"
-        (save)="deleteOneFine(contr)"
-        [confirmFirst]="true"
-        [showCancel]="false"
-        [savingData]="loadingOne[contr.id]"
-        confirmText="Are you sure you want to remove this expected fine for {{contr?.member?.name}}"
-      ></app-save-area>
+      <app-save-area saveText="Remove" saveIcon="delete" (save)="deleteOneFine(contr)" [confirmFirst]="true"
+        [showCancel]="false" [savingData]="loadingOne[contr.id]"
+        confirmText="Are you sure you want to remove this expected fine for {{contr?.member?.name}}"></app-save-area>
     </div>
 
 
@@ -57,4 +56,3 @@
 <!--    confirmText="Are you sure you want to delete All these fines"-->
 <!--  ></app-save-area>-->
 <!--</div>-->
-

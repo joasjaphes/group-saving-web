@@ -1,18 +1,6 @@
-<app-shared-layout
-  title="Fines"
-  image="fine.png"
-  [hideAdd]="enableDelete"
-  [addIcon]="'add'"
-  (addItem)="addItem()"
-  [addText]="'Expected Fine'"
-  [viewDetails]="viewDetails"
-  [smallForm]="false"
-  [animationSize]="'full'"
-  [formTitle]="panelTitle"
-  (closeDetails)="closePanel()"
-  urlName="Summary"
-  [url]="['', 'summary']"
->
+<app-shared-layout title="Fines" image="fine.png" [hideAdd]="enableDelete" [addIcon]="'add'" (addItem)="addItem()"
+  [addText]="'Expected Fine'" [viewDetails]="viewDetails" [smallForm]="false" [animationSize]="'full'"
+  [formTitle]="panelTitle" (closeDetails)="closePanel()" urlName="Summary" [url]="['', 'summary']">
   <ng-container ngProjectAs="table">
     <div class="row">
       <div class="col-sm-12">
@@ -22,41 +10,38 @@
               There is
               {{totalExpectedFines$ | async | number}}<span class="text-xs">{{(group$ | async)?.currency}}</span>
               as Expected Fines</p>
-            <p class="text-secondLevel text-xl !mb-0">{{expectedFinesSummary$ | async}}</p>
-            <p class="text-secondLevel opacity-70 text-xs">These are fines that were supposed to be paid by members, but have not being paid yet</p>
+            <p class="text-secondLevel text-xl !mb-0">{{expectedFinesSummaryString$| async}}</p>
+            <p class="text-secondLevel opacity-70 text-xs">These are fines that were supposed to be paid by members, but
+              have not being paid yet</p>
           </div>
           <div>
             <button mat-flat-button (click)="viewExpectedFines()">View Details</button>
           </div>
         </div>
 
-        <div >
+        <div>
           <p class="registration-title text-2xl !m-0">Paid Fines</p>
         </div>
         <div class="top-grid1">
           <div class="selection-area">
             <mat-menu #typeMenu="matMenu">
-              <button
-                mat-menu-item (click)="setType('Members')">
+              <button mat-menu-item (click)="setType('Members')">
                 Members
               </button>
-              <button
-                mat-menu-item (click)="setType('Months')">
+              <button mat-menu-item (click)="setType('Months')">
                 Months
               </button>
             </mat-menu>
 
             <button mat-button [matMenuTriggerFor]="typeMenu" class="cursor">
-<!--              <mat-icon>date_range</mat-icon> &nbsp;-->
+              <!--              <mat-icon>date_range</mat-icon> &nbsp;-->
               <span>{{currentView}}</span> &nbsp;
               <mat-icon style="color: white;">arrow_drop_down</mat-icon>
             </button>
           </div>
           <div class="selection-area">
             <mat-menu #fineTypeMenu="matMenu">
-              <button
-                *ngFor="let fine of finesSummary$ | async"
-                mat-menu-item (click)="setFineType(fine)">
+              <button *ngFor="let fine of finesSummary$ | async" mat-menu-item (click)="setFineType(fine)">
                 {{fine.name}} ({{fine.total | number}})
               </button>
             </mat-menu>
@@ -90,22 +75,22 @@
         </div>
       </div>
 
-      <div *ngIf="(fines$ | async | search:'name': memberSearch)?.length == 0" class="mt-48 text-5xl text-block registration-title bg-transparent text-gray-600 text-center">
+      <div *ngIf="(fines$ | async | search:'name': memberSearch)?.length == 0"
+        class="mt-48 text-5xl text-block registration-title bg-transparent text-gray-600 text-center">
         There are no paid fines
       </div>
 
       <div class="col-sm-12">
         <div class="payment-grid">
-          <div
-            class="one-payment content-area-shadow cursor"
-            title="click to view list of transactions for {{payment.name}}"
-            [ngClass]="routeAnimationsElements"
-            *ngFor="let payment of fines$ | async | search:'name': memberSearch"
-          >
+          <div class="one-payment content-area-shadow cursor"
+            title="click to view list of transactions for {{payment.name}}" [ngClass]="routeAnimationsElements"
+            *ngFor="let payment of fines$ | async | search:'name': memberSearch">
             <div style="display: grid; align-content: center">
               <div class="img-div">
-                <h1 *ngIf="currentView == 'Members'" style="font-size: 40px;" class="registration-title">{{payment.name[0].toUpperCase()}} </h1>
-                <h1 *ngIf="currentView == 'Months'" style="font-size: 38px;" class="registration-title">{{payment.key}}</h1>
+                <h1 *ngIf="currentView == 'Members'" style="font-size: 40px;" class="registration-title">
+                  {{payment.name[0].toUpperCase()}} </h1>
+                <h1 *ngIf="currentView == 'Months'" style="font-size: 38px;" class="registration-title">{{payment.key}}
+                </h1>
               </div>
             </div>
             <div class="name-area">
@@ -132,28 +117,14 @@
   </ng-container>
 
   <ng-container ngProjectAs="form">
-    <app-list-fines
-      *ngIf="viewType == 'view'"
-      [showDelete]="enableDelete"
-      [contributions]="currentFines$ | async"
-      [group]="group$ | async"
-      (closeForm)="closePanel()"
-    ></app-list-fines>
+    <app-list-fines *ngIf="viewType == 'view'" [showDelete]="enableDelete" [contributions]="currentFines$ | async"
+      [group]="group$ | async" (closeForm)="closePanel()"></app-list-fines>
 
-    <app-list-expected-fines
-      *ngIf="viewType == 'viewFine'"
-      [showDelete]="enableDelete"
-      [contributions]="expectedFines$ | async"
-      [group]="group$ | async"
-      (closeForm)="closePanel()"
-    ></app-list-expected-fines>
+    <app-list-expected-fines *ngIf="viewType == 'viewFine'" [showDelete]="enableDelete"
+      [contributions]="expectedFines$ | async" [expectedFinesSummary]="expectedFinesSummary$ | async"
+      [group]="group$ | async" (closeForm)="closePanel()"></app-list-expected-fines>
 
-    <app-add-expected-fine
-      *ngIf="viewType == 'add'"
-      [group]="group$ | async"
-      [members]="members$ | async"
-      [fineTypes]="fineTypes$ | async"
-      (closeForm)="closePanel()"
-    ></app-add-expected-fine>
+    <app-add-expected-fine *ngIf="viewType == 'add'" [group]="group$ | async" [members]="members$ | async"
+      [fineTypes]="fineTypes$ | async" (closeForm)="closePanel()"></app-add-expected-fine>
   </ng-container>
 </app-shared-layout>
