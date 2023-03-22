@@ -345,18 +345,20 @@ export class FineService {
           id: member.id,
         })
       );
-      expectedFines.push({
-        id: member.id,
-        memberId: member.id,
-        groupId: group.id,
-        month: "",
-        year: "",
-        date: "",
-        last_update: "",
-        period: ``,
-        week: "",
-        fines: finesObject,
-      });
+      if (memberFines.length) {
+        expectedFines.push({
+          id: member.id,
+          memberId: member.id,
+          groupId: group.id,
+          month: "",
+          year: "",
+          date: "",
+          last_update: "",
+          period: ``,
+          week: "",
+          fines: finesObject,
+        });
+      }
     }
     this.store.dispatch(upsertExpectedFines({ expectedFines }));
   }
