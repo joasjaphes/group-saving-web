@@ -69,6 +69,7 @@ export class MembersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
   }
 
   async addContribution(member: Member) {

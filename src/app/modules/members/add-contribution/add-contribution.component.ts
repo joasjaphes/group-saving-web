@@ -1,34 +1,29 @@
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { Group } from '../../../store/group/group.model';
-import { Member } from '../../../store/member/member.model';
-import { FineType } from '../../../store/fine-type/fine-type.model';
-import * as fineSelector from '../../../store/fine-type/fine-type.selectors';
-import { ContributionType } from '../../../store/contribution-type/contribution-type.model';
-import { fadeIn } from '../../../shared/animations/router-animation';
-import { Observable } from 'rxjs';
-import { Loan } from '../../../store/loan/loan.model';
-import { select, Store } from '@ngrx/store';
-import { ApplicationState } from '../../../store';
-import { selectLoanByMember } from '../../../store/loan/loan.selectors';
-import { MatSelectChange } from '@angular/material/select';
-import { first } from 'rxjs/operators';
-import { CommonService } from '../../../services/common.service';
-import { FunctionsService } from '../../../services/functions.service';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-import { DomSanitizer } from '@angular/platform-browser';
-import { FirestoreService } from 'src/app/services/firestore.service';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from "@angular/core";
+import { Group } from "../../../store/group/group.model";
+import { Member } from "../../../store/member/member.model";
+import { FineType } from "../../../store/fine-type/fine-type.model";
+import * as fineSelector from "../../../store/fine-type/fine-type.selectors";
+import { ContributionType } from "../../../store/contribution-type/contribution-type.model";
+import { fadeIn } from "../../../shared/animations/router-animation";
+import { Observable } from "rxjs";
+import { Loan } from "../../../store/loan/loan.model";
+import { select, Store } from "@ngrx/store";
+import { ApplicationState } from "../../../store";
+import { selectLoanByMember } from "../../../store/loan/loan.selectors";
+import { MatSelectChange } from "@angular/material/select";
+import { first } from "rxjs/operators";
+import { CommonService } from "../../../services/common.service";
+import { FunctionsService } from "../../../services/functions.service";
+import { MatCheckboxChange } from "@angular/material/checkbox";
+import { DomSanitizer } from "@angular/platform-browser";
+import { FirestoreService } from "src/app/services/firestore.service";
+import * as expectedFineSelector from "../../../store/expected-fines/expected-fines.selectors";
+import { FineService } from "src/app/services/fine.service";
 
 @Component({
-  selector: 'app-add-contribution',
-  templateUrl: './add-contribution.component.html',
-  styleUrls: ['./add-contribution.component.scss'],
+  selector: "app-add-contribution",
+  templateUrl: "./add-contribution.component.html",
+  styleUrls: ["./add-contribution.component.scss"],
   animations: [fadeIn],
 })
 export class AddContributionComponent implements OnInit {
@@ -67,19 +62,14 @@ export class AddContributionComponent implements OnInit {
   firstFileUrl: any;
   secondFile: File;
   secondFileUrl: any;
-  constructor(
-    private commonService: CommonService,
-    private functionsService: FunctionsService,
-    private firestoreService: FirestoreService,
-    private store: Store<ApplicationState>
-  ) {}
+  constructor(private commonService: CommonService, private functionsService: FunctionsService, private firestoreService: FirestoreService, private store: Store<ApplicationState>, private fineService: FineService) {}
 
   ngOnInit(): void {
-    this.memberLoans$ = this.store.pipe(
-      select(selectLoanByMember(this.member?.id))
-    );
+    this.memberLoans$ = this.store.pipe(select(selectLoanByMember(this.member?.id)));
     this.fineTypes$ = this.store.pipe(select(fineSelector.selectAll));
     this.generateYears();
+    this.fineService.setExpectedFines().then();
+
     // this.memberLoans$.subscribe(i => console.log(i));
   }
 
@@ -94,19 +84,27 @@ export class AddContributionComponent implements OnInit {
   getMonth() {
     const month = new Date().getMonth();
     const monthValue = month + 1;
-    this.month =
-      (monthValue + '').length === 1 ? '0' + monthValue : monthValue + '';
+    this.month = (monthValue + "").length === 1 ? "0" + monthValue : monthValue + "";
   }
 
   async setSelectedFines($event: MatSelectChange) {
+    let fines = {};
     const fineTypes = await this.fineTypes$.pipe(first()).toPromise();
-    this.selectedFineTypes = $event.value.map((i) =>
-      fineTypes.find((k) => k.id === i)
-    );
+    const memberFines = await this.store.pipe(select(expectedFineSelector.selectExpectedFinesByMember(this.member.id)), first()).toPromise();
+    for (const fine of memberFines) {
+      fines = {
+        ...fines,
+        ...fine.fines,
+      };
+    }
+    this.selectedFineTypes = $event.value.map((i) => fineTypes.find((k) => k.id === i));
     this.fineAmounts = {};
     this.selectedFineTypes.forEach((fineType) => {
-      if (fineType.calculation === 'Fixed') {
+      if (fineType.calculation === "Fixed") {
         this.fineAmounts[fineType.id] = fineType.fixed_amount;
+      }
+      if (fines[fineType.id]) {
+        this.fineAmounts[fineType.id] = fines[fineType.id];
       }
     });
     this.findTotal();
@@ -137,33 +135,24 @@ export class AddContributionComponent implements OnInit {
 
   async save() {
     // Making sure that I am not sending empty or zeros to the server to cause issues
-    this.fineAmounts = Object.keys(this.fineAmounts).reduce(
-      (object: any, key: string) => {
-        if (!!this.fineAmounts[key]) {
-          object[key] = this.fineAmounts[key];
-        }
-        return object;
-      },
-      {}
-    );
-    this.loanAmount = Object.keys(this.loanAmount).reduce(
-      (object: any, key: string) => {
-        if (!!this.loanAmount[key]) {
-          object[key] = this.loanAmount[key];
-        }
-        return object;
-      },
-      {}
-    );
-    this.contributionAmount = Object.keys(this.contributionAmount).reduce(
-      (object: any, key: string) => {
-        if (!!this.contributionAmount[key]) {
-          object[key] = this.contributionAmount[key];
-        }
-        return object;
-      },
-      {}
-    );
+    this.fineAmounts = Object.keys(this.fineAmounts).reduce((object: any, key: string) => {
+      if (!!this.fineAmounts[key]) {
+        object[key] = this.fineAmounts[key];
+      }
+      return object;
+    }, {});
+    this.loanAmount = Object.keys(this.loanAmount).reduce((object: any, key: string) => {
+      if (!!this.loanAmount[key]) {
+        object[key] = this.loanAmount[key];
+      }
+      return object;
+    }, {});
+    this.contributionAmount = Object.keys(this.contributionAmount).reduce((object: any, key: string) => {
+      if (!!this.contributionAmount[key]) {
+        object[key] = this.contributionAmount[key];
+      }
+      return object;
+    }, {});
 
     // Preparing Values to save
     let dataToSave = {
@@ -184,8 +173,8 @@ export class AddContributionComponent implements OnInit {
       period: this.period ?? `${this.year}${this.month}`,
       referenceNumber: this.referenceNumber,
       paymentMode: this.paymentMode,
-      fileUrl: '',
-      secondFileUrl: '',
+      fileUrl: "",
+      secondFileUrl: "",
     };
 
     // Check to see if the current value is the starting share and add its value
@@ -200,78 +189,56 @@ export class AddContributionComponent implements OnInit {
     this.loading = true;
     try {
       if (this.firstFile) {
-        const fileUrl = await this.firestoreService.uploadFile(
-          `files/${dataToSave.groupId}/${this.commonService.makeId()}`,
-          this.firstFile
-        );
+        const fileUrl = await this.firestoreService.uploadFile(`files/${dataToSave.groupId}/${this.commonService.makeId()}`, this.firstFile);
         dataToSave.fileUrl = fileUrl;
       }
       if (this.secondFile) {
-        const fileUrl = await this.firestoreService.uploadFile(
-          `files/${dataToSave.groupId}/${this.commonService.makeId()}`,
-          this.secondFile
-        );
+        const fileUrl = await this.firestoreService.uploadFile(`files/${dataToSave.groupId}/${this.commonService.makeId()}`, this.secondFile);
         dataToSave.secondFileUrl = fileUrl;
       }
-      console.log('Data to save', dataToSave);
-      await this.functionsService.saveData('addNewContribution', dataToSave);
+      console.log("Data to save", dataToSave);
+      await this.functionsService.saveData("addNewContribution", dataToSave);
       this.loading = false;
-      this.commonService.showSuccess(
-        'Contribution from ' + this.member.name + ' Submitted Successful'
-      );
+      this.commonService.showSuccess("Contribution from " + this.member.name + " Submitted Successful");
       this.closeDialog();
     } catch (e) {
       this.loading = false;
-      this.commonService.showError('Contribution was not assigned successful');
+      this.commonService.showError("Contribution was not assigned successful");
       console.error(e);
     }
   }
 
   enableContribution(checked: boolean, contributionType: ContributionType) {
     if (checked && contributionType.is_must && contributionType.is_fixed) {
-      this.contributionAmount[contributionType.id] =
-        contributionType.fixed_value;
+      this.contributionAmount[contributionType.id] = contributionType.fixed_value;
       this.findTotal();
     } else {
-      this.contributionAmount = Object.keys(this.contributionAmount).reduce(
-        (object: any, key: string) => {
-          if (key !== contributionType.id) {
-            object[key] = this.contributionAmount[key];
-          }
-          return object;
-        },
-        {}
-      );
+      this.contributionAmount = Object.keys(this.contributionAmount).reduce((object: any, key: string) => {
+        if (key !== contributionType.id) {
+          object[key] = this.contributionAmount[key];
+        }
+        return object;
+      }, {});
       this.findTotal();
     }
   }
 
   findTotalAmount(loan: Loan) {
     if (this.baseLoanAmount[loan.id] && this.interestAmount[loan.id]) {
-      this.loanAmount[loan.id] =
-        this.baseLoanAmount[loan.id] + this.interestAmount[loan.id];
+      this.loanAmount[loan.id] = this.baseLoanAmount[loan.id] + this.interestAmount[loan.id];
     }
     this.findTotal();
   }
 
   findBaseAmount(loan: Loan) {
     const loanType = loan.loanType;
-    if (
-      (loanType.pay_same_amount_is_must &&
-        this.loanAmount[loan.id] < loan.amount_per_return) ||
-      this.loanAmount[loan.id] > loan.remaining_balance
-    ) {
+    if ((loanType.pay_same_amount_is_must && this.loanAmount[loan.id] < loan.amount_per_return) || this.loanAmount[loan.id] > loan.remaining_balance) {
       this.inputErrors[loan.id] = true;
     } else {
       delete this.inputErrors[loan.id];
     }
-    if (
-      loanType.profit_type === 'Reducing Balance' &&
-      this.loanAmount[loan.id] &&
-      this.interestAmount[loan.id]
-    ) {
-      this.baseLoanAmount[loan.id] =
-        this.loanAmount[loan.id] - this.interestAmount[loan.id];
+    if (loanType.profit_type === "Reducing Balance" && this.loanAmount[loan.id] && this.interestAmount[loan.id]) {
+      this.baseLoanAmount[loan.id] = this.loanAmount[loan.id] - this.interestAmount[loan.id];
     }
     this.findTotal();
   }
@@ -279,22 +246,11 @@ export class AddContributionComponent implements OnInit {
   enableLoanPayment(checked: boolean, loan: Loan) {
     const loanType = loan.loanType;
     if (checked) {
-      if (loanType.profit_type === 'Reducing Balance') {
-        this.interestAmount[loan.id] = Math.ceil(
-          (loanType.interest_rate / 100) * loan.remaining_balance
-        );
-        if (
-          loanType.minimum_amount_for_reducing_required &&
-          loanType.minimum_amount_for_reducing_percent
-        ) {
-          this.baseLoanAmount[loan.id] = Math.ceil(
-            loan.remaining_balance *
-              (loanType.minimum_amount_for_reducing_percent / 100)
-          );
-          this.minLoanAmount[loan.id] = Math.ceil(
-            loan.remaining_balance *
-              (loanType.minimum_amount_for_reducing_percent / 100)
-          );
+      if (loanType.profit_type === "Reducing Balance") {
+        this.interestAmount[loan.id] = Math.ceil((loanType.interest_rate / 100) * loan.remaining_balance);
+        if (loanType.minimum_amount_for_reducing_required && loanType.minimum_amount_for_reducing_percent) {
+          this.baseLoanAmount[loan.id] = Math.ceil(loan.remaining_balance * (loanType.minimum_amount_for_reducing_percent / 100));
+          this.minLoanAmount[loan.id] = Math.ceil(loan.remaining_balance * (loanType.minimum_amount_for_reducing_percent / 100));
         }
         this.findTotalAmount(loan);
       } else {
@@ -307,15 +263,12 @@ export class AddContributionComponent implements OnInit {
       if (this.inputErrors[loan.id]) {
         delete this.inputErrors[loan.id];
       }
-      this.loanAmount = Object.keys(this.loanAmount).reduce(
-        (object: any, key: string) => {
-          if (key !== loan.id) {
-            object[key] = this.loanAmount[key];
-          }
-          return object;
-        },
-        {}
-      );
+      this.loanAmount = Object.keys(this.loanAmount).reduce((object: any, key: string) => {
+        if (key !== loan.id) {
+          object[key] = this.loanAmount[key];
+        }
+        return object;
+      }, {});
       this.findTotal();
     }
   }
@@ -345,7 +298,7 @@ export class AddContributionComponent implements OnInit {
 
   onFile(event, index) {
     const file: File = event?.target?.files[0];
-    if (file.type == 'image/png' || file.type == 'image/jpeg') {
+    if (file.type == "image/png" || file.type == "image/jpeg") {
       if (index === 0) {
         this.firstFile = file;
       } else {
@@ -361,9 +314,7 @@ export class AddContributionComponent implements OnInit {
       };
       reader.readAsDataURL(file);
     } else {
-      this.commonService.showError(
-        'Attachment should either be jpeg or png file'
-      );
+      this.commonService.showError("Attachment should either be jpeg or png file");
     }
   }
 

@@ -79,6 +79,8 @@ export const selectExpectedFineTypeSummaryString = createSelector(selectExpected
 
 export const selectTotalExpectedFines = createSelector(selectDetailed, (allItems) => allItems.reduce((a, b) => a + parseFloat(b.totalFines + ""), 0));
 
+export const selectExpectedFinesByMember = (id: string) => createSelector(selectDetailed, (allItems) => allItems.filter((item) => item.memberId === id));
+
 export function findFineTotal(payment: ExpectedFine) {
   let sum = 0;
   let totalFines = 0;
