@@ -9,6 +9,7 @@ import { ApplicationState } from '../../../store';
 import { Group } from '../../../store/group/group.model';
 import { fadeIn } from '../../../shared/animations/router-animation';
 import { Member } from '../../../store/member/member.model';
+import { trimerISHERE } from 'src/app/store/trimer';
 
 @Component({
   selector: 'app-add-member',
@@ -66,7 +67,7 @@ export class AddMemberComponent implements OnInit {
     // const phone = `+${this.country.phoneCode}${trimPhoneNumber(
     //   this.phoneNumber
     // )}`;
-    const phone = `+${this.country.phoneCode}${this.country.trimPhoneNumber(this.phoneNumber)}`
+    const phone = `+${this.country.phoneCode}${trimerISHERE(this.phoneNumber)}`
     const testRegex =
       this.country.regex ??
       /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
@@ -79,9 +80,7 @@ export class AddMemberComponent implements OnInit {
   }
 
   async save() {
-    const phoneNumber = `+${this.country.phoneCode}${trimPhoneNumber(
-      this.phoneNumber
-    )}`;
+    const phoneNumber = `+${this.country.phoneCode}${trimerISHERE(this.phoneNumber)}`;
     const dataToSave = {
       name: this.name,
       phoneNumber,

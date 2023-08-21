@@ -8,7 +8,7 @@ export interface Country {
   currency: string;
   regex?: RegExp;
   startWithZero?: boolean;
-  trimPhoneNumber?: any;
+  trimPhoneNumber?: Function;
   currencyName: string;
 }
 
@@ -23,13 +23,13 @@ export const countries: Country[] = [
     regex: /^(0|255|\+255)[1-9]{1}\d{8}$/,
     startWithZero: false,
     currencyName: 'Tanzanian shilling',
-    trimPhoneNumber:(phone: string)=>{
-      if (phone && phone.charAt(0) === '0') {
-        return phone.slice(1);
-      } else {
-        return phone;
-      }
-    },
+    // trimPhoneNumber:(phone: string)=>{
+    //   if (phone && phone.charAt(0) === '0') {
+    //     return phone.slice(1);
+    //   } else {
+    //     return phone;
+    //   }
+    // },
   },
   {
     isoCode: 'KE',
@@ -38,13 +38,13 @@ export const countries: Country[] = [
     iso3Code: 'KEN',
     currency: 'KES',
     currencyName: 'Kenyan shilling',
-    trimPhoneNumber: (phone: string)=>{
-      if (phone && phone.charAt(0) === '0') {
-        return phone.slice(1);
-      } else {
-        return phone;
-      }
-    },
+    // trimPhoneNumber: (phone: string)=>{
+    //   if (phone && phone.charAt(0) === '0') {
+    //     return phone.slice(1);
+    //   } else {
+    //     return phone;
+    //   }
+    // },
   },
   {
     isoCode: 'UG',
