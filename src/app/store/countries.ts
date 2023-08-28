@@ -2078,5 +2078,20 @@ export const countries: Country[] = [
     currency: '',
     currencyName: '',
   },
-];
+  ]
+  
+
+  // To be used
+// ].map(country => {
+//   return {
+//     ...country,
+//     trimPhoneNumber:(phone: string)=>{
+//   if (phone && phone.charAt(0) === '0') {
+//     return phone.slice(1);
+//   } else {
+//     return phone;
+//   }
+// }
+//   }
+// })
 

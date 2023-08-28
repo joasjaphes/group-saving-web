@@ -38,6 +38,21 @@ export class AddMemberComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    // Some interesting solution from Kayson (To be used)
+    // this.countries = this.countries.map(country => {
+    //   return {
+    //     ...country,
+    //     trimPhoneNumber:(phone: string)=>{
+    //   if (phone && phone.charAt(0) === '0') {
+    //     return phone.slice(1);
+    //   } else {
+    //     return phone;
+    //   }
+    // }
+    //   }
+    // })
+
     if (this.group) {
       this.country = this.countries.find(
         (i) => i.isoCode === this.group.country

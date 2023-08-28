@@ -1,4 +1,4 @@
-<app-shared-layout
+<app-shared-layout 
   title="Group Members"
   icon="people_outline"
   [hideAdd]="(members$ | async).length == 1"
@@ -114,8 +114,8 @@
             <button mat-menu-item (click)="addAnotherAccount(member)">
               <mat-icon style="color: #0277bd">list</mat-icon> Add Another Account
             </button>
-            <button mat-menu-item >
-              <mat-icon style="color: red">delete</mat-icon> Delete
+            <button mat-menu-item  (click)="deleteMember()">
+              <mat-icon  style="color: red">delete</mat-icon> Delete
             </button>
           </mat-menu>
         </div>

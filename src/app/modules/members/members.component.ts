@@ -23,6 +23,7 @@ import {FineType} from '../../store/fine-type/fine-type.model';
 import {Loan} from '../../store/loan/loan.model';
 import {selectOneTime} from '../../store/contribution-type/contribution-type.selectors';
 import {selectMemberOneTime} from '../../store/one-time-payment/one-time-payment.selectors';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-members',
@@ -55,6 +56,7 @@ export class MembersComponent implements OnInit {
     private store: Store<ApplicationState>,
     private httpClient: HttpClient,
     public dialog: MatDialog,
+    private auth:AuthService
   ) {
     this.members$ = this.store.pipe(select(memberSelector.selectMembersSorted));
     this.progress$ = this.store.pipe(select(groupSelector.selectProgressPercent));
@@ -105,6 +107,7 @@ export class MembersComponent implements OnInit {
   }
 
   async addMembers() {
+    console.log()
     this.viewType = 'add';
     this.viewDetails = true;
     this.panelTitle = 'Assign new member';
@@ -168,5 +171,28 @@ export class MembersComponent implements OnInit {
     this.viewType = '';
     this.currentMember = null;
     this.currentContribution = null;
+  }
+phoneNo:string;
+currentM:any;
+  deleteMember(){
+    console.log("am waiting for instruction")
+    
+    // this.group$.subscribe((member)=>{console.log(`groupWithPermission ${member.chairperson}`)})
+    this.store.pipe(select(groupSelector.selected)).subscribe((group)=>{console.log(group)});
+
+    this.auth.getLoginUser().subscribe((user)=>{this.phoneNo =  user.phoneNumber})
+
+    this.currentM =  this.members$.subscribe((mb)=>{
+      mb.filter((memb)=>{
+        return memb.phone_number === this.phoneNo
+      })
+      
+    });
+
+  //   // this.currentM[0]
+
+  // this.members$.subscribe((memb)=>{this.currentM = memb.filter((memb,i)=>{memb[i].phone_number === this.phoneNo })});
+
+   console.log(`Current Member: ${this.currentM}`)
   }
 }
