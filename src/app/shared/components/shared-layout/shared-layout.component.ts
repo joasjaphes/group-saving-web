@@ -29,6 +29,10 @@ export class SharedLayoutComponent implements OnInit {
   @Input() smallForm = true;
   @Input() hideBreadcrumb = false;
 
+  // permission to add new member
+  @Input() isTopLeader:boolean;
+
+
   @Output() addItem = new EventEmitter();
   @Output() closeDetails = new EventEmitter();
   @Input() animationSize: 'eighty' | 'sixty' | 'largeForm' | 'full' = 'sixty';

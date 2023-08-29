@@ -66,7 +66,7 @@
 <ng-container>
   <div class="col-md-12" *ngIf="!viewDetails">
     <button
-      *ngIf="!hideAdd"
+      *ngIf="!hideAdd && isTopLeader"
       title="Add"
       (click)="add()"
       color="primary"
