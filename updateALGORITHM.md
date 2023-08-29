@@ -1,5 +1,16 @@
 ## ALGORITHM TO SOLVE THE FOLLOWING ISSUE:
-1. ENABLE CHAIRPERSOM TO REMOVE USER.
+1. ALIGN PERMISSION
+    - First understand each member permission scope
+    - understand which method/function need a certain member permission
+    - check permission array that contain members id
+    - if currentLoginMember.ID is in one of the permission memberID array return this member
+        - declare varible related to this permission and assigned to ``true``
+
+    - In template if variable related to a specific permision is true then show this member a button to trigger some method.
+    
+
+
+2. ENABLE CHAIRPERSOM TO REMOVE USER.
     - First User should be Logged
     - Check user role
     - if user role is ``chairperson`` then show ``delete`` button otherwise hide it.
@@ -30,7 +41,6 @@
 - Contribution manager
     - Only add new member contribution include (fine,loan returns, social contribution)
     - Get Notified when user add him/herself contribution
-
 
 
 
