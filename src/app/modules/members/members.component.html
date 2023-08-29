@@ -10,6 +10,7 @@
   [animationSize]="'full'"
   [smallForm]="false"
   [formTitle]="panelTitle"
+  [isTopLeader]="isTopLeader"
 >
   <ng-container ngProjectAs="table">
 <!--    In case there is only one member-->
@@ -70,7 +71,7 @@
             <span *ngIf="!!member.subtitle"><small class="text-muted" style="font-size: 11px!important;">{{member.subtitle}}</small></span>
           </h2>
           <p class="lead">{{member.phone_number}}</p>
-          <p>
+          <p *ngIf="isTopLeader else norm">
             <button mat-button class="edit-button" (click)="edit(member)">
               <mat-icon style="color: #0277bd">mode_edit</mat-icon>
               <span style="color: #0277bd">Edit</span>
@@ -79,19 +80,29 @@
               <mat-icon>remove_red_eye</mat-icon> View Details
             </button>
           </p>
+          <ng-template #norm>
+            <button mat-button [routerLink]="['', 'members', member.id]">
+              <mat-icon>remove_red_eye</mat-icon> View Details
+            </button>
+          </ng-template>
         </div>
 
         <div class="menu" *ngIf="member">
-          <button mat-icon-button [matMenuTriggerFor]="menu">
+          <button mat-icon-button (click)="onTriger(member)" [matMenuTriggerFor]="menu">
             <mat-icon style="color: white">more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
             <button *ngIf="canAddContribution" mat-menu-item (click)="addContribution(member)">
               <mat-icon>add</mat-icon> Add Contribution
             </button>
-            <button *ngFor="let oneTime of ((membersOneTimeContributionTypes$ | async)![member.id] || [])" mat-menu-item (click)="addOneTimeContribution(member, oneTime)">
+
+            <!-- entry free is here -->
+            <div *ngIf="canAddContribution || isTopLeader">
+            <button  *ngFor="let oneTime of ((membersOneTimeContributionTypes$ | async)![member.id] || [])" mat-menu-item (click)="addOneTimeContribution(member, oneTime)">
               <mat-icon>add</mat-icon> {{oneTime.name}}
             </button>
+          </div>
+
             <button mat-menu-item  *ngIf="canManageLoan" (click)="addLoan(member)">
               <mat-icon>money</mat-icon> Assign Loan
             </button>
@@ -102,19 +113,19 @@
             <button mat-menu-item>
               <mat-icon>remove_red_eye</mat-icon> View Details
             </button>
-            <button mat-menu-item  (click)="edit(member)">
+            <button mat-menu-item *ngIf="canEditPhone" (click)="edit(member)">
               <mat-icon style="color: #0277bd">mode_edit</mat-icon> Update Basics
             </button>
-            <button mat-menu-item (click)="editPhone(member)">
+            <button mat-menu-item *ngIf="canEditPhone ||  isTopLeader"  (click)="editPhone(member)">
               <mat-icon style="color: #0277bd">phone</mat-icon> Update Phone
             </button>
-            <button mat-menu-item (click)="updatePassword(member)">
+            <button mat-menu-item *ngIf="canResetPassword" (click)="updatePassword(member)">
               <mat-icon style="color: #0277bd">lock</mat-icon> Reset Password
             </button>
             <button mat-menu-item (click)="addAnotherAccount(member)">
               <mat-icon style="color: #0277bd">list</mat-icon> Add Another Account
             </button>
-            <button *ngIf="canAddContribution" mat-menu-item>
+            <button *ngIf="isTopLeader" mat-menu-item>
               <mat-icon  style="color: red">delete</mat-icon> Delete
             </button>
           </mat-menu>

@@ -58,6 +58,8 @@ export class MembersComponent implements OnInit {
   canAddContribution:boolean;
   canManageLoan:boolean;
   canResetPassword:boolean;
+  canEditPhone: boolean;
+  isTopLeader:boolean;
 
   constructor(
     private store: Store<ApplicationState>,
@@ -80,6 +82,8 @@ export class MembersComponent implements OnInit {
     this.canManageLoan = this.checkPermission.canManageLoan;
     this.canManageMeeting = this.checkPermission.canManageMeeting;
     this.canResetPassword = this.checkPermission.canResetPassword;
+    this.isTopLeader = this.checkPermission.isTopLeader;
+    
   }
 
   ngOnInit(): void {
@@ -149,7 +153,11 @@ export class MembersComponent implements OnInit {
       disableClose: true,
     });
   }
-
+  async onTriger(member:Member){
+    this.checkPermission.editPhonePermit(member)
+    this.canEditPhone = this.checkPermission.canEditPhoneNumber;
+    console.log(`Can You Edit Phone  ${this.canEditPhone}`)
+   }
   async edit(member: Member) {
     this.currentMember = member;
     this.viewDetails = true;
