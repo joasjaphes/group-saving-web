@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {Member} from '../../store/member/member.model';
 import {ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
 import {select, Store} from '@ngrx/store';
@@ -24,6 +24,7 @@ import {Loan} from '../../store/loan/loan.model';
 import {selectOneTime} from '../../store/contribution-type/contribution-type.selectors';
 import {selectMemberOneTime} from '../../store/one-time-payment/one-time-payment.selectors';
 import { AuthService } from 'src/app/services/auth.service';
+import { CheckPermissionService } from 'src/app/services/permission-check.service';
 
 @Component({
   selector: 'app-members',
@@ -52,11 +53,17 @@ export class MembersComponent implements OnInit {
   memberSearch: any;
   currentContribution: ContributionType;
 
+  // Permission Checker
+  canManageMeeting:boolean;
+  canAddContribution:boolean;
+  canManageLoan:boolean;
+  canResetPassword:boolean;
+
   constructor(
     private store: Store<ApplicationState>,
     private httpClient: HttpClient,
     public dialog: MatDialog,
-    private auth:AuthService
+    private checkPermission:CheckPermissionService
   ) {
     this.members$ = this.store.pipe(select(memberSelector.selectMembersSorted));
     this.progress$ = this.store.pipe(select(groupSelector.selectProgressPercent));
@@ -68,9 +75,15 @@ export class MembersComponent implements OnInit {
     this.loanTypes$ = this.store.pipe(select(loanTypeSelector.selectAll));
     this.fineTypes$ = this.store.pipe(select(fineTypeSelector.selectDetailed));
     this.memberName$ = this.store.pipe(select(memberSelector.selectMemberName));
+
+    this.canAddContribution = this.checkPermission.canAddContribution;
+    this.canManageLoan = this.checkPermission.canManageLoan;
+    this.canManageMeeting = this.checkPermission.canManageMeeting;
+    this.canResetPassword = this.checkPermission.canResetPassword;
   }
 
   ngOnInit(): void {
+    
     
   }
 
@@ -172,27 +185,5 @@ export class MembersComponent implements OnInit {
     this.currentMember = null;
     this.currentContribution = null;
   }
-phoneNo:string;
-currentM:any;
-  deleteMember(){
-    console.log("am waiting for instruction")
-    
-    // this.group$.subscribe((member)=>{console.log(`groupWithPermission ${member.chairperson}`)})
-    this.store.pipe(select(groupSelector.selected)).subscribe((group)=>{console.log(group)});
 
-    this.auth.getLoginUser().subscribe((user)=>{this.phoneNo =  user.phoneNumber})
-
-    this.currentM =  this.members$.subscribe((mb)=>{
-      mb.filter((memb)=>{
-        return memb.phone_number === this.phoneNo
-      })
-      
-    });
-
-  //   // this.currentM[0]
-
-  // this.members$.subscribe((memb)=>{this.currentM = memb.filter((memb,i)=>{memb[i].phone_number === this.phoneNo })});
-
-   console.log(`Current Member: ${this.currentM}`)
-  }
 }

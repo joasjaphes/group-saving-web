@@ -86,23 +86,23 @@
             <mat-icon style="color: white">more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="addContribution(member)">
+            <button *ngIf="canAddContribution" mat-menu-item (click)="addContribution(member)">
               <mat-icon>add</mat-icon> Add Contribution
             </button>
             <button *ngFor="let oneTime of ((membersOneTimeContributionTypes$ | async)![member.id] || [])" mat-menu-item (click)="addOneTimeContribution(member, oneTime)">
               <mat-icon>add</mat-icon> {{oneTime.name}}
             </button>
-            <button mat-menu-item (click)="addLoan(member)">
+            <button mat-menu-item  *ngIf="canManageLoan" (click)="addLoan(member)">
               <mat-icon>money</mat-icon> Assign Loan
             </button>
-            <button mat-menu-item (click)="addFine(member)">
+            <button mat-menu-item *ngIf="canAddContribution" (click)="addFine(member)">
               <mat-icon>alarm_add</mat-icon> Fine to be Paid
             </button>
             <mat-divider></mat-divider>
             <button mat-menu-item>
               <mat-icon>remove_red_eye</mat-icon> View Details
             </button>
-            <button mat-menu-item (click)="edit(member)">
+            <button mat-menu-item  (click)="edit(member)">
               <mat-icon style="color: #0277bd">mode_edit</mat-icon> Update Basics
             </button>
             <button mat-menu-item (click)="editPhone(member)">
@@ -114,7 +114,7 @@
             <button mat-menu-item (click)="addAnotherAccount(member)">
               <mat-icon style="color: #0277bd">list</mat-icon> Add Another Account
             </button>
-            <button mat-menu-item  (click)="deleteMember()">
+            <button *ngIf="canAddContribution" mat-menu-item>
               <mat-icon  style="color: red">delete</mat-icon> Delete
             </button>
           </mat-menu>
