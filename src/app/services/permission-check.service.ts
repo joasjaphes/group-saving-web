@@ -21,6 +21,8 @@ export class CheckPermissionService {
     canAddContribution: boolean = false;
     canManageLoan: boolean = false;
     canResetPassword: boolean = false;
+    canEditPhoneNumber:boolean = false;
+    isTopLeader:boolean = false;
 
     constructor(private store: Store, private auth: AuthService) {
 
@@ -41,13 +43,23 @@ export class CheckPermissionService {
 
 
         this.group$.subscribe((gr) => {
-            if (gr.chairperson == this.currentM$.id) {
+            if (gr.chairperson == this.currentM$.id || gr.secretary == this.currentM$.id || gr.treasure == this.currentM$.id) {
                 this.canAddContribution = true;
                 this.canManageLoan = true;
                 this.canResetPassword = true;
                 this.canManageMeeting = true;
-                console.log("This guy is chaiperson so should anything")
+                this.isTopLeader = true;
+
+                // this.isSecretary = true
+                console.log("This guy is chaiperson so should do anything")
             }
+            // if (gr.secretary == this.currentM$.id) {
+            //     this.canAddContribution = true;
+            //     this.canManageLoan = true;
+            //     this.canResetPassword = true;
+            //     this.canManageMeeting = true;
+                
+            // }
             gr.member_permission.contributions.filter((meet) => {
                 if (meet === this.currentM$.id) {
                     this.canAddContribution = true;
@@ -83,6 +95,15 @@ export class CheckPermissionService {
 
         })
     }
+
+    editPhonePermit(member: Member) {
+         if(this.currentM$.phone_number == member.phone_number){
+            this.canEditPhoneNumber = true;
+         }else{
+            this.canEditPhoneNumber = false;
+         }
+         
+      }
 
 
     //     deleteMember(){
