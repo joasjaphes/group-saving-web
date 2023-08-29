@@ -12,7 +12,28 @@
     - if onMemberGroupDelete() is true then show succesfully msg.
 
 
-    - check where is permission saved;;
+    - check where is permission saved;
+
+
+## PERMISSION SCOPE
+- Chairperson
+    - Can add: member contribution
+    - Can delete user
+    - can delete group
+    - can assign role to other member
+    - Approve Loan
+    - Reset Member Password
+- Secretary (Meeting Manager)
+    - Manage meeting
+    - Serve Members (Reset Password)
+
+- Contribution manager
+    - Only add new member contribution include (fine,loan returns, social contribution)
+    - Get Notified when user add him/herself contribution
+
+
+
+
 
 ## BEFORE PUSHING CHANGES INTO CLOUD
 - make sure you communicate with tester button.
