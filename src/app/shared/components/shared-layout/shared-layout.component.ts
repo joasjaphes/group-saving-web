@@ -1,13 +1,15 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {formSize, ROUTE_ANIMATIONS_ELEMENTS, tableSize} from '../../animations/router-animation';
 
+
 @Component({
   selector: 'app-shared-layout',
   templateUrl: './shared-layout.component.html',
   styleUrls: ['./shared-layout.component.scss'],
   animations: [
     formSize, tableSize
-  ]
+  ],
+
 })
 export class SharedLayoutComponent implements OnInit {
 
@@ -28,9 +30,6 @@ export class SharedLayoutComponent implements OnInit {
   @Input() addText = 'Add';
   @Input() smallForm = true;
   @Input() hideBreadcrumb = false;
-
-  // permission to add new member
-  @Input() isTopLeader:boolean;
 
 
   @Output() addItem = new EventEmitter();

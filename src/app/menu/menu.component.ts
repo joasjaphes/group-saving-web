@@ -17,7 +17,7 @@ import {
   RouteConfigLoadEnd,
   Router,
 } from '@angular/router';
-import { Title } from '@angular/platform-browser';
+
 import { OfflineManagerService } from '../services/offline-manager.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { CommonService } from '../services/common.service';
@@ -35,15 +35,15 @@ import {
 import { Group } from '../store/group/group.model';
 import * as groupSelector from '../store/group/group.selectors';
 import { setSelectedMember } from '../store/member/member.actions';
-import { GroupProgressDialogComponent } from '../shared/components/group-progress/group-progress-dialog/group-progress-dialog.component';
+
 import { MatDialog } from '@angular/material/dialog';
 import { SwitchGroupsComponent } from './switch-groups/switch-groups.component';
-import { getLastUpdatedAts } from '../store/last-updated-at/last-updated-at.actions';
+
 import { getMemberGroups } from '../store/member-group/member-group.actions';
 import { setNextStep } from '../store/login-steps/login-steps.actions';
 import { RegistrationSteps } from '../registration/registration-steps';
 import { Go } from '../store/router/router.action';
-import { selectPhoneCountry } from '../store/login-steps/login-steps.selectors';
+
 
 @Component({
   selector: 'app-menu',
@@ -59,6 +59,8 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   loading = false;
   active_route_string: any;
   titleSubscription: Subscription;
+  x:number = 1;
+  y:number = 2;
   menus: Menu[] = [
     {
       name: 'Home',
@@ -85,11 +87,14 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
       route: '/summary',
       icon: 'list',
     },
-    {
-      name: 'Settings',
-      route: '/settings',
-      icon: 'settings',
-    },
+
+    // this should be handled due to permission[ take place in template]
+    //  {
+    //   name: 'Settings',
+    //   route: '/settings',
+    //   icon: 'settings',
+    // }
+
   ];
 
   isOpen = false;
@@ -102,15 +107,16 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   memberGroupSubscription: Subscription;
   memberGroupSub: Subscription;
   group$: Observable<Group>;
+  isTopLeader:boolean = false;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private store: Store<ApplicationState>,
     private userService: AuthService,
     private commonService: CommonService,
+
     private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private titleService: Title,
+
     private location: Location,
     private afs: AngularFirestore,
     private offlineService: OfflineManagerService,
@@ -120,6 +126,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.user$ = this.userService.getLoginUser();
     this.helpOpened$ = this.commonService.showHElp1;
     this.group$ = this.store.pipe(select(groupSelector.selected));
+    
   }
 
   ngOnInit(): void {

@@ -181,6 +181,20 @@
           <!--            <mat-divider></mat-divider>-->
         </ng-container>
       </ng-container>
+
+      <ng-container >
+        <a
+          mat-list-item
+          class="big-menu-items1 registration-title"
+          [routerLink]="'/settings'"
+          routerLinkActive="active-menu"
+          (click)="closeMenu(drawer)"
+        >
+          <mat-icon>settings</mat-icon> &nbsp;
+          <span style="margin-left: 5px">Settings</span>
+        </a>
+        <!--            <mat-divider></mat-divider>-->
+      </ng-container>
     </mat-nav-list>
   </mat-sidenav>
 

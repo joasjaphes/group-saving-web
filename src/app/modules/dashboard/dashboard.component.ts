@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
   donNotHaveExistingData = 'NO';
   constructor(
     private store: Store<ApplicationState>,
+
   ) {
     this.group$ = this.store.pipe(select(groupSelector.selected));
     this.progress$ = this.store.pipe(select(groupSelector.selectProgressPercent));
@@ -34,6 +35,9 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.setHaveExistingData();
+
+
+
   }
 
   setHaveExistingData() {

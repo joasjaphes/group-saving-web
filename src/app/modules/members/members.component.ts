@@ -1,30 +1,30 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
-import {Member} from '../../store/member/member.model';
-import {ROUTE_ANIMATIONS_ELEMENTS} from '../../shared/animations/router-animation';
-import {select, Store} from '@ngrx/store';
-import {ApplicationState} from '../../store';
+import { Component, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { Member } from '../../store/member/member.model';
+import { ROUTE_ANIMATIONS_ELEMENTS } from '../../shared/animations/router-animation';
+import { select, Store } from '@ngrx/store';
+import { ApplicationState } from '../../store';
 import * as memberSelector from '../../store/member/member.selectors';
 import * as groupSelector from '../../store/group/group.selectors';
 import * as contributionTypeSelector from '../../store/contribution-type/contribution-type.selectors';
-import {Group} from '../../store/group/group.model';
-import {GroupProgressDialogComponent} from '../../shared/components/group-progress/group-progress-dialog/group-progress-dialog.component';
-import {MatDialog} from '@angular/material/dialog';
-import {first} from 'rxjs/operators';
-import {ContributionType} from '../../store/contribution-type/contribution-type.model';
-import {LoanType} from '../../store/loan-type/loan-type.model';
+import { Group } from '../../store/group/group.model';
+import { GroupProgressDialogComponent } from '../../shared/components/group-progress/group-progress-dialog/group-progress-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { first } from 'rxjs/operators';
+import { ContributionType } from '../../store/contribution-type/contribution-type.model';
+import { LoanType } from '../../store/loan-type/loan-type.model';
 import * as loanTypeSelector from '../../store/loan-type/loan-type.selectors';
 import * as loanSelector from '../../store/loan/loan.selectors';
 import * as fineTypeSelector from '../../store/fine-type/fine-type.selectors';
-import {HttpClient} from '@angular/common/http';
-import {GroupProgress} from '../../store/group/group-progress.model';
-import {GroupProgressEnum} from '../../store/group/group-progress.enum';
-import {FineType} from '../../store/fine-type/fine-type.model';
-import {Loan} from '../../store/loan/loan.model';
-import {selectOneTime} from '../../store/contribution-type/contribution-type.selectors';
-import {selectMemberOneTime} from '../../store/one-time-payment/one-time-payment.selectors';
+import { HttpClient } from '@angular/common/http';
+import { GroupProgress } from '../../store/group/group-progress.model';
+import { GroupProgressEnum } from '../../store/group/group-progress.enum';
+import { FineType } from '../../store/fine-type/fine-type.model';
+import { Loan } from '../../store/loan/loan.model';
+import { selectOneTime } from '../../store/contribution-type/contribution-type.selectors';
+import { selectMemberOneTime } from '../../store/one-time-payment/one-time-payment.selectors';
 import { AuthService } from 'src/app/services/auth.service';
-import { CheckPermissionService } from 'src/app/services/permission-check.service';
+
 
 @Component({
   selector: 'app-members',
@@ -37,7 +37,7 @@ export class MembersComponent implements OnInit {
   group$: Observable<Group>;
   contributionTypes$: Observable<ContributionType[]>;
   oneTimeContributionTypes$: Observable<ContributionType[]>;
-  membersOneTimeContributionTypes$: Observable<{[id: string]: ContributionType[]}>;
+  membersOneTimeContributionTypes$: Observable<{ [id: string]: ContributionType[] }>;
   loanTypes$: Observable<LoanType[]>;
   fineTypes$: Observable<FineType[]>;
   memberName$: Observable<string>;
@@ -53,20 +53,16 @@ export class MembersComponent implements OnInit {
   memberSearch: any;
   currentContribution: ContributionType;
 
-  // Permission Checker
-  canManageMeeting:boolean;
-  canAddContribution:boolean;
-  canManageLoan:boolean;
-  canResetPassword:boolean;
-  canEditPhone: boolean;
-  isTopLeader:boolean;
+
 
   constructor(
     private store: Store<ApplicationState>,
     private httpClient: HttpClient,
-    public dialog: MatDialog,
-    private checkPermission:CheckPermissionService
+    public dialog: MatDialog
   ) {
+
+  //  this.checkPermission.initPermission()
+    
     this.members$ = this.store.pipe(select(memberSelector.selectMembersSorted));
     this.progress$ = this.store.pipe(select(groupSelector.selectProgressPercent));
     this.progressDetails$ = this.store.pipe(select(groupSelector.selectProgress));
@@ -77,19 +73,14 @@ export class MembersComponent implements OnInit {
     this.loanTypes$ = this.store.pipe(select(loanTypeSelector.selectAll));
     this.fineTypes$ = this.store.pipe(select(fineTypeSelector.selectDetailed));
     this.memberName$ = this.store.pipe(select(memberSelector.selectMemberName));
-
-    this.canAddContribution = this.checkPermission.canAddContribution;
-    this.canManageLoan = this.checkPermission.canManageLoan;
-    this.canManageMeeting = this.checkPermission.canManageMeeting;
-    this.canResetPassword = this.checkPermission.canResetPassword;
-    this.isTopLeader = this.checkPermission.isTopLeader;
-    
   }
 
   ngOnInit(): void {
-    
-    
+
+// this.onTriger()
+
   }
+
 
   async addContribution(member: Member) {
     this.currentMember = member;
@@ -153,11 +144,10 @@ export class MembersComponent implements OnInit {
       disableClose: true,
     });
   }
-  async onTriger(member:Member){
-    this.checkPermission.editPhonePermit(member)
-    this.canEditPhone = this.checkPermission.canEditPhoneNumber;
-    console.log(`Can You Edit Phone  ${this.canEditPhone}`)
-   }
+
+  
+
+
   async edit(member: Member) {
     this.currentMember = member;
     this.viewDetails = true;

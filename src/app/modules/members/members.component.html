@@ -1,19 +1,9 @@
-<app-shared-layout 
-  title="Group Members"
-  icon="people_outline"
-  [hideAdd]="(members$ | async).length == 1"
-  [addIcon]="'group_add'"
-  (addItem)="addMembers()"
-  [addText]="'New Member'"
-  [viewDetails]="viewDetails"
-  (closeDetails)="onClose()"
-  [animationSize]="'full'"
-  [smallForm]="false"
-  [formTitle]="panelTitle"
-  [isTopLeader]="isTopLeader"
->
+<app-shared-layout title="Group Members" icon="people_outline" [hideAdd]="(members$ | async).length == 1"
+  [addIcon]="'group_add'" (addItem)="addMembers()" [addText]="'New Member'" [viewDetails]="viewDetails"
+  (closeDetails)="onClose()" [animationSize]="'full'" [smallForm]="false" [formTitle]="panelTitle"
+  >
   <ng-container ngProjectAs="table">
-<!--    In case there is only one member-->
+    <!--    In case there is only one member-->
     <div *ngIf="(members$ | async).length == 1" class="summary-progress-container content-area-shadow mb-5">
       <div class="progressArea">
         <img alt="member" src="assets/images/alone.png">
@@ -27,10 +17,7 @@
         </p>
         <button
           style="font-weight: 900; border-radius: 20px;margin-top: 10px;padding: 5px 25px;font-size: 15px;border: 1px solid #FF7043;"
-          mat-raised-button
-          class="registration-title add-button"
-          (click)="openModel()"
-        >
+          mat-raised-button class="registration-title add-button" (click)="openModel()">
           <mat-icon>group_add</mat-icon>&nbsp;
           Add Members&nbsp;
           <mat-icon>arrow_forward</mat-icon>
@@ -38,7 +25,7 @@
       </div>
     </div>
 
-<!--    Member Search-->
+    <!--    Member Search-->
     <div *ngIf="(members$ | async).length > 1" class="search-grid">
       <div></div>
       <div>
@@ -54,13 +41,10 @@
       <h3 class="registration-title text-center mt-3">There is no member named {{memberSearch}}</h3>
     </div>
     <!--    List of Members-->
-<!--    {{(members$ | async) | json}}-->
+    <!--    {{(members$ | async) | json}}-->
     <div *ngIf="(members$ | async).length > 1" class="main-menu-container">
-      <div
-        [ngClass]="routeAnimationsElements"
-        class="menu-grid content-area"
-        *ngFor="let member of members$ | async | search:'name':memberSearch"
-      >
+      <div [ngClass]="routeAnimationsElements" class="menu-grid content-area"
+        *ngFor="let member of members$ | async | search:'name':memberSearch">
         <div class="img-div" *ngIf="member">
           <h1 style="font-size: 40px; color: white" class="registration-title">{{member.name[0].toUpperCase()}}</h1>
         </div>
@@ -68,11 +52,12 @@
         <div *ngIf="member">
           <h2 class="registration-title mb-1">
             {{member.name}}
-            <span *ngIf="!!member.subtitle"><small class="text-muted" style="font-size: 11px!important;">{{member.subtitle}}</small></span>
+            <span *ngIf="!!member.subtitle"><small class="text-muted"
+                style="font-size: 11px!important;">{{member.subtitle}}</small></span>
           </h2>
           <p class="lead">{{member.phone_number}}</p>
-          <p *ngIf="isTopLeader else norm">
-            <button mat-button class="edit-button" (click)="edit(member)">
+          <p>
+            <button *hasPermission="{permission:'me'}" mat-button class="edit-button" (click)="edit(member)">
               <mat-icon style="color: #0277bd">mode_edit</mat-icon>
               <span style="color: #0277bd">Edit</span>
             </button>&nbsp;
@@ -80,53 +65,57 @@
               <mat-icon>remove_red_eye</mat-icon> View Details
             </button>
           </p>
-          <ng-template #norm>
+          <!-- <ng-template #norm>
             <button mat-button [routerLink]="['', 'members', member.id]">
               <mat-icon>remove_red_eye</mat-icon> View Details
             </button>
-          </ng-template>
+          </ng-template> -->
         </div>
 
         <div class="menu" *ngIf="member">
-          <button mat-icon-button (click)="onTriger(member)" [matMenuTriggerFor]="menu">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon style="color: white">more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button *ngIf="canAddContribution" mat-menu-item (click)="addContribution(member)">
+            <button *hasPermission="{permission:'contributor'}"  mat-menu-item (click)="addContribution(member)">
               <mat-icon>add</mat-icon> Add Contribution
             </button>
 
             <!-- entry free is here -->
-            <div *ngIf="canAddContribution || isTopLeader">
-            <button  *ngFor="let oneTime of ((membersOneTimeContributionTypes$ | async)![member.id] || [])" mat-menu-item (click)="addOneTimeContribution(member, oneTime)">
-              <mat-icon>add</mat-icon> {{oneTime.name}}
-            </button>
-          </div>
+            <div *hasPermission="{permission:'contributor'}" >
+              <button *ngFor="let oneTime of ((membersOneTimeContributionTypes$ | async)![member.id] || [])"
+                mat-menu-item (click)="addOneTimeContribution(member, oneTime)">
+                <mat-icon>add</mat-icon> {{oneTime.name}}
+              </button>
+            </div>
 
-            <button mat-menu-item  *ngIf="canManageLoan" (click)="addLoan(member)">
+            <button mat-menu-item *hasPermission="{permission:'loanManager'}"
+              (click)="addLoan(member)">
               <mat-icon>money</mat-icon> Assign Loan
             </button>
-            <button mat-menu-item *ngIf="canAddContribution" (click)="addFine(member)">
+            <button mat-menu-item *hasPermission="{permission:'contributor'}"
+              (click)="addFine(member)">
               <mat-icon>alarm_add</mat-icon> Fine to be Paid
             </button>
             <mat-divider></mat-divider>
-            <button mat-menu-item>
+            <button mat-menu-item [routerLink]="['', 'members', member.id]">
               <mat-icon>remove_red_eye</mat-icon> View Details
             </button>
-            <button mat-menu-item *ngIf="canEditPhone" (click)="edit(member)">
+            <button *hasPermission="{permission:'me'}" mat-menu-item (click)="edit(member)">
               <mat-icon style="color: #0277bd">mode_edit</mat-icon> Update Basics
             </button>
-            <button mat-menu-item *ngIf="canEditPhone ||  isTopLeader"  (click)="editPhone(member)">
+            <button *hasPermission="{permission:'me'}" mat-menu-item (click)="editPhone(member)">
               <mat-icon style="color: #0277bd">phone</mat-icon> Update Phone
             </button>
-            <button mat-menu-item *ngIf="canResetPassword" (click)="updatePassword(member)">
+            <button *hasPermission="{permission:'psd'}" mat-menu-item (click)="updatePassword(member)">
               <mat-icon style="color: #0277bd">lock</mat-icon> Reset Password
             </button>
-            <button mat-menu-item (click)="addAnotherAccount(member)">
+            <button *hasPermission="{permission:'me'}" mat-menu-item
+              (click)="addAnotherAccount(member)">
               <mat-icon style="color: #0277bd">list</mat-icon> Add Another Account
             </button>
-            <button *ngIf="isTopLeader" mat-menu-item>
-              <mat-icon  style="color: red">delete</mat-icon> Delete
+            <button *hasPermission="{permission:'topLeader'}" mat-menu-item>
+              <mat-icon style="color: red">delete</mat-icon> Delete
             </button>
           </mat-menu>
         </div>
@@ -135,88 +124,39 @@
   </ng-container>
 
   <ng-container ngProjectAs="form">
-    <app-assign-loan
-      *ngIf="viewType === 'loan'"
-      [group]="group$ | async"
-      [membersLoans]="membersLoans$ | async"
-      [contributionTypes]="contributionTypes$ | async"
-      [loanTypes]="loanTypes$ | async"
-      [member]="currentMember"
-      (closeForm)="onClose()"
-    ></app-assign-loan>
+    <app-assign-loan *ngIf="viewType === 'loan'" [group]="group$ | async" [membersLoans]="membersLoans$ | async"
+      [contributionTypes]="contributionTypes$ | async" [loanTypes]="loanTypes$ | async" [member]="currentMember"
+      (closeForm)="onClose()"></app-assign-loan>
 
-    <app-add-contribution
-      *ngIf="viewType == 'contribution'"
-      [group]="group$ | async"
-      [contributionTypes]="contributionTypes$ | async"
-      [fineTypes]="fineTypes$ | async"
-      [member]="currentMember"
-      (closeForm)="onClose()"
-    ></app-add-contribution>
+    <app-add-contribution *ngIf="viewType == 'contribution'" [group]="group$ | async"
+      [contributionTypes]="contributionTypes$ | async" [fineTypes]="fineTypes$ | async" [member]="currentMember"
+      (closeForm)="onClose()"></app-add-contribution>
 
-    <app-add-one-time-contribution
-      *ngIf="viewType == 'one-time-contribution' && currentContribution"
-      [group]="group$ | async"
-      [contributionTypes]="contributionTypes$ | async"
-      [currentContribution]="currentContribution"
-      [fineTypes]="fineTypes$ | async"
-      [member]="currentMember"
-      (closeForm)="onClose()"
-    ></app-add-one-time-contribution>
+    <app-add-one-time-contribution *ngIf="viewType == 'one-time-contribution' && currentContribution"
+      [group]="group$ | async" [contributionTypes]="contributionTypes$ | async"
+      [currentContribution]="currentContribution" [fineTypes]="fineTypes$ | async" [member]="currentMember"
+      (closeForm)="onClose()"></app-add-one-time-contribution>
 
-    <app-add-member
-      *ngIf="viewType == 'add'"
-      [group]="group$ | async"
-      [members]="members$ | async"
-      [memberName]="memberName$ | async"
-      (closeForm)="onClose()"
-    ></app-add-member>
+    <app-add-member *ngIf="viewType == 'add'" [group]="group$ | async" [members]="members$ | async"
+      [memberName]="memberName$ | async" (closeForm)="onClose()"></app-add-member>
 
-    <app-update-member-basics
-      *ngIf="viewType == 'update'"
-      [group]="group$ | async"
-      [member]="currentMember"
-      [members]="members$ | async"
-      [memberName]="memberName$ | async"
-      (closeForm)="onClose()"
-    ></app-update-member-basics>
+    <app-update-member-basics *ngIf="viewType == 'update'" [group]="group$ | async" [member]="currentMember"
+      [members]="members$ | async" [memberName]="memberName$ | async"
+      (closeForm)="onClose()"></app-update-member-basics>
 
-    <app-update-member-phone
-      *ngIf="viewType == 'updatePhone'"
-      [group]="group$ | async"
-      [member]="currentMember"
-      [members]="members$ | async"
-      [memberName]="memberName$ | async"
-      (closeForm)="onClose()"
-    ></app-update-member-phone>
+    <app-update-member-phone *ngIf="viewType == 'updatePhone'" [group]="group$ | async" [member]="currentMember"
+      [members]="members$ | async" [memberName]="memberName$ | async" (closeForm)="onClose()"></app-update-member-phone>
 
-    <app-update-member-password
-    *ngIf="viewType == 'updatePassword'"
-    [group]="group$ | async"
-    [member]="currentMember"
-    [members]="members$ | async"
-    [memberName]="memberName$ | async"
-    (closeForm)="onClose()"
-  ></app-update-member-password>
+    <app-update-member-password *ngIf="viewType == 'updatePassword'" [group]="group$ | async" [member]="currentMember"
+      [members]="members$ | async" [memberName]="memberName$ | async"
+      (closeForm)="onClose()"></app-update-member-password>
 
-    <app-add-expected-fine
-      *ngIf="viewType == 'fine'"
-      [group]="group$ | async"
-      [members]="members$ | async"
-      [member]="currentMember"
-      [fineTypes]="fineTypes$ | async"
-      (closeForm)="onClose()"
-    ></app-add-expected-fine>
+    <app-add-expected-fine *ngIf="viewType == 'fine'" [group]="group$ | async" [members]="members$ | async"
+      [member]="currentMember" [fineTypes]="fineTypes$ | async" (closeForm)="onClose()"></app-add-expected-fine>
 
 
-    <app-add-another-account
-      *ngIf="viewType == 'add-another'"
-      [group]="group$ | async"
-      [member]="currentMember"
-      [members]="members$ | async"
-      [memberName]="memberName$ | async"
-      (closeForm)="onClose()"
-    ></app-add-another-account>
+    <app-add-another-account *ngIf="viewType == 'add-another'" [group]="group$ | async" [member]="currentMember"
+      [members]="members$ | async" [memberName]="memberName$ | async" (closeForm)="onClose()"></app-add-another-account>
 
   </ng-container>
 </app-shared-layout>

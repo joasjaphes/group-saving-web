@@ -123,6 +123,8 @@ import { UpdateMemberPasswordComponent } from './modules/members/update-member-p
 import { ExpenseByPeriodComponent } from './modules/settings/previous-data/expense-by-period/expense-by-period.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { TestDirective } from './shared/directives/tester.directive';
+import { HasPermissionDirective } from './shared/directives/permission-directive/permission.directive';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCZlASesgqHoCE8YjsXhsJ7IO4-q3OWqlI',
@@ -241,7 +243,8 @@ const firebaseConfig = {
     UpdateMemberPasswordComponent,
     ExpenseByPeriodComponent,
     PasswordResetComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    HasPermissionDirective
   ],
   imports: [
     CommonModule,
@@ -271,3 +274,4 @@ const firebaseConfig = {
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
