@@ -48,3 +48,24 @@
 ## BEFORE PUSHING CHANGES INTO CLOUD
 - make sure you communicate with tester button.
     - I add it into shared-layout.component.html found on shared/component/shared-layout
+
+
+
+### ========================================= JOURNALING ========================================================= !!
+
+## TODAY (31 AUG 2023)
+- only top leader should be able to see ``setting`` menu-item
+    - 0942: I start by opening project on text editor(VSCode) 
+        - In permissionService, I add eventEmitter by using Subject class from rxjs package and declare it as boolean variable that will listen on ``isTOpLeader`` and emit every new value that assigned in isTopLeader.
+        - This techniques work on shared layout as it was throw an error when i try to pass my custom directive in button angular material
+        - But I need to figure out why it thrown an erro when I pass my custom directive
+
+    - 1135
+        - I've implemented a permission to allow topLeaders and meeting Manager to manage meeting... So normal member can only view a meeting details.
+        - menu-component.html  --- throw an error when I use my custome directive...
+
+
+- firebase cloud function review 
+
+
+### =========================================== END OF JOURNALING SECTION ========================================= !!
