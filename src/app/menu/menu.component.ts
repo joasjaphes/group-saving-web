@@ -43,6 +43,7 @@ import { getMemberGroups } from '../store/member-group/member-group.actions';
 import { setNextStep } from '../store/login-steps/login-steps.actions';
 import { RegistrationSteps } from '../registration/registration-steps';
 import { Go } from '../store/router/router.action';
+import { CheckPermissionService } from '../services/permission-check.service';
 
 
 @Component({
@@ -107,7 +108,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   memberGroupSubscription: Subscription;
   memberGroupSub: Subscription;
   group$: Observable<Group>;
-  isTopLeader:boolean = false;
+  isTopLeader:boolean;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -121,15 +122,21 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     private afs: AngularFirestore,
     private offlineService: OfflineManagerService,
     private firestoreService: FirestoreService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+
+    private permissionService: CheckPermissionService
+
+  
   ) {
     this.user$ = this.userService.getLoginUser();
     this.helpOpened$ = this.commonService.showHElp1;
     this.group$ = this.store.pipe(select(groupSelector.selected));
+    this.permissionService.permissionContainer.subscribe((boolVal)=> this.isTopLeader = boolVal);
     
   }
 
   ngOnInit(): void {
+
     this.userSubscription = this.user$.subscribe((user) => {
       if (user) {
         this.store.dispatch(

@@ -1,4 +1,4 @@
-import { Directive, EmbeddedViewRef, Input, TemplateRef, ViewContainerRef } from "@angular/core";
+import { Directive, Input, TemplateRef, ViewContainerRef } from "@angular/core";
 import { Store, select } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
@@ -9,101 +9,71 @@ import { Member } from "src/app/store/member/member.model";
 
 import * as groupSelector from "../../../store/group/group.selectors";
 import * as memberSelector from "../../../store/member/member.selectors";
+import { CheckPermissionService } from "src/app/services/permission-check.service";
 
 
 @Directive({
     selector: "[hasPermission]"
 })
 export class HasPermissionDirective {
-    @Input() set hasPermission(args: { member: Member, permission: string }) {
 
-        this.permission = args.permission;
-    }
 
     members$: Observable<Member[]>
     group$: Observable<Group>
     phone: string;
 
-    // Key for permission
-    canManageMeeting: boolean;
-    canAddContribution: boolean;
-    canManageLoan: boolean;
-    isMe: boolean;
-    canResetPassword: boolean;
-    canEditPhoneNumber: boolean;
+    isPermitted: boolean;
     isTopLeader: boolean;
     permission: string;
 
+    @Input() set hasPermission(permission: string) {
+
+        this.permission = permission;
+    }
 
 
-    
 
 
-    constructor(private tempRef: TemplateRef<any>, private viewCRef: ViewContainerRef, private store: Store<ApplicationState>, private auth: AuthService) {
-
-        
 
 
+    constructor(private tempRef: TemplateRef<any>, private viewCRef: ViewContainerRef, private store: Store<ApplicationState>, private auth: AuthService, private permissionService: CheckPermissionService) {
+
+        this.members$ = this.store.pipe(select(memberSelector.selectMembersSorted));
         const user = this.auth.getLoginUser().toPromise();
         user.then((user) => {
+
             this.phone = user.phoneNumber;
-
-      
-
-            
 
 
             this.group$ = this.store.pipe(select(groupSelector.selected));
-            this.members$ = this.store.pipe(select(memberSelector.selectMembersSorted));
-            this.members$.subscribe((member) => {
+            
+         this.members$.subscribe((member) => {
 
-                const mb = member.find((mb) => mb.phone_number == user.phoneNumber)
+                const mb = member.find((value) => value.phone_number == user.phoneNumber)
 
-
-
-                this.group$.subscribe((group) => {
+               this.group$.subscribe((group) => {
 
 
-                    this.canAddContribution = group.member_permission?.contributions.find((group) => { return group == mb.id }) ? true : false
+                    if (this.permission == "topLeader") {
+                        this.isPermitted = (group.chairperson == mb.id || group.secretary == mb.id || group.treasure == mb.id)
 
-                    this.canManageLoan = group.member_permission?.loan_approval.find((group) => { return group == mb.id }) ? true : false
+                    } else {
+                        this.isPermitted = group?.member_permission[`${this.permission}`]?.includes(mb.id) || (group.chairperson == mb.id || group.secretary == mb.id || group.treasure == mb.id)
+                    }
 
-                    this.canResetPassword = group.member_permission?.contributions.find((group) => { return group == mb.id }) ? true : false
-
-                    this.canManageMeeting = group.member_permission?.meetings.find((group) => { return group == mb.id }) ? true : false
-
-                    this.isTopLeader = group.chairperson == mb.id || group.secretary == mb.id || group.treasure == mb.id ? true : false
-
-
-                    console.log(`
-                                contribution: ${this.canAddContribution},
-                                loan: ${this.canManageLoan},
-                                resetPAss: ${this.canResetPassword},
-                                meeting: ${this.canManageMeeting},
-                                isTopLeader: ${this.isTopLeader}
-               `)
+                    permissionService.permissionContainer.next((group.chairperson == mb.id || group.secretary == mb.id || group.treasure == mb.id))
 
                 });
             })
 
+            if (this.isPermitted) {
+                this.viewCRef.createEmbeddedView(this.tempRef)
 
-
-
-            if (this.isTopLeader) {
-                this.viewCRef.createEmbeddedView(tempRef)
-                console.log("Ye He's")
-            } else if (this.canManageLoan && this.permission === "loanManager") {
-                this.viewCRef.createEmbeddedView(tempRef)
-            } else if (this.canAddContribution && this.permission === "contributor") {
-                this.viewCRef.createEmbeddedView(tempRef)
-            } else if (this.canResetPassword && this.permission == "psd" ) {
-                this.viewCRef.createEmbeddedView(tempRef)
-            }
-
-
-            else {
+                console.log(`It's Working: ${this.isPermitted}`)
+            } else {
                 this.viewCRef.clear()
             }
+
 
         })
 

@@ -33,6 +33,7 @@ import { PeriodSelectorComponent } from './components/period-selector/period-sel
 import { ClickOutsideDirective } from './directives/click-outside.directive';
 import { ImportReminderComponent } from './components/import-reminder/import-reminder.component';
 import { ViewAttachmentComponent } from './components/view-attachment/view-attachment.component';
+import { HasPermissionDirective } from './directives/permission-directive/permission.directive';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,8 @@ import { ViewAttachmentComponent } from './components/view-attachment/view-attac
     ClickOutsideDirective,
     ImportReminderComponent,
     ViewAttachmentComponent,
+    HasPermissionDirective
+   
   ],
   imports: [
     CommonModule,
@@ -110,6 +113,7 @@ import { ViewAttachmentComponent } from './components/view-attachment/view-attac
         HalfProgressComponent,
         SaveLoaderComponent,
         PeriodSelectorComponent,
+        HasPermissionDirective
     ]
 })
 export class SharedModule {

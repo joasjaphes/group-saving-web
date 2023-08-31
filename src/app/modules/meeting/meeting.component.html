@@ -65,10 +65,10 @@
               <button (click)="viewMeeting(meeting)" mat-menu-item>
                 <mat-icon>remove_red_eye</mat-icon> View Details
               </button>
-              <button (click)="editMeeting(meeting)" mat-menu-item >
+              <button *hasPermission="'meetings'" (click)="editMeeting(meeting)" mat-menu-item >
                 <mat-icon style="color: #0277bd">mode_edit</mat-icon> Update Meeting
               </button>
-              <button (click)="deleteMeeting(meeting)" mat-menu-item >
+              <button *hasPermission="'meetings'" (click)="deleteMeeting(meeting)" mat-menu-item >
                 <mat-icon style="color: red">delete</mat-icon> Remove Meeting
               </button>
             </mat-menu>

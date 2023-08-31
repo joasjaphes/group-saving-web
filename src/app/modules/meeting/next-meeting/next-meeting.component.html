@@ -18,7 +18,7 @@
     </p>
     <div>
 
-      <button
+      <button *hasPermission="'meetings'"
         (click)="onComplete()"
         style="font-weight: 900; border-radius: 20px;margin-top: 10px;padding: 5px 25px;font-size: 15px;border: 1px solid #FF7043;"
         mat-raised-button
@@ -29,7 +29,7 @@
 <!--        <mat-icon>arrow_forward</mat-icon>-->
       </button>
 
-      <button
+      <button *hasPermission="'meetings'"
         (click)="onCancel()"
         style="font-weight: 900; border-radius: 20px;margin-top: 10px;padding: 5px 25px;font-size: 15px;border: 1px solid #FF7043;"
         mat-raised-button

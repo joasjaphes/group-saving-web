@@ -184,6 +184,7 @@
 
       <ng-container >
         <a
+        *ngIf="isTopLeader"
           mat-list-item
           class="big-menu-items1 registration-title"
           [routerLink]="'/settings'"

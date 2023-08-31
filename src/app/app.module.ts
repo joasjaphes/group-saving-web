@@ -244,7 +244,7 @@ const firebaseConfig = {
     ExpenseByPeriodComponent,
     PasswordResetComponent,
     ForgotPasswordComponent,
-    HasPermissionDirective
+   
   ],
   imports: [
     CommonModule,

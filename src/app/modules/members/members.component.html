@@ -1,4 +1,4 @@
-<app-shared-layout title="Group Members" icon="people_outline" [hideAdd]="(members$ | async).length == 1"
+<app-shared-layout  title="Group Members" icon="people_outline" [hideAdd]="(members$ | async).length == 1"
   [addIcon]="'group_add'" (addItem)="addMembers()" [addText]="'New Member'" [viewDetails]="viewDetails"
   (closeDetails)="onClose()" [animationSize]="'full'" [smallForm]="false" [formTitle]="panelTitle"
   >
@@ -57,7 +57,7 @@
           </h2>
           <p class="lead">{{member.phone_number}}</p>
           <p>
-            <button *hasPermission="{permission:'me'}" mat-button class="edit-button" (click)="edit(member)">
+            <button *hasPermission="'topLeader'" mat-button class="edit-button" (click)="edit(member)">
               <mat-icon style="color: #0277bd">mode_edit</mat-icon>
               <span style="color: #0277bd">Edit</span>
             </button>&nbsp;
@@ -77,23 +77,23 @@
             <mat-icon style="color: white">more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button *hasPermission="{permission:'contributor'}"  mat-menu-item (click)="addContribution(member)">
+            <button *hasPermission="'contributions'"  mat-menu-item (click)="addContribution(member)">
               <mat-icon>add</mat-icon> Add Contribution
             </button>
 
             <!-- entry free is here -->
-            <div *hasPermission="{permission:'contributor'}" >
+            <div *hasPermission="'contributions'" >
               <button *ngFor="let oneTime of ((membersOneTimeContributionTypes$ | async)![member.id] || [])"
                 mat-menu-item (click)="addOneTimeContribution(member, oneTime)">
                 <mat-icon>add</mat-icon> {{oneTime.name}}
               </button>
             </div>
 
-            <button mat-menu-item *hasPermission="{permission:'loanManager'}"
+            <button mat-menu-item *hasPermission="'loan_approval'"
               (click)="addLoan(member)">
               <mat-icon>money</mat-icon> Assign Loan
             </button>
-            <button mat-menu-item *hasPermission="{permission:'contributor'}"
+            <button mat-menu-item *hasPermission="'contributions'"
               (click)="addFine(member)">
               <mat-icon>alarm_add</mat-icon> Fine to be Paid
             </button>
@@ -101,20 +101,20 @@
             <button mat-menu-item [routerLink]="['', 'members', member.id]">
               <mat-icon>remove_red_eye</mat-icon> View Details
             </button>
-            <button *hasPermission="{permission:'me'}" mat-menu-item (click)="edit(member)">
+            <button *hasPermission="'loan_approval'" mat-menu-item (click)="edit(member)">
               <mat-icon style="color: #0277bd">mode_edit</mat-icon> Update Basics
             </button>
-            <button *hasPermission="{permission:'me'}" mat-menu-item (click)="editPhone(member)">
+            <button *hasPermission="'topLeader'" mat-menu-item (click)="editPhone(member)">
               <mat-icon style="color: #0277bd">phone</mat-icon> Update Phone
             </button>
-            <button *hasPermission="{permission:'psd'}" mat-menu-item (click)="updatePassword(member)">
+            <button *hasPermission="'topLeader'" mat-menu-item (click)="updatePassword(member)">
               <mat-icon style="color: #0277bd">lock</mat-icon> Reset Password
             </button>
-            <button *hasPermission="{permission:'me'}" mat-menu-item
+            <button *hasPermission="'contributions'" mat-menu-item
               (click)="addAnotherAccount(member)">
               <mat-icon style="color: #0277bd">list</mat-icon> Add Another Account
             </button>
-            <button *hasPermission="{permission:'topLeader'}" mat-menu-item>
+            <button *hasPermission="'topLeader'" mat-menu-item>
               <mat-icon style="color: red">delete</mat-icon> Delete
             </button>
           </mat-menu>

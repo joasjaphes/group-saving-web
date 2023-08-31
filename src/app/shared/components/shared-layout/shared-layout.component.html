@@ -64,10 +64,10 @@
 </div>
 
 
-<ng-container >
+<ng-container *ngIf="isTopLeader" >
   <div class="col-md-12" *ngIf="!viewDetails">
     <button
-      *ngIf="!hideAdd"
+      *ngIf="!hideAdd "
       title="Add"
       (click)="add()"
       color="primary"

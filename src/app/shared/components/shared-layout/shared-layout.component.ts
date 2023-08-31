@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {formSize, ROUTE_ANIMATIONS_ELEMENTS, tableSize} from '../../animations/router-animation';
+import { CheckPermissionService } from 'src/app/services/permission-check.service';
 
 
 @Component({
@@ -12,7 +13,7 @@ import {formSize, ROUTE_ANIMATIONS_ELEMENTS, tableSize} from '../../animations/r
 
 })
 export class SharedLayoutComponent implements OnInit {
-
+  isTopLeader:boolean;
   @Input() title: string;
   @Input() subtitle: string;
   @Input() loading = false;
@@ -38,9 +39,12 @@ export class SharedLayoutComponent implements OnInit {
   @Input() image: any;
   @Input() icon: any;
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
-  constructor() { }
+
+  constructor(private permissionService:CheckPermissionService) { }
 
   ngOnInit() {
+    this.permissionService.permissionContainer.subscribe((boolVal)=> this.isTopLeader = boolVal)
+    
   }
 
 
