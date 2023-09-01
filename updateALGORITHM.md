@@ -53,6 +53,8 @@
 
 ### ========================================= JOURNALING ========================================================= !!
 
+
+
 ## TODAY (31 AUG 2023)
 - only top leader should be able to see ``setting`` menu-item
     - 0942: I start by opening project on text editor(VSCode) 
@@ -64,6 +66,22 @@
         - I've implemented a permission to allow topLeaders and meeting Manager to manage meeting... So normal member can only view a meeting details.
         - menu-component.html  --- throw an error when I use my custome directive...
 
+
+## DAY 2 (yday + 1)
+- TopLeaders Should be able to deactive a member
+    - 0930 - I start by discussing with Senior about member and group model 
+        - Back to source code and start exploring on those models
+        - I should user activation_status to deactivate group member when Chairperosa click deactivate button.
+        - Qns: 
+            - Where is member groups are pulled from?
+                - Member group are pulled from local storageDB
+                - Then stored on ``ngrx store`` then serve all project
+            - How member Group is inserted into local storageDB?
+
+            - I should create firebase function that fetch group members by uid or phone_no and then changes its status.
+                - After Lunch
+    
+- REMEMBER TO CHANGE SERVER URL SO AS YOU CAN ACCESS ONLINE DB
 
 - firebase cloud function review 
 
