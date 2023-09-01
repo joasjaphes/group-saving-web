@@ -114,7 +114,7 @@
               (click)="addAnotherAccount(member)">
               <mat-icon style="color: #0277bd">list</mat-icon> Add Another Account
             </button>
-            <button *hasPermission="'topLeader'" mat-menu-item>
+            <button *hasPermission="'topLeader'"  mat-menu-item  (click)="onDelete(member,'inactive')"   >
               <mat-icon style="color: red">delete</mat-icon> Delete
             </button>
           </mat-menu>

@@ -221,6 +221,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         )
         .valueChanges()
         .subscribe((member_groups: any) => {
+          console.log(`Members Groups are: ${member_groups}`)
           if (this.fetchData) {
             this.fetchData = false;
             this.initiateLastUpdatedTimes(member_groups);

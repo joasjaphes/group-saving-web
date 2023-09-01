@@ -8,8 +8,10 @@ import { Member } from "src/app/store/member/member.model";
 
 
 import * as groupSelector from "../../../store/group/group.selectors";
+import *  as memberGroup from "../../../store/member-group/member-group.selectors";
 import * as memberSelector from "../../../store/member/member.selectors";
 import { CheckPermissionService } from "src/app/services/permission-check.service";
+import { MemberGroup } from "src/app/store/member-group/member-group.model";
 
 
 @Directive({
@@ -21,6 +23,7 @@ export class HasPermissionDirective {
     members$: Observable<Member[]>
     group$: Observable<Group>
     phone: string;
+    memberGroupSelector:Observable<MemberGroup[]>;
 
     isPermitted: boolean;
     isTopLeader: boolean;
@@ -44,7 +47,10 @@ export class HasPermissionDirective {
 
             this.phone = user.phoneNumber;
 
-
+                this.memberGroupSelector = this.store.pipe(select(memberGroup.selectAll))
+                this.memberGroupSelector.subscribe((group:MemberGroup[])=>{
+                    console.log(`This member groups are: ${group[0].activation_status}  and ${group[1].activation_status}`)
+                })
             this.group$ = this.store.pipe(select(groupSelector.selected));
             
          this.members$.subscribe((member) => {
@@ -53,7 +59,7 @@ export class HasPermissionDirective {
 
                this.group$.subscribe((group) => {
 
-
+                    console.log(group)
                     if (this.permission == "topLeader") {
                         this.isPermitted = (group.chairperson == mb.id || group.secretary == mb.id || group.treasure == mb.id)
 

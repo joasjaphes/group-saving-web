@@ -23,7 +23,13 @@ import { FineType } from '../../store/fine-type/fine-type.model';
 import { Loan } from '../../store/loan/loan.model';
 import { selectOneTime } from '../../store/contribution-type/contribution-type.selectors';
 import { selectMemberOneTime } from '../../store/one-time-payment/one-time-payment.selectors';
-import { AuthService } from 'src/app/services/auth.service';
+
+
+import { OfflineManagerService } from 'src/app/services/offline-manager.service';
+import * as memberGroupSelector from "../../store/member-group/member-group.selectors";
+import { MemberGroup } from 'src/app/store/member-group/member-group.model';
+import { DataKeys } from 'src/app/store/data-keys';
+import { FunctionsService } from 'src/app/services/functions.service';
 
 
 @Component({
@@ -52,17 +58,19 @@ export class MembersComponent implements OnInit {
   currentMember: Member;
   memberSearch: any;
   currentContribution: ContributionType;
-
+  memberGroups$: Observable<MemberGroup[]>;
 
 
   constructor(
     private store: Store<ApplicationState>,
     private httpClient: HttpClient,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private offlineSerivice: OfflineManagerService,
+    private fs: FunctionsService
   ) {
 
-  //  this.checkPermission.initPermission()
-    
+    //  this.checkPermission.initPermission()
+    this.memberGroups$ = this.store.pipe(select(memberGroupSelector.selectAll));
     this.members$ = this.store.pipe(select(memberSelector.selectMembersSorted));
     this.progress$ = this.store.pipe(select(groupSelector.selectProgressPercent));
     this.progressDetails$ = this.store.pipe(select(groupSelector.selectProgress));
@@ -77,7 +85,30 @@ export class MembersComponent implements OnInit {
 
   ngOnInit(): void {
 
-// this.onTriger()
+    // this.onTriger()
+
+  }
+
+  async onDelete(member:Member,status:string) {
+    const data = { phoneNumber: member.phone_number, group_id: member.group_id, status: status }
+    this.fs.saveData("disableMember", data)
+
+    // const group = await this.group$.pipe(first()).toPromise();
+    // console.log(group)
+    // this.memberGroups$.subscribe((memberGroups)=>{
+
+    // memberGroups.forEach((mg)=>{
+    //   if(mg.group_id == group.id){
+    //     mg = {...mg}
+    //     mg.activation_status = "inactive";
+    //     memberGroups[0] = mg
+    //     this.offlineSerivice.saveItem(mg,DataKeys.MemberGroup).then()
+    //     console.log(memberGroups)
+    //   }
+    // })
+
+    //   // console.log(console.log())
+    // })
 
   }
 
@@ -129,6 +160,8 @@ export class MembersComponent implements OnInit {
       key: GroupProgressEnum.AddMembers,
       contributionTypeId: null
     };
+
+
     const memberName = await this.memberName$.pipe(first()).toPromise();
     const progressDetailsKey = GroupProgressEnum.AddMembers;
     const dialogRef = this.dialog.open(GroupProgressDialogComponent, {
@@ -145,7 +178,7 @@ export class MembersComponent implements OnInit {
     });
   }
 
-  
+
 
 
   async edit(member: Member) {

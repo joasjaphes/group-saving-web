@@ -27,6 +27,15 @@ export class FirestoreService {
     return await storageRef.getDownloadURL().toPromise();
   } 
 
+  async getUserGroup(phone){
+    await this.afs.collection("member-group",(ref)=>ref.where('phone_number', '==', phone))
+    .get()
+    .subscribe((val)=>{
+      console.log(val.docs
+        )
+    })
+  }
+
   async getData(
     last_update_time,
     currentClass: FirestoreService,

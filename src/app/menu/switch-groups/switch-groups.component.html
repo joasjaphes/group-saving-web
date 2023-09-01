@@ -15,8 +15,9 @@
   </div>
   <div class="w-full">
     <div>
-      <div class="menu-grid content-area" *ngFor="let memberGroup of memberGroups$ | async"
+      <div *ngFor="let memberGroup of memberGroups$ | async"
         (click)="setCurrentGroup(memberGroup)">
+        <div  class="menu-grid content-area" *ngIf="memberGroup.activation_status == 'active' ">        
         <div class="img-div" *ngIf="memberGroup">
           <h1 style="font-size: 40px; color: white" class="registration-title">
             {{memberGroup.group_name[0].toUpperCase()}}</h1>
@@ -27,6 +28,8 @@
             {{memberGroup.group_name}}
           </h2>
         </div>
+        </div>
+
       </div>
     </div>
     <div class="mt-3 grid place-items-center" *ngIf="!newGroupMode && (memberGroups$ | async).length < 2" @fadeIn>

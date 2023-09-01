@@ -48,4 +48,6 @@ export class OfflineManagerService {
   saveLastUpdatedTimes(lastUpdated: LastUpdatedAt) {
     return this.localDbService.update(DataKeys.LastUpdatedTable, { ...lastUpdated });
   }
+
+  
 }
