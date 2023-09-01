@@ -56,7 +56,7 @@ import * as addNewContributionForApproval from './contribution/add_new_contribut
 import * as cancelNewContributionForApproval from './contribution/cancel_new_contribution_for_approval';
 import * as updatePassword from './members/update-password';
 import * as addPastExpenseByMonth from './contribution/add_past_expense_by_month';
-
+import * as disableMember from './group/disable-member';
 exports.getUserByPhoneNumber = getUserByPhoneNumber.getUserByPhoneNumber;
 
 exports.getUserGroupsByPhoneNumber =
@@ -124,3 +124,4 @@ exports.cancelNewContributionForApproval =
 exports.createNewGroup = createNewGroup.createNewGroup;
 exports.updatePassword = updatePassword.updatePassword;
 exports.addPastExpenseByMonth = addPastExpenseByMonth.addPastExpenseByMonth;
+exports.disableMember = disableMember.disableMember;
