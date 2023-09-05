@@ -17,7 +17,7 @@
     <div>
       <div *ngFor="let memberGroup of memberGroups$ | async"
         (click)="setCurrentGroup(memberGroup)">
-        <div  class="menu-grid content-area" *ngIf="memberGroup.activation_status == 'active' ">        
+        <div  class="menu-grid content-area">        
         <div class="img-div" *ngIf="memberGroup">
           <h1 style="font-size: 40px; color: white" class="registration-title">
             {{memberGroup.group_name[0].toUpperCase()}}</h1>

@@ -30,6 +30,9 @@ import * as memberGroupSelector from "../../store/member-group/member-group.sele
 import { MemberGroup } from 'src/app/store/member-group/member-group.model';
 import { DataKeys } from 'src/app/store/data-keys';
 import { FunctionsService } from 'src/app/services/functions.service';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { DocumentData, QuerySnapshot } from '@google-cloud/firestore';
+import { async } from '@firebase/util';
 
 
 @Component({
@@ -59,6 +62,9 @@ export class MembersComponent implements OnInit {
   memberSearch: any;
   currentContribution: ContributionType;
   memberGroups$: Observable<MemberGroup[]>;
+  
+  clicked:boolean = false;
+  
 
 
   constructor(
@@ -66,7 +72,8 @@ export class MembersComponent implements OnInit {
     private httpClient: HttpClient,
     public dialog: MatDialog,
     private offlineSerivice: OfflineManagerService,
-    private fs: FunctionsService
+    private fs: FunctionsService,
+    private afs:AngularFirestore
   ) {
 
     //  this.checkPermission.initPermission()
@@ -91,25 +98,8 @@ export class MembersComponent implements OnInit {
 
   async onDelete(member:Member,status:string) {
     const data = { phoneNumber: member.phone_number, group_id: member.group_id, status: status }
-    this.fs.saveData("disableMember", data)
 
-    // const group = await this.group$.pipe(first()).toPromise();
-    // console.log(group)
-    // this.memberGroups$.subscribe((memberGroups)=>{
-
-    // memberGroups.forEach((mg)=>{
-    //   if(mg.group_id == group.id){
-    //     mg = {...mg}
-    //     mg.activation_status = "inactive";
-    //     memberGroups[0] = mg
-    //     this.offlineSerivice.saveItem(mg,DataKeys.MemberGroup).then()
-    //     console.log(memberGroups)
-    //   }
-    // })
-
-    //   // console.log(console.log())
-    // })
-
+    await this.fs.saveData("disableMember",data);
   }
 
 
